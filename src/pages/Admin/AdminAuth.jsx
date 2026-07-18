@@ -104,7 +104,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             </div>
             <div>
               <p className="text-white font-bold text-base tracking-tight">Velauraz</p>
-              <p className="text-white/30 text-[10px] font-medium tracking-widest uppercase">Admin Console</p>
+              <p className="text-white/30 text-[14px] font-medium tracking-widest uppercase">Admin Console</p>
             </div>
           </div>
 
@@ -118,7 +118,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Admin ID */}
             <div className="space-y-2">
-              <label className="block text-[11px] font-bold text-white/40 uppercase tracking-[0.12em]">
+              <label className="block text-[14px] font-bold text-white/40 uppercase tracking-[0.12em]">
                 Admin ID
               </label>
               <input
@@ -133,7 +133,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="block text-[11px] font-bold text-white/40 uppercase tracking-[0.12em]">
+              <label className="block text-[14px] font-bold text-white/40 uppercase tracking-[0.12em]">
                 Password
               </label>
               <div className="relative">
@@ -188,7 +188,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             </button>
           </form>
 
-          <p className="mt-10 text-center text-[11px] text-white/20">
+          <p className="mt-10 text-center text-[14px] text-white/20">
             © {new Date().getFullYear()} Velauraz. All rights reserved.
           </p>
         </motion.div>

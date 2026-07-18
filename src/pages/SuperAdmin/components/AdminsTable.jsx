@@ -33,7 +33,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
               <UserPlus size={14} />
               <span>Add Admin</span>
             </button>
-            <span className="px-3 py-1 rounded-full bg-slate-100 text-[10px] font-bold text-slate-600 uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-slate-100 text-[14px] font-bold text-slate-600 uppercase tracking-wider">
               {adminsList.length} Active
             </span>
           </div>
@@ -44,7 +44,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.1em] border-b border-slate-100 bg-slate-50/50">
+            <tr className="text-[14px] font-bold text-slate-400 uppercase tracking-[0.1em] border-b border-slate-100 bg-slate-50/50">
               <th className="px-8 py-5">Admin ID</th>
               <th className="px-6 py-5">Access Key</th>
               <th className="px-6 py-5">Created On</th>
@@ -101,7 +101,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-900">{admin.adminId}</p>
-                  <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Administrator</p>
+                  <p className="text-[14px] font-medium text-slate-400 uppercase tracking-wider">Administrator</p>
                 </div>
               </div>
               <button
@@ -114,11 +114,11 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
             
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="bg-slate-50 p-3 rounded-2xl space-y-1">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Access Key</p>
+                <p className="text-[14px] font-bold text-slate-400 uppercase tracking-wider">Access Key</p>
                 <p className="text-xs font-mono font-bold text-slate-700 truncate">{admin.password}</p>
               </div>
               <div className="bg-slate-50 p-3 rounded-2xl space-y-1">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Created</p>
+                <p className="text-[14px] font-bold text-slate-400 uppercase tracking-wider">Created</p>
                 <p className="text-xs font-bold text-slate-700">
                   {new Date(admin.createdAt).toLocaleDateString()}
                 </p>

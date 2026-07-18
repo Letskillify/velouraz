@@ -37,7 +37,7 @@ const ReturnPolicy = () => {
                 <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
                   <RefreshCcw size={24} />
                 </div>
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.4em]">Return Process</h2>
+                <h2 className="text-[14px] font-bold uppercase tracking-[0.4em]">Return Process</h2>
               </div>
               <div className="md:col-span-8 space-y-8">
                 <p className="text-base sm:text-lg text-[#7B6D63] leading-relaxed font-light">
@@ -57,7 +57,7 @@ const ReturnPolicy = () => {
                 <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
                   <Globe size={24} />
                 </div>
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.4em]">Return Charges</h2>
+                <h2 className="text-[14px] font-bold uppercase tracking-[0.4em]">Return Charges</h2>
               </div>
               <div className="md:col-span-8">
                 <p className="text-base sm:text-lg text-[#7B6D63] leading-relaxed font-light">
@@ -72,7 +72,7 @@ const ReturnPolicy = () => {
                 <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
                   <Sparkles size={24} />
                 </div>
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.4em]">Refunding Steps</h2>
+                <h2 className="text-[14px] font-bold uppercase tracking-[0.4em]">Refunding Steps</h2>
               </div>
               <div className="md:col-span-8">
                 <ul className="space-y-6">
@@ -96,7 +96,7 @@ const ReturnPolicy = () => {
                 <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
                   <ShieldCheck size={24} />
                 </div>
-                <h2 className="text-[10px] font-bold uppercase tracking-[0.4em]">Refunds</h2>
+                <h2 className="text-[14px] font-bold uppercase tracking-[0.4em]">Refunds</h2>
               </div>
               <div className="md:col-span-8">
                 <p className="text-base sm:text-lg text-[#7B6D63] leading-relaxed font-light">
@@ -107,7 +107,7 @@ const ReturnPolicy = () => {
           </div>
 
           <div className="pt-24 border-t border-[#D8CBBE]/30 text-center">
-            <p className="text-[10px] tracking-[0.5em] uppercase text-[#7B6D63]/30 font-bold">© 2026 VELOURAZ. Artisans of Luxury.</p>
+            <p className="text-[14px] tracking-[0.5em] uppercase text-[#7B6D63]/30 font-bold">© 2026 VELOURAZ. Artisans of Luxury.</p>
           </div>
         </motion.div>
       </div>

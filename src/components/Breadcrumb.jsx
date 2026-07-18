@@ -30,7 +30,7 @@ const Breadcrumb = ({ title, subtitle, bgImage, links }) => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1, ease: [0.19, 1, 0.22, 1] }}
-          className="flex items-center justify-center gap-3 text-[10px] md:text-[11px] tracking-[0.4em] font-bold uppercase mb-8"
+          className="flex items-center justify-center gap-3 text-[14px] md:text-[14px] tracking-[0.4em] font-bold uppercase mb-8"
         >
           {links.map((link, index) => (
             <React.Fragment key={index}>

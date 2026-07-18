@@ -69,7 +69,7 @@ const Login = () => {
             {['Handcrafted', 'Certified', 'Worldwide'].map((tag, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full" style={{ background: GOLD }} />
-                <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
+                <span className="text-[14px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ const Login = () => {
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-[10px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Welcome Back</span>
+              <span className="text-[14px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Welcome Back</span>
             </div>
             <h1 
               className="text-4xl md:text-5xl font-light text-[#2A2623] mb-3"
@@ -124,7 +124,7 @@ const Login = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
+              <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
                 <input
@@ -140,8 +140,8 @@ const Login = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623]">Password</label>
-                <button type="button" className="text-[10px] font-bold text-[#7A0E2E]/60 hover:text-[#7A0E2E] transition-colors uppercase tracking-wider">Forgot?</button>
+                <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623]">Password</label>
+                <button type="button" className="text-[14px] font-bold text-[#7A0E2E]/60 hover:text-[#7A0E2E] transition-colors uppercase tracking-wider">Forgot?</button>
               </div>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
@@ -166,7 +166,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group w-full py-4 rounded-xl text-white font-bold text-[11px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
+              className="group w-full py-4 rounded-xl text-white font-bold text-[14px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
               style={{ background: '#2A2623' }}
               onMouseEnter={(e) => e.currentTarget.style.background = CRIMSON}
               onMouseLeave={(e) => e.currentTarget.style.background = '#2A2623'}
@@ -185,7 +185,7 @@ const Login = () => {
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
-            <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
+            <span className="text-[14px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
           </div>
 

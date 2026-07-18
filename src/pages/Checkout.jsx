@@ -178,7 +178,7 @@ const Checkout = () => {
     return (
       <div className="min-h-screen bg-[#F8F4EF] flex flex-col items-center justify-center p-6 pt-32 text-center">
         <h1 className="text-4xl sm:text-6xl font-serif text-[#2A2623] mb-8 italic">Your collection is empty</h1>
-        <Link to="/shop" className="px-12 py-5 bg-[#7A0E2E] text-white font-bold rounded-2xl uppercase tracking-[0.3em] text-[10px] shadow-2xl shadow-[#7A0E2E]/20 hover:bg-[#2A2623] transition-all active:scale-95">
+        <Link to="/shop" className="px-12 py-5 bg-[#7A0E2E] text-white font-bold rounded-2xl uppercase tracking-[0.3em] text-[14px] shadow-2xl shadow-[#7A0E2E]/20 hover:bg-[#2A2623] transition-all active:scale-95">
           Return to Atelier
         </Link>
       </div>
@@ -192,7 +192,7 @@ const Checkout = () => {
         {/* Editorial Header */}
         <div className="mb-20 border-b border-[#D8CBBE]/30 pb-12 flex flex-col md:flex-row justify-between items-end gap-8">
           <div className="space-y-6">
-            <Link to="/cart" className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.4em] text-[#7B6D63] hover:text-[#7A0E2E] transition-all group">
+            <Link to="/cart" className="inline-flex items-center gap-3 text-[14px] font-bold uppercase tracking-[0.4em] text-[#7B6D63] hover:text-[#7A0E2E] transition-all group">
               <ArrowLeft size={16} className="group-hover:-translate-x-2 transition-transform duration-500" />
               Return to Selection
             </Link>
@@ -202,7 +202,7 @@ const Checkout = () => {
           </div>
           <div className="flex items-center gap-6 bg-white/40 backdrop-blur-xl px-8 py-4 rounded-full border border-[#D8CBBE]/30 shadow-sm">
              <ShieldCheck size={18} className="text-[#7A0E2E]" />
-             <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63]">Encrypted Transaction</span>
+             <span className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63]">Encrypted Transaction</span>
           </div>
         </div>
 
@@ -220,7 +220,7 @@ const Checkout = () => {
               
               <div className="grid md:grid-cols-2 gap-8 pl-18">
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Full Name</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Full Name</label>
                   <input 
                     name="name"
                     value={formData.name}
@@ -229,7 +229,7 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Email Address</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Email Address</label>
                   <input 
                     name="email"
                     value={formData.email}
@@ -238,7 +238,7 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="space-y-3 md:col-span-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Phone Number</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Phone Number</label>
                   <div className="relative">
                     <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-[#7B6D63]/30" size={16} />
                     <input 
@@ -262,7 +262,7 @@ const Checkout = () => {
               
               <div className="grid md:grid-cols-2 gap-8 pl-18">
                 <div className="space-y-3 md:col-span-2">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Street Address</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Street Address</label>
                   <input 
                     name="address"
                     value={formData.address}
@@ -271,7 +271,7 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">City</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">City</label>
                   <input 
                     name="city"
                     value={formData.city}
@@ -280,7 +280,7 @@ const Checkout = () => {
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Postal Code</label>
+                  <label className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#7B6D63] ml-2">Postal Code</label>
                   <input 
                     name="pincode"
                     value={formData.pincode}
@@ -304,8 +304,8 @@ const Checkout = () => {
                       className="flex flex-col items-start p-8 rounded-[32px] border transition-all duration-500 text-left bg-[#7A0E2E] border-[#7A0E2E] text-white shadow-2xl shadow-[#7A0E2E]/20"
                     >
                       <CreditCard size={28} strokeWidth={1} className="mb-6 text-white" />
-                      <span className="text-[11px] font-bold uppercase tracking-[0.2em] mb-2">Secured Transaction</span>
-                      <span className="text-[10px] text-white/60">UPI, Cards, Net Banking</span>
+                      <span className="text-[14px] font-bold uppercase tracking-[0.2em] mb-2">Secured Transaction</span>
+                      <span className="text-[14px] text-white/60">UPI, Cards, Net Banking</span>
                     </div>
                 </div>
               </div>
@@ -326,7 +326,7 @@ const Checkout = () => {
                     <div className="flex-1 space-y-1">
                       <h4 className="text-sm font-serif text-[#2A2623] font-bold">{item.name}</h4>
                       <div className="flex justify-between items-center">
-                        <p className="text-[10px] text-[#7B6D63] font-bold uppercase tracking-widest">Qty: {item.quantity || 1}</p>
+                        <p className="text-[14px] text-[#7B6D63] font-bold uppercase tracking-widest">Qty: {item.quantity || 1}</p>
                         <p className="text-sm font-bold text-[#7A0E2E]">₹{(Number(item.price) * (item.quantity || 1)).toLocaleString()}</p>
                       </div>
                     </div>
@@ -335,11 +335,11 @@ const Checkout = () => {
               </div>
 
               <div className="space-y-6 pt-10 border-t border-[#D8CBBE]/20">
-                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-[#7B6D63]">
+                <div className="flex justify-between text-[14px] font-bold uppercase tracking-widest text-[#7B6D63]">
                   <span>Subtotal</span>
                   <span className="text-[#2A2623]">₹{total.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest text-[#7B6D63]">
+                <div className="flex justify-between text-[14px] font-bold uppercase tracking-widest text-[#7B6D63]">
                   <span>Shipping</span>
                   <span className="text-[#7A0E2E] italic">Complimentary</span>
                 </div>
@@ -352,7 +352,7 @@ const Checkout = () => {
               <button 
                 onClick={handlePayment}
                 disabled={loading || isAnyOutOfStock}
-                className={`w-full py-6 rounded-2xl text-[11px] font-bold uppercase tracking-[0.5em] transition-all duration-700 shadow-2xl mt-12 flex items-center justify-center gap-4 ${
+                className={`w-full py-6 rounded-2xl text-[14px] font-bold uppercase tracking-[0.5em] transition-all duration-700 shadow-2xl mt-12 flex items-center justify-center gap-4 ${
                   isAnyOutOfStock 
                   ? 'bg-[#2A2623]/10 text-[#2A2623]/40 cursor-not-allowed' 
                   : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E] shadow-[#2A2623]/20'

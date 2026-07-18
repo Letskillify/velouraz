@@ -259,7 +259,7 @@ const SuperAdmin = () => {
               <p className="text-sm font-bold tracking-tight text-slate-900">
                 Super Admin
               </p>
-              <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Control Center</p>
+              <p className="text-[14px] font-medium text-slate-400 uppercase tracking-widest">Control Center</p>
             </div>
           </div>
           <button 
@@ -304,7 +304,7 @@ const SuperAdmin = () => {
 
       <div className="px-4 py-6 border-t border-slate-100 space-y-4">
         <div className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-100">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Session</p>
+          <p className="text-[14px] font-bold text-slate-400 uppercase tracking-widest mb-1">Session</p>
           <p className="text-xs font-semibold text-slate-700 truncate" title={superAdminUser?.email}>
             {superAdminUser?.email}
           </p>

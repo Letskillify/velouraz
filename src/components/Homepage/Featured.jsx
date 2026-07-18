@@ -73,7 +73,7 @@ const WorldEdit = () => {
               className="flex items-center gap-3"
             >
               <div className="w-8 h-[1px] bg-[#7A0E2E]" />
-              <span className="text-[10px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+              <span className="text-[14px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                 WORLD EDIT
               </span>
             </motion.div>
@@ -156,15 +156,15 @@ const WorldEdit = () => {
                   <div className="absolute inset-0 p-8 flex flex-col justify-end">
                     <div className="space-y-4">
                       <div className="space-y-1">
-                        <span className="text-[10px] tracking-[0.4em] font-bold text-[#7A0E2E] uppercase">
+                        <span className="text-[14px] tracking-[0.4em] font-bold text-[#7A0E2E] uppercase">
                            {item.subtext}
                         </span>
                         <h3 className="text-2xl lg:text-3xl font-serif text-white tracking-wide">{item.region}</h3>
-                        <p className="text-[11px] text-white/60 font-serif italic">{item.location}</p>
+                        <p className="text-[14px] text-white/60 font-serif italic">{item.location}</p>
                       </div>
                       
                       <div className="pt-4 border-t border-white/10 flex items-center justify-between group/btn">
-                         <Link to={item.link} className="flex items-center gap-3 text-[10px] tracking-[0.3em] font-bold text-white uppercase group-hover:text-[#F8F4EF] transition-colors">
+                         <Link to={item.link} className="flex items-center gap-3 text-[14px] tracking-[0.3em] font-bold text-white uppercase group-hover:text-[#F8F4EF] transition-colors">
                             Explore Collection
                          </Link>
                          <div className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white group-hover/btn:bg-[#7A0E2E] group-hover/btn:border-[#7A0E2E] transition-all duration-300">

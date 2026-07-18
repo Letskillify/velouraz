@@ -74,7 +74,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 border-[1.5px] border-[#7A0E2E] border-t-transparent rounded-full animate-spin" />
-        <p className="text-[10px] uppercase tracking-[0.5em] text-[#7A0E2E] font-bold">Loading</p>
+        <p className="text-[14px] uppercase tracking-[0.5em] text-[#7A0E2E] font-bold">Loading</p>
       </div>
     );
   }
@@ -83,7 +83,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-6 text-center p-6">
         <h2 className="font-serif text-3xl text-[#2A2623]/80 italic">Piece not found.</h2>
-        <button onClick={() => navigate('/shop')} className="text-[10px] tracking-[0.3em] uppercase text-[#7A0E2E] border-b border-[#7A0E2E] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
+        <button onClick={() => navigate('/shop')} className="text-[14px] tracking-[0.3em] uppercase text-[#7A0E2E] border-b border-[#7A0E2E] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
       </div>
     );
   }
@@ -104,7 +104,7 @@ const ProductDetail = () => {
         <div className="absolute inset-0 bg-black/45" />
 
         <div className="relative z-10 text-center px-5 pt-20 md:pt-24 text-white">
-          <div className="flex items-center justify-center gap-2.5 text-[9px] md:text-[10px] tracking-[0.3em] font-bold uppercase text-white/50 mb-4 sm:mb-6">
+          <div className="flex items-center justify-center gap-2.5 text-[9px] md:text-[14px] tracking-[0.3em] font-bold uppercase text-white/50 mb-4 sm:mb-6">
             <button onClick={() => navigate('/')} className="hover:text-[#C8A97A] transition-colors">Home</button>
             <ChevronRight size={10} className="text-white/20" />
             <button onClick={() => navigate('/shop')} className="hover:text-[#C8A97A] transition-colors">Shop</button>
@@ -122,7 +122,7 @@ const ProductDetail = () => {
             {product.name}
           </h1>
 
-          <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-white/30 mt-3 sm:mt-4">
+          <p className="text-[14px] tracking-[0.2em] uppercase font-bold text-white/30 mt-3 sm:mt-4">
             House of Velouraz
           </p>
         </div>
@@ -169,12 +169,12 @@ const ProductDetail = () => {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2">
                   {discountPercent > 0 && (
-                    <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider">
+                    <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-full text-[14px] font-bold tracking-wider">
                       -{discountPercent}%
                     </span>
                   )}
                   {product.stock <= 5 && product.stock > 0 && (
-                    <span className="bg-[#2A2623] text-white px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider">
+                    <span className="bg-[#2A2623] text-white px-3 py-1.5 rounded-full text-[14px] font-bold tracking-wider">
                       Few Left
                     </span>
                   )}
@@ -205,7 +205,7 @@ const ProductDetail = () => {
 
               {/* Category & Name */}
               <div>
-                <p className="text-[10px] tracking-[0.3em] font-bold uppercase text-[#7A0E2E] mb-3">
+                <p className="text-[14px] tracking-[0.3em] font-bold uppercase text-[#7A0E2E] mb-3">
                   {product.category || 'Velouraz Collection'}
                 </p>
                 <h1 className="text-3xl md:text-4xl font-serif text-[#2A2623] leading-snug tracking-tight">
@@ -233,14 +233,14 @@ const ProductDetail = () => {
                     <span className="text-lg text-[#7B6D63]/50 line-through font-serif">
                       ₹{Number(product.original_price).toLocaleString()}
                     </span>
-                    <span className="text-[11px] font-bold text-[#7A0E2E] bg-[#7A0E2E]/8 px-2.5 py-1 rounded-full">
+                    <span className="text-[14px] font-bold text-[#7A0E2E] bg-[#7A0E2E]/8 px-2.5 py-1 rounded-full">
                       Save {discountPercent}%
                     </span>
                   </>
                 )}
               </div>
 
-              <p className="text-[11px] text-[#7B6D63]">Inclusive of all taxes. Free shipping on orders above ₹999.</p>
+              <p className="text-[14px] text-[#7B6D63]">Inclusive of all taxes. Free shipping on orders above ₹999.</p>
 
               {/* Divider */}
               <div className="h-px bg-[#D8CBBE]/40" />
@@ -253,7 +253,7 @@ const ProductDetail = () => {
               {/* Quantity & Add to Cart */}
               <div className="space-y-4 pt-2">
                 <div className="flex items-center gap-6">
-                  <span className="text-[11px] uppercase tracking-[0.2em] font-bold text-[#7B6D63]">Qty</span>
+                  <span className="text-[14px] uppercase tracking-[0.2em] font-bold text-[#7B6D63]">Qty</span>
                   <div className="flex items-center border border-[#D8CBBE] rounded-lg overflow-hidden bg-white">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -273,7 +273,7 @@ const ProductDetail = () => {
                     </button>
                   </div>
                   {product.stock <= 5 && product.stock > 0 && (
-                    <span className="text-[10px] text-amber-600 font-bold uppercase tracking-wider animate-pulse">
+                    <span className="text-[14px] text-amber-600 font-bold uppercase tracking-wider animate-pulse">
                       Only {product.stock} left
                     </span>
                   )}
@@ -283,7 +283,7 @@ const ProductDetail = () => {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0 || cartLoading}
-                    className={`flex-1 h-14 text-[11px] uppercase tracking-[0.3em] font-bold rounded-xl transition-all duration-500 flex items-center justify-center gap-3 ${
+                    className={`flex-1 h-14 text-[14px] uppercase tracking-[0.3em] font-bold rounded-xl transition-all duration-500 flex items-center justify-center gap-3 ${
                       product.stock <= 0
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : isInCart(product.id)
@@ -304,7 +304,7 @@ const ProductDetail = () => {
                 <button
                   onClick={() => { handleAddToCart(); navigate('/checkout'); }}
                   disabled={product.stock <= 0}
-                  className="w-full h-14 text-[11px] uppercase tracking-[0.3em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] hover:bg-[#2A2623] hover:text-white transition-all duration-500 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-full h-14 text-[14px] uppercase tracking-[0.3em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] hover:bg-[#2A2623] hover:text-white transition-all duration-500 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   Buy Now
                 </button>
@@ -348,7 +348,7 @@ const ProductDetail = () => {
                           { label: 'Collection', value: product.category || 'Velouraz' },
                         ].map((d, i) => (
                           <div key={i}>
-                            <p className="text-[10px] uppercase tracking-wider text-[#7B6D63]/60 font-bold mb-1">{d.label}</p>
+                            <p className="text-[14px] uppercase tracking-wider text-[#7B6D63]/60 font-bold mb-1">{d.label}</p>
                             <p className="text-[13px] text-[#2A2623] font-medium">{d.value}</p>
                           </div>
                         ))}
@@ -365,7 +365,7 @@ const ProductDetail = () => {
                         </p>
                         <div className="flex items-center gap-2 text-[#7A0E2E]">
                           <Sparkles size={14} />
-                          <span className="text-[10px] uppercase tracking-wider font-bold">Signature Anti-Tarnish Finish</span>
+                          <span className="text-[14px] uppercase tracking-wider font-bold">Signature Anti-Tarnish Finish</span>
                         </div>
                       </div>
                     )
@@ -445,7 +445,7 @@ const ProductDetail = () => {
         <button
           onClick={handleAddToCart}
           disabled={product.stock <= 0 || cartLoading}
-          className={`flex-1 h-12 text-[10px] uppercase tracking-[0.2em] font-bold rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 h-12 text-[14px] uppercase tracking-[0.2em] font-bold rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
             product.stock <= 0
             ? 'bg-gray-100 text-gray-400'
             : isInCart(product.id)
@@ -459,7 +459,7 @@ const ProductDetail = () => {
         <button
           onClick={() => { handleAddToCart(); navigate('/checkout'); }}
           disabled={product.stock <= 0}
-          className="flex-1 h-12 text-[10px] uppercase tracking-[0.2em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] active:scale-[0.98] transition-all disabled:opacity-30"
+          className="flex-1 h-12 text-[14px] uppercase tracking-[0.2em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] active:scale-[0.98] transition-all disabled:opacity-30"
         >
           Buy Now
         </button>

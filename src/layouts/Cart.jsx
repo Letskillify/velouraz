@@ -139,7 +139,7 @@ const Cart = () => {
             <p className="text-[14px] text-[#7B6D63] mb-8 max-w-sm">Looks like you haven't added any pieces to your collection yet.</p>
             <Link 
               to="/shop" 
-              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-[#7A0E2E] transition-all duration-500"
+              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[14px] font-bold uppercase tracking-[0.2em] hover:bg-[#7A0E2E] transition-all duration-500"
             >
               Explore Collection
             </Link>
@@ -151,9 +151,9 @@ const Cart = () => {
             <div className="flex-1 min-w-0">
               {/* Table Header - Desktop */}
               <div className="hidden sm:grid grid-cols-[1fr_120px_120px_40px] gap-6 pb-4 border-b border-[#D8CBBE]/40 mb-0">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7B6D63]">Product</span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-center">Quantity</span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-right">Total</span>
+                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63]">Product</span>
+                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-center">Quantity</span>
+                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-right">Total</span>
                 <span></span>
               </div>
 
@@ -293,13 +293,13 @@ const Cart = () => {
                           />
                           <button 
                             onClick={handleApplyCoupon}
-                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[11px] font-bold uppercase tracking-wider hover:bg-[#7A0E2E] transition-all"
+                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold uppercase tracking-wider hover:bg-[#7A0E2E] transition-all"
                           >
                             Apply
                           </button>
                         </div>
                         {couponError && (
-                          <p className="text-[11px] text-red-500 flex items-center gap-1.5">
+                          <p className="text-[14px] text-red-500 flex items-center gap-1.5">
                             <AlertCircle size={12} /> {couponError}
                           </p>
                         )}
@@ -308,9 +308,9 @@ const Cart = () => {
                       <div className="flex items-center justify-between bg-emerald-50 border border-emerald-100 rounded-lg px-4 py-2.5">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 size={14} className="text-emerald-600" />
-                          <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">{appliedCoupon}</span>
+                          <span className="text-[14px] font-bold text-emerald-700 uppercase tracking-wider">{appliedCoupon}</span>
                         </div>
-                        <button onClick={removeCoupon} className="text-[11px] font-bold text-red-500 hover:text-red-700 transition-colors">
+                        <button onClick={removeCoupon} className="text-[14px] font-bold text-red-500 hover:text-red-700 transition-colors">
                           Remove
                         </button>
                       </div>
@@ -327,7 +327,7 @@ const Cart = () => {
                   <button 
                     onClick={() => navigate("/checkout")}
                     disabled={items.length === 0}
-                    className="w-full bg-[#2A2623] text-white py-4 rounded-xl text-[11px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+                    className="w-full bg-[#2A2623] text-white py-4 rounded-xl text-[14px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                   >
                     Proceed to Checkout
                   </button>
@@ -336,15 +336,15 @@ const Cart = () => {
                   <div className="flex items-center justify-center gap-6 pt-3">
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <ShieldCheck size={14} strokeWidth={1.5} />
-                      <span className="text-[10px] font-medium">Secure</span>
+                      <span className="text-[14px] font-medium">Secure</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <Truck size={14} strokeWidth={1.5} />
-                      <span className="text-[10px] font-medium">Free Shipping</span>
+                      <span className="text-[14px] font-medium">Free Shipping</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <Gift size={14} strokeWidth={1.5} />
-                      <span className="text-[10px] font-medium">Gift Ready</span>
+                      <span className="text-[14px] font-medium">Gift Ready</span>
                     </div>
                   </div>
                 </div>

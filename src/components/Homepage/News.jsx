@@ -49,7 +49,7 @@ const TheJournal = () => {
             className="flex items-center gap-3"
           >
             <div className="w-8 h-[1px] bg-[#7A0E2E]" />
-            <span className="text-[10px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+            <span className="text-[14px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
               BEHIND THE SPARKLE
             </span>
           </motion.div>
@@ -111,7 +111,7 @@ const TheJournal = () => {
                       <Instagram size={14} className="text-white" />
                     </div>
                     <div className="flex flex-col items-start leading-none">
-                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">velouraz.jewels</span>
+                      <span className="text-[14px] font-bold text-white tracking-widest uppercase">velouraz.jewels</span>
                       <span className="text-[9px] text-white/70 mt-1">{post.time}</span>
                     </div>
                   </div>

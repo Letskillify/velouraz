@@ -56,6 +56,9 @@ import CategoriesOverview from "./components/CategoriesOverview";
 import { ProductForm, EditProductForm } from "./components/ProductForms";
 import MediaLibrary from "./components/MediaLibrary";
 import DashboardOverview from "./components/DashboardOverview";
+import ProductEditor from "./components/ProductEditor";
+import CatalogManager from "./components/CatalogManager";
+import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 const sidebarItems = [
   { name: "Dashboard", icon: LayoutDashboard, desc: "Overview" },
@@ -113,7 +116,7 @@ const Admin = () => {
 
   const loadProducts = async () => {
     const snap = await getDocs(collection(db, "products"));
-    setProducts(sortNewest(snap.docs.map((d) => ({ id: d.id, ...d.data() }))));
+    setProducts(sortNewestProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() }))));
   };
 
   const loadUsers = async () => {
@@ -130,20 +133,26 @@ const Admin = () => {
     const subscribe = (name, setter) => onSnapshot(collection(db, name), (snapshot) => {
       setter(sortNewest(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))));
     }, (error) => console.warn(`Could not listen to ${name}:`, error));
-    const stopProducts = subscribe("products", setProducts);
+    const stopProducts = listenToProducts(setProducts, (error) => console.warn("Could not listen to products:", error));
     const stopUsers = subscribe("users", setUsers);
     const stopOrders = subscribe("orders", setOrders);
     return () => { stopProducts(); stopUsers(); stopOrders(); };
   }, [adminUser]);
 
   const handleDeleteProduct = async (id) => {
-    await deleteDoc(doc(db, "products", id));
+    await removeProduct(id);
     setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
   const handleEditClick = (product) => {
     setEditingProduct(product);
-    setIsEditModalOpen(true);
+    setActiveItem("EditProduct");
+  };
+
+  const openProductEditor = () => {
+    setActiveItem("AddProduct");
+    setIsProductModalOpen(false);
+    setIsSidebarOpen(false);
   };
 
   const currentItem = sidebarItems.find((i) => i.name === activeItem);
@@ -174,7 +183,7 @@ const Admin = () => {
         </div>
         {/* Add Product CTA */}
         <button
-          onClick={() => setIsProductModalOpen(true)}
+          onClick={openProductEditor}
           className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] hover:shadow-[#811331]/30 transition-all active:scale-95"
         >
           <Plus size={14} />
@@ -189,18 +198,29 @@ const Admin = () => {
     const cards = metricCards(products.length, users.length, orders.length, revenue);
     switch (activeItem) {
       case "Products":
+        {
+          const activeProducts = products.filter((product) => !product.status || product.status === "Published" || product.status === "Active").length;
+          const draftProducts = products.filter((product) => product.status === "Draft").length;
+          const trashedProducts = products.filter((product) => product.status === "Trash").length;
+          const productCards = [
+            { label: "Total Products", value: products.length, hint: "All catalogue products", icon: Package, color: "crimson" },
+            { label: "Active Products", value: activeProducts, hint: "Published and active", icon: Activity, color: "green" },
+            { label: "Draft Products", value: draftProducts, hint: "Not published yet", icon: Package, color: "blue" },
+            { label: "Trash", value: trashedProducts, hint: "Archived products", icon: Package, color: "crimson" },
+          ];
         return (
           <>
-            <MetricCards cards={cards} />
+            <MetricCards cards={productCards} />
             <ProductsTable
               products={products}
-              onAddProduct={() => setIsProductModalOpen(true)}
+              onAddProduct={openProductEditor}
               onEditProduct={handleEditClick}
               onDeleteProduct={handleDeleteProduct}
               onRefresh={loadProducts}
             />
           </>
         );
+        }
       case "Orders":
         return (
           <>
@@ -209,12 +229,15 @@ const Admin = () => {
           </>
         );
       case "Categories":
-        return (
-          <>
-            <MetricCards cards={cards} />
-            <CategoriesOverview />
-          </>
-        );
+        return <CatalogManager type="Categories" />;
+      case "SubCategories":
+        return <CatalogManager type="SubCategories" />;
+      case "Collections":
+        return <CatalogManager type="Collections" />;
+      case "Brands":
+        return <CatalogManager type="Brands" />;
+      case "Attributes":
+        return <CatalogManager type="Attributes" />;
       case "Users":
         return (
           <>
@@ -224,6 +247,10 @@ const Admin = () => {
         );
       case "Media":
         return <MediaLibrary />;
+      case "AddProduct":
+        return <ProductEditor onCancel={() => setActiveItem("Products")} onSuccess={() => setActiveItem("Products")} />;
+      case "EditProduct":
+        return <ProductEditor product={editingProduct} onCancel={() => { setEditingProduct(null); setActiveItem("Products"); }} onSuccess={() => { setEditingProduct(null); setActiveItem("Products"); }} />;
       default:
         return <DashboardOverview products={products} users={users} orders={orders} onViewProducts={() => setActiveItem("Products")} />;
     }
@@ -249,47 +276,18 @@ const Admin = () => {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4 text-[12px]">
-        <button onClick={() => setActiveItem("Dashboard")} className={`mb-4 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 font-semibold ${activeItem === "Dashboard" ? "bg-[#a4143e] text-white shadow-lg shadow-black/15" : "text-white/80 hover:bg-white/10"}`}><LayoutDashboard size={15}/><span>Dashboard</span></button>
+        <button onClick={() => setActiveItem("Dashboard")} className={`mb-4 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 font-semibold ${activeItem === "Dashboard" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><LayoutDashboard size={15}/>Dashboard</button>
         <p className="mb-2 px-3 text-[9px] font-medium tracking-wide text-white/50">CATALOG</p>
-        <button onClick={() => { setActiveItem("Products"); setProductsMenuOpen(!productsMenuOpen); }} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 font-semibold ${activeItem === "Products" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><Package size={15}/><span className="flex-1 text-left">Products</span>{productsMenuOpen ? <ChevronUp size={14}/> : <ChevronDown size={14}/>}</button>
-        {productsMenuOpen && <div className="ml-3 border-l border-white/15 py-1 pl-2.5 space-y-0.5">{[
-          ["All Products", Grid2X2, "Products"], ["Add New Product", Plus, "Products"], ["Categories", Layers3, "Categories"], ["Sub Categories", Layers3, "Categories"], ["Brands", Landmark, "Products"], ["Attributes", Tags, "Products"], ["Tags", Tags, "Products"], ["Countries", Landmark, "Products"],
-        ].map(([label, Icon, target]) => <button key={label} onClick={() => { setActiveItem(target); if (label === "Add New Product") setIsProductModalOpen(true); }} className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[11px] ${label === "All Products" && activeItem === "Products" ? "bg-[#84112f] text-white" : "text-white/75 hover:bg-white/10 hover:text-white"}`}><Icon size={12}/>{label}</button>)}</div>}
-        <button onClick={() => setActiveItem("Products")} className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10"><Layers3 size={15}/><span>Collections</span></button>
-        <button onClick={() => { setActiveItem("Orders"); setOrdersMenuOpen(!ordersMenuOpen); }} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 font-medium ${activeItem === "Orders" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><ShoppingBag size={15}/><span className="flex-1 text-left">Orders</span>{ordersMenuOpen ? <ChevronUp size={14}/> : <ChevronDown size={14}/>}</button>
-        {ordersMenuOpen && <div className="ml-3 border-l border-white/15 py-1 pl-2.5"><button onClick={() => setActiveItem("Orders")} className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-[11px] text-white/75 hover:bg-white/10"><Grid2X2 size={12}/>All Orders</button></div>}
-        {[["Customers", Users, "Users"], ["Coupons", TicketPercent, "Products"], ["Reviews", Star, "Products"]].map(([label, Icon, target]) => <button key={label} onClick={() => setActiveItem(target)} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 ${activeItem === target && label === "Customers" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><Icon size={15}/>{label}</button>)}
+        <button onClick={() => { setActiveItem("Products"); setProductsMenuOpen(!productsMenuOpen); }} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 font-semibold ${activeItem === "Products" || activeItem === "AddProduct" || activeItem === "EditProduct" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><Package size={15}/><span className="flex-1 text-left">Products</span>{productsMenuOpen ? <ChevronUp size={14}/> : <ChevronDown size={14}/>}</button>
+        {productsMenuOpen && <div className="ml-3 border-l border-white/15 py-1 pl-2.5 space-y-0.5">{[["All Products", Grid2X2, "Products"]].map(([label, Icon, target]) => <button key={label} onClick={() => target === "AddProduct" ? openProductEditor() : setActiveItem(target)} className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[14px] ${activeItem === target ? "bg-[#84112f] text-white" : "text-white/75 hover:bg-white/10"}`}><Icon size={12}/>{label}</button>)}</div>}
+        {[["Categories", Layers3, "Categories", ["All Categories"]], ["Sub Categories", Layers3, "SubCategories", ["All Sub Categories"]], ["Collections", Layers3, "Collections", ["All Collections"]], ["Brands", Landmark, "Brands", ["All Brands"]], ["Attributes", Tags, "Attributes", ["All Attributes"]], ["Media", Images, "Media", ["Media Library"]]].map(([title, Icon, target, links]) => <div key={title} className="mt-1"><button onClick={() => setActiveItem(target)} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 ${activeItem === target ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}><Icon size={15}/><span className="flex-1 text-left">{title}</span><ChevronDown size={13}/></button><div className="ml-3 border-l border-white/15 py-0.5 pl-2.5">{links.map((link) => <button key={link} onClick={() => setActiveItem(target)} className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-[14px] text-white/75 hover:bg-white/10"><Grid2X2 size={12}/>{link}</button>)}</div></div>)}
         <p className="mb-2 mt-4 px-3 text-[9px] font-medium tracking-wide text-white/50">CONTENT</p>
-        {[["Pages", FileText], ["Banners", Images], ["Blog", FileText]].map(([label, Icon]) => <button key={label} onClick={() => label === "Banners" && setActiveItem("Media")} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10"><Icon size={15}/>{label}</button>)}
-        <p className="mb-2 mt-4 px-3 text-[9px] font-medium tracking-wide text-white/50">STORE SETTINGS</p>
-        {[["Store Settings", Settings], ["Shipping", Truck], ["Payment Methods", CreditCard], ["Users & Roles", Users]].map(([label, Icon]) => <button key={label} onClick={() => label === "Users & Roles" && setActiveItem("Users")} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10"><Icon size={15}/>{label}</button>)}
+        {[["Pages", FileText], ["Banners", Images]].map(([label, Icon]) => <button key={label} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10"><Icon size={15}/>{label}</button>)}
       </nav>
 
-      {/* Footer */}
-      <div className="px-3 py-3 border-t border-white/10 space-y-2">
-        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[12px] text-white/80 hover:bg-white/10"><PanelLeftClose size={15}/>Collapse Menu</button>
-        {/* Admin Badge */}
-          <div className="flex items-center gap-3 px-3 py-3 rounded-xl bg-white/10">
-          <div className="h-8 w-8 rounded-full bg-[#811331]/40 border border-[#811331]/50 flex items-center justify-center text-[11px] font-bold text-white flex-shrink-0">
-            {(adminUser?.adminId || "A").charAt(0).toUpperCase()}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-bold text-white truncate" title={adminUser?.adminId}>
-              {adminUser?.adminId}
-            </p>
-            <p className="text-[9px] text-white/30 font-medium uppercase tracking-widest">
-              Administrator
-            </p>
-          </div>
-        </div>
-
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-[12px] font-bold text-white/50 hover:text-red-400 hover:bg-red-500/10 transition-all border border-white/5 hover:border-red-500/20"
-        >
-          <LogOut size={13} />
-          Sign Out
-        </button>
+      <div className="border-t border-white/10 px-3 py-3 space-y-1">
+        <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[12px] text-white/80 hover:bg-white/10"><Users size={15}/>Profile</button>
+        <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[12px] text-white/80 hover:bg-white/10"><LogOut size={15}/>Logout</button>
       </div>
     </div>
   );
@@ -355,7 +353,7 @@ const Admin = () => {
         <header className="hidden lg:flex h-[74px] items-center justify-between border-b border-slate-200/80 bg-white px-7 xl:px-9">
           <button className="grid h-9 w-9 place-items-center rounded-lg text-slate-700 hover:bg-slate-100"><Menu size={21} /></button>
           <label className="flex w-full max-w-[430px] items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2 text-slate-400 focus-within:border-[#9c1237]/40"><Search size={17} /><input className="w-full bg-transparent text-xs text-slate-700 outline-none placeholder:text-slate-400" placeholder="Search for products, orders, customers..." /><kbd className="rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[9px] text-slate-500">Ctrl + K</kbd></label>
-          <div className="flex items-center gap-4"><button className="text-slate-600"><Sun size={20} /></button><button className="relative text-slate-700"><Bell size={20} /><span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[9px] text-white">0</span></button><div className="h-8 w-px bg-slate-200" /><div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">{(adminUser?.adminId || "A").charAt(0).toUpperCase()}</span><div><p className="text-xs font-semibold text-slate-800">Admin</p><p className="text-[10px] text-slate-400">Super Admin</p></div><ChevronDown size={15} /></div></div>
+          <div className="flex items-center gap-4"><button className="text-slate-600"><Sun size={20} /></button><button className="relative text-slate-700"><Bell size={20} /><span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[9px] text-white">0</span></button><div className="h-8 w-px bg-slate-200" /><div className="flex items-center gap-2.5"><span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">{(adminUser?.adminId || "A").charAt(0).toUpperCase()}</span><div><p className="text-xs font-semibold text-slate-800">Admin</p><p className="text-[14px] text-slate-400">Super Admin</p></div><ChevronDown size={15} /></div></div>
         </header>
         {/* Mobile Topbar */}
         <nav className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/90 backdrop-blur-lg border-b border-slate-100 sticky top-0 z-30">
@@ -370,7 +368,7 @@ const Admin = () => {
           </div>
           <div className="flex items-center gap-1.5">
             <button
-              onClick={() => setIsProductModalOpen(true)}
+              onClick={openProductEditor}
               className="p-2 rounded-xl bg-[#811331] text-white shadow-md shadow-[#811331]/20 active:scale-95 transition-transform"
             >
               <Plus size={16} />
@@ -387,7 +385,7 @@ const Admin = () => {
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto px-4 py-5 pb-24 sm:px-8 sm:py-8 lg:px-7 lg:py-6 lg:pb-10 xl:px-9">
           <div className="max-w-[1500px] mx-auto">
-            {renderHeader()}
+            {activeItem !== "AddProduct" && activeItem !== "EditProduct" && renderHeader()}
             <motion.div
               key={activeItem}
               initial={{ opacity: 0, y: 12 }}

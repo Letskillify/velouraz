@@ -35,7 +35,7 @@ const Marquee = () => {
           {doubled.map((item, index) => (
             <span
               key={index}
-              className="shrink-0 px-10 text-[11px] lg:text-[13px] tracking-[0.25em] uppercase font-light whitespace-nowrap"
+              className="shrink-0 px-10 text-[14px] lg:text-[13px] tracking-[0.25em] uppercase font-light whitespace-nowrap"
               style={{ color: '#C8A97A', fontFamily: SERIF }}
             >
               {item}

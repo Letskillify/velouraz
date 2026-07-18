@@ -146,7 +146,7 @@ const TestimonialSection = () => {
                       {review.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-[10px] tracking-widest font-bold uppercase text-white">
+                      <p className="text-[14px] tracking-widest font-bold uppercase text-white">
                         {review.name}
                       </p>
                       <p className="text-[12px] text-white/40 mt-0.5" style={{ fontFamily: SERIF }}>

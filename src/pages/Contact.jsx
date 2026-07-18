@@ -70,7 +70,7 @@ const Contact = () => {
               <div className="w-16 h-16 rounded-full bg-[#F8F4EF] flex items-center justify-center mb-8 mx-auto group-hover:bg-[#2A2623] group-hover:text-white transition-all duration-500">
                 <item.icon size={24} strokeWidth={1} />
               </div>
-              <p className="text-[11px] tracking-[0.4em] font-bold uppercase text-[#7B6D63] mb-3">{item.label}</p>
+              <p className="text-[14px] tracking-[0.4em] font-bold uppercase text-[#7B6D63] mb-3">{item.label}</p>
               <p className="text-xl md:text-2xl font-serif text-[#2A2623] mb-2">{item.value}</p>
               <p className="text-[13px] text-[#7B6D63] font-light">{item.sub}</p>
             </motion.div>
@@ -96,7 +96,7 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
+                      <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
                       <input 
                         type="text" 
                         required
@@ -107,7 +107,7 @@ const Contact = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
+                      <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
                       <input 
                         type="email" 
                         required
@@ -120,7 +120,7 @@ const Contact = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Inquiry Type</label>
+                    <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Inquiry Type</label>
                     <div className="relative">
                       <select 
                         value={formData.subject}
@@ -138,7 +138,7 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Your Message</label>
+                    <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Your Message</label>
                     <textarea 
                       rows="4" 
                       required
@@ -155,7 +155,7 @@ const Contact = () => {
                     type="submit"
                     className="relative group w-full sm:w-auto bg-[#2A2623] text-white px-12 py-5 rounded-full overflow-hidden shadow-xl"
                   >
-                    <span className="relative z-10 text-[11px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                    <span className="relative z-10 text-[14px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-4">
                       {submitted ? 'Inquiry Sent' : 'Submit Message'}
                       <Send size={14} className={submitted ? 'animate-bounce' : 'group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300'} />
                     </span>
@@ -227,7 +227,7 @@ const Contact = () => {
             >
                <Globe size={24} className="text-[#7A0E2E]" strokeWidth={1} />
                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#7B6D63]">Chat With Us</p>
+                  <p className="text-[14px] font-bold uppercase tracking-widest text-[#7B6D63]">Chat With Us</p>
                   <p className="text-[15px] font-serif text-[#2A2623]">Instant support via WhatsApp</p>
                </div>
                <MessageCircle size={18} className="ml-auto text-[#D8CBBE]" />

@@ -21,7 +21,7 @@ const CategoriesOverview = () => (
           High-level structure of your jewelry catalog
         </p>
       </div>
-      <span className="text-[11px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
+      <span className="text-[14px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
         {categories.length} Groups
       </span>
     </div>
@@ -38,7 +38,7 @@ const CategoriesOverview = () => (
           </div>
 
           <div className="flex justify-between items-start mb-4">
-            <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${cat.badge}`}>
+            <span className={`text-[14px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${cat.badge}`}>
               {cat.group}
             </span>
             <ChevronRight size={14} className="text-slate-300 group-hover:text-[#811331] transition-colors" />

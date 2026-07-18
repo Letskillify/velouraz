@@ -137,7 +137,7 @@ const Wishlist = () => {
                       <button 
                         onClick={(e) => { e.stopPropagation(); moveToCart(item); }}
                         disabled={item.stock <= 0 || movingItems[item.id]}
-                        className={`w-full py-4 text-[10px] tracking-[0.2em] font-bold uppercase flex items-center justify-center gap-3 transition-all rounded-xl shadow-xl ${
+                        className={`w-full py-4 text-[14px] tracking-[0.2em] font-bold uppercase flex items-center justify-center gap-3 transition-all rounded-xl shadow-xl ${
                           item.stock <= 0
                           ? 'bg-red-50 text-red-400 cursor-not-allowed border border-red-100'
                           : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E]'
@@ -156,7 +156,7 @@ const Wishlist = () => {
                   {/* Content */}
                   <div className="space-y-4 px-2 text-center">
                     <div className="space-y-1">
-                      <p className="text-[10px] tracking-[0.3em] font-bold uppercase text-[#7B6D63] mb-2">{item.brand || "Velouraz Atelier"}</p>
+                      <p className="text-[14px] tracking-[0.3em] font-bold uppercase text-[#7B6D63] mb-2">{item.brand || "Velouraz Atelier"}</p>
                       <h3 className="text-xl font-serif text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors duration-300">
                         {item.name}
                       </h3>
@@ -191,7 +191,7 @@ const Wishlist = () => {
               </p>
               <Link 
                 to="/shop" 
-                className="inline-flex items-center gap-4 bg-[#7A0E2E] text-white px-16 py-6 rounded-2xl font-bold uppercase tracking-[0.4em] text-[11px] hover:bg-[#2A2623] transition-all shadow-xl shadow-[#7A0E2E]/20"
+                className="inline-flex items-center gap-4 bg-[#7A0E2E] text-white px-16 py-6 rounded-2xl font-bold uppercase tracking-[0.4em] text-[14px] hover:bg-[#2A2623] transition-all shadow-xl shadow-[#7A0E2E]/20"
               >
                 Start Exploring
                 <ArrowLeft size={20} strokeWidth={2} className="rotate-180" />

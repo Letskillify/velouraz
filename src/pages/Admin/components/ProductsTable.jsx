@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Edit2, Trash2, Package, Plus, RefreshCw } from "lucide-react";
+import { Edit2, Trash2, Package, Plus, RefreshCw, Search, SlidersHorizontal, MoreVertical } from "lucide-react";
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
 
-const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct, onRefresh }) => (
-  <section className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct, onRefresh }) => {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("All Categories");
+  const filteredProducts = useMemo(() => products.filter((product) => {
+    const matchesSearch = `${product.name || ""} ${product.sku || ""}`.toLowerCase().includes(search.toLowerCase());
+    return matchesSearch && (category === "All Categories" || product.category === category);
+  }), [products, search, category]);
+  const categories = [...new Set(products.map((product) => product.category).filter(Boolean))];
+  return <section className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
     {/* Header */}
     <div className="px-6 py-5 sm:px-8 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
@@ -40,22 +47,30 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
       </div>
     </div>
 
+    <div className="mx-5 mb-4 flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 sm:mx-8 sm:flex-row sm:items-center">
+      <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-400"><Search size={15}/><input value={search} onChange={(event) => setSearch(event.target.value)} className="w-full bg-transparent text-xs text-slate-700 outline-none" placeholder="Search products..." /></label>
+      <select value={category} onChange={(event) => setCategory(event.target.value)} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-600 outline-none"><option>All Categories</option>{categories.map((item) => <option key={item}>{item}</option>)}</select>
+      <button className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700"><SlidersHorizontal size={14}/>Filter</button>
+      {(search || category !== "All Categories") && <button onClick={() => { setSearch(""); setCategory("All Categories"); }} className="px-2 text-xs font-semibold text-[#811331]">Reset</button>}
+    </div>
     {/* Desktop Table */}
     <div className="hidden lg:block overflow-x-auto">
       <table className="w-full text-left">
         <thead>
-          <tr className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
+          <tr className="text-[14px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
             <th className="px-8 py-4">Product</th>
+            <th className="px-5 py-4">SKU</th>
             <th className="px-5 py-4">Category</th>
             <th className="px-5 py-4">Price</th>
             <th className="px-5 py-4">Stock</th>
             <th className="px-5 py-4">Material</th>
             <th className="px-5 py-4">Status</th>
-            <th className="px-8 py-4 text-right">Actions</th>
+            <th className="px-5 py-4">Date</th>
+            <th className="px-8 py-4 text-right">Action</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-50">
-          {products.map((row, idx) => (
+          {filteredProducts.map((row, idx) => (
             <motion.tr
               key={row.id}
               initial={{ opacity: 0 }}
@@ -76,12 +91,13 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                   </div>
                   <div>
                     <p className="text-[13px] font-bold text-slate-900 line-clamp-1 max-w-[180px]">{row.name}</p>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">{row.id.substring(0, 10)}…</p>
+                    <p className="text-[14px] text-slate-400 font-mono mt-0.5">{row.id.substring(0, 10)}…</p>
                   </div>
                 </div>
               </td>
+              <td className="px-5 py-4 text-[14px] font-medium text-slate-500">{row.sku || row.productCode || row.id.slice(0, 10)}</td>
               <td className="px-5 py-4">
-                <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">
+                <span className="text-[14px] font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-lg">
                   {row.category || "Uncategorized"}
                 </span>
               </td>
@@ -98,10 +114,11 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                 {row.material || "—"}
               </td>
               <td className="px-5 py-4">
-                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.stock_status || "In Stock")}`}>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[14px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.stock_status || "In Stock")}`}>
                   {row.stock_status || "In Stock"}
                 </span>
               </td>
+              <td className="px-5 py-4 text-[14px] text-slate-500">{row.createdAt?.toDate ? row.createdAt.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"}</td>
               <td className="px-8 py-4">
                 <div className="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                   {onEditProduct && (
@@ -132,7 +149,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
 
     {/* Mobile Cards */}
     <div className="lg:hidden divide-y divide-slate-50">
-      {products.map((row) => (
+      {filteredProducts.map((row) => (
         <div key={row.id} className="p-5 hover:bg-slate-50 transition-colors">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-14 h-14 rounded-2xl bg-slate-100 overflow-hidden border border-slate-200 flex-shrink-0">
@@ -147,7 +164,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-slate-900 truncate">{row.name}</p>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[10px] font-bold text-slate-400 uppercase">{row.category}</span>
+                <span className="text-[14px] font-bold text-slate-400 uppercase">{row.category}</span>
                 <span className="w-1 h-1 rounded-full bg-slate-300" />
                 <span className="text-sm font-bold text-[#811331]">₹{Number(row.price || 0).toLocaleString()}</span>
               </div>
@@ -175,7 +192,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
     </div>
 
     {/* Empty State */}
-    {products.length === 0 && (
+    {filteredProducts.length === 0 && (
       <div className="px-8 py-20 text-center">
         <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-5 border border-slate-100">
           <Package size={30} className="text-slate-300" />
@@ -192,7 +209,8 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
         </button>
       </div>
     )}
-  </section>
-);
+    <div className="flex items-center justify-between border-t border-slate-100 px-6 py-4 text-[14px] text-slate-500"><span>Showing {filteredProducts.length} of {products.length} products</span><span className="rounded-md border border-slate-200 px-3 py-1.5">Page 1</span></div>
+  </section>;
+};
 
 export default ProductsTable;

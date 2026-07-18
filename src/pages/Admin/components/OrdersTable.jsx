@@ -17,7 +17,7 @@ const OrdersTable = ({ orders }) => (
           Latest customer transactions
         </p>
       </div>
-      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[10px] font-bold text-emerald-600 uppercase tracking-wider">
+      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-[14px] font-bold text-emerald-600 uppercase tracking-wider">
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
         Live
       </span>
@@ -27,7 +27,7 @@ const OrdersTable = ({ orders }) => (
     <div className="hidden lg:block overflow-x-auto">
       <table className="w-full text-left">
         <thead>
-          <tr className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
+          <tr className="text-[14px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
             <th className="px-8 py-4">Order ID</th>
             <th className="px-5 py-4">Customer</th>
             <th className="px-5 py-4">Amount</th>
@@ -47,7 +47,7 @@ const OrdersTable = ({ orders }) => (
                 <p className="text-[13px] font-bold text-slate-900">₹{Number(row.total || 0).toLocaleString()}</p>
               </td>
               <td className="px-8 py-4 text-right">
-                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.status || "Pending")}`}>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[14px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.status || "Pending")}`}>
                   {row.status || "Pending"}
                 </span>
               </td>
@@ -60,7 +60,7 @@ const OrdersTable = ({ orders }) => (
                   <ShoppingBag size={22} className="text-slate-300" />
                 </div>
                 <p className="text-xs font-bold text-slate-500 mb-0.5">No orders yet</p>
-                <p className="text-[11px] text-slate-400">Customer purchases will appear here.</p>
+                <p className="text-[14px] text-slate-400">Customer purchases will appear here.</p>
               </td>
             </tr>
           )}
@@ -77,7 +77,7 @@ const OrdersTable = ({ orders }) => (
             <p className="text-xs font-medium text-slate-500">{row.customer || row.customerName || row.shippingAddress?.name || "Customer"}</p>
             <p className="text-sm font-bold text-[#811331] pt-1">₹{Number(row.total || 0).toLocaleString()}</p>
           </div>
-          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.status)}`}>
+          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[14px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.status)}`}>
             {row.status || "Pending"}
           </span>
         </div>

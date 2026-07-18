@@ -215,7 +215,7 @@ const Hero = () => {
                   <p className="text-[9px] tracking-[0.18em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
                     {u.title}
                   </p>
-                  <p className="text-[11px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
+                  <p className="text-[14px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
                     {u.desc}
                   </p>
                 </div>
@@ -248,7 +248,7 @@ const Hero = () => {
                       <p className="text-[8.5px] tracking-[0.2em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
                         {u.title}
                       </p>
-                      <p className="text-[11px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
+                      <p className="text-[14px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
                         {u.desc}
                       </p>
                     </div>

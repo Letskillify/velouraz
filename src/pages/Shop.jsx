@@ -114,7 +114,7 @@ const Shop = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-[11px] font-bold tracking-wider uppercase transition-all whitespace-nowrap border ${
+                className={`px-4 py-2 rounded-full text-[14px] font-bold tracking-wider uppercase transition-all whitespace-nowrap border ${
                   selectedCategory === cat 
                     ? 'bg-[#2A2623] text-white border-[#2A2623]' 
                     : 'bg-white text-[#7B6D63] border-[#D8CBBE]/50 hover:border-[#7A0E2E] hover:text-[#7A0E2E]'
@@ -228,7 +228,7 @@ const Shop = () => {
                     <button 
                       onClick={(e) => product.stock > 0 && handleAddToCart(e, product)}
                       disabled={product.stock <= 0 || cartLoadings[product.id]}
-                      className={`w-full py-2.5 text-[10px] tracking-wider font-bold uppercase flex items-center justify-center gap-2 rounded-lg transition-all ${
+                      className={`w-full py-2.5 text-[14px] tracking-wider font-bold uppercase flex items-center justify-center gap-2 rounded-lg transition-all ${
                         product.stock <= 0
                         ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                         : isInCart(product.id) 

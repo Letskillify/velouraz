@@ -24,7 +24,7 @@ const colorMap = {
 };
 
 const MetricCards = ({ cards }) => (
-  <section className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+  <section className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 mb-6">
     {cards.map((card, index) => {
       const Icon = card.icon;
       const colors = colorMap[card.color] || colorMap.crimson;
@@ -44,7 +44,7 @@ const MetricCards = ({ cards }) => (
 
           <div className="relative flex items-start justify-between gap-4">
             <div className="space-y-2">
-              <p className="text-[10px] font-bold tracking-widest text-slate-400 uppercase">
+              <p className="text-[14px] font-bold tracking-widest text-slate-400 uppercase">
                 {card.label}
               </p>
               <p className="text-3xl font-bold text-slate-900 tracking-tight">

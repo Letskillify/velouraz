@@ -81,7 +81,7 @@ const About = () => {
 
               {/* Minimal Brand Credo Box */}
               <div className="border-l border-[#D8CBBE] pl-6 space-y-3 hidden lg:block">
-                <span className="text-[11px] tracking-widest font-bold uppercase text-[#7B6D63]">Philosophy</span>
+                <span className="text-[14px] tracking-widest font-bold uppercase text-[#7B6D63]">Philosophy</span>
                 <p className="text-[17px] font-light leading-relaxed italic text-[#5C534C]" style={{ fontFamily: SERIF }}>
                   "Jewellery that feels effortless, looks sophisticated, and adds beauty without trying too hard."
                 </p>
@@ -169,7 +169,7 @@ const About = () => {
           {[...Array(8)].map((_, i) => (
             <span 
               key={i} 
-              className="text-[11px] lg:text-[13px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
+              className="text-[14px] lg:text-[13px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
               style={{ fontFamily: SERIF }}
             >
               ✦ Trends That Travel the World

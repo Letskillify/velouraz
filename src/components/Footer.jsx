@@ -74,7 +74,7 @@ const Footer = () => {
               placeholder="Enter your email address" 
               className="bg-transparent border border-white/20 px-6 py-4 text-white text-sm w-full lg:w-[350px] placeholder:text-white/40 focus:outline-none focus:border-white/50 transition-colors"
             />
-            <button className="bg-white text-[#7A0E2E] px-10 py-4 text-[11px] tracking-[0.2em] font-bold uppercase hover:bg-white/90 transition-colors">
+            <button className="bg-white text-[#7A0E2E] px-10 py-4 text-[14px] tracking-[0.2em] font-bold uppercase hover:bg-white/90 transition-colors">
               SUBSCRIBE
             </button>
           </form>

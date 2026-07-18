@@ -173,7 +173,7 @@ const UserPanel = () => {
                   {item.description}
                 </p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-slate-50 text-[11px] font-medium text-slate-600">
+              <span className="px-2.5 py-1 rounded-full bg-slate-50 text-[14px] font-medium text-slate-600">
                 {item.tag}
               </span>
             </div>
@@ -254,7 +254,7 @@ const UserPanel = () => {
         >
           Proceed to checkout
         </button>
-        <p className="mt-2 text-[11px] text-slate-500 text-center">
+        <p className="mt-2 text-[14px] text-slate-500 text-center">
           Secure checkout. No additional fees at this step.
         </p>
       </div>

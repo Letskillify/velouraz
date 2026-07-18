@@ -123,7 +123,7 @@ const LuxuryHeader = () => {
         className="relative z-[60] text-center py-2.5 px-4"
         style={{ background: CRIMSON, position: 'fixed', top: 0, left: 0, right: 0 }}
       >
-        <p className="text-[10px] md:text-[11px] tracking-[0.18em] font-medium text-white/90">
+        <p className="text-[14px] md:text-[14px] tracking-[0.18em] font-medium text-white/90">
           ✦ Free Shipping Across India &nbsp;|&nbsp; Use Code&nbsp;
           <span className="font-bold text-[#C8A97A]">VEL5</span>
           &nbsp;for 5% OFF on your first order ✦
@@ -325,7 +325,7 @@ const LuxuryHeader = () => {
               className="w-full max-w-2xl px-6"
             >
               <p
-                className="text-center text-[11px] tracking-[0.4em] uppercase mb-8"
+                className="text-center text-[14px] tracking-[0.4em] uppercase mb-8"
                 style={{ color: GOLD }}
               >
                 Search our collections
@@ -351,7 +351,7 @@ const LuxuryHeader = () => {
                   <button
                     key={tag}
                     onClick={() => setSearchVal(tag)}
-                    className="px-4 py-1.5 border border-white/10 text-white/50 hover:border-[#C8A97A] hover:text-[#C8A97A] transition-all duration-200 text-[11px] tracking-widest uppercase"
+                    className="px-4 py-1.5 border border-white/10 text-white/50 hover:border-[#C8A97A] hover:text-[#C8A97A] transition-all duration-200 text-[14px] tracking-widest uppercase"
                   >
                     {tag}
                   </button>
@@ -580,7 +580,7 @@ const MegaMenuPanel = ({ link }) => (
               <div className="flex items-center gap-3">
                 <span className="text-xl opacity-60" style={{ color: '#7A0E2E' }}>{section.icon || '✦'}</span>
                 <h4
-                  className="text-[10px] tracking-[0.26em] font-bold uppercase"
+                  className="text-[14px] tracking-[0.26em] font-bold uppercase"
                   style={{ color: '#7A0E2E' }}
                 >
                   {section.title}
@@ -601,7 +601,7 @@ const MegaMenuPanel = ({ link }) => (
                 <li className="pt-1">
                   <Link
                     to={`${link.href}?category=${section.title.toLowerCase().replace(/ /g, '-')}`}
-                    className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-wider transition-colors"
                     style={{ color: '#C8A97A' }}
                   >
                     Shop all <ArrowRight size={11} strokeWidth={2.5} />
@@ -641,7 +641,7 @@ const MegaMenuPanel = ({ link }) => (
           </h3>
           <Link
             to={link.href}
-            className="inline-flex items-center gap-3 text-[10px] font-bold tracking-[0.25em] uppercase px-7 py-3.5 transition-all duration-300 hover:gap-5 w-fit"
+            className="inline-flex items-center gap-3 text-[14px] font-bold tracking-[0.25em] uppercase px-7 py-3.5 transition-all duration-300 hover:gap-5 w-fit"
             style={{ background: '#7A0E2E', color: '#fff' }}
           >
             Explore Collections <ArrowRight size={12} strokeWidth={2} />

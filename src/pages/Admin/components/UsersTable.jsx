@@ -16,7 +16,7 @@ const UsersTable = ({ users }) => (
           {users.length} registered account{users.length !== 1 ? "s" : ""}
         </p>
       </div>
-      <span className="px-3 py-1.5 rounded-full bg-[#811331]/8 border border-[#811331]/15 text-[10px] font-bold text-[#811331] uppercase tracking-wider">
+      <span className="px-3 py-1.5 rounded-full bg-[#811331]/8 border border-[#811331]/15 text-[14px] font-bold text-[#811331] uppercase tracking-wider">
         {users.length} Total
       </span>
     </div>
@@ -25,7 +25,7 @@ const UsersTable = ({ users }) => (
     <div className="hidden lg:block overflow-x-auto">
       <table className="w-full text-left">
         <thead>
-          <tr className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
+          <tr className="text-[14px] font-bold text-slate-400 uppercase tracking-[0.12em] border-b border-slate-50 bg-slate-50/60">
             <th className="px-8 py-4">User</th>
             <th className="px-5 py-4">Contact</th>
             <th className="px-5 py-4">Address</th>
@@ -45,7 +45,7 @@ const UsersTable = ({ users }) => (
                     <p className="text-[13px] font-bold text-slate-900">
                       {user.displayName || user.name || "Anonymous User"}
                     </p>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+                    <p className="text-[14px] text-slate-400 font-mono mt-0.5">
                       {user.id.substring(0, 10)}…
                     </p>
                   </div>
@@ -56,7 +56,7 @@ const UsersTable = ({ users }) => (
                   <Mail size={11} className="text-slate-400 flex-shrink-0" />
                   <span className="truncate max-w-[160px]">{user.email || "—"}</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
+                <div className="flex items-center gap-1.5 text-[14px] text-slate-400 font-medium">
                   <Phone size={11} className="text-slate-400 flex-shrink-0" />
                   {user.phone || "—"}
                 </div>
@@ -80,7 +80,7 @@ const UsersTable = ({ users }) => (
                 </div>
               </td>
               <td className="px-8 py-4 text-right">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-600 border border-emerald-100">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[14px] font-bold uppercase tracking-wide bg-emerald-50 text-emerald-600 border border-emerald-100">
                   <CheckCircle2 size={10} />
                   Active
                 </span>
@@ -113,10 +113,10 @@ const UsersTable = ({ users }) => (
               </div>
               <div>
                 <p className="text-sm font-bold text-slate-900">{user.displayName || user.name || "Anonymous"}</p>
-                <p className="text-[10px] font-medium text-slate-400 mt-0.5">{user.email}</p>
+                <p className="text-[14px] font-medium text-slate-400 mt-0.5">{user.email}</p>
               </div>
             </div>
-            <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-600 uppercase border border-emerald-100">
+            <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-[14px] font-bold text-emerald-600 uppercase border border-emerald-100">
               Active
             </span>
           </div>
@@ -139,7 +139,7 @@ const UsersTable = ({ users }) => (
           {user.address && (
             <div className="bg-slate-50 p-2.5 rounded-xl flex gap-2">
               <MapPin size={13} className="text-slate-400 flex-shrink-0 mt-0.5" />
-              <p className="text-[11px] font-medium text-slate-600 line-clamp-2">{user.address}</p>
+              <p className="text-[14px] font-medium text-slate-600 line-clamp-2">{user.address}</p>
             </div>
           )}
         </div>

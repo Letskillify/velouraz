@@ -108,7 +108,7 @@ const Account = () => {
         <div className="absolute inset-0 bg-black/35" />
 
         <div className="relative z-10 text-center px-5 pt-20 md:pt-24 text-white">
-          <div className="flex items-center justify-center gap-2.5 text-[9px] md:text-[10px] tracking-[0.3em] font-bold uppercase text-white/50 mb-4 sm:mb-6">
+          <div className="flex items-center justify-center gap-2.5 text-[9px] md:text-[14px] tracking-[0.3em] font-bold uppercase text-white/50 mb-4 sm:mb-6">
             <Link to="/" className="hover:text-[#C8A97A] transition-colors">Home</Link>
             <ChevronRight size={10} className="text-white/20" />
             <span className="text-[#C8A97A] font-semibold">My Account</span>
@@ -118,7 +118,7 @@ const Account = () => {
             My Account
           </h1>
 
-          <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-white/30 mt-3 sm:mt-4">
+          <p className="text-[14px] tracking-[0.2em] uppercase font-bold text-white/30 mt-3 sm:mt-4">
             Private Atelier
           </p>
         </div>
@@ -162,11 +162,11 @@ const Account = () => {
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center p-5 rounded-3xl bg-white/50 border border-[#D8CBBE]/30">
-                  <span className="text-[10px] font-bold text-[#7B6D63] uppercase tracking-widest">Points</span>
+                  <span className="text-[14px] font-bold text-[#7B6D63] uppercase tracking-widest">Points</span>
                   <span className="text-sm font-bold text-[#7A0E2E]">2,450 XP</span>
                 </div>
                 <div className="flex justify-between items-center p-5 rounded-3xl bg-white/50 border border-[#D8CBBE]/30">
-                  <span className="text-[10px] font-bold text-[#7B6D63] uppercase tracking-widest">Member Since</span>
+                  <span className="text-[14px] font-bold text-[#7B6D63] uppercase tracking-widest">Member Since</span>
                   <span className="text-sm font-bold text-[#2A2623]/70">2026</span>
                 </div>
               </div>
@@ -178,7 +178,7 @@ const Account = () => {
                 >
                   <div className="flex items-center gap-4">
                     <LogOut size={18} className="text-[#7B6D63] group-hover:text-red-600" />
-                    <span className="text-[10px] font-bold text-[#7B6D63] uppercase tracking-widest group-hover:text-red-600">Sign Out</span>
+                    <span className="text-[14px] font-bold text-[#7B6D63] uppercase tracking-widest group-hover:text-red-600">Sign Out</span>
                   </div>
                   <ChevronRight size={14} className="text-[#7B6D63]/40" />
                 </button>
@@ -220,7 +220,7 @@ const Account = () => {
                 </button>
               ) : (
                 <div className="space-y-6 text-center">
-                  <p className="text-[10px] text-red-600 font-bold uppercase tracking-widest leading-relaxed">Proceed with caution? <br/> All data will be lost.</p>
+                  <p className="text-[14px] text-red-600 font-bold uppercase tracking-widest leading-relaxed">Proceed with caution? <br/> All data will be lost.</p>
                   <div className="flex gap-3">
                     <button 
                       onClick={() => setShowDeleteConfirm(false)}
@@ -250,7 +250,7 @@ const Account = () => {
               <div className="flex items-center justify-between mb-14">
                 <div>
                   <h3 className="text-4xl font-serif text-[#2A2623] mb-3">Order History</h3>
-                  <p className="text-[10px] font-bold text-[#7B6D63]/40 uppercase tracking-[0.3em]">Tracking your latest acquisitions</p>
+                  <p className="text-[14px] font-bold text-[#7B6D63]/40 uppercase tracking-[0.3em]">Tracking your latest acquisitions</p>
                 </div>
                 <Link to="/orders" className="w-12 h-12 rounded-full border border-[#D8CBBE]/30 flex items-center justify-center text-[#7A0E2E] hover:bg-[#7A0E2E] hover:text-white transition-all shadow-sm">
                   <ArrowRight size={18} />
@@ -267,7 +267,7 @@ const Account = () => {
                         </div>
                         <div>
                           <p className="text-[12px] font-bold text-[#2A2623] tracking-widest">#{order.id.slice(0, 8).toUpperCase()}</p>
-                          <p className="text-[10px] text-[#7B6D63]/50 font-bold uppercase tracking-widest mt-1">
+                          <p className="text-[14px] text-[#7B6D63]/50 font-bold uppercase tracking-widest mt-1">
                             {new Date(order.createdAt?.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </p>
                         </div>
@@ -302,7 +302,7 @@ const Account = () => {
                     <action.icon size={24} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold text-[#2A2623] uppercase tracking-widest mb-1.5">{action.label}</p>
+                    <p className="text-[14px] font-bold text-[#2A2623] uppercase tracking-widest mb-1.5">{action.label}</p>
                     <p className="text-[9px] text-[#7B6D63]/40 font-bold uppercase tracking-widest">{action.sub}</p>
                   </div>
                 </button>

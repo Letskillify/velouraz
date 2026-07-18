@@ -70,7 +70,7 @@ const Signup = () => {
             {['Members Perks', 'Priority Access', 'Fine Curation'].map((tag, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full" style={{ background: GOLD }} />
-                <span className="text-[10px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
+                <span className="text-[14px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
               </div>
             ))}
           </div>
@@ -97,7 +97,7 @@ const Signup = () => {
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-[10px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Join the Legacy</span>
+              <span className="text-[14px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Join the Legacy</span>
             </div>
             <h1 
               className="text-4xl md:text-5xl font-light text-[#2A2623] mb-3"
@@ -125,7 +125,7 @@ const Signup = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
+              <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
               <div className="relative group">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
                 <input
@@ -140,7 +140,7 @@ const Signup = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
+              <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
                 <input
@@ -155,7 +155,7 @@ const Signup = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Password</label>
+              <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Password</label>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
                 <input
@@ -178,7 +178,7 @@ const Signup = () => {
 
             <div className="flex items-start gap-3 px-1 py-1">
               <ShieldCheck size={16} className="text-[#7A0E2E] flex-shrink-0 mt-0.5" />
-              <p className="text-[10px] text-[#7B6D63] font-bold leading-normal uppercase tracking-wider">
+              <p className="text-[14px] text-[#7B6D63] font-bold leading-normal uppercase tracking-wider">
                 By signing up, you accept our <span className="text-[#7A0E2E]">Conditions</span> and <span className="text-[#7A0E2E]">Privacy Policy</span>.
               </p>
             </div>
@@ -186,7 +186,7 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group w-full py-4 rounded-xl text-white font-bold text-[11px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
+              className="group w-full py-4 rounded-xl text-white font-bold text-[14px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
               style={{ background: '#2A2623' }}
               onMouseEnter={(e) => e.currentTarget.style.background = CRIMSON}
               onMouseLeave={(e) => e.currentTarget.style.background = '#2A2623'}
@@ -205,7 +205,7 @@ const Signup = () => {
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
-            <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
+            <span className="text-[14px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
           </div>
 

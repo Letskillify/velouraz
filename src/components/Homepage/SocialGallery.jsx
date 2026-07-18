@@ -27,7 +27,7 @@ const SocialGallery = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-[#640D14]/60 text-[9px] md:text-[10px] tracking-[0.6em] uppercase block font-bold"
+              className="text-[#640D14]/60 text-[9px] md:text-[14px] tracking-[0.6em] uppercase block font-bold"
             >
               Velouraz Moments
             </motion.span>
@@ -49,7 +49,7 @@ const SocialGallery = () => {
             viewport={{ once: true }}
             className="mt-8 lg:mt-0 max-w-sm"
           >
-            <p className="text-[10px] md:text-[11px] tracking-[0.2em] uppercase text-[#5C3D1E]/60 leading-relaxed font-bold">
+            <p className="text-[14px] md:text-[14px] tracking-[0.2em] uppercase text-[#5C3D1E]/60 leading-relaxed font-bold">
               Witness the timeless elegance and sophisticated style of the Velouraz community.
             </p>
           </motion.div>
@@ -72,7 +72,7 @@ const SocialGallery = () => {
                 className="w-full h-full object-cover opacity-85 transition-transform duration-1000 ease-out group-hover:scale-105 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-[#2C1A0E]/0 group-hover:bg-[#2C1A0E]/30 transition-colors duration-500 flex flex-col justify-end p-5">
-                <div className="flex items-center gap-2 text-white text-[10px] tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
+                <div className="flex items-center gap-2 text-white text-[14px] tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">
                   <Instagram size={14} strokeWidth={1.5} className="text-[#640D14]" />
                   {item.handle}
                 </div>
@@ -89,10 +89,10 @@ const SocialGallery = () => {
           >
             <Instagram size={32} strokeWidth={1} className="text-[#640D14] mb-6 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-serif text-2xl text-[#2C1A0E] mb-4">Share Your Sparkle</h3>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[#5C3D1E]/60 mb-8 leading-relaxed">
+            <p className="text-[14px] tracking-[0.2em] uppercase text-[#5C3D1E]/60 mb-8 leading-relaxed">
               Join our community using #VelourazStyle
             </p>
-            <button className="text-[10px] tracking-[0.4em] uppercase text-[#640D14] border-b border-[#640D14]/30 pb-1.5 hover:text-[#2C1A0E] hover:border-[#2C1A0E] transition-colors">
+            <button className="text-[14px] tracking-[0.4em] uppercase text-[#640D14] border-b border-[#640D14]/30 pb-1.5 hover:text-[#2C1A0E] hover:border-[#2C1A0E] transition-colors">
               Follow Us
             </button>
           </motion.div>
@@ -101,7 +101,7 @@ const SocialGallery = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-20">
           <button className="group relative pr-12 text-[#2C1A0E] hover:text-[#640D14] transition-colors duration-500">
-            <span className="font-sans text-[11px] tracking-[0.4em] uppercase border-b border-[#640D14]/20 pb-2 group-hover:border-[#640D14]">
+            <span className="font-sans text-[14px] tracking-[0.4em] uppercase border-b border-[#640D14]/20 pb-2 group-hover:border-[#640D14]">
               Explore Our Instagram
             </span>
             <ArrowRight size={18} className="absolute right-0 bottom-3 group-hover:translate-x-2 transition-transform duration-500 text-[#640D14]" />
