@@ -6,13 +6,15 @@ import { uploadToCloudinary } from "../../../config/cloudinary";
 import ProductMediaPicker from "./ProductMediaPicker";
 
 const choices = {
-  brand: ["Velouraz"], category: ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"],
+  brand: ["Velouraz"],
+  country: ["India", "South Korea", "Japan", "France", "Italy", "Turkey", "Dubai", "UAE", "USA", "Thailand", "China", "Singapore", "UK", "Germany", "Spain", "Indonesia", "Malaysia", "Vietnam", "Sri Lanka", "Nepal"],
+  category: ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"],
   countryInspired: ["India", "South Korea", "Japan", "France", "Italy", "Turkey", "Dubai", "USA", "Thailand"], trendingStyle: ["Korean", "Minimal", "Luxury", "Vintage", "Bohemian", "Traditional", "Western", "Indo-Western", "Celebrity Inspired"],
   material: ["Brass", "Sterling Silver", "Stainless Steel", "Gold", "Alloy"], plating: ["18K Gold Plated", "Rose Gold Plated", "Silver Plated", "Oxidised"], finish: ["Premium Gloss", "Matte", "Antique", "High Polish"], stoneType: ["American Diamond", "Pearl", "Kundan", "Zircon", "None"], closureType: ["Push Back", "Hook", "Lobster Clasp", "Adjustable", "Screw Back"], packagingType: ["Velouraz Gift Box", "Premium Pouch", "Standard Box"],
   mood: ["Elegant", "Royal", "Cute", "Luxury", "Classic", "Minimal", "Bold", "Romantic", "Modern"], fashionTrend: ["Old Money", "Quiet Luxury", "Korean Fashion", "Parisian", "Vintage", "Boho", "Coquette", "Minimalist", "Y2K"],
 };
 const sections = [
-  ["Basic Information", [["name", "Product Name", "text", true], ["sku", "Product Code / SKU", "text", true], ["brand", "Brand", "select"], ["collectionName", "Collection Name", "text"], ["category", "Category", "select", true], ["subCategory", "Sub Category", "text"], ["productType", "Product Type", "text", true], ["productCode", "Internal Product Code", "text"]]],
+  ["Basic Information", [["name", "Product Name", "text", true], ["sku", "Product Code / SKU", "text", true], ["brand", "Brand", "select"], ["country", "Country of Origin", "select"], ["collectionName", "Collection Name", "text"], ["category", "Category", "select", true], ["subCategory", "Sub Category", "text"], ["productType", "Product Type", "text", true], ["productCode", "Internal Product Code", "text"]]],
   ["Pricing", [["original_price", "Original Price (MRP)", "number"], ["price", "Selling Price", "number", true], ["discountPrice", "Discount Price", "number"], ["costPrice", "Cost Price (Internal)", "number"], ["minimumSellingPrice", "Minimum Selling Price", "number"]]],
   ["Country & Inspiration", [["countryInspired", "Inspired Country", "select"], ["designOrigin", "Design Origin", "text"], ["trendingStyle", "Trending Style", "select"], ["fashionTheme", "Fashion Theme", "text"]]],
   ["Product Details", [["material", "Material", "select", true], ["plating", "Plating", "select"], ["finish", "Finish", "select"], ["stoneType", "Stone Type", "select"], ["stoneColor", "Stone Color", "text"], ["metalColor", "Metal Color", "text"], ["jewelleryWeight", "Jewellery Weight", "text"], ["dimensions", "Dimensions", "text"], ["length", "Length", "text"], ["width", "Width", "text"], ["height", "Height", "text"], ["closureType", "Closure Type", "select"]]],

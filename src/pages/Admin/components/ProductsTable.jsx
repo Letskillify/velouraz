@@ -8,7 +8,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
   const filteredProducts = useMemo(() => products.filter((product) => {
-    const matchesSearch = `${product.name || ""} ${product.sku || ""}`.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = `${product.name || ""} ${product.sku || ""} ${product.country || ""}`.toLowerCase().includes(search.toLowerCase());
     return matchesSearch && (category === "All Categories" || product.category === category);
   }), [products, search, category]);
   const categories = [...new Set(products.map((product) => product.category).filter(Boolean))];
@@ -61,9 +61,9 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
             <th className="px-8 py-4">Product</th>
             <th className="px-5 py-4">SKU</th>
             <th className="px-5 py-4">Category</th>
+            <th className="px-5 py-4">Country</th>
             <th className="px-5 py-4">Price</th>
             <th className="px-5 py-4">Stock</th>
-            <th className="px-5 py-4">Material</th>
             <th className="px-5 py-4">Status</th>
             <th className="px-5 py-4">Date</th>
             <th className="px-8 py-4 text-right">Action</th>
@@ -102,6 +102,11 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                 </span>
               </td>
               <td className="px-5 py-4">
+                {row.country
+                  ? <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-[12px] font-semibold text-blue-600">🌍 {row.country}</span>
+                  : <span className="text-slate-400 text-[13px]">—</span>}
+              </td>
+              <td className="px-5 py-4">
                 <p className="text-[13px] font-bold text-slate-900">₹{Number(row.price || 0).toLocaleString()}</p>
               </td>
               <td className="px-5 py-4">
@@ -109,9 +114,6 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                   <span className={`w-1.5 h-1.5 rounded-full ${row.stock > 10 ? "bg-emerald-500" : row.stock > 0 ? "bg-amber-500" : "bg-red-500"}`} />
                   <span className="text-[13px] font-semibold text-slate-700">{row.stock || 0}</span>
                 </div>
-              </td>
-              <td className="px-5 py-4 text-[12px] font-medium text-slate-500">
-                {row.material || "—"}
               </td>
               <td className="px-5 py-4">
                 <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[14px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.stock_status || "In Stock")}`}>

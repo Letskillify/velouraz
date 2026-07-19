@@ -4,7 +4,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, query, serverT
 import { Edit3, Filter, FolderPlus, Plus, RefreshCw, Search, Trash2, Upload, X } from "lucide-react";
 import { db } from "../../../components/Firebase";
 
-const config = { Categories: ["categories", "Category"], SubCategories: ["subcategories", "Sub Category"], Collections: ["collections", "Collection"], Brands: ["brands", "Brand"], Attributes: ["attributes", "Attribute"] };
+const config = { Categories: ["categories", "Category"], SubCategories: ["subcategories", "Sub Category"], Collections: ["collections", "Collection"], Countries: ["countries", "Country"], Brands: ["brands", "Brand"], Attributes: ["attributes", "Attribute"] };
 const tone = (status) => status === "Draft" ? "bg-amber-50 text-amber-700" : status === "Trash" ? "bg-rose-50 text-rose-700" : "bg-emerald-50 text-emerald-700";
 
 const CatalogManager = ({ type }) => {
