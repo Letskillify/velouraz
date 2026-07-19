@@ -60,6 +60,7 @@ import MediaLibrary from "./components/MediaLibrary";
 import DashboardOverview from "./components/DashboardOverview";
 import ProductEditor from "./components/ProductEditor";
 import CatalogManager from "./components/CatalogManager";
+import AdminProfile from "./components/AdminProfile";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -70,6 +71,7 @@ const sidebarItems = [
   { name: "Categories", icon: List, desc: "Structure" },
   { name: "Users", icon: Users, desc: "Accounts" },
   { name: "Media", icon: Image, desc: "Assets" },
+  { name: "Profile", icon: Users, desc: "My Account" },
 ];
 
 // ─── Metric Cards for admin (no revenue) ────────────────────────────────────
@@ -132,6 +134,12 @@ const Admin = () => {
     localStorage.setItem("velouraz_admin", JSON.stringify(user));
   };
 
+  // Called by AdminProfile when profile is saved
+  const handleProfileUpdate = (updatedUser) => {
+    setAdminUser(updatedUser);
+    localStorage.setItem("velouraz_admin", JSON.stringify(updatedUser));
+  };
+
   const handleLogout = () => {
     setAdminUser(null);
     localStorage.removeItem("velouraz_admin");
@@ -190,17 +198,17 @@ const Admin = () => {
 
   // ─── Header ─────────────────────────────────────────────────────────────────
   const renderHeader = () => (
-    <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <span className={`text-xs font-medium ${isDarkMode ? "text-slate-400" : "text-slate-400"}`}>Velauraz</span>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-xs font-medium text-slate-400">Velauraz</span>
           <ChevronRight size={12} className="text-slate-300" />
           <span className="text-xs font-semibold text-[#811331]">{activeItem}</span>
         </div>
-        <h1 className={`text-2xl font-bold tracking-tight ${isDarkMode ? "text-white" : "text-slate-900"}`}>
+        <h1 className={`text-xl sm:text-2xl font-bold tracking-tight ${isDarkMode ? "text-white" : "text-slate-900"}`}>
           {activeItem}
         </h1>
-        <p className={`mt-1 text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+        <p className={`mt-1 text-xs sm:text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
           {currentItem?.desc} — manage your jewellery store
         </p>
       </div>
@@ -213,7 +221,7 @@ const Admin = () => {
         </div>
         <button
           onClick={openProductEditor}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] hover:shadow-[#811331]/30 transition-all active:scale-95"
+          className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
         >
           <Plus size={14} />
           <span>Add Product</span>
@@ -275,6 +283,8 @@ const Admin = () => {
         );
       case "Media":
         return <MediaLibrary />;
+      case "Profile":
+        return <AdminProfile adminUser={adminUser} onUpdate={handleProfileUpdate} isDarkMode={isDarkMode} />;
       case "AddProduct":
         return <ProductEditor onCancel={() => setActiveItem("Products")} onSuccess={() => setActiveItem("Products")} />;
       case "EditProduct":
@@ -415,10 +425,13 @@ const Admin = () => {
         </button>
 
         <button
+          onClick={() => setActiveItem("Profile")}
           title="Profile"
-          className={`flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
+          className={`flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"} ${activeItem === "Profile" ? "bg-[#a4143e] text-white" : ""}`}
         >
-          <Users size={15} />
+          {adminUser?.photoURL
+            ? <img src={adminUser.photoURL} alt="" className="h-6 w-6 rounded-full object-cover flex-shrink-0" />
+            : <Users size={15} />}
           {!collapsed && "Profile"}
         </button>
         <button
@@ -500,10 +513,7 @@ const Admin = () => {
       <div className={`flex flex-col min-h-screen transition-all duration-300 ${isSidebarCollapsed ? "lg:ml-16" : "lg:ml-60"}`}>
 
         {/* ─── Desktop Top Bar ─── */}
-        <header className={`hidden lg:flex h-[74px] items-center justify-between border-b px-7 xl:px-9 ${topbarBg} sticky top-0 z-20`}>
-          <button className={`grid h-9 w-9 place-items-center rounded-lg ${isDarkMode ? "text-slate-300 hover:bg-slate-700" : "text-slate-700 hover:bg-slate-100"}`}>
-            <Menu size={21} />
-          </button>
+        <header className={`hidden lg:flex h-[74px] items-center gap-6 justify-between border-b px-7 xl:px-9 ${topbarBg} sticky top-0 z-20`}>
 
           {/* ─── Global Search ─── */}
           <div className="relative flex w-full max-w-[430px] flex-col">
@@ -600,21 +610,40 @@ const Admin = () => {
               </AnimatePresence>
             </button>
 
-            <button className={`relative ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
-              <Bell size={20} />
-              <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[9px] text-white">0</span>
-            </button>
+            {/* Notification Bell — dynamic: hidden if 0 */}
+            {orders.length > 0 && (
+              <button
+                className={`relative ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}
+                title={`${orders.length} order${orders.length !== 1 ? "s" : ""} pending`}
+              >
+                <Bell size={20} />
+                <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[9px] text-white">
+                  {orders.length > 99 ? "99+" : orders.length}
+                </span>
+              </button>
+            )}
             <div className={`h-8 w-px ${isDarkMode ? "bg-slate-700" : "bg-slate-200"}`} />
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">
-                {(adminUser?.adminId || "A").charAt(0).toUpperCase()}
-              </span>
+            {/* Profile avatar — real photo + name + email from adminUser */}
+            <button
+              onClick={() => setActiveItem("Profile")}
+              className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
+            >
+              {adminUser?.photoURL
+                ? <img src={adminUser.photoURL} alt="" className="h-9 w-9 rounded-full object-cover border-2 border-[#811331]/30" />
+                : <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">
+                    {((adminUser?.displayName || adminUser?.name || adminUser?.adminId || "A").charAt(0)).toUpperCase()}
+                  </span>
+              }
               <div>
-                <p className={`text-xs font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Admin</p>
-                <p className={`text-[14px] ${textMuted}`}>{adminUser?.adminId || "Admin Panel"}</p>
+                <p className={`text-xs font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                  {adminUser?.displayName || adminUser?.name || "Admin"}
+                </p>
+                <p className={`text-[11px] ${textMuted}`}>
+                  {adminUser?.email || adminUser?.adminId || "Admin Panel"}
+                </p>
               </div>
               <ChevronDown size={15} className={textMuted} />
-            </div>
+            </button>
           </div>
         </header>
 
@@ -651,7 +680,7 @@ const Admin = () => {
         {/* ─── Page Content ─── */}
         <main className="flex-1 overflow-y-auto px-4 py-5 pb-24 sm:px-8 sm:py-8 lg:px-7 lg:py-6 lg:pb-10 xl:px-9">
           <div className="max-w-[1500px] mx-auto">
-            {activeItem !== "AddProduct" && activeItem !== "EditProduct" && renderHeader()}
+            {activeItem !== "AddProduct" && activeItem !== "EditProduct" && activeItem !== "Profile" && renderHeader()}
             <motion.div
               key={activeItem}
               initial={{ opacity: 0, y: 12 }}

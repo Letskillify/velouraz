@@ -38,15 +38,20 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
     const now = new Date(); now.setHours(23, 59, 59, 999);
     const start = new Date(now); start.setDate(now.getDate() - 13); start.setHours(0, 0, 0, 0);
     const labels = Array.from({ length: 14 }, (_, index) => { const date = new Date(start); date.setDate(start.getDate() + index); return date; });
-    const currentCounts = Array(14).fill(0);
+    const productCounts = Array(14).fill(0);
     let currentOrders = 0;
     orders.forEach((order) => {
       const date = timestampDate(order.createdAt || order.orderDate || order.date);
       if (!date) return;
+      if (date >= start && date <= now) currentOrders += 1;
+    });
+    // Track products added in the last 14 days
+    products.forEach((product) => {
+      const date = timestampDate(product.createdAt);
+      if (!date) return;
       if (date >= start && date <= now) {
         const index = Math.floor((date - start) / 86400000);
-        if (index >= 0 && index < 14) currentCounts[index] += 1;
-        currentOrders += 1;
+        if (index >= 0 && index < 14) productCounts[index] += 1;
       }
     });
     const categoryTotals = products.reduce((acc, product) => {
@@ -61,7 +66,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
     }, {});
     return {
       labels: labels.map((date) => date.toLocaleDateString("en-IN", { day: "numeric", month: "short" })),
-      currentCounts,
+      productCounts,
       currentOrders,
       categoryTotals,
       countryTotals,
@@ -69,7 +74,12 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
   }, [orders, products]);
 
   const inStock = products.filter((p) => Number(p.stock || 0) > 0).length;
+  const outOfStock = products.filter((p) => Number(p.stock || 0) <= 0).length;
   const lowStock = products.filter((p) => Number(p.stock || 0) > 0 && Number(p.stock || 0) <= 10).length;
+  const publishedProducts = products.filter((p) => !p.status || p.status === "Published" || p.status === "Active").length;
+  const draftProducts = products.filter((p) => p.status === "Draft").length;
+  // Low Stock is only a concern when total catalogue < 100
+  const catalogueLow = products.length < 100;
   const categoryNames = Object.keys(data.categoryTotals);
   const countryNames = Object.keys(data.countryTotals);
 
@@ -85,8 +95,8 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
     labels: data.labels,
     datasets: [
       {
-        label: "Orders this period",
-        data: data.currentCounts,
+        label: "Products added",
+        data: data.productCounts,
         borderColor: "#9c1237",
         backgroundColor: "rgba(156,18,55,.10)",
         fill: true,
@@ -111,30 +121,32 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
   };
 
   const activities = [
-    { icon: ShoppingBag, text: `${orders.length} order${orders.length === 1 ? "" : "s"} in the database`, time: "Live", tone: "bg-amber-50 text-amber-600" },
-    { icon: PackageCheck, text: `${products.length} products in catalogue`, time: "Live", tone: "bg-rose-50 text-[#9c1237]" },
-    { icon: UsersRound, text: `${users.length} registered customers`, time: "Live", tone: "bg-emerald-50 text-emerald-600" },
-    { icon: Globe2, text: `${countryNames.filter((c) => c !== "Unknown").length} countries of origin`, time: "Live", tone: "bg-blue-50 text-blue-600" },
+    { icon: PackageCheck, text: `${publishedProducts} product${publishedProducts === 1 ? "" : "s"} published & live`, time: "Catalogue status", tone: "bg-rose-50 text-[#9c1237]" },
+    { icon: Box, text: `${draftProducts} draft product${draftProducts === 1 ? "" : "s"} awaiting review`, time: "Action needed", tone: "bg-amber-50 text-amber-600" },
+    { icon: PackageCheck, text: outOfStock > 0 ? `${outOfStock} product${outOfStock === 1 ? "" : "s"} out of stock` : "All products have stock", time: outOfStock > 0 ? "Restock needed" : "Inventory healthy", tone: outOfStock > 0 ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600" },
+    { icon: Globe2, text: `${countryNames.filter((c) => c !== "Unknown").length} countr${countryNames.filter((c) => c !== "Unknown").length === 1 ? "y" : "ies"} of origin listed`, time: "Product origin coverage", tone: "bg-blue-50 text-blue-600" },
   ];
 
   return (
     <div className="space-y-5">
-      {/* ─── Stat Cards (no revenue) ─── */}
+      {/* ─── Stat Cards (admin-appropriate, no revenue/customers) ─── */}
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Stat label="Total Orders" value={data.currentOrders.toLocaleString("en-IN")} note="Live database count" icon={ShoppingBag} tint="bg-rose-50 text-[#a6173c]" isDark={isDarkMode} />
-        <Stat label="Total Products" value={products.length.toLocaleString("en-IN")} note={`${inStock} in stock`} icon={Box} tint="bg-amber-50 text-amber-600" isDark={isDarkMode} />
-        <Stat label="Total Customers" value={users.length.toLocaleString("en-IN")} note="Registered accounts" icon={UsersRound} tint="bg-violet-50 text-violet-600" isDark={isDarkMode} />
-        <Stat label="Low Stock Items" value={lowStock} note={`${inStock} total in stock`} icon={PackageCheck} tint="bg-emerald-50 text-emerald-600" isDark={isDarkMode} />
+        <Stat label="Total Products" value={products.length.toLocaleString("en-IN")} note={`${publishedProducts} published`} icon={Box} tint="bg-amber-50 text-amber-600" isDark={isDarkMode} />
+        <Stat label="Published Live" value={publishedProducts.toLocaleString("en-IN")} note={`${draftProducts} in draft`} icon={PackageCheck} tint="bg-emerald-50 text-emerald-600" isDark={isDarkMode} />
+        <Stat label="In Stock" value={inStock.toLocaleString("en-IN")} note={`${outOfStock} out of stock`} icon={ShoppingBag} tint="bg-blue-50 text-blue-600" isDark={isDarkMode} />
+        {catalogueLow
+          ? <Stat label="Low Stock Alert" value={lowStock} note={`Catalogue < 100 products (${products.length} total)`} icon={PackageCheck} tint="bg-rose-50 text-rose-600" isDark={isDarkMode} warning />
+          : <Stat label="Catalogue Health" value="Good" note={`${products.length} products — healthy stock`} icon={PackageCheck} tint="bg-emerald-50 text-emerald-600" isDark={isDarkMode} />}
       </section>
 
       {/* ─── Charts Row ─── */}
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_286px]">
-        {/* Orders overview chart */}
+        {/* Catalogue health chart */}
         <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] sm:p-6 ${cardBg}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h2 className={`text-[15px] font-bold ${textPrimary}`}>Orders Overview</h2>
-              <p className={`mt-1 text-[14px] ${textMuted}`}>Order count over the last 14 days</p>
+              <h2 className={`text-[15px] font-bold ${textPrimary}`}>Catalogue Health</h2>
+              <p className={`mt-1 text-[14px] ${textMuted}`}>Products added over the last 14 days</p>
             </div>
           </div>
           <div className="mt-5 h-56">
@@ -146,7 +158,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                 interaction: { intersect: false, mode: "index" },
                 plugins: {
                   legend: { display: false },
-                  tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} orders` } },
+                  tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw} products` } },
                 },
                 scales: {
                   x: { grid: { display: false }, ticks: { maxTicksLimit: 7, font: { size: 10 }, color: isDarkMode ? "#64748b" : "#8a94a3" } },
