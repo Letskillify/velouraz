@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Search, Menu, X, ShoppingBag, Heart, User,
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight,
+  Search, Menu, X, ShoppingBag, Heart, User, Package,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, Loader2,
 } from 'lucide-react';
 import { useAuth } from './useAuth';
 import { useStore } from '../hooks/useStore';
 import { db } from './Firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 /* ─── Design Tokens ──────────────────────────────────── */
 const GOLD   = '#C8A97A';
@@ -52,19 +52,85 @@ const LuxuryHeader = () => {
     location.pathname === '/shop' ||
     location.pathname === '/cart' ||
     location.pathname === '/wishlist' ||
-    location.pathname === '/account' ||
     location.pathname === '/about' ||
     location.pathname.startsWith('/product/');
 
+  const navigate                          = useNavigate();
   const [scrolled, setScrolled]           = useState(!isTransparentRoute || window.scrollY > 40);
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [megaMenu, setMegaMenu]           = useState(null);
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [searchOpen, setSearchOpen]       = useState(false);
   const [searchVal, setSearchVal]         = useState('');
+  const [productsCache, setProductsCache] = useState([]);
+  const [fetchingProducts, setFetchingProducts] = useState(false);
 
   const { user }                          = useAuth();
   const { cartCount, wishlistCount }      = useStore();
+
+  useEffect(() => {
+    if (searchOpen && productsCache.length === 0) {
+      setFetchingProducts(true);
+      getDocs(collection(db, "products"))
+        .then((snap) => {
+          const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          setProductsCache(list);
+        })
+        .catch((err) => {
+          console.error("Error fetching products for live search:", err);
+        })
+        .finally(() => {
+          setFetchingProducts(false);
+        });
+    }
+  }, [searchOpen, productsCache.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSearchOpen(false);
+      }
+    };
+    if (searchOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [searchOpen]);
+
+  const liveResults = useMemo(() => {
+    const q = searchVal.trim().toLowerCase();
+    if (!q) return [];
+    return productsCache.filter((p) => {
+      const name = p.name?.toLowerCase() || '';
+      const cat = p.category?.toLowerCase() || '';
+      const brand = p.brand?.toLowerCase() || '';
+      const desc = p.description?.toLowerCase() || '';
+      const tags = Array.isArray(p.tags) ? p.tags.join(' ').toLowerCase() : '';
+      return name.includes(q) || cat.includes(q) || brand.includes(q) || desc.includes(q) || tags.includes(q);
+    });
+  }, [searchVal, productsCache]);
+
+  const handleSearchSubmit = (e) => {
+    if (e) e.preventDefault();
+    const queryStr = searchVal.trim();
+    setSearchOpen(false);
+    if (queryStr) {
+      navigate(`/shop?search=${encodeURIComponent(queryStr)}`);
+    } else {
+      navigate('/shop');
+    }
+  };
+
+  const handleTagClick = (tag) => {
+    setSearchVal(tag);
+    setSearchOpen(false);
+    navigate(`/shop?search=${encodeURIComponent(tag)}`);
+  };
+
+  const handleProductClick = (productId) => {
+    setSearchOpen(false);
+    navigate(`/product/${productId}`);
+  };
 
   useEffect(() => {
     if (!isTransparentRoute) {
@@ -266,11 +332,24 @@ const LuxuryHeader = () => {
               )}
             </Link>
 
-            <div className="hidden md:block">
+            <div className="hidden md:flex items-center">
+              {/* <Link
+                to={user ? '/orders' : '/login'}
+                className="p-2 flex items-center transition-colors duration-300 group"
+                style={{ color: textColor }}
+                title="My Orders"
+              >
+                <Package
+                  size={20}
+                  strokeWidth={1.5}
+                  className="group-hover:scale-110 transition-transform"
+                />
+              </Link> */}
               <Link
                 to={user ? '/account' : '/login'}
                 className="p-2 flex items-center transition-colors duration-300 group"
                 style={{ color: textColor }}
+                title="Account Settings"
               >
                 <User
                   size={20}
@@ -360,55 +439,161 @@ const LuxuryHeader = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[200] flex flex-col items-center justify-center"
-            style={{ background: 'rgba(10,7,5,0.95)', backdropFilter: 'blur(20px)' }}
+            className="fixed inset-0 z-[200] flex flex-col items-center justify-start pt-20 pb-10 px-4 sm:px-6 overflow-y-auto"
+            style={{ background: 'rgba(10,7,5,0.96)', backdropFilter: 'blur(24px)' }}
           >
+            {/* Close Button */}
             <button
               onClick={() => setSearchOpen(false)}
-              className="absolute top-7 right-8 p-2 text-white/50 hover:text-white transition-colors"
+              className="absolute top-6 right-6 sm:top-8 sm:right-10 p-2 text-white/50 hover:text-white transition-colors rounded-full hover:bg-white/10"
+              aria-label="Close search"
             >
               <X size={26} strokeWidth={1.2} />
             </button>
 
             <motion.div
-              initial={{ y: 30, opacity: 0 }}
+              initial={{ y: 25, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-2xl px-6"
+              transition={{ delay: 0.05, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full max-w-3xl flex flex-col items-center my-auto"
             >
               <p
-                className="text-center text-[14px] tracking-[0.4em] uppercase mb-8"
+                className="text-center text-[12px] sm:text-[13px] tracking-[0.4em] uppercase mb-6 font-semibold"
                 style={{ color: GOLD }}
               >
-                Search our collections
+                Search Our Luxury Collections
               </p>
-              <div className="relative flex items-center border-b border-white/20 focus-within:border-[#C8A97A] transition-colors duration-300">
-                <Search size={18} strokeWidth={1.2} className="absolute left-0 text-white/30" />
-                <input
-                  autoFocus
-                  value={searchVal}
-                  onChange={(e) => setSearchVal(e.target.value)}
-                  placeholder="Search jewellery, styles, cultures…"
-                  className="w-full bg-transparent pl-8 pr-4 py-4 text-white text-lg font-light placeholder-white/25 outline-none"
-                  style={{ fontFamily: NAV_SERIF }}
-                />
-                {searchVal && (
-                  <button onClick={() => setSearchVal('')} className="absolute right-0 text-white/30 hover:text-white transition-colors">
-                    <X size={16} />
+
+              {/* Form Input */}
+              <form onSubmit={handleSearchSubmit} className="w-full relative mb-8">
+                <div className="relative flex items-center border-b-2 border-white/20 focus-within:border-[#C8A97A] transition-colors duration-300 pb-1">
+                  <button type="submit" className="p-2 text-white/40 hover:text-[#C8A97A] transition-colors">
+                    <Search size={22} strokeWidth={1.5} />
                   </button>
-                )}
-              </div>
-              <div className="mt-10 flex flex-wrap gap-3 justify-center">
-                {['Kundan Sets','Pearl Necklaces','Statement Rings','Korean Edit','Minimal Luxe'].map((tag) => (
+                  <input
+                    autoFocus
+                    value={searchVal}
+                    onChange={(e) => setSearchVal(e.target.value)}
+                    placeholder="Search jewellery, styles, collections..."
+                    className="w-full bg-transparent px-3 py-3 text-white text-xl sm:text-2xl font-light placeholder-white/25 outline-none"
+                    style={{ fontFamily: NAV_SERIF }}
+                  />
+                  {searchVal ? (
+                    <button
+                      type="button"
+                      onClick={() => setSearchVal('')}
+                      className="p-2 text-white/40 hover:text-white transition-colors"
+                      aria-label="Clear search text"
+                    >
+                      <X size={18} />
+                    </button>
+                  ) : null}
                   <button
-                    key={tag}
-                    onClick={() => setSearchVal(tag)}
-                    className="px-4 py-1.5 border border-white/10 text-white/50 hover:border-[#C8A97A] hover:text-[#C8A97A] transition-all duration-200 text-[14px] tracking-widest uppercase"
+                    type="submit"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#7A0E2E] text-white text-[11px] uppercase tracking-widest font-semibold rounded hover:bg-[#921438] transition-all ml-2 whitespace-nowrap"
                   >
-                    {tag}
+                    Search <ArrowRight size={13} />
                   </button>
-                ))}
-              </div>
+                </div>
+              </form>
+
+              {/* Popular Tags when search is empty */}
+              {!searchVal.trim() && (
+                <div className="w-full text-center space-y-4">
+                  <p className="text-[11px] tracking-[0.25em] text-white/40 uppercase font-medium">Popular Searches</p>
+                  <div className="flex flex-wrap gap-2.5 justify-center">
+                    {['Kundan Sets', 'Pearl Necklaces', 'Statement Rings', 'Korean Edit', 'Minimal Luxe', 'Bangles', 'Earrings'].map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => handleTagClick(tag)}
+                        className="px-4 py-2 rounded-full border border-white/10 text-white/70 hover:border-[#C8A97A] hover:text-[#C8A97A] hover:bg-[#C8A97A]/5 transition-all duration-200 text-[12px] tracking-wider uppercase font-medium"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Live Search Results */}
+              {searchVal.trim() && (
+                <div className="w-full space-y-6">
+                  <div className="flex justify-between items-center border-b border-white/10 pb-3">
+                    <span className="text-[12px] tracking-[0.2em] text-white/60 uppercase">
+                      {fetchingProducts ? 'Searching...' : `Found ${liveResults.length} ${liveResults.length === 1 ? 'product' : 'products'}`}
+                    </span>
+                    {liveResults.length > 0 && (
+                      <button
+                        onClick={handleSearchSubmit}
+                        className="text-[12px] tracking-[0.15em] text-[#C8A97A] hover:underline uppercase font-medium flex items-center gap-1"
+                      >
+                        View all in shop <ArrowRight size={12} />
+                      </button>
+                    )}
+                  </div>
+
+                  {fetchingProducts ? (
+                    <div className="flex items-center justify-center py-12 text-[#C8A97A]">
+                      <Loader2 size={28} className="animate-spin" />
+                    </div>
+                  ) : liveResults.length > 0 ? (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[50vh] overflow-y-auto pr-1">
+                        {liveResults.slice(0, 6).map((product) => (
+                          <div
+                            key={product.id}
+                            onClick={() => handleProductClick(product.id)}
+                            className="flex items-center gap-3.5 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-[#C8A97A]/40 transition-all cursor-pointer group"
+                          >
+                            <div className="w-16 h-16 rounded overflow-hidden bg-black/30 flex-shrink-0 border border-white/10">
+                              <img
+                                src={product.image || product.images?.[0] || 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=200'}
+                                alt={product.name}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8A97A] font-semibold truncate">
+                                {product.category || 'Jewellery'}
+                              </p>
+                              <h4
+                                className="text-white text-sm font-medium line-clamp-1 group-hover:text-[#C8A97A] transition-colors"
+                                style={{ fontFamily: NAV_SERIF }}
+                              >
+                                {product.name}
+                              </h4>
+                              <p className="text-white/70 text-xs font-semibold mt-0.5">
+                                ₹{Number(product.price || 0).toLocaleString()}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2 text-center">
+                        <button
+                          onClick={handleSearchSubmit}
+                          className="w-full sm:w-auto px-8 py-3.5 bg-[#7A0E2E] text-white text-[12px] font-bold tracking-[0.2em] uppercase rounded hover:bg-[#921438] transition-all flex items-center justify-center gap-2 mx-auto"
+                        >
+                          View all {liveResults.length} results for "{searchVal.trim()}" <ArrowRight size={14} />
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center py-12 space-y-4">
+                      <p className="text-white/60 text-base" style={{ fontFamily: NAV_SERIF }}>
+                        No products found matching "<span className="text-[#C8A97A]">{searchVal}</span>"
+                      </p>
+                      <button
+                        onClick={handleSearchSubmit}
+                        className="px-6 py-2.5 border border-[#C8A97A] text-[#C8A97A] text-[12px] font-bold tracking-widest uppercase rounded hover:bg-[#C8A97A] hover:text-[#0E0B09] transition-all"
+                      >
+                        Search for "{searchVal}" in Shop catalog
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

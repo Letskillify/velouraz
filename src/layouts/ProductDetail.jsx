@@ -70,6 +70,21 @@ const ProductDetail = () => {
     }
   };
 
+  const handleBuyNow = () => {
+    if (!product || product.stock <= 0) return;
+    const buyNowItem = {
+      id: product.id,
+      name: product.name,
+      price: Number(product.price || 0),
+      original_price: Number(product.original_price || 0),
+      image: product.image || product.images?.[0] || '',
+      quantity: quantity,
+      category: product.category || 'Jewellery',
+      stock: product.stock
+    };
+    navigate('/checkout', { state: { buyNowItem } });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-4">
@@ -97,34 +112,16 @@ const ProductDetail = () => {
       
       {/* Premium Dark Crimson Breadcrumb Banner (No Product Image) */}
       <div 
-        className="relative w-full h-[220px] sm:h-[300px] flex items-center justify-center overflow-hidden" 
+        className="relative w-full h-[260px] sm:h-[340px] flex items-center justify-center overflow-hidden" 
         style={{ background: 'linear-gradient(135deg, #1C030A 0%, #300612 50%, #4D091B 100%)' }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,169,122,0.15)_0%,transparent_70%)] pointer-events-none" />
         <div className="absolute inset-0 bg-black/45" />
 
-        <div className="relative z-10 text-center px-5 pt-20 md:pt-24 text-white">
-          <div className="flex items-center justify-center gap-2.5 text-[9px] md:text-[14px] tracking-[0.3em] font-bold uppercase text-white/50 mb-4 sm:mb-6">
-            <button onClick={() => navigate('/')} className="hover:text-[#C8A97A] transition-colors">Home</button>
-            <ChevronRight size={10} className="text-white/20" />
-            <button onClick={() => navigate('/shop')} className="hover:text-[#C8A97A] transition-colors">Shop</button>
-            {product.category && (
-              <>
-                <ChevronRight size={10} className="text-white/20" />
-                <button onClick={() => navigate(`/shop?category=${product.category}`)} className="hover:text-[#C8A97A] transition-colors">{product.category}</button>
-              </>
-            )}
-            <ChevronRight size={10} className="text-white/20" />
-            <span className="text-[#C8A97A] font-semibold">{product.name}</span>
-          </div>
-
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif tracking-tight leading-tight max-w-[800px] mx-auto line-clamp-1 italic font-light">
+        <div className="relative z-10 text-center px-5 pt-32 md:pt-40 text-white">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif tracking-tight leading-tight max-w-[800px] mx-auto line-clamp-1 italic font-light text-[#C8A97A]">
             {product.name}
           </h1>
-
-          <p className="text-[14px] tracking-[0.2em] uppercase font-bold text-white/30 mt-3 sm:mt-4">
-            House of Velouraz
-          </p>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full h-12 bg-[#FDFAF5] rounded-t-[50%] md:rounded-t-[100%] scale-x-125 translate-y-6" />
@@ -302,7 +299,7 @@ const ProductDetail = () => {
 
                 {/* Buy Now */}
                 <button
-                  onClick={() => { handleAddToCart(); navigate('/checkout'); }}
+                  onClick={handleBuyNow}
                   disabled={product.stock <= 0}
                   className="w-full h-14 text-[14px] uppercase tracking-[0.3em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] hover:bg-[#2A2623] hover:text-white transition-all duration-500 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
@@ -457,7 +454,7 @@ const ProductDetail = () => {
           {product.stock <= 0 ? 'Sold Out' : isInCart(product.id) ? 'In Cart' : 'Add to Cart'}
         </button>
         <button
-          onClick={() => { handleAddToCart(); navigate('/checkout'); }}
+          onClick={handleBuyNow}
           disabled={product.stock <= 0}
           className="flex-1 h-12 text-[14px] uppercase tracking-[0.2em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] active:scale-[0.98] transition-all disabled:opacity-30"
         >

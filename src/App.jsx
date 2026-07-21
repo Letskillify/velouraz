@@ -22,6 +22,7 @@ const Wishlist = lazy(() => import("./components/Wishlist"));
 const ProductDetail = lazy(() => import("./layouts/ProductDetail"));
 const QuickView = lazy(() => import("./components/QuickView"));
 const Account = lazy(() => import("./pages/Account"));
+const Orders = lazy(() => import("./pages/Orders"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Shop = lazy(() => import("./pages/Shop"));
@@ -51,9 +52,10 @@ const AppRoutes = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/cart" element={<Cart />} />
-          {/* <Route path="/checkout" element={<Checkout />} /> */}
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />
