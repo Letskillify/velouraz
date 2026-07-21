@@ -252,7 +252,7 @@ const MediaSection = ({ media, setMedia }) => {
 
 // ─── Main ProductEditor ───────────────────────────────────────────────────────
 const ProductEditor = ({ product, onCancel, onSuccess }) => {
-  const { register, handleSubmit, control, reset, setError, clearErrors, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, control, reset, setValue, setError, clearErrors, watch, formState: { errors } } = useForm({
     defaultValues: { ...DEFAULTS, ...(product || {}) },
   });
   const [media, setMedia] = useState([]);
@@ -262,16 +262,26 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
   const [notice, setNotice] = useState("");
   const [scheduleEnabled, setScheduleEnabled] = useState(false);
   const [dbCategories, setDbCategories] = useState([]);
+  const [dbSubCategories, setDbSubCategories] = useState([]);
+  const [dbCollections, setDbCollections] = useState([]);
+  const [dbBrands, setDbBrands] = useState([]);
   const [dbCountries, setDbCountries] = useState([]);
 
   useEffect(() => {
     getDocs(collection(db, "categories")).then((snap) => {
-      const list = snap.docs.map((d) => d.data().name).filter(Boolean);
-      if (list.length > 0) setDbCategories(list);
+      setDbCategories(snap.docs.map((d) => d.data().name).filter(Boolean));
+    });
+    getDocs(collection(db, "subcategories")).then((snap) => {
+      setDbSubCategories(snap.docs.map((d) => d.data().name).filter(Boolean));
+    });
+    getDocs(collection(db, "collections")).then((snap) => {
+      setDbCollections(snap.docs.map((d) => d.data().name).filter(Boolean));
+    });
+    getDocs(collection(db, "brands")).then((snap) => {
+      setDbBrands(snap.docs.map((d) => d.data().name).filter(Boolean));
     });
     getDocs(collection(db, "countries")).then((snap) => {
-      const list = snap.docs.map((d) => d.data().name).filter(Boolean);
-      if (list.length > 0) setDbCountries(list);
+      setDbCountries(snap.docs.map((d) => d.data().name).filter(Boolean));
     });
   }, []);
 
@@ -314,9 +324,14 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
         name: values.name.trim(),
         description: values.description?.trim() || "",
         tags,
+        sku: values.sku || "",
+        brand: values.brand || "",
+        collectionName: values.collectionName || "",
+        subcategory: values.subcategory || "",
+        productType: values.productType || "",
         price: Number(values.price),
         original_price: Number(values.original_price || 0),
-        discountPrice: Number(values.discountPrice || 0),
+        discountPercentage: Number(values.discountPercentage || 0),
         stock: Number(values.stock || 0),
         stock_status: Number(values.stock || 0) <= 0 ? "Out of Stock" : "In Stock",
         status: intent,
@@ -345,9 +360,18 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
   const originalPrice = Number(watch("original_price") || 0);
   const sellingPrice = Number(watch("price") || 0);
   const statusWatch = watch("status");
-  const discountPct = originalPrice > 0 && sellingPrice > 0
+  const discountPct = Number(watch("discountPercentage") || 0) || (originalPrice > 0 && sellingPrice > 0
     ? Math.round(((originalPrice - sellingPrice) / originalPrice) * 100)
-    : 0;
+    : 0);
+
+  const watchMRP = watch("original_price");
+  const watchPct = watch("discountPercentage");
+  useEffect(() => {
+    if (watchMRP && watchPct) {
+      const computed = Math.round(Number(watchMRP) * (1 - Number(watchPct) / 100));
+      setValue("price", computed);
+    }
+  }, [watchMRP, watchPct, setValue]);
 
   return (
     <div className="w-full pb-24 lg:pb-8">
@@ -424,15 +448,25 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
               </h2>
               <div className="space-y-4">
 
-                {/* Product Title */}
-                <div>
-                  <label className={label}>Product Title <span className="text-[#941232]">*</span></label>
-                  <input
-                    {...register("name")}
-                    className={`${inp} ${errors.name ? "border-red-400 ring-2 ring-red-100" : ""}`}
-                    placeholder="e.g. Rose Gold Pearl Necklace"
-                  />
-                  {errors.name && <p className="mt-1 text-xs text-red-600 font-medium">{errors.name.message}</p>}
+                {/* Product Name & SKU */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={label}>Product Name <span className="text-[#941232]">*</span></label>
+                    <input
+                      {...register("name")}
+                      className={`${inp} ${errors.name ? "border-red-400 ring-2 ring-red-100" : ""}`}
+                      placeholder="e.g. Rose Gold Pearl Necklace"
+                    />
+                    {errors.name && <p className="mt-1 text-xs text-red-600 font-medium">{errors.name.message}</p>}
+                  </div>
+                  <div>
+                    <label className={label}>Product Code / SKU</label>
+                    <input
+                      {...register("sku")}
+                      className={inp}
+                      placeholder="e.g. VEL-RGP-01"
+                    />
+                  </div>
                 </div>
 
                 {/* Description */}
@@ -446,7 +480,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                   />
                 </div>
 
-                {/* Category & Country — 2 cols on sm+ */}
+                {/* Category & Sub Category */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={label}>Category <span className="text-[#941232]">*</span></label>
@@ -460,7 +494,44 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     {errors.category && <p className="mt-1 text-xs text-red-600 font-medium">{errors.category.message}</p>}
                   </div>
                   <div>
-                    <label className={label}>Country of Origin</label>
+                    <label className={label}>Sub Category</label>
+                    <select {...register("subcategory")} className={inp}>
+                      <option value="">Select subcategory</option>
+                      {dbSubCategories.map((sc) => <option key={sc} value={sc}>{sc}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Brand & Collection Name */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={label}>Brand</label>
+                    <select {...register("brand")} className={inp}>
+                      <option value="">Select brand</option>
+                      {dbBrands.map((b) => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={label}>Collection Name</label>
+                    <select {...register("collectionName")} className={inp}>
+                      <option value="">Select collection</option>
+                      {dbCollections.map((col) => <option key={col} value={col}>{col}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Product Type & Inspired Country */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className={label}>Product Type</label>
+                    <input
+                      {...register("productType")}
+                      className={inp}
+                      placeholder="e.g. Ring, Pendant, Set"
+                    />
+                  </div>
+                  <div>
+                    <label className={label}>Inspired Country</label>
                     <select {...register("country")} className={inp}>
                       <option value="">Select country</option>
                       {(dbCountries.length > 0 ? dbCountries : COUNTRIES).map((c) => <option key={c} value={c}>{c}</option>)}
@@ -497,6 +568,13 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                   </div>
                 </div>
                 <div>
+                  <label className={label}>Discount Percentage (%)</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">%</span>
+                    <input type="number" min="0" max="100" {...register("discountPercentage")} className={`${inp} pl-7`} placeholder="0" />
+                  </div>
+                </div>
+                <div>
                   <label className={label}>Selling Price <span className="text-[#941232]">*</span></label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">₹</span>
@@ -508,13 +586,6 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     />
                   </div>
                   {errors.price && <p className="mt-1 text-xs text-red-600 font-medium">{errors.price.message}</p>}
-                </div>
-                <div>
-                  <label className={label}>Discount Price</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-bold">₹</span>
-                    <input type="number" min="0" {...register("discountPrice")} className={`${inp} pl-7`} placeholder="0" />
-                  </div>
                 </div>
               </div>
               {discountPct > 0 && (
