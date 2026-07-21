@@ -38,6 +38,12 @@ const Checkout = () => {
   });
 
   useEffect(() => {
+    if (!user) {
+      navigate("/login", { state: { from: "/checkout", buyNowItem: location.state?.buyNowItem } });
+    }
+  }, [user, navigate, location.state]);
+
+  useEffect(() => {
     if (user?.uid) {
       const userRef = doc(db, "users", user.uid);
       getDoc(userRef).then((snap) => {

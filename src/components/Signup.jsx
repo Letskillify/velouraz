@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "./useAuth";
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff, Sparkles, AlertCircle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ const CRIMSON = '#7A0E2E';
 const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -24,7 +25,13 @@ const Signup = () => {
     setLoading(true);
     try {
       await signup(email, password, displayName);
-      navigate("/");
+      const from = location.state?.from || "/";
+      const buyNowItem = location.state?.buyNowItem;
+      if (buyNowItem) {
+        navigate(from, { state: { buyNowItem } });
+      } else {
+        navigate(from);
+      }
     } catch (err) {
       setError(err.message || "We couldn't create your account. Please try again.");
     } finally {
@@ -212,7 +219,7 @@ const Signup = () => {
           {/* Account Login Link */}
           <p className="text-center text-[13px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
             Have an account?{" "}
-            <Link to="/login" className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
+            <Link to="/login" state={location.state} className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
               Sign In
             </Link>
           </p>

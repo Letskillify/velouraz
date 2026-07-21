@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "./useAuth";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, AlertCircle, Gem } from "lucide-react";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ const CRIMSON = '#7A0E2E';
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +24,13 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, password);
-      navigate("/");
+      const from = location.state?.from || "/";
+      const buyNowItem = location.state?.buyNowItem;
+      if (buyNowItem) {
+        navigate(from, { state: { buyNowItem } });
+      } else {
+        navigate(from);
+      }
     } catch (err) {
       setError(err.message || "Invalid email or password.");
     } finally {
@@ -192,7 +199,7 @@ const Login = () => {
           {/* Sign Up Link */}
           <p className="text-center text-[13px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
             New to Velouraz?{" "}
-            <Link to="/signup" className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
+            <Link to="/signup" state={location.state} className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
               Create an account
             </Link>
           </p>

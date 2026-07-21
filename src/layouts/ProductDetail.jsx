@@ -82,7 +82,11 @@ const ProductDetail = () => {
       category: product.category || 'Jewellery',
       stock: product.stock
     };
-    navigate('/checkout', { state: { buyNowItem } });
+    if (!user) {
+      navigate('/login', { state: { from: '/checkout', buyNowItem } });
+    } else {
+      navigate('/checkout', { state: { buyNowItem } });
+    }
   };
 
   if (loading) {

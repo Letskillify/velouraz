@@ -5,10 +5,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { ShoppingBag, Trash2, ArrowLeft, ShieldCheck, Truck, Minus, Plus, CheckCircle2, AlertCircle, Tag, ChevronRight, Gift, Sparkles } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
 import { useStore } from "../hooks/useStore";
+import { useAuth } from "../components/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Cart = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { cartItems, updateCartQuantity, removeFromCart } = useStore();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -325,9 +327,15 @@ const Cart = () => {
 
                   {/* Checkout Button */}
                   <button 
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => {
+                      if (!user) {
+                        navigate("/login", { state: { from: "/checkout" } });
+                      } else {
+                        navigate("/checkout");
+                      }
+                    }}
                     disabled={items.length === 0}
-                    className="w-full bg-[#2A2623] text-white py-4 rounded-xl text-[14px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+                    className="w-full bg-[#2A2623] text-[#FDFAF5] py-4 rounded-xl text-[14px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                   >
                     Proceed to Checkout
                   </button>
