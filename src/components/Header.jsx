@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { useAuth } from './useAuth';
 import { useStore } from '../hooks/useStore';
+import { db } from './Firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 /* ─── Design Tokens ──────────────────────────────────── */
 const GOLD   = '#C8A97A';
@@ -16,6 +18,33 @@ const NAV_SERIF = "'Cormorant Garamond', Georgia, serif";
 
 const LuxuryHeader = () => {
   const location = useLocation();
+  const [announcements, setAnnouncements] = useState([
+    "✦ Free Shipping Across India | Use Code VEL5 for 5% OFF on your first order ✦"
+  ]);
+  const [annIndex, setAnnIndex] = useState(0);
+  const [dbMegaMenus, setDbMegaMenus] = useState(null);
+
+  useEffect(() => {
+    getDoc(doc(db, "site_settings", "announcements")).then((snap) => {
+      if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
+        setAnnouncements(snap.data().items);
+      }
+    });
+
+    getDoc(doc(db, "site_settings", "mega_menus")).then((snap) => {
+      if (snap.exists()) {
+        setDbMegaMenus(snap.data());
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (announcements.length <= 1) return;
+    const interval = setInterval(() => {
+      setAnnIndex((prev) => (prev + 1) % announcements.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [announcements]);
   
   // Public pages with a dark image/gradient banner at the top
   const isTransparentRoute = 
@@ -59,50 +88,66 @@ const LuxuryHeader = () => {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen, searchOpen]);
 
+  /* Helpers to format dynamic mega menus */
+  const formatSections = (key, defaultSections) => {
+    if (!dbMegaMenus || !dbMegaMenus[key] || !dbMegaMenus[key].sections) return defaultSections;
+    return dbMegaMenus[key].sections.map((section) => ({
+      title: section.title,
+      icon: section.icon || "✧",
+      items: typeof section.items === "string"
+        ? section.items.split(",").map((i) => i.trim()).filter(Boolean)
+        : section.items || []
+    }));
+  };
+
+  const formatImage = (key, defaultImg) => dbMegaMenus?.[key]?.image || defaultImg;
+  const formatTagline = (key, defaultTag) => dbMegaMenus?.[key]?.tagline || defaultTag;
+  const formatHeading = (key, defaultHead) => dbMegaMenus?.[key]?.heading || defaultHead;
+
   /* ─ Nav Data ──────────────────────────────────────── */
   const navLinks = [
     {
       name: 'Collections', href: '/shop',
       megaMenu: {
-        sections: [
+        sections: formatSections('collections', [
           { title: 'JEWELLERY SETS', icon: '𝓥', items: ['Kundan Sets','Polki Sets','American Diamond Sets','Temple Jewellery Sets','Minimal Sets'] },
           { title: 'EARRINGS',       icon: '❂', items: ['Stud Earrings','Jhumka','Hoops','Chandbali','Drop Earrings'] },
           { title: 'NECKLACES',      icon: '◇', items: ['Choker Necklaces','Short Necklaces','Long Necklaces','Layered Necklaces','Pendant Necklaces'] },
           { title: 'RINGS',          icon: '○', items: ['Statement Rings','Adjustable Rings','Cocktail Rings','Stacking Rings','Band Rings'] },
           { title: 'BANGLES',        icon: '◎', items: ['Kada Bangles','Stone Bangles','Lac Bangles','Gold Plated Bangles','Pearl Bangles'] },
           { title: 'ANKLETS',        icon: '✧', items: ['Charms Anklets','Beaded Anklets','Chain Anklets','Oxidised Anklets','Minimal Anklets'] },
-        ],
-        image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
-        tagline: 'TIMELESS BEAUTY',
-        heading: 'Crafted to Be Cherished',
+        ]),
+        image: formatImage('collections', 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800'),
+        tagline: formatTagline('collections', 'TIMELESS BEAUTY'),
+        heading: formatHeading('collections', 'Crafted to Be Cherished'),
       },
     },
     {
       name: 'World Edit', href: '/world-edit',
       megaMenu: {
-        sections: [
+        sections: formatSections('world_edit', [
           { title: 'KOREAN EDIT',   icon: '⛩', items: ['Pearl Collection','Minimal Luxe','Crystal Drops','Layered Necklaces','Statement Earrings'] },
           { title: 'TURKISH EDIT',  icon: '🕌', items: ['Evil Eye Collection','Oxidised Silver','Teardrop Earrings','Enamel Jewellery','Layered Necklaces'] },
           { title: 'INDIAN EDIT',   icon: '◈', items: ['Kundan Jewellery','Polki Sets','Temple Jewels','Meenakari Collection','Jadau Jewellery'] },
           { title: 'ARABIAN EDIT',  icon: '☽', items: ['Statement Sets','Gold Plated','Coin Jewellery','Chunky Chains','Dangle Earrings'] },
           { title: 'EUROPEAN EDIT', icon: '⚜', items: ['Minimal Gold','Pearl Jewellery','Sleek Rings','Hoop Earrings','Tennis Bracelets'] },
           { title: 'THAI EDIT',     icon: '❋', items: ['Beaded Jewellery','Handcrafted Silver','Color Stone Earrings','Floral Motifs','Boho Necklaces'] },
-        ],
-        image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
-        tagline: 'BEAUTY HAS NO BOUNDARIES',
-        heading: 'Jewellery Inspired by Cultures, Crafted for You.',
+        ]),
+        image: formatImage('world_edit', 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800'),
+        tagline: formatTagline('world_edit', 'BEAUTY HAS NO BOUNDARIES'),
+        heading: formatHeading('world_edit', 'Jewellery Inspired by Cultures, Crafted for You.'),
       },
     },
     {
       name: 'The Edit', href: '/the-edit',
       megaMenu: {
-        sections: [
+        sections: formatSections('the_edit', [
           { title: 'TRENDING LUXE', icon: '✧', items: ['Statement Pieces','Korean Luxe','Minimal Gold','Pearl Trends','Layered Looks'] },
           { title: 'BEST SELLERS',  icon: '♡', items: ['Top Rated','Customer Favorites','Most Loved Earrings','Most Loved Necklaces','Most Loved Sets'] },
-        ],
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800',
-        tagline: 'Curated Picks, Loved by Many',
-        heading: 'HANDPICKED. TRENDING. TIMELESS.',
+        ]),
+        image: formatImage('the_edit', 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800'),
+        tagline: formatTagline('the_edit', 'Curated Picks, Loved by Many'),
+        heading: formatHeading('the_edit', 'HANDPICKED. TRENDING. TIMELESS.'),
       },
     },
     { name: 'Journal',          href: '/journal' },
@@ -120,14 +165,21 @@ const LuxuryHeader = () => {
     <>
       {/* ── Announcement Bar ──────────────────────────── */}
       <div
-        className="relative z-[60] text-center py-2.5 px-4"
+        className="relative z-[60] text-center py-2.5 px-4 h-[42px] overflow-hidden flex items-center justify-center"
         style={{ background: CRIMSON, position: 'fixed', top: 0, left: 0, right: 0 }}
       >
-        <p className="text-[14px] md:text-[14px] tracking-[0.18em] font-medium text-white/90">
-          ✦ Free Shipping Across India &nbsp;|&nbsp; Use Code&nbsp;
-          <span className="font-bold text-[#C8A97A]">VEL5</span>
-          &nbsp;for 5% OFF on your first order ✦
-        </p>
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={annIndex}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.35 }}
+            className="text-[12px] md:text-[13px] tracking-[0.18em] font-medium text-white/90 truncate max-w-full"
+          >
+            {announcements[annIndex]}
+          </motion.p>
+        </AnimatePresence>
       </div>
 
       {/* ── Main Header ───────────────────────────────── */}

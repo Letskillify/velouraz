@@ -344,7 +344,7 @@ const ProductDetail = () => {
                         {[
                           { label: 'Reference', value: product.id.slice(0, 10).toUpperCase() },
                           { label: 'Material', value: 'Demi-Fine / Gold Plated' },
-                          { label: 'Size & Fit', value: product.size_weight || 'Adjustable' },
+                          { label: 'Country of Origin', value: product.country || 'Imported' },
                           { label: 'Collection', value: product.category || 'Velouraz' },
                         ].map((d, i) => (
                           <div key={i}>

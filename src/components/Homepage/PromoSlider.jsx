@@ -1,51 +1,53 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { db } from '../../components/Firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const collections = [
+const staticCollections = [
   {
-    id: 1,
+    id: '1',
     country: 'TURKEY',
     collection: 'EVIL EYE COLLECTION',
     image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
     link: '/world-edit/turkey'
   },
   {
-    id: 2,
+    id: '2',
     country: 'JAPAN',
     collection: 'MIYUKI COLLECTION',
     image: 'https://images.unsplash.com/photo-1544413660-299165566b1d?auto=format&fit=crop&q=80&w=800',
     link: '/world-edit/japan'
   },
   {
-    id: 3,
+    id: '3',
     country: 'CHINA',
     collection: 'JADE COLLECTION',
     image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
     link: '/world-edit/china'
   },
   {
-    id: 4,
+    id: '4',
     country: 'SOUTH KOREA',
     collection: 'PEARLS & SILVER Collection',
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800',
     link: '/world-edit/south-korea'
   },
   {
-    id: 5,
+    id: '5',
     country: 'INDIA',
     collection: 'HERITAGE COLLECTION',
     image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
     link: '/world-edit/india'
   },
   {
-    id: 6,
+    id: '6',
     country: 'EUROPE',
     collection: 'CHARMS COLLECTION',
     image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
@@ -61,6 +63,17 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 const PromoSlider = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [collections, setCollections] = useState(staticCollections);
+
+  useEffect(() => {
+    return onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
+      if (!snap.empty) {
+        setCollections(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      } else {
+        setCollections(staticCollections);
+      }
+    });
+  }, []);
 
   return (
     <section className="w-full relative py-14 lg:py-20 border-t border-[#D8CBBE]/30 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>

@@ -61,6 +61,7 @@ import DashboardOverview from "./components/DashboardOverview";
 import ProductEditor from "./components/ProductEditor";
 import CatalogManager from "./components/CatalogManager";
 import AdminProfile from "./components/AdminProfile";
+import SiteSettingsManager from "./components/SiteSettingsManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -108,7 +109,7 @@ const Admin = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
 
-  // ─── Auth persistence ───────────────────────────────────────────────────────
+  // ─── Auth persistence & auto-populate countries ─────────────────────────────
   useEffect(() => {
     const storedAdmin = localStorage.getItem("velouraz_admin");
     if (storedAdmin) {
@@ -117,6 +118,66 @@ const Admin = () => {
     const darkPref = localStorage.getItem("velouraz_admin_dark");
     if (darkPref === "true") setIsDarkMode(true);
     setLoadingAuth(false);
+
+    // Auto-populate countries list if empty/incomplete
+    const countryList = [
+      "Afghanistan", "Albania", "Algeria", "Andorra", "Angola",
+      "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria",
+      "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados",
+      "Belarus", "Belgium", "Belize", "Benin", "Bhutan",
+      "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei",
+      "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia",
+      "Cameroon", "Canada", "Central African Republic", "Chad", "Chile",
+      "China", "Colombia", "Comoros", "Congo", "Costa Rica",
+      "Croatia", "Cuba", "Cyprus", "Czech Republic", "Democratic Republic of the Congo",
+      "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor",
+      "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
+      "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland",
+      "France", "Gabon", "Gambia", "Georgia", "Germany",
+      "Ghana", "Greece", "Grenada", "Guatemala", "Guinea",
+      "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary",
+      "Iceland", "India", "Indonesia", "Iran", "Iraq",
+      "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica",
+      "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati",
+      "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon",
+      "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania",
+      "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives",
+      "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius",
+      "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia",
+      "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia",
+      "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua",
+      "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway",
+      "Oman", "Pakistan", "Palau", "Palestine", "Panama",
+      "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
+      "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+      "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines",
+      "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia",
+      "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore",
+      "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa",
+      "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan",
+      "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
+      "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga",
+      "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu",
+      "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+      "United States", "Uruguay", "Uzbekistan", "Vanuatu",
+      "Vatican City", "Venezuela", "Vietnam", "Yemen",
+      "Zambia", "Zimbabwe"
+    ];
+
+    getDocs(collection(db, "countries")).then((snap) => {
+      if (snap.size <= 2) {
+        countryList.forEach((c) => {
+          addDoc(collection(db, "countries"), {
+            name: c,
+            description: `Best of ${c}`,
+            status: "Active",
+            image: "",
+            link: `/world-edit/${c.toLowerCase().replace(/ /g, "-")}`,
+            createdAt: serverTimestamp()
+          });
+        });
+      }
+    });
   }, []);
 
   // ─── Dark mode body class ───────────────────────────────────────────────────
@@ -283,6 +344,8 @@ const Admin = () => {
         );
       case "Media":
         return <MediaLibrary />;
+      case "Banners":
+        return <SiteSettingsManager isDarkMode={isDarkMode} />;
       case "Profile":
         return <AdminProfile adminUser={adminUser} onUpdate={handleProfileUpdate} isDarkMode={isDarkMode} />;
       case "AddProduct":
@@ -394,8 +457,12 @@ const Admin = () => {
         {!collapsed && (
           <>
             <p className="mb-2 mt-4 px-3 text-[9px] font-medium tracking-wide text-white/50">CONTENT</p>
-            {[["Pages", FileText], ["Banners", Images]].map(([label, Icon]) => (
-              <button key={label} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10">
+            {[["Pages", FileText, "Pages"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+              <button
+                key={label}
+                onClick={() => setActiveItem(target)}
+                className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-white/80 hover:bg-white/10 ${activeItem === target ? "bg-[#a4143e]" : ""}`}
+              >
                 <Icon size={15} />{label}
               </button>
             ))}
@@ -404,8 +471,13 @@ const Admin = () => {
         {collapsed && (
           <>
             <div className="my-2 border-t border-white/10" />
-            {[["Pages", FileText], ["Banners", Images]].map(([label, Icon]) => (
-              <button key={label} title={label} className="flex w-full items-center justify-center rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/10 mt-1">
+            {[["Pages", FileText, "Pages"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+              <button
+                key={label}
+                title={label}
+                onClick={() => setActiveItem(target)}
+                className={`flex w-full items-center justify-center rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/10 mt-1 ${activeItem === target ? "bg-[#a4143e]" : ""}`}
+              >
                 <Icon size={15} />
               </button>
             ))}

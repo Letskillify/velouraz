@@ -9,6 +9,8 @@ import {
 import { createProduct, updateProduct } from "../../../services/productService";
 import { uploadToCloudinary, cloudinaryConfig } from "../../../config/cloudinary";
 import CloudinaryImageLibrary from "./CloudinaryImageLibrary";
+import { db } from "../../../components/Firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 const CATEGORIES = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
@@ -259,7 +261,19 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
   const [savingDraft, setSavingDraft] = useState(false);
   const [notice, setNotice] = useState("");
   const [scheduleEnabled, setScheduleEnabled] = useState(false);
-  const statusWatch = watch("status");
+  const [dbCategories, setDbCategories] = useState([]);
+  const [dbCountries, setDbCountries] = useState([]);
+
+  useEffect(() => {
+    getDocs(collection(db, "categories")).then((snap) => {
+      const list = snap.docs.map((d) => d.data().name).filter(Boolean);
+      if (list.length > 0) setDbCategories(list);
+    });
+    getDocs(collection(db, "countries")).then((snap) => {
+      const list = snap.docs.map((d) => d.data().name).filter(Boolean);
+      if (list.length > 0) setDbCountries(list);
+    });
+  }, []);
 
   useEffect(() => {
     reset({ ...DEFAULTS, ...(product || {}) });
@@ -330,6 +344,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
 
   const originalPrice = Number(watch("original_price") || 0);
   const sellingPrice = Number(watch("price") || 0);
+  const statusWatch = watch("status");
   const discountPct = originalPrice > 0 && sellingPrice > 0
     ? Math.round(((originalPrice - sellingPrice) / originalPrice) * 100)
     : 0;
@@ -440,7 +455,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       className={`${inp} ${errors.category ? "border-red-400 ring-2 ring-red-100" : ""}`}
                     >
                       <option value="">Select category</option>
-                      {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                      {(dbCategories.length > 0 ? dbCategories : CATEGORIES).map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                     {errors.category && <p className="mt-1 text-xs text-red-600 font-medium">{errors.category.message}</p>}
                   </div>
@@ -448,7 +463,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     <label className={label}>Country of Origin</label>
                     <select {...register("country")} className={inp}>
                       <option value="">Select country</option>
-                      {COUNTRIES.map((c) => <option key={c}>{c}</option>)}
+                      {(dbCountries.length > 0 ? dbCountries : COUNTRIES).map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                 </div>

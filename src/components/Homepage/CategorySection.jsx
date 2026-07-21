@@ -1,51 +1,53 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { db } from '../../components/Firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const categories = [
+const staticCategories = [
   {
-    id: 1,
+    id: '1',
     num: '01',
     name: "Jewellery Sets",
     image: "img/jewellery/j (3).png",
     link: "/shop?category=sets"
   },
   {
-    id: 2,
+    id: '2',
     num: '02',
     name: "Earrings",
     image: "img/jewellery/j (4).png",
     link: "/shop?category=earrings"
   },
   {
-    id: 3,
+    id: '3',
     num: '03',
     name: "Necklaces",
     image: "img/jewellery/j (1).png",
     link: "/shop?category=necklaces"
   },
   {
-    id: 4,
+    id: '4',
     num: '04',
     name: "Rings",
     image: "img/jewellery/j (5).png",
     link: "/shop?category=rings"
   },
   {
-    id: 5,
+    id: '5',
     num: '05',
     name: "Bangles",
     image: "img/jewellery/j.png",
     link: "/shop?category=bangles"
   },
   {
-    id: 6,
+    id: '6',
     num: '06',
     name: "Bracelets",
     image: "img/jewellery/j (6).png",
@@ -62,6 +64,26 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 const CategorySection = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [categories, setCategories] = useState(staticCategories);
+
+  useEffect(() => {
+    return onSnapshot(collection(db, "categories"), (snap) => {
+      if (!snap.empty) {
+        setCategories(snap.docs.map((d, index) => {
+          const item = d.data();
+          return {
+            id: d.id,
+            num: String(index + 1).padStart(2, '0'),
+            name: item.name,
+            image: item.image || "img/jewellery/j.png",
+            link: item.link || `/shop?category=${item.name.toLowerCase().replace(/ /g, '-')}`
+          };
+        }));
+      } else {
+        setCategories(staticCategories);
+      }
+    });
+  }, []);
 
   return (
     <section className="py-8 lg:py-12 overflow-hidden relative border-t border-[#D8CBBE]/30" style={{ backgroundColor: LIGHT_BG }}>

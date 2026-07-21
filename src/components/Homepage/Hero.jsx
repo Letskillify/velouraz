@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { db } from '../../components/Firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const GOLD = '#C8A97A';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
@@ -21,6 +23,22 @@ const Hero = () => {
   const videoRef   = useRef(null);
   const sectionRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
+  const [heroConfig, setHeroConfig] = useState({
+    videoURL: "/img/video1.mp4",
+    eyebrow: "Curated · Inspired · Timeless",
+    title: "Jewellery that Travels the World",
+    subtitle: "Handpicked designs from iconic cultures, crafted for the modern you.",
+    btn1Text: "Explore Collections",
+    btn1Link: "/shop",
+    btn2Text: "World Edit",
+    btn2Link: "/world-edit"
+  });
+
+  useEffect(() => {
+    getDoc(doc(db, "site_settings", "hero")).then((snap) => {
+      if (snap.exists()) setHeroConfig(snap.data());
+    });
+  }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
   const videoScale   = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
@@ -43,7 +61,7 @@ const Hero = () => {
         />
         <video
           ref={videoRef}
-          src="/img/video1.mp4"
+          src={heroConfig.videoURL}
           autoPlay muted loop playsInline
           onCanPlay={() => setLoaded(true)}
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
@@ -89,7 +107,7 @@ const Hero = () => {
               className="text-[9px] tracking-[0.45em] uppercase font-semibold"
               style={{ color: GOLD, fontFamily: SERIF }}
             >
-              Curated &middot; Inspired &middot; Timeless
+              {heroConfig.eyebrow}
             </span>
           </motion.div>
 
@@ -106,13 +124,12 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
           >
-            Jewellery that <br />
-            <em
-              className="not-italic font-semibold"
-              style={{ color: GOLD }}
-            >
-              Travels the World
-            </em>
+            {heroConfig.title.split("<br />").map((text, idx) => (
+              <React.Fragment key={idx}>
+                {text}
+                {idx < heroConfig.title.split("<br />").length - 1 && <br />}
+              </React.Fragment>
+            ))}
           </motion.h1>
 
           {/* Sub-copy */}
@@ -123,7 +140,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
           >
-            Handpicked designs from iconic cultures,<br className="hidden md:block" /> crafted for the modern you.
+            {heroConfig.subtitle}
           </motion.p>
 
           {/* CTAs */}
@@ -135,7 +152,7 @@ const Hero = () => {
           >
             {/* Primary */}
             <Link
-              to="/shop"
+              to={heroConfig.btn1Link}
               className="group relative inline-flex items-center overflow-hidden text-white"
               style={{
                 background: '#7A0E2E',
@@ -146,7 +163,7 @@ const Hero = () => {
                 textTransform: 'uppercase',
               }}
             >
-              <span className="relative z-10">Explore Collections</span>
+              <span className="relative z-10">{heroConfig.btn1Text}</span>
               <span
                 className="absolute left-[-100%] top-0 h-full w-full transition-transform duration-700 group-hover:translate-x-[200%]"
                 style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
@@ -155,11 +172,11 @@ const Hero = () => {
 
             {/* Ghost */}
             <Link
-              to="/world-edit"
+              to={heroConfig.btn2Link}
               className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
               style={{ fontSize: '9px', letterSpacing: '0.3em', fontWeight: 600, textTransform: 'uppercase' }}
             >
-              <span className="border-b border-white/30 hover:border-white pb-px">World Edit</span>
+              <span className="border-b border-white/30 hover:border-white pb-px">{heroConfig.btn2Text}</span>
             </Link>
           </motion.div>
         </div>
