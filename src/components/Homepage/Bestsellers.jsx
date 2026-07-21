@@ -79,7 +79,7 @@ const BestSellers = () => {
               className="flex items-center gap-3"
             >
               <div className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-xs lg:text-[14px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
+              <span className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
                 Curated Selection
               </span>
             </motion.div>
@@ -95,7 +95,7 @@ const BestSellers = () => {
               The Atelier <span className="italic" style={{ color: CRIMSON }}>Bestsellers</span>
             </h2>
             
-            <p className="text-[#7B6D63] text-[14px] lg:text-[16px] leading-relaxed max-w-md" style={{ fontFamily: SERIF }}>
+            <p className="text-[#7B6D63] text-[16px] lg:text-[16px] leading-relaxed max-w-md" style={{ fontFamily: SERIF }}>
               Masterpieces favored by patrons worldwide, exemplifying the pinnacle of Velauraz design language.
             </p>
           </div>
@@ -212,7 +212,7 @@ const BestSellers = () => {
                           <button
                             onClick={(e) => handleAddToCart(e, product)}
                             disabled={cartLoadings[product.id]}
-                            className="w-full py-3 text-[9px] tracking-[0.22em] font-bold uppercase flex items-center justify-center gap-2 rounded-sm border border-transparent bg-[#2A2623] text-white hover:bg-[#7A0E2E] transition-colors duration-300 shadow-md"
+                            className="w-full py-3 text-[16px] tracking-[0.22em] font-bold uppercase flex items-center justify-center gap-2 rounded-sm border border-transparent bg-[#2A2623] text-white hover:bg-[#7A0E2E] transition-colors duration-300 shadow-md"
                           >
                             {cartLoadings[product.id] ? (
                               <Loader2 size={12} className="animate-spin" />
@@ -226,7 +226,7 @@ const BestSellers = () => {
 
                       {product.stock <= 0 && (
                         <div className="absolute top-4 left-4 z-10">
-                          <span className="bg-[#7A0E2E]/95 text-white text-[8px] tracking-[0.25em] font-bold uppercase px-3 py-1.5 rounded-sm">
+                          <span className="bg-[#7A0E2E]/95 text-white text-[16px] tracking-[0.25em] font-bold uppercase px-3 py-1.5 rounded-sm">
                             Sold Out
                           </span>
                         </div>
@@ -235,7 +235,7 @@ const BestSellers = () => {
 
                     {/* Product Metadata & Specifications */}
                     <div className="px-1 text-center space-y-1">
-                      <p className="text-[9px] tracking-[0.25em] font-bold uppercase text-[#7B6D63]/70">
+                      <p className="text-[16px] tracking-[0.25em] font-bold uppercase text-[#7B6D63]/70">
                         {product.brand || "Velouraz Workshop"}
                       </p>
                       
@@ -251,7 +251,7 @@ const BestSellers = () => {
                           ₹{Number(product.price || 0).toLocaleString()}
                         </span>
                         {product.original_price > product.price && (
-                          <span className="text-xs text-[#7B6D63]/50 line-through">
+                          <span className="text-base text-[#7B6D63]/50 line-through">
                             ₹{Number(product.original_price).toLocaleString()}
                           </span>
                         )}

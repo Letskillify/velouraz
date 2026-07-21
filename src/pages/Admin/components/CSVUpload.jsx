@@ -90,7 +90,7 @@ const CSVUpload = ({ onComplete }) => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#811331] text-[#811331] text-xs font-medium hover:bg-[#811331]/5 transition-all shadow-sm"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#811331] text-[#811331] text-base font-medium hover:bg-[#811331]/5 transition-all shadow-sm"
       >
         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
@@ -170,13 +170,13 @@ const CSVUpload = ({ onComplete }) => {
               </div>
 
               {error && (
-                <div className="mt-6 p-3 w-full bg-red-50 text-red-600 text-xs font-bold rounded-lg border border-red-100 animate-shake">
+                <div className="mt-6 p-3 w-full bg-red-50 text-red-600 text-base font-bold rounded-lg border border-red-100 animate-shake">
                   {error}
                 </div>
               )}
               
               {success && (
-                <div className="mt-6 p-3 w-full bg-emerald-50 text-emerald-600 text-xs font-bold rounded-lg border border-emerald-100">
+                <div className="mt-6 p-3 w-full bg-emerald-50 text-emerald-600 text-base font-bold rounded-lg border border-emerald-100">
                   {success}
                 </div>
               )}

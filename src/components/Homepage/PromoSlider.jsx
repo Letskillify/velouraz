@@ -82,7 +82,7 @@ const PromoSlider = () => {
           <div className="flex items-center gap-3">
             <span className="block h-px w-8" style={{ background: CRIMSON }} />
             <span
-              className="text-xs lg:text-[14px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase"
+              className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase"
             >
               Globally Inspired
             </span>
@@ -195,12 +195,12 @@ const PromoSlider = () => {
                     </h3>
 
                     {/* Collection Subtitle */}
-                    <p className="text-[#C8A97A] text-[9px] font-bold tracking-[0.15em] uppercase pb-1.5 break-words">
+                    <p className="text-[#C8A97A] text-[16px] font-bold tracking-[0.15em] uppercase pb-1.5 break-words">
                       {item.collection}
                     </p>
 
                     {/* Elegant Discover Tag */}
-                    <div className="flex items-center gap-2 text-white/80 text-[9px] tracking-widest uppercase font-medium">
+                    <div className="flex items-center gap-2 text-white/80 text-[16px] tracking-widest uppercase font-medium">
                       <span>Discover</span>
                       <div className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:text-black group-hover:border-white">
                         <ChevronRight size={10} strokeWidth={2.5} />

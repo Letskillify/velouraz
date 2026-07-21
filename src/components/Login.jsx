@@ -68,7 +68,7 @@ const Login = () => {
             <em className="not-italic font-semibold" style={{ color: GOLD }}>House of Velouraz</em>
           </h2>
           
-          <p className="text-white/45 text-[15px] max-w-md leading-relaxed mb-10" style={{ fontFamily: SERIF }}>
+          <p className="text-white/45 text-[16px] max-w-md leading-relaxed mb-10" style={{ fontFamily: SERIF }}>
             Where every piece of jewellery tells a story of timeless craftsmanship, inspired by cultures across the world.
           </p>
 
@@ -76,7 +76,7 @@ const Login = () => {
             {['Handcrafted', 'Certified', 'Worldwide'].map((tag, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full" style={{ background: GOLD }} />
-                <span className="text-[14px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
+                <span className="text-[16px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ const Login = () => {
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-6">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-[14px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Welcome Back</span>
+              <span className="text-[16px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Welcome Back</span>
             </div>
             <h1 
               className="text-4xl md:text-5xl font-light text-[#2A2623] mb-3"
@@ -111,7 +111,7 @@ const Login = () => {
             >
               Sign <span className="italic" style={{ color: CRIMSON }}>In</span>
             </h1>
-            <p className="text-[14px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
+            <p className="text-[16px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
               Access your account and curated collections.
             </p>
           </div>
@@ -121,7 +121,7 @@ const Login = () => {
             <motion.div 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 text-[13px]"
+              className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 text-[16px]"
             >
               <AlertCircle size={16} />
               {error}
@@ -131,7 +131,7 @@ const Login = () => {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
+              <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
                 <input
@@ -139,7 +139,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[14px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
+                  className="w-full pl-12 pr-4 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
                   required
                 />
               </div>
@@ -147,8 +147,8 @@ const Login = () => {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623]">Password</label>
-                <button type="button" className="text-[14px] font-bold text-[#7A0E2E]/60 hover:text-[#7A0E2E] transition-colors uppercase tracking-wider">Forgot?</button>
+                <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623]">Password</label>
+                <button type="button" className="text-[16px] font-bold text-[#7A0E2E]/60 hover:text-[#7A0E2E] transition-colors uppercase tracking-wider">Forgot?</button>
               </div>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
@@ -157,7 +157,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[14px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
+                  className="w-full pl-12 pr-12 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
                   required
                 />
                 <button
@@ -173,7 +173,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group w-full py-4 rounded-xl text-white font-bold text-[14px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
+              className="group w-full py-4 rounded-xl text-white font-bold text-[16px] tracking-[0.3em] uppercase transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-3 shadow-lg"
               style={{ background: '#2A2623' }}
               onMouseEnter={(e) => e.currentTarget.style.background = CRIMSON}
               onMouseLeave={(e) => e.currentTarget.style.background = '#2A2623'}
@@ -192,12 +192,12 @@ const Login = () => {
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
-            <span className="text-[14px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
+            <span className="text-[16px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/40">or</span>
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
           </div>
 
           {/* Sign Up Link */}
-          <p className="text-center text-[13px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
+          <p className="text-center text-[16px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
             New to Velouraz?{" "}
             <Link to="/signup" state={location.state} className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
               Create an account

@@ -79,7 +79,7 @@ const NotFound = () => {
             />
           </div>
           
-          <p className="text-[#2A2623]/60 text-[12px] md:text-[14px] tracking-[0.4em] uppercase max-w-lg mx-auto leading-relaxed font-medium px-4">
+          <p className="text-[#2A2623]/60 text-[16px] md:text-[16px] tracking-[0.4em] uppercase max-w-lg mx-auto leading-relaxed font-medium px-4">
             The masterpiece you seek has been moved to our private vault. 
             Allow us to guide you back to our current collection.
           </p>
@@ -93,7 +93,7 @@ const NotFound = () => {
         >
           <Link 
             to="/" 
-            className="group relative inline-flex items-center gap-6 px-14 py-5 bg-[#2A2623] text-white text-[14px] tracking-[0.3em] font-bold uppercase transition-all duration-500 rounded-full overflow-hidden shadow-2xl hover:shadow-[#2A2623]/20 active:scale-95"
+            className="group relative inline-flex items-center gap-6 px-14 py-5 bg-[#2A2623] text-white text-[16px] tracking-[0.3em] font-bold uppercase transition-all duration-500 rounded-full overflow-hidden shadow-2xl hover:shadow-[#2A2623]/20 active:scale-95"
           >
             <span className="relative z-10 flex items-center gap-3">
               <ArrowLeft size={16} className="group-hover:-translate-x-2 transition-transform duration-500" />
@@ -104,7 +104,7 @@ const NotFound = () => {
 
           <Link 
             to="/shop" 
-            className="group inline-flex items-center gap-6 px-14 py-5 border border-[#2A2623]/20 text-[#2A2623] text-[14px] tracking-[0.3em] font-bold uppercase hover:bg-[#2A2623] hover:text-white transition-all duration-500 rounded-full active:scale-95"
+            className="group inline-flex items-center gap-6 px-14 py-5 border border-[#2A2623]/20 text-[#2A2623] text-[16px] tracking-[0.3em] font-bold uppercase hover:bg-[#2A2623] hover:text-white transition-all duration-500 rounded-full active:scale-95"
           >
             <Search size={16} />
             Browse Collection
@@ -118,7 +118,7 @@ const NotFound = () => {
           transition={{ delay: 2, duration: 1 }}
           className="pt-24"
         >
-          <p className="text-[14px] tracking-[0.2em] text-[#2A2623]/30 uppercase">
+          <p className="text-[16px] tracking-[0.2em] text-[#2A2623]/30 uppercase">
             Velouraz &copy; {new Date().getFullYear()} — Timeless Artistry
           </p>
         </motion.div>

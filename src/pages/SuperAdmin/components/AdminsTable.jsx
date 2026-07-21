@@ -20,7 +20,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
               <ShieldCheck size={20} className="text-[#811331]" />
               Admins
             </h2>
-            <p className="text-xs text-slate-500 font-medium mt-1">
+            <p className="text-base text-slate-500 font-medium mt-1">
               Manage administrative panel access
             </p>
           </div>
@@ -28,12 +28,12 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
             <button
               type="button"
               onClick={onAddAdmin}
-              className="flex items-center gap-2 px-4 py-2 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/10 hover:bg-[#650f27] transition-all active:scale-95"
+              className="flex items-center gap-2 px-4 py-2 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/10 hover:bg-[#650f27] transition-all active:scale-95"
             >
               <UserPlus size={14} />
               <span>Add Admin</span>
             </button>
-            <span className="px-3 py-1 rounded-full bg-slate-100 text-[14px] font-bold text-slate-600 uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-slate-100 text-[16px] font-bold text-slate-600 uppercase tracking-wider">
               {adminsList.length} Active
             </span>
           </div>
@@ -44,7 +44,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
       <div className="hidden lg:block overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="text-[14px] font-bold text-slate-400 uppercase tracking-[0.1em] border-b border-slate-100 bg-slate-50/50">
+            <tr className="text-[16px] font-bold text-slate-400 uppercase tracking-[0.1em] border-b border-slate-100 bg-slate-50/50">
               <th className="px-8 py-5">Admin ID</th>
               <th className="px-6 py-5">Access Key</th>
               <th className="px-6 py-5">Created On</th>
@@ -63,13 +63,13 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
                   </div>
                 </td>
                 <td className="px-6 py-5">
-                  <div className="flex items-center gap-2 text-xs font-mono bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 text-slate-600 w-fit">
+                  <div className="flex items-center gap-2 text-base font-mono bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 text-slate-600 w-fit">
                     <Key size={12} className="text-slate-400" />
                     {admin.password}
                   </div>
                 </td>
                 <td className="px-6 py-5">
-                  <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                  <div className="flex items-center gap-2 text-base font-medium text-slate-500">
                     <Calendar size={14} className="text-slate-400" />
                     {new Date(admin.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
                   </div>
@@ -101,7 +101,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-slate-900">{admin.adminId}</p>
-                  <p className="text-[14px] font-medium text-slate-400 uppercase tracking-wider">Administrator</p>
+                  <p className="text-[16px] font-medium text-slate-400 uppercase tracking-wider">Administrator</p>
                 </div>
               </div>
               <button
@@ -114,12 +114,12 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
             
             <div className="grid grid-cols-2 gap-3 pt-2">
               <div className="bg-slate-50 p-3 rounded-2xl space-y-1">
-                <p className="text-[14px] font-bold text-slate-400 uppercase tracking-wider">Access Key</p>
-                <p className="text-xs font-mono font-bold text-slate-700 truncate">{admin.password}</p>
+                <p className="text-[16px] font-bold text-slate-400 uppercase tracking-wider">Access Key</p>
+                <p className="text-base font-mono font-bold text-slate-700 truncate">{admin.password}</p>
               </div>
               <div className="bg-slate-50 p-3 rounded-2xl space-y-1">
-                <p className="text-[14px] font-bold text-slate-400 uppercase tracking-wider">Created</p>
-                <p className="text-xs font-bold text-slate-700">
+                <p className="text-[16px] font-bold text-slate-400 uppercase tracking-wider">Created</p>
+                <p className="text-base font-bold text-slate-700">
                   {new Date(admin.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -134,7 +134,7 @@ const AdminsTable = ({ adminsList, onAddAdmin, onLoadAdmins }) => {
             <ShieldCheck size={32} />
           </div>
           <h3 className="text-sm font-bold text-slate-900">No admins configured</h3>
-          <p className="text-xs text-slate-500 mt-1">Create admin accounts to delegate store management.</p>
+          <p className="text-base text-slate-500 mt-1">Create admin accounts to delegate store management.</p>
         </div>
       )}
     </section>

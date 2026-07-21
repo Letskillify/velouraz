@@ -63,7 +63,7 @@ const Footer = () => {
             </div>
             <div className="text-white">
               <h3 className="text-xl lg:text-2xl font-serif mb-1">Be the first to know</h3>
-              <p className="text-[14px] tracking-[0.05em] font-light text-white/70">
+              <p className="text-[16px] tracking-[0.05em] font-light text-white/70">
                 Exclusive offers, new arrivals & style updates straight to your inbox.
               </p>
             </div>
@@ -74,7 +74,7 @@ const Footer = () => {
               placeholder="Enter your email address" 
               className="bg-transparent border border-white/20 px-6 py-4 text-white text-sm w-full lg:w-[350px] placeholder:text-white/40 focus:outline-none focus:border-white/50 transition-colors"
             />
-            <button className="bg-white text-[#7A0E2E] px-10 py-4 text-[14px] tracking-[0.2em] font-bold uppercase hover:bg-white/90 transition-colors">
+            <button className="bg-white text-[#7A0E2E] px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-white/90 transition-colors">
               SUBSCRIBE
             </button>
           </form>
@@ -114,7 +114,7 @@ const Footer = () => {
             <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-12">
               {sections.map((section) => (
                 <div key={section.title} className="space-y-8">
-                  <h4 className="text-[14px] md:text-[16px] tracking-[0.2em] font-bold text-[#7A0E2E] uppercase">
+                  <h4 className="text-[16px] md:text-[16px] tracking-[0.2em] font-bold text-[#7A0E2E] uppercase">
                     {section.title}
                   </h4>
                   <ul className="space-y-5">
@@ -137,7 +137,7 @@ const Footer = () => {
 
           {/* Bottom Copyright */}
           <div className="pt-10 border-t border-[#D8CBBE]/30 text-center">
-            <p className="text-[14px] lg:text-[15px] font-serif text-[#7B6D63]">
+            <p className="text-[16px] lg:text-[16px] font-serif text-[#7B6D63]">
               © {currentYear} Velouraz. All Rights Reserved.
             </p>
           </div>

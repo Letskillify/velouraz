@@ -45,7 +45,7 @@ const AtelierService = () => {
               />
               {/* Floating Mini-Card */}
               <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 bg-white/80 backdrop-blur-2xl border border-[#640D14]/20 p-6 md:p-8 rounded-[20px] md:rounded-3xl text-[#2C1A0E] shadow-lg">
-                <p className="text-[8px] md:text-[14px] tracking-[0.4em] uppercase font-bold text-[#640D14] mb-2">Heritage Promise</p>
+                <p className="text-[16px] md:text-[16px] tracking-[0.4em] uppercase font-bold text-[#640D14] mb-2">Heritage Promise</p>
                 <h4 className="font-serif text-lg md:text-xl lg:text-2xl leading-tight italic text-[#2C1A0E]">
                   "We don't just set stones; we preserve the echoes of your most profound moments."
                 </h4>
@@ -60,7 +60,7 @@ const AtelierService = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="text-[9px] md:text-[14px] tracking-[0.5em] uppercase font-bold text-[#640D14]"
+                className="text-[16px] md:text-[16px] tracking-[0.5em] uppercase font-bold text-[#640D14]"
               >
                 Atelier Privé
               </motion.span>
@@ -97,7 +97,7 @@ const AtelierService = () => {
                       {service.title}
                       <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity text-[#640D14]" />
                     </h3>
-                    <p className="text-[14px] tracking-[0.15em] uppercase font-medium text-[#5C3D1E]/60 leading-relaxed group-hover:text-[#5C3D1E] transition-colors">
+                    <p className="text-[16px] tracking-[0.15em] uppercase font-medium text-[#5C3D1E]/60 leading-relaxed group-hover:text-[#5C3D1E] transition-colors">
                       {service.description}
                     </p>
                   </div>
@@ -107,7 +107,7 @@ const AtelierService = () => {
 
             <motion.button
               whileHover={{ x: 10, color: '#640D14' }}
-              className="group flex items-center gap-6 text-[12px] tracking-[0.5em] uppercase font-bold text-[#2C1A0E] pt-4 hover:text-[#640D14] transition-colors"
+              className="group flex items-center gap-6 text-[16px] tracking-[0.5em] uppercase font-bold text-[#2C1A0E] pt-4 hover:text-[#640D14] transition-colors"
             >
               Book Private Consultation
               <div className="w-12 h-12 rounded-full bg-[#640D14] text-white flex items-center justify-center group-hover:bg-[#2C1A0E] transition-colors duration-500 shadow-[0_8px_24px_rgba(100,13,20,0.3)]">

@@ -29,7 +29,7 @@ const DEFAULTS = { status: "Published", country: "", category: "", stock: 1, vis
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const inp = "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition-all focus:border-[#941232] focus:ring-2 focus:ring-[#941232]/10 placeholder:text-slate-400";
-const label = "block text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1.5";
+const label = "block text-[16px] font-bold uppercase tracking-widest text-slate-500 mb-1.5";
 const card = "rounded-2xl border border-slate-100 bg-white shadow-sm";
 
 // ─── Tag Chip Input ───────────────────────────────────────────────────────────
@@ -59,7 +59,7 @@ const TagInput = ({ value = [], onChange }) => {
           {value.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 rounded-full bg-[#941232]/10 pl-2.5 pr-1.5 py-1 text-xs font-semibold text-[#941232]"
+              className="inline-flex items-center gap-1 rounded-full bg-[#941232]/10 pl-2.5 pr-1.5 py-1 text-base font-semibold text-[#941232]"
             >
               <Tag size={10} />
               {tag}
@@ -95,14 +95,14 @@ const TagInput = ({ value = [], onChange }) => {
             transition={{ duration: 0.12 }}
             className="absolute left-0 right-0 top-full mt-1 z-50 rounded-xl border border-slate-200 bg-white shadow-xl overflow-hidden"
           >
-            <p className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 border-b">Suggestions</p>
+            <p className="px-3 py-2 text-[16px] font-bold uppercase tracking-widest text-slate-400 border-b">Suggestions</p>
             <div className="flex flex-wrap gap-1.5 p-2.5 max-h-36 overflow-y-auto">
               {filtered.map((s) => (
                 <button
                   key={s}
                   type="button"
                   onMouseDown={(e) => { e.preventDefault(); add(s); }}
-                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:border-[#941232]/40 hover:bg-[#941232]/5 hover:text-[#941232] transition-all"
+                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-base font-semibold text-slate-700 hover:border-[#941232]/40 hover:bg-[#941232]/5 hover:text-[#941232] transition-all"
                 >
                   <Plus size={9} /> {s}
                 </button>
@@ -152,20 +152,20 @@ const MediaSection = ({ media, setMedia }) => {
             <ImagePlus size={15} className="text-[#941232]" />
             Images & Media
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5">First image = primary storefront image</p>
+          <p className="text-base text-slate-500 mt-0.5">First image = primary storefront image</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-[#941232]/30 px-3 py-1.5 text-xs font-bold text-[#941232] hover:bg-[#941232]/5 transition-all"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#941232]/30 px-3 py-1.5 text-base font-bold text-[#941232] hover:bg-[#941232]/5 transition-all"
           >
             <Computer size={13} /> From device
           </button>
           <button
             type="button"
             onClick={() => setLibraryOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#941232] px-3 py-1.5 text-xs font-bold text-white hover:bg-[#b01540] transition-all shadow-md shadow-[#941232]/20"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#941232] px-3 py-1.5 text-base font-bold text-white hover:bg-[#b01540] transition-all shadow-md shadow-[#941232]/20"
           >
             <Cloud size={13} /> Cloudinary
           </button>
@@ -190,7 +190,7 @@ const MediaSection = ({ media, setMedia }) => {
           <Camera size={28} className="text-slate-300 group-hover:text-[#941232]/50 transition-colors" />
           <div>
             <p className="text-sm font-semibold text-slate-500 group-hover:text-[#941232]">Click to upload photos</p>
-            <p className="text-xs text-slate-400 mt-0.5">JPG, PNG, WEBP supported</p>
+            <p className="text-base text-slate-400 mt-0.5">JPG, PNG, WEBP supported</p>
           </div>
         </button>
       ) : (
@@ -205,14 +205,14 @@ const MediaSection = ({ media, setMedia }) => {
               <img src={item.url} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 flex items-center justify-between">
                 {idx === 0 ? (
-                  <span className="flex items-center gap-0.5 text-[9px] font-bold text-white">
+                  <span className="flex items-center gap-0.5 text-[16px] font-bold text-white">
                     <Crown size={9} /> Primary
                   </span>
                 ) : (
                   <button
                     type="button"
                     onClick={() => setPrimary(item.id)}
-                    className="text-[9px] font-semibold text-white/80 hover:text-white"
+                    className="text-[16px] font-semibold text-white/80 hover:text-white"
                   >
                     Set primary
                   </button>
@@ -234,7 +234,7 @@ const MediaSection = ({ media, setMedia }) => {
             className="aspect-square flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 hover:border-[#941232]/40 hover:bg-[#941232]/5 transition-all group"
           >
             <Plus size={18} className="text-slate-300 group-hover:text-[#941232]/60" />
-            <span className="text-[9px] font-bold text-slate-400 group-hover:text-[#941232]/60">Add</span>
+            <span className="text-[16px] font-bold text-slate-400 group-hover:text-[#941232]/60">Add</span>
           </button>
         </div>
       )}
@@ -389,7 +389,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
             <h1 className="text-lg sm:text-xl font-bold text-slate-900 truncate">
               {product ? "Edit Product" : "Add New Product"}
             </h1>
-            <p className="text-xs text-slate-400 hidden sm:block">
+            <p className="text-base text-slate-400 hidden sm:block">
               Dashboard <ChevronRight size={10} className="inline" /> Products <ChevronRight size={10} className="inline" />
               {product ? "Edit" : "New"}
             </p>
@@ -401,7 +401,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
             type="button"
             disabled={savingDraft || saving}
             onClick={handleSubmit((v) => submit(v, "Draft"))}
-            className="flex items-center gap-1.5 rounded-xl border border-[#941232]/30 bg-white px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold text-[#941232] hover:bg-[#941232]/5 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-xl border border-[#941232]/30 bg-white px-3 sm:px-4 py-2 text-base sm:text-sm font-bold text-[#941232] hover:bg-[#941232]/5 transition-all disabled:opacity-50"
           >
             {savingDraft ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
             <span className="hidden sm:inline">Save as </span>Draft
@@ -410,7 +410,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
             type="button"
             disabled={saving || savingDraft}
             onClick={handleSubmit((v) => submit(v, "Published"))}
-            className="flex items-center gap-1.5 rounded-xl bg-[#941232] px-3 sm:px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-lg shadow-[#941232]/20 hover:bg-[#b01540] transition-all active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-xl bg-[#941232] px-3 sm:px-5 py-2 text-base sm:text-sm font-bold text-white shadow-lg shadow-[#941232]/20 hover:bg-[#b01540] transition-all active:scale-95 disabled:opacity-50"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
             {saving ? "Saving…" : product ? "Save Changes" : "Publish"}
@@ -457,7 +457,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       className={`${inp} ${errors.name ? "border-red-400 ring-2 ring-red-100" : ""}`}
                       placeholder="e.g. Rose Gold Pearl Necklace"
                     />
-                    {errors.name && <p className="mt-1 text-xs text-red-600 font-medium">{errors.name.message}</p>}
+                    {errors.name && <p className="mt-1 text-base text-red-600 font-medium">{errors.name.message}</p>}
                   </div>
                   <div>
                     <label className={label}>Product Code / SKU</label>
@@ -491,7 +491,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       <option value="">Select category</option>
                       {(dbCategories.length > 0 ? dbCategories : CATEGORIES).map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
-                    {errors.category && <p className="mt-1 text-xs text-red-600 font-medium">{errors.category.message}</p>}
+                    {errors.category && <p className="mt-1 text-base text-red-600 font-medium">{errors.category.message}</p>}
                   </div>
                   <div>
                     <label className={label}>Sub Category</label>
@@ -547,7 +547,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     control={control}
                     render={() => <TagInput value={tags} onChange={setTags} />}
                   />
-                  <p className="mt-1.5 text-[11px] text-slate-400">
+                  <p className="mt-1.5 text-[16px] text-slate-400">
                     Use: <span className="font-medium text-slate-500">New Arrivals, Best Sellers, Trending</span> etc. Press Enter or comma to add.
                   </p>
                 </div>
@@ -585,13 +585,13 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       placeholder="0"
                     />
                   </div>
-                  {errors.price && <p className="mt-1 text-xs text-red-600 font-medium">{errors.price.message}</p>}
+                  {errors.price && <p className="mt-1 text-base text-red-600 font-medium">{errors.price.message}</p>}
                 </div>
               </div>
               {discountPct > 0 && (
                 <div className="mt-3 inline-flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-100 px-3 py-1.5">
                   <Check size={13} className="text-emerald-600" />
-                  <span className="text-xs font-bold text-emerald-700">{discountPct}% discount applied</span>
+                  <span className="text-base font-bold text-emerald-700">{discountPct}% discount applied</span>
                 </div>
               )}
             </div>
@@ -614,7 +614,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                   {["Published", "Draft"].map((opt) => (
                     <label
                       key={opt}
-                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border py-2.5 text-xs font-bold transition-all ${
+                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border py-2.5 text-base font-bold transition-all ${
                         statusWatch === opt
                           ? opt === "Published"
                             ? "border-emerald-400 bg-emerald-50 text-emerald-700"
@@ -643,8 +643,8 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
               <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 hover:border-[#941232]/20 transition-all">
                 <input type="checkbox" {...register("featuredProduct")} className="accent-[#941232] h-4 w-4 rounded" />
                 <div>
-                  <p className="text-xs font-bold text-slate-700">Featured Product</p>
-                  <p className="text-[10px] text-slate-400">Shown on homepage</p>
+                  <p className="text-base font-bold text-slate-700">Featured Product</p>
+                  <p className="text-[16px] text-slate-400">Shown on homepage</p>
                 </div>
               </label>
             </div>
@@ -673,10 +673,10 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     {...register("scheduledAt")}
                     className={`${inp} text-sm`}
                   />
-                  <p className="mt-1 text-[10px] text-slate-400">Product will go live at the scheduled time.</p>
+                  <p className="mt-1 text-[16px] text-slate-400">Product will go live at the scheduled time.</p>
                 </div>
               ) : (
-                <p className="text-xs text-slate-400">Enable to schedule when this product goes live.</p>
+                <p className="text-base text-slate-400">Enable to schedule when this product goes live.</p>
               )}
             </div>
 
@@ -698,7 +698,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       key={n}
                       type="button"
                       onClick={() => reset((prev) => ({ ...prev, stock: n }))}
-                      className="rounded-lg border border-slate-200 py-1 text-xs font-semibold text-slate-600 hover:border-[#941232]/40 hover:text-[#941232] transition-all"
+                      className="rounded-lg border border-slate-200 py-1 text-base font-semibold text-slate-600 hover:border-[#941232]/40 hover:text-[#941232] transition-all"
                     >
                       {n}
                     </button>
@@ -708,7 +708,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
             </div>
 
             {/* Tips */}
-            <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4 text-xs leading-relaxed text-amber-800">
+            <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4 text-base leading-relaxed text-amber-800">
               <p className="font-bold mb-1">📸 Photo tips</p>
               <ul className="space-y-1 text-amber-700">
                 <li>• First image = primary storefront thumbnail</li>

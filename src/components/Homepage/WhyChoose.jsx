@@ -47,7 +47,7 @@ const QualitySection = () => {
         <div className="max-w-3xl mx-auto text-center space-y-3 mb-8">
           <div className="flex items-center justify-center gap-3">
             <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-            <span className="text-xs lg:text-[14px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
+            <span className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
               Why Velauraz
             </span>
             <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
@@ -64,7 +64,7 @@ const QualitySection = () => {
             Quality You <span className="italic" style={{ color: CRIMSON }}>Can Trust</span>
           </h2>
           
-          <p className="text-[#7B6D63] text-[14px] lg:text-[16px] leading-relaxed max-w-xl mx-auto" style={{ fontFamily: SERIF }}>
+          <p className="text-[#7B6D63] text-[16px] lg:text-[16px] leading-relaxed max-w-xl mx-auto" style={{ fontFamily: SERIF }}>
             Unrivaled excellence in metal-smithing, ethical gems, and lifelong wear.
           </p>
         </div>
@@ -94,12 +94,12 @@ const QualitySection = () => {
 
               {/* Title & Desc (min 14px size for descriptions) */}
               <h3 
-                className="text-[14px] tracking-[0.06em] font-semibold uppercase mb-2 group-hover:text-[#7A0E2E] transition-colors"
+                className="text-[16px] tracking-[0.06em] font-semibold uppercase mb-2 group-hover:text-[#7A0E2E] transition-colors"
                 style={{ color: DARK_TEXT, fontFamily: SERIF }}
               >
                 {feature.title}
               </h3>
-              <p className="text-[14px] text-[#7B6D63] leading-relaxed font-light">
+              <p className="text-[16px] text-[#7B6D63] leading-relaxed font-light">
                 {feature.description}
               </p>
             </motion.div>

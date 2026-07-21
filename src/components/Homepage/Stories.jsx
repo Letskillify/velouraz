@@ -44,7 +44,7 @@ const Stories = () => {
                 className="flex items-center gap-3"
               >
                 <div className="w-8 h-[1px] bg-[#7A0E2E]" />
-                <span className="text-[14px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+                <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                   THE JOURNAL
                 </span>
               </motion.div>
@@ -78,7 +78,7 @@ const Stories = () => {
             >
               <Link 
                 to="/journal" 
-                className="bg-[#7A0E2E] text-white px-10 py-4 text-[14px] tracking-[0.2em] font-bold uppercase hover:bg-[#5E0B24] transition-all inline-block shadow-xl"
+                className="bg-[#7A0E2E] text-white px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-[#5E0B24] transition-all inline-block shadow-xl"
               >
                 Explore Journal
               </Link>
@@ -119,7 +119,7 @@ const Stories = () => {
                       />
                     </div>
                     <div className="space-y-3">
-                      <span className="text-[14px] tracking-[0.2em] font-bold text-[#7A0E2E] uppercase">
+                      <span className="text-[16px] tracking-[0.2em] font-bold text-[#7A0E2E] uppercase">
                         {post.date}
                       </span>
                       <h3 className="text-xl lg:text-2xl font-serif text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors leading-snug">

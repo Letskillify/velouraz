@@ -104,7 +104,7 @@ const Hero = () => {
           >
             <span className="block h-px w-8 shrink-0" style={{ background: GOLD }} />
             <span
-              className="text-[9px] tracking-[0.45em] uppercase font-semibold"
+              className="text-[16px] tracking-[0.45em] uppercase font-semibold"
               style={{ color: GOLD, fontFamily: SERIF }}
             >
               {heroConfig.eyebrow}
@@ -229,10 +229,10 @@ const Hero = () => {
               >
                 <span style={{ color: GOLD, flexShrink: 0 }}>{u.icon}</span>
                 <div>
-                  <p className="text-[9px] tracking-[0.18em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
+                  <p className="text-[16px] tracking-[0.18em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
                     {u.title}
                   </p>
-                  <p className="text-[14px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
+                  <p className="text-[16px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
                     {u.desc}
                   </p>
                 </div>
@@ -265,7 +265,7 @@ const Hero = () => {
                       <p className="text-[8.5px] tracking-[0.2em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
                         {u.title}
                       </p>
-                      <p className="text-[14px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
+                      <p className="text-[16px] text-white/50 font-light" style={{ fontFamily: SERIF }}>
                         {u.desc}
                       </p>
                     </div>

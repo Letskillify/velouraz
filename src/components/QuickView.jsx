@@ -77,7 +77,7 @@ const QuickView = ({ product, onClose }) => {
                   className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-300"
                 />
                 {product.original_price && product.original_price > product.price && (
-                  <div className="absolute top-4 right-4 bg-[#C6A664] text-white px-4 py-2 rounded-full text-xs font-black">
+                  <div className="absolute top-4 right-4 bg-[#C6A664] text-white px-4 py-2 rounded-full text-base font-black">
                     SALE
                   </div>
                 )}
@@ -125,7 +125,7 @@ const QuickView = ({ product, onClose }) => {
                 {/* Suitable For */}
                 {product.suitable_for && (
                   <div className="bg-[#FDFBF7] rounded-xl p-4 border border-[#E6CCB2]/30">
-                    <p className="text-xs font-black text-[#4A4A4A]/40 uppercase tracking-wider mb-1">
+                    <p className="text-base font-black text-[#4A4A4A]/40 uppercase tracking-wider mb-1">
                       Suitable for
                     </p>
                     <p className="text-sm font-semibold text-[#4A4A4A]">
@@ -139,7 +139,7 @@ const QuickView = ({ product, onClose }) => {
               <div className="space-y-4">
                 {/* Quantity Selector */}
                 <div className="flex items-center gap-4">
-                  <span className="text-xs font-black text-[#4A4A4A]/60 uppercase tracking-wider">Quantity</span>
+                  <span className="text-base font-black text-[#4A4A4A]/60 uppercase tracking-wider">Quantity</span>
                   <div className="flex items-center border border-[#E6CCB2] rounded-xl overflow-hidden">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}

@@ -41,7 +41,7 @@ const About = () => {
           <div className="max-w-3xl mb-14 lg:mb-20 space-y-4">
             <div className="flex items-center gap-3">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-xs lg:text-[13px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+              <span className="text-base lg:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                 Meet The Founders
               </span>
             </div>
@@ -81,7 +81,7 @@ const About = () => {
 
               {/* Minimal Brand Credo Box */}
               <div className="border-l border-[#D8CBBE] pl-6 space-y-3 hidden lg:block">
-                <span className="text-[14px] tracking-widest font-bold uppercase text-[#7B6D63]">Philosophy</span>
+                <span className="text-[16px] tracking-widest font-bold uppercase text-[#7B6D63]">Philosophy</span>
                 <p className="text-[17px] font-light leading-relaxed italic text-[#5C534C]" style={{ fontFamily: SERIF }}>
                   "Jewellery that feels effortless, looks sophisticated, and adds beauty without trying too hard."
                 </p>
@@ -90,7 +90,7 @@ const About = () => {
 
             {/* Right: The Founders Narrative */}
             <div className="lg:col-span-7 flex flex-col justify-center space-y-8">
-              <div className="text-[15px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
+              <div className="text-[16px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
                 
                 <motion.p 
                   className="text-[19px] lg:text-[21px] text-[#2A2623] leading-relaxed font-light"
@@ -169,7 +169,7 @@ const About = () => {
           {[...Array(8)].map((_, i) => (
             <span 
               key={i} 
-              className="text-[14px] lg:text-[13px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
+              className="text-[16px] lg:text-[16px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
               style={{ fontFamily: SERIF }}
             >
               ✦ Trends That Travel the World
@@ -189,7 +189,7 @@ const About = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-                  <span className="text-xs lg:text-[13px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+                  <span className="text-base lg:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                     From Our Journey to Yours
                   </span>
                 </div>
@@ -207,7 +207,7 @@ const About = () => {
                 </h2>
               </div>
 
-              <div className="text-[15px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
+              <div className="text-[16px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
                 <motion.p {...fadeUp}>
                   We created VELOURAZ for women who love to express themselves in their own way—who believe that jewellery doesn’t need an occasion to feel special. Whether it becomes part of your everyday moments, your celebrations, your travels, or a gift filled with meaning, we hope every VELOURAZ piece becomes connected to a memory that is uniquely yours.
                 </motion.p>
@@ -263,7 +263,7 @@ const About = () => {
             
             {/* Founders Closing Column */}
             <motion.div className="lg:col-span-8 space-y-4" {...fadeUp}>
-              <span className="text-[12px] tracking-[0.3em] uppercase font-bold text-[#7B6D63]">
+              <span className="text-[16px] tracking-[0.3em] uppercase font-bold text-[#7B6D63]">
                 With Love,
               </span>
               <p 
@@ -278,7 +278,7 @@ const About = () => {
               </p>
               <div className="flex items-center gap-3">
                 <span className="w-6 h-[1px]" style={{ background: GOLD }} />
-                <span className="text-[13px] tracking-[0.2em] uppercase font-bold text-[#2A2623]">
+                <span className="text-[16px] tracking-[0.2em] uppercase font-bold text-[#2A2623]">
                   Founders, VELOURAZ
                 </span>
               </div>

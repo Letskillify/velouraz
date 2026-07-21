@@ -62,7 +62,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             </div>
             <div className="text-left">
               <p className="text-white font-bold text-lg tracking-tight">Velauraz</p>
-              <p className="text-white/30 text-xs font-medium tracking-widest uppercase">Fine Jewellery</p>
+              <p className="text-white/30 text-base font-medium tracking-widest uppercase">Fine Jewellery</p>
             </div>
           </div>
 
@@ -79,7 +79,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             {["Manage products & inventory", "View & track customer orders", "Monitor users & analytics"].map((f) => (
               <div key={f} className="flex items-center gap-3">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#811331] flex-shrink-0" />
-                <p className="text-white/50 text-xs font-medium">{f}</p>
+                <p className="text-white/50 text-base font-medium">{f}</p>
               </div>
             ))}
           </div>
@@ -104,7 +104,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             </div>
             <div>
               <p className="text-white font-bold text-base tracking-tight">Velauraz</p>
-              <p className="text-white/30 text-[14px] font-medium tracking-widest uppercase">Admin Console</p>
+              <p className="text-white/30 text-[16px] font-medium tracking-widest uppercase">Admin Console</p>
             </div>
           </div>
 
@@ -118,7 +118,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Admin ID */}
             <div className="space-y-2">
-              <label className="block text-[14px] font-bold text-white/40 uppercase tracking-[0.12em]">
+              <label className="block text-[16px] font-bold text-white/40 uppercase tracking-[0.12em]">
                 Admin ID
               </label>
               <input
@@ -133,7 +133,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="block text-[14px] font-bold text-white/40 uppercase tracking-[0.12em]">
+              <label className="block text-[16px] font-bold text-white/40 uppercase tracking-[0.12em]">
                 Password
               </label>
               <div className="relative">
@@ -164,7 +164,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
                 className="flex items-start gap-2.5 p-3.5 bg-red-500/10 border border-red-500/20 rounded-xl"
               >
                 <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-xs text-red-400 font-medium">{error}</p>
+                <p className="text-base text-red-400 font-medium">{error}</p>
               </motion.div>
             )}
 
@@ -188,7 +188,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
             </button>
           </form>
 
-          <p className="mt-10 text-center text-[14px] text-white/20">
+          <p className="mt-10 text-center text-[16px] text-white/20">
             © {new Date().getFullYear()} Velauraz. All rights reserved.
           </p>
         </motion.div>

@@ -19,14 +19,14 @@ const Stat = ({ label, value, note, icon: Icon, tint, isDark }) => (
   <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] transition-all duration-300 ${isDark ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
     <div className="flex items-start justify-between">
       <div>
-        <p className={`text-[14px] font-semibold ${isDark ? "text-slate-400" : "text-slate-500"}`}>{label}</p>
+        <p className={`text-[16px] font-semibold ${isDark ? "text-slate-400" : "text-slate-500"}`}>{label}</p>
         <p className={`mt-2 text-[25px] font-bold tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>{value}</p>
       </div>
       <span className={`grid h-11 w-11 place-items-center rounded-full ${tint}`}>
         <Icon size={20} strokeWidth={1.8} />
       </span>
     </div>
-    <p className={`mt-3 flex items-center gap-1 text-[14px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+    <p className={`mt-3 flex items-center gap-1 text-[16px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
       <ArrowUpRight size={12} className="text-emerald-500" />
       <strong className="text-emerald-600">{note}</strong>
     </p>
@@ -145,8 +145,8 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
         <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] sm:p-6 ${cardBg}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h2 className={`text-[15px] font-bold ${textPrimary}`}>Catalogue Health</h2>
-              <p className={`mt-1 text-[14px] ${textMuted}`}>Products added over the last 14 days</p>
+              <h2 className={`text-[16px] font-bold ${textPrimary}`}>Catalogue Health</h2>
+              <p className={`mt-1 text-[16px] ${textMuted}`}>Products added over the last 14 days</p>
             </div>
           </div>
           <div className="mt-5 h-56">
@@ -176,7 +176,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
 
         {/* Top Categories */}
         <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] sm:p-6 ${cardBg}`}>
-          <h2 className={`text-[15px] font-bold ${textPrimary}`}>Top Categories</h2>
+          <h2 className={`text-[16px] font-bold ${textPrimary}`}>Top Categories</h2>
           <div className="mt-4 h-32">
             <Doughnut
               data={doughnutData}
@@ -191,7 +191,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
               }}
             />
           </div>
-          <div className="mt-5 space-y-2.5 text-[14px]">
+          <div className="mt-5 space-y-2.5 text-[16px]">
             {categoryNames.length
               ? categoryNames.slice(0, 5).map((name, index) => (
                   <div className="flex justify-between" key={name}>
@@ -204,7 +204,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                 ))
               : <p className={`text-center ${textMuted}`}>Categories will appear here.</p>}
           </div>
-          <button onClick={onViewProducts} className={`mt-5 flex w-full items-center justify-between border-t pt-4 text-[14px] font-semibold ${divider} ${textPrimary}`}>
+          <button onClick={onViewProducts} className={`mt-5 flex w-full items-center justify-between border-t pt-4 text-[16px] font-semibold ${divider} ${textPrimary}`}>
             View all products <ArrowRight size={14} />
           </button>
         </article>
@@ -216,14 +216,14 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
         <article className={`overflow-hidden rounded-2xl border shadow-[0_3px_14px_rgba(37,17,24,.035)] ${cardBg}`}>
           <div className={`flex items-center justify-between border-b px-5 py-5 sm:px-6 ${divider}`}>
             <div>
-              <h2 className={`text-[15px] font-bold ${textPrimary}`}>Recent Products</h2>
-              <p className={`mt-1 text-[14px] ${textMuted}`}>Latest live additions to your catalogue</p>
+              <h2 className={`text-[16px] font-bold ${textPrimary}`}>Recent Products</h2>
+              <p className={`mt-1 text-[16px] ${textMuted}`}>Latest live additions to your catalogue</p>
             </div>
-            <button onClick={onViewProducts} className="text-[14px] font-semibold text-[#9c1237]">View all</button>
+            <button onClick={onViewProducts} className="text-[16px] font-semibold text-[#9c1237]">View all</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-left">
-              <thead className={`text-[14px] uppercase tracking-[.12em] ${tableHead}`}>
+              <thead className={`text-[16px] uppercase tracking-[.12em] ${tableHead}`}>
                 <tr>
                   <th className="px-6 py-3">Product</th>
                   <th className="px-4 py-3">Category</th>
@@ -234,7 +234,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
               </thead>
               <tbody className={`divide-y ${tableRow}`}>
                 {products.slice(0, 5).map((p) => (
-                  <tr key={p.id} className={`text-[12px] transition-colors ${isDarkMode ? "hover:bg-slate-700/40" : "hover:bg-slate-50"}`}>
+                  <tr key={p.id} className={`text-[16px] transition-colors ${isDarkMode ? "hover:bg-slate-700/40" : "hover:bg-slate-50"}`}>
                     <td className="px-6 py-3">
                       <div className="flex items-center gap-3">
                         <span className="grid h-9 w-9 place-items-center overflow-hidden rounded-lg bg-rose-50 text-[#9c1237]">
@@ -246,7 +246,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                     <td className={`px-4 py-3 ${textMuted}`}>{p.category || "Uncategorized"}</td>
                     <td className="px-4 py-3">
                       {p.country
-                        ? <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[12px] font-semibold text-blue-600">🌍 {p.country}</span>
+                        ? <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[16px] font-semibold text-blue-600">🌍 {p.country}</span>
                         : <span className={textMuted}>—</span>}
                     </td>
                     <td className={`px-4 py-3 font-semibold ${textPrimary}`}>{money(p.price)}</td>
@@ -255,7 +255,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                 ))}
                 {products.length === 0 && (
                   <tr>
-                    <td colSpan="5" className={`px-6 py-11 text-center text-[12px] ${textMuted}`}>Your newest catalogue additions will appear here.</td>
+                    <td colSpan="5" className={`px-6 py-11 text-center text-[16px] ${textMuted}`}>Your newest catalogue additions will appear here.</td>
                   </tr>
                 )}
               </tbody>
@@ -266,7 +266,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
         {/* Recent Activity + Countries breakdown */}
         <div className="space-y-5">
           <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] sm:p-6 ${cardBg}`}>
-            <h2 className={`text-[15px] font-bold ${textPrimary}`}>Recent Activity</h2>
+            <h2 className={`text-[16px] font-bold ${textPrimary}`}>Recent Activity</h2>
             <div className="mt-4 space-y-4">
               {activities.map(({ icon: Icon, text, time, tone }) => (
                 <div className="flex gap-3" key={text}>
@@ -274,13 +274,13 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                     <Icon size={14} />
                   </span>
                   <div>
-                    <p className={`text-[14px] leading-5 ${textPrimary}`}>{text}</p>
-                    <p className={`text-[14px] ${textMuted}`}>{time}</p>
+                    <p className={`text-[16px] leading-5 ${textPrimary}`}>{text}</p>
+                    <p className={`text-[16px] ${textMuted}`}>{time}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <button className={`mt-5 flex w-full items-center justify-between border-t pt-4 text-[14px] font-semibold ${divider} ${textPrimary}`}>
+            <button className={`mt-5 flex w-full items-center justify-between border-t pt-4 text-[16px] font-semibold ${divider} ${textPrimary}`}>
               Live updates enabled <Clock3 size={14} />
             </button>
           </article>
@@ -288,14 +288,14 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
           {/* Countries of origin mini-card */}
           {countryNames.filter((c) => c !== "Unknown").length > 0 && (
             <article className={`rounded-2xl border p-5 shadow-[0_3px_14px_rgba(37,17,24,.035)] ${cardBg}`}>
-              <h2 className={`text-[15px] font-bold ${textPrimary} flex items-center gap-2`}>
+              <h2 className={`text-[16px] font-bold ${textPrimary} flex items-center gap-2`}>
                 <Globe2 size={16} className="text-blue-500" /> Product Origins
               </h2>
               <div className="mt-3 space-y-2">
                 {countryNames.filter((c) => c !== "Unknown").slice(0, 5).map((country) => (
                   <div key={country} className="flex items-center justify-between">
-                    <span className={`text-[13px] ${textMuted} flex items-center gap-1.5`}>🌍 {country}</span>
-                    <span className={`text-[13px] font-bold ${textPrimary}`}>{data.countryTotals[country]}</span>
+                    <span className={`text-[16px] ${textMuted} flex items-center gap-1.5`}>🌍 {country}</span>
+                    <span className={`text-[16px] font-bold ${textPrimary}`}>{data.countryTotals[country]}</span>
                   </div>
                 ))}
               </div>

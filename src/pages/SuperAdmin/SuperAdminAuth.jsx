@@ -70,7 +70,7 @@ const SuperAdminAuth = ({ onAuthSuccess }) => {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider mb-2">
+                <label className="block text-base font-medium text-slate-700 uppercase tracking-wider mb-2">
                   Email Address
                 </label>
                 <input 
@@ -84,7 +84,7 @@ const SuperAdminAuth = ({ onAuthSuccess }) => {
               </div>
               
               <div>
-                <label className="block text-xs font-medium text-slate-700 uppercase tracking-wider mb-2">
+                <label className="block text-base font-medium text-slate-700 uppercase tracking-wider mb-2">
                   Password
                 </label>
                 <input 
@@ -131,7 +131,7 @@ const SuperAdminAuth = ({ onAuthSuccess }) => {
           </div>
         </div>
         
-        <div className="mt-8 text-center text-xs text-slate-400">
+        <div className="mt-8 text-center text-base text-slate-400">
           <p>&copy; {new Date().getFullYear()} Super Admin Portal. All rights reserved.</p>
         </div>
       </div>

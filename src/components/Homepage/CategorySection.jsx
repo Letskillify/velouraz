@@ -99,7 +99,7 @@ const CategorySection = () => {
               className="flex items-center gap-3"
             >
               <div className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-xs lg:text-[14px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
+              <span className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
                 Browse Collections
               </span>
             </motion.div>
@@ -115,7 +115,7 @@ const CategorySection = () => {
               Shop By <span className="italic" style={{ color: CRIMSON }}>Category</span>
             </h2>
             
-            <p className="text-[#7B6D63] text-[14px] lg:text-[16px] leading-relaxed max-w-md" style={{ fontFamily: SERIF }}>
+            <p className="text-[#7B6D63] text-[16px] lg:text-[16px] leading-relaxed max-w-md" style={{ fontFamily: SERIF }}>
               Indulge in a curated exploration of jewellery categories, each hand-finished with exceptional mastery.
             </p>
           </div>
@@ -201,7 +201,7 @@ const CategorySection = () => {
                   >
                     {/* Corner index numbering */}
                     <div 
-                      className="absolute top-4 left-5 text-[14px] italic font-light z-10"
+                      className="absolute top-4 left-5 text-[16px] italic font-light z-10"
                       style={{ color: GOLD, fontFamily: SERIF }}
                     >
                       {category.num}
@@ -225,7 +225,7 @@ const CategorySection = () => {
                       >
                         {category.name}
                       </h3>
-                      <span className="text-[14px] tracking-widest text-[#7B6D63] uppercase font-bold transform translate-y-[-2px] opacity-70 group-hover/text:opacity-100 transition-opacity">
+                      <span className="text-[16px] tracking-widest text-[#7B6D63] uppercase font-bold transform translate-y-[-2px] opacity-70 group-hover/text:opacity-100 transition-opacity">
                         View Edit
                       </span>
                     </Link>

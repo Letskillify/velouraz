@@ -44,7 +44,7 @@ const MetricCards = ({ cards }) => (
 
           <div className="relative flex items-start justify-between gap-4">
             <div className="space-y-2">
-              <p className="text-[14px] font-bold tracking-widest text-slate-400 uppercase">
+              <p className="text-[16px] font-bold tracking-widest text-slate-400 uppercase">
                 {card.label}
               </p>
               <p className="text-3xl font-bold text-slate-900 tracking-tight">
@@ -52,7 +52,7 @@ const MetricCards = ({ cards }) => (
               </p>
               <div className="flex items-center gap-1.5">
                 <TrendingUp size={11} className="text-emerald-500" />
-                <p className="text-xs font-medium text-slate-400">{card.hint || card.trend}</p>
+                <p className="text-base font-medium text-slate-400">{card.hint || card.trend}</p>
               </div>
             </div>
 

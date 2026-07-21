@@ -83,7 +83,7 @@ export const ProductForm = ({ onSuccess }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Product Name</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Product Name</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. Emerald Queen Choker"
@@ -91,7 +91,7 @@ export const ProductForm = ({ onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Category</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Category</label>
           <select
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm appearance-none bg-white"
             {...register("category", { required: true })}
@@ -105,7 +105,7 @@ export const ProductForm = ({ onSuccess }) => {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Description</label>
+        <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Description</label>
         <textarea
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm min-h-[100px]"
           placeholder="Describe the product benefits and key features..."
@@ -116,7 +116,7 @@ export const ProductForm = ({ onSuccess }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Original Price (₹)</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Original Price (₹)</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -125,7 +125,7 @@ export const ProductForm = ({ onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Sale Price (₹)</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Sale Price (₹)</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -134,14 +134,14 @@ export const ProductForm = ({ onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Material</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Material</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. 22K Gold Plated Brass"
             {...register("material")}
           />
           <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Stock Quantity</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Stock Quantity</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -154,7 +154,7 @@ export const ProductForm = ({ onSuccess }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Stones/Details</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Stones/Details</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. Handcrafted Kundan, American Diamonds"
@@ -162,7 +162,7 @@ export const ProductForm = ({ onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Size/Weight</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Size/Weight</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. 2.4 inches / 45g"
@@ -172,7 +172,7 @@ export const ProductForm = ({ onSuccess }) => {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Care Instructions</label>
+        <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Care Instructions</label>
         <textarea
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm min-h-[80px]"
           placeholder="e.g. Keep away from water and perfume. Store in a dry pouch."
@@ -182,14 +182,14 @@ export const ProductForm = ({ onSuccess }) => {
       </div>
 
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Product Images</label>
+        <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Product Images</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative">
             <input
               type="file"
               multiple
               accept="image/*"
-              className="w-full px-4 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#811331] transition-colors text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#811331]/10 file:text-[#811331] cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#811331] transition-colors text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-base file:font-semibold file:bg-[#811331]/10 file:text-[#811331] cursor-pointer"
               {...register("images")}
             />
           </div>
@@ -237,13 +237,13 @@ export const ProductForm = ({ onSuccess }) => {
 
       <div className="flex items-center justify-end gap-3 pt-2">
         {formState.isSubmitted && !loading && !error && (
-          <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 animate-in fade-in slide-in-from-right-2">
+          <span className="flex items-center gap-1.5 text-base font-bold text-emerald-600 animate-in fade-in slide-in-from-right-2">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             Product Created Successfully
           </span>
         )}
         {error && (
-          <span className="text-xs font-bold text-red-600">
+          <span className="text-base font-bold text-red-600">
             Error: {error}
           </span>
         )}
@@ -342,7 +342,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Product Name</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Product Name</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. Emerald Queen Choker"
@@ -350,7 +350,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Category</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Category</label>
           <select
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm appearance-none bg-white"
             {...register("category", { required: true })}
@@ -364,7 +364,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
       </div>
 
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Description</label>
+        <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Description</label>
         <textarea
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm min-h-[100px]"
           placeholder="Describe the product benefits..."
@@ -375,7 +375,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Original Price (₹)</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Original Price (₹)</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -384,7 +384,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Sale Price (₹)</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Sale Price (₹)</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -393,14 +393,14 @@ export const EditProductForm = ({ product, onSuccess }) => {
           />
         </div>
         <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Material</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Material</label>
           <input
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
             placeholder="e.g. 22K Gold Plated Brass"
             {...register("material")}
           />
           <div className="space-y-1">
-          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Stock Quantity</label>
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Stock Quantity</label>
           <input
             type="number"
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-[#811331] focus:ring-1 focus:ring-[#811331] outline-none transition-all text-sm"
@@ -412,14 +412,14 @@ export const EditProductForm = ({ product, onSuccess }) => {
       </div>
 
       <div className="space-y-2">
-        <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Update Images (Optional)</label>
+        <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Update Images (Optional)</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="relative">
             <input
               type="file"
               multiple
               accept="image/*"
-              className="w-full px-4 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#811331] transition-colors text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#811331]/10 file:text-[#811331] cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-xl border border-dashed border-slate-300 hover:border-[#811331] transition-colors text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-base file:font-semibold file:bg-[#811331]/10 file:text-[#811331] cursor-pointer"
               {...register("images")}
             />
           </div>
@@ -467,7 +467,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
 
       <div className="flex items-center justify-end gap-3 pt-2">
         {error && (
-          <span className="text-xs font-bold text-red-600">
+          <span className="text-base font-bold text-red-600">
             {error}
           </span>
         )}

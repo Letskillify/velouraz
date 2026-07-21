@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { uploadToCloudinary } from "../../../config/cloudinary";
 
-const labelStyle = "block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5";
+const labelStyle = "block text-[16px] font-bold uppercase tracking-wider text-slate-500 mb-1.5";
 
 const SiteSettingsManager = ({ isDarkMode = false }) => {
   const [activeSubTab, setActiveSubTab] = useState("hero"); // hero, announcements, world_edits, mega_menus
@@ -18,8 +18,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     : "p-5 rounded-2xl border bg-white border-slate-100 shadow-sm text-slate-800";
 
   const inp = isDarkMode
-    ? "w-full rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-xs text-white outline-none focus:border-[#941232]"
-    : "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-800 outline-none focus:border-[#941232]";
+    ? "w-full rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-base text-white outline-none focus:border-[#941232]"
+    : "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-800 outline-none focus:border-[#941232]";
   
   // ─── Hero Banner State ──────────────────────────────────────────────────────
   const [heroData, setHeroData] = useState({
@@ -321,7 +321,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           <button
             key={tab.id}
             onClick={() => setActiveSubTab(tab.id)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+            className={`px-4 py-2 rounded-xl text-base font-bold transition-all ${
               activeSubTab === tab.id
                 ? "bg-[#941232] text-white animate-pulse"
                 : `${isDarkMode ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-slate-50 text-slate-500 hover:bg-slate-100"}`
@@ -338,12 +338,12 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Hero Video & Content</h3>
-              <p className="text-xs text-slate-400">Configure title, subtitle, promotional video and CTA links</p>
+              <p className="text-base text-slate-400">Configure title, subtitle, promotional video and CTA links</p>
             </div>
             <button
               onClick={handleSaveHero}
               disabled={savingHero}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-xs font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold transition-all disabled:opacity-50"
             >
               {savingHero ? <Loader2 size={13} className="animate-spin" /> : savedHero ? <Check size={13} /> : <Save size={13} />}
               {savingHero ? "Saving..." : savedHero ? "Saved!" : "Save Hero Section"}
@@ -367,7 +367,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                     <input type="file" accept="video/*" className="hidden" onChange={handleHeroVideoUpload} />
                   </label>
                 </div>
-                {uploadingHeroVideo && <p className="text-[10px] text-amber-600 font-semibold animate-pulse mt-1">Uploading hero video...</p>}
+                {uploadingHeroVideo && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading hero video...</p>}
               </div>
 
               <div>
@@ -449,10 +449,10 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 {heroData.videoURL ? (
                   <video src={heroData.videoURL} autoPlay muted loop className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-xs text-slate-500">No video selected</span>
+                  <span className="text-base text-slate-500">No video selected</span>
                 )}
                 <div className="absolute inset-0 bg-black/45 p-4 flex flex-col justify-end text-white">
-                  <p className="text-[8px] uppercase tracking-widest text-[#C8A97A] font-bold">{heroData.eyebrow}</p>
+                  <p className="text-[16px] uppercase tracking-widest text-[#C8A97A] font-bold">{heroData.eyebrow}</p>
                   <h4 className="font-serif text-sm font-semibold text-white mt-1 leading-tight">{heroData.title}</h4>
                 </div>
               </div>
@@ -467,12 +467,12 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Announcement Carousels</h3>
-              <p className="text-xs text-slate-400">Multiple announcement texts rotating in the website header bar</p>
+              <p className="text-base text-slate-400">Multiple announcement texts rotating in the website header bar</p>
             </div>
             <button
               onClick={handleSaveAnnouncements}
               disabled={savingAnnouncements}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-xs font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold transition-all disabled:opacity-50"
             >
               {savingAnnouncements ? <Loader2 size={13} className="animate-spin" /> : savedAnnouncements ? <Check size={13} /> : <Save size={13} />}
               {savingAnnouncements ? "Saving..." : savedAnnouncements ? "Saved!" : "Save Announcements"}
@@ -492,7 +492,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
               <button
                 type="button"
                 onClick={handleAddAnnouncement}
-                className={`px-4 py-2.5 rounded-xl text-xs font-bold text-white ${isDarkMode ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-850"}`}
+                className={`px-4 py-2.5 rounded-xl text-base font-bold text-white ${isDarkMode ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-850"}`}
               >
                 Add
               </button>
@@ -500,7 +500,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
 
             <div className={`border rounded-xl divide-y overflow-hidden ${isDarkMode ? "border-slate-800 divide-slate-800" : "border-slate-100 divide-slate-100"}`}>
               {announcements.map((text, index) => (
-                <div key={index} className={`flex justify-between items-center p-3.5 text-xs ${isDarkMode ? "bg-slate-900/40" : "bg-slate-50/50"}`}>
+                <div key={index} className={`flex justify-between items-center p-3.5 text-base ${isDarkMode ? "bg-slate-900/40" : "bg-slate-50/50"}`}>
                   <span className={`font-semibold ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>{text}</span>
                   <button
                     type="button"
@@ -512,7 +512,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 </div>
               ))}
               {announcements.length === 0 && (
-                <div className="p-8 text-center text-xs text-slate-400">No announcement lines configured.</div>
+                <div className="p-8 text-center text-base text-slate-400">No announcement lines configured.</div>
               )}
             </div>
           </div>
@@ -579,7 +579,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                     <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditPhotoUpload} />
                   </label>
                 </div>
-                {uploadingEditImage && <p className="text-[10px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
+                {uploadingEditImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
               </div>
 
               <div>
@@ -600,7 +600,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  className="flex-1 py-3 bg-[#941232] hover:bg-[#b01540] text-white text-xs font-bold rounded-xl shadow-md transition-all"
+                  className="flex-1 py-3 bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold rounded-xl shadow-md transition-all"
                 >
                   {editingEdit ? "Update Slide" : "Add Slide"}
                 </button>
@@ -608,7 +608,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                   <button
                     type="button"
                     onClick={() => setEditingEdit(null)}
-                    className="px-4 py-3 border border-slate-200 rounded-xl text-xs font-bold"
+                    className="px-4 py-3 border border-slate-200 rounded-xl text-base font-bold"
                   >
                     Cancel
                   </button>
@@ -625,8 +625,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 <div key={item.id} className={`flex gap-3 p-3 border rounded-2xl items-center ${isDarkMode ? "bg-slate-855 border-slate-700" : "bg-white border-slate-100"}`}>
                   <img src={item.image} alt="" className="w-14 h-14 rounded-xl object-cover bg-slate-150 flex-shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-bold uppercase truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
-                    <p className="text-[10px] text-slate-400 truncate">{item.collection || "No sub-title"}</p>
+                    <p className={`text-base font-bold uppercase truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
+                    <p className="text-[16px] text-slate-400 truncate">{item.collection || "No sub-title"}</p>
                   </div>
                   <div className="flex gap-1">
                     <button
@@ -662,7 +662,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
               <button
                 key={menu.key}
                 onClick={() => setSelectedMegaMenuKey(menu.key)}
-                className={`px-4 py-2.5 text-xs font-bold rounded-xl transition-all ${
+                className={`px-4 py-2.5 text-base font-bold rounded-xl transition-all ${
                   selectedMegaMenuKey === menu.key
                     ? "bg-[#941232] text-white shadow-sm"
                     : `${isDarkMode ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-slate-50 text-slate-500 hover:bg-slate-100"}`
@@ -683,7 +683,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 <button
                   onClick={handleSaveMegaMenus}
                   disabled={savingMegaMenus}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] text-white text-xs font-bold transition-all"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] text-white text-base font-bold transition-all"
                 >
                   {savingMegaMenus ? <Loader2 size={13} className="animate-spin" /> : savedMegaMenus ? <Check size={13} /> : <Save size={13} />}
                   Save Menu Data
@@ -712,7 +712,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                       <input type="file" accept="image/*" className="hidden" onChange={handleMegaMenuPhotoUpload} />
                     </label>
                   </div>
-                  {uploadingMegaMenuImage && <p className="text-[10px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
+                  {uploadingMegaMenuImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -753,7 +753,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
 
               {/* Add New Section Inside Menu */}
               <div className="border-t border-slate-100 dark:border-slate-800 mt-6 pt-5">
-                <h4 className={`text-xs font-bold mb-4 ${isDarkMode ? "text-white" : "text-slate-700"}`}>
+                <h4 className={`text-base font-bold mb-4 ${isDarkMode ? "text-white" : "text-slate-700"}`}>
                   Add New Dropdown Column / Section
                 </h4>
                 <div className="grid gap-4 md:grid-cols-3">
@@ -791,7 +791,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 <button
                   type="button"
                   onClick={handleAddSection}
-                  className="mt-4 px-4 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl flex items-center gap-1.5"
+                  className="mt-4 px-4 py-2.5 bg-slate-900 text-white text-base font-bold rounded-xl flex items-center gap-1.5"
                 >
                   <Plus size={14} /> Add Dropdown Column
                 </button>
@@ -814,11 +814,11 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold text-[#941232]">{section.icon}</span>
-                        <h4 className={`text-xs font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                        <h4 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
                           {section.title}
                         </h4>
                       </div>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[16px] text-slate-400">
                         {section.items}
                       </p>
                     </div>

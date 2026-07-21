@@ -49,7 +49,7 @@ const TheJournal = () => {
             className="flex items-center gap-3"
           >
             <div className="w-8 h-[1px] bg-[#7A0E2E]" />
-            <span className="text-[14px] md:text-[12px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
+            <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
               BEHIND THE SPARKLE
             </span>
           </motion.div>
@@ -111,8 +111,8 @@ const TheJournal = () => {
                       <Instagram size={14} className="text-white" />
                     </div>
                     <div className="flex flex-col items-start leading-none">
-                      <span className="text-[14px] font-bold text-white tracking-widest uppercase">velouraz.jewels</span>
-                      <span className="text-[9px] text-white/70 mt-1">{post.time}</span>
+                      <span className="text-[16px] font-bold text-white tracking-widest uppercase">velouraz.jewels</span>
+                      <span className="text-[16px] text-white/70 mt-1">{post.time}</span>
                     </div>
                   </div>
 
@@ -141,8 +141,8 @@ const TheJournal = () => {
               <Instagram size={20} />
             </div>
             <div className="flex items-center gap-3 border-b border-transparent group-hover:border-[#7A0E2E] transition-all pb-1">
-              <span className="text-[12px] font-bold text-[#2A2623] tracking-[0.2em] uppercase">JOIN OUR WORLD</span>
-              <span className="text-[12px] text-[#7B6D63] font-serif border-l border-[#D8CBBE] pl-3 italic">@velouraz.jewels</span>
+              <span className="text-[16px] font-bold text-[#2A2623] tracking-[0.2em] uppercase">JOIN OUR WORLD</span>
+              <span className="text-[16px] text-[#7B6D63] font-serif border-l border-[#D8CBBE] pl-3 italic">@velouraz.jewels</span>
               <ArrowRight size={16} className="text-[#7A0E2E] transition-transform group-hover:translate-x-1" />
             </div>
           </a>

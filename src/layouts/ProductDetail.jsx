@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -22,6 +22,13 @@ const ProductDetail = () => {
   const [cartLoading, setCartLoading] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [zoomStyle, setZoomStyle] = useState({ transform: "scale(1)" });
+
+  const imageUrls = useMemo(() => {
+    if (!product) return [];
+    if (product.images && product.images.length > 0) return product.images;
+    return [product.image || product.primaryImage].filter(Boolean);
+  }, [product]);
 
   const curatedProducts = [];
 
@@ -93,7 +100,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 border-[1.5px] border-[#7A0E2E] border-t-transparent rounded-full animate-spin" />
-        <p className="text-[14px] uppercase tracking-[0.5em] text-[#7A0E2E] font-bold">Loading</p>
+        <p className="text-[16px] uppercase tracking-[0.5em] text-[#7A0E2E] font-bold">Loading</p>
       </div>
     );
   }
@@ -102,7 +109,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-6 text-center p-6">
         <h2 className="font-serif text-3xl text-[#2A2623]/80 italic">Piece not found.</h2>
-        <button onClick={() => navigate('/shop')} className="text-[14px] tracking-[0.3em] uppercase text-[#7A0E2E] border-b border-[#7A0E2E] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
+        <button onClick={() => navigate('/shop')} className="text-[16px] tracking-[0.3em] uppercase text-[#7A0E2E] border-b border-[#7A0E2E] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
       </div>
     );
   }
@@ -111,19 +118,52 @@ const ProductDetail = () => {
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100) 
     : 0;
 
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomStyle({
+      transformOrigin: `${x}% ${y}%`,
+      transform: "scale(2.2)"
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setZoomStyle({
+      transformOrigin: "center center",
+      transform: "scale(1)"
+    });
+  };
+
+  const activeImage = imageUrls[selectedImageIndex] || product.image || "";
+
+  // Inspired country helper for flags
+  const getFlag = (country = "") => {
+    const c = country.toLowerCase().trim();
+    if (c.includes("italy")) return "🇮🇹";
+    if (c.includes("south korea") || c.includes("korean")) return "🇰🇷";
+    if (c.includes("india")) return "🇮🇳";
+    if (c.includes("greece")) return "🇬🇷";
+    if (c.includes("china")) return "🇨🇳";
+    if (c.includes("turkey") || c.includes("turkish")) return "🇹🇷";
+    if (c.includes("japan")) return "🇯🇵";
+    if (c.includes("europe")) return "🇪🇺";
+    return "🌍";
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFAF5] font-sans text-[#2A2623]">
       
-      {/* Premium Dark Crimson Breadcrumb Banner (No Product Image) */}
+      {/* Premium Dark Crimson Breadcrumb Banner */}
       <div 
-        className="relative w-full h-[260px] sm:h-[340px] flex items-center justify-center overflow-hidden" 
+        className="relative w-full h-[220px] sm:h-[280px] flex items-center justify-center overflow-hidden" 
         style={{ background: 'linear-gradient(135deg, #1C030A 0%, #300612 50%, #4D091B 100%)' }}
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,169,122,0.15)_0%,transparent_70%)] pointer-events-none" />
         <div className="absolute inset-0 bg-black/45" />
 
-        <div className="relative z-10 text-center px-5 pt-32 md:pt-40 text-white">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-serif tracking-tight leading-tight max-w-[800px] mx-auto line-clamp-1 italic font-light text-[#C8A97A]">
+        <div className="relative z-10 text-center px-5 pt-20 text-white">
+          <h1 className="text-xl sm:text-3xl md:text-4xl font-serif tracking-tight leading-tight max-w-[800px] mx-auto italic font-light text-[#C8A97A]">
             {product.name}
           </h1>
         </div>
@@ -135,47 +175,51 @@ const ProductDetail = () => {
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-8 pb-16">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-14">
           
-          {/* Left: Image Gallery */}
+          {/* Left Sticky Column: Image Gallery with Zoom */}
           <div className="w-full lg:w-[55%] lg:sticky lg:top-24 self-start">
             <div className="flex flex-col-reverse sm:flex-row gap-4">
               {/* Thumbnail Strip */}
-              <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto sm:max-h-[600px] scrollbar-hide">
-                {[...Array(4)].map((_, i) => (
+              <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto sm:max-h-[500px] scrollbar-hide">
+                {imageUrls.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImageIndex(i)}
-                    className={`flex-shrink-0 w-16 h-20 sm:w-[72px] sm:h-[90px] rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                    className={`flex-shrink-0 w-16 h-20 sm:w-[72px] sm:h-[90px] rounded-xl overflow-hidden border-2 transition-all duration-300 ${
                       selectedImageIndex === i 
-                        ? 'border-[#7A0E2E] opacity-100' 
+                        ? 'border-[#7A0E2E] opacity-100 shadow-md shadow-[#7A0E2E]/10' 
                         : 'border-transparent opacity-50 hover:opacity-80'
                     }`}
                   >
-                    <img src={product.image} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
 
-              {/* Main Image */}
+              {/* Main Image with Zoom Magnifier */}
               <motion.div 
-                className="flex-1 aspect-[3/4] rounded-2xl overflow-hidden bg-[#F4EEE8] relative group cursor-crosshair"
+                className="flex-1 aspect-[3/4] rounded-2xl overflow-hidden bg-[#F4EEE8] relative group cursor-zoom-in"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.5 }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
               >
                 <img
-                  src={product.image}
+                  src={activeImage}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                  style={zoomStyle}
+                  className="w-full h-full object-cover transition-transform duration-100 ease-out"
                 />
+                
                 {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
                   {discountPercent > 0 && (
-                    <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-full text-[14px] font-bold tracking-wider">
-                      -{discountPercent}%
+                    <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-full text-[16px] font-bold tracking-wider">
+                      -{discountPercent}% OFF
                     </span>
                   )}
                   {product.stock <= 5 && product.stock > 0 && (
-                    <span className="bg-[#2A2623] text-white px-3 py-1.5 rounded-full text-[14px] font-bold tracking-wider">
+                    <span className="bg-[#2A2623] text-white px-3 py-1.5 rounded-full text-[16px] font-bold tracking-wider">
                       Few Left
                     </span>
                   )}
@@ -186,7 +230,7 @@ const ProductDetail = () => {
                   disabled={wishlistLoading}
                   className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md ${
                     isInWishlist(product.id) 
-                      ? 'bg-[#7A0E2E] text-white' 
+                      ? 'bg-[#7A0E2E] text-white shadow-md' 
                       : 'bg-white/80 text-[#2A2623] hover:bg-[#7A0E2E] hover:text-white'
                   }`}
                 >
@@ -200,18 +244,37 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Right: Product Info */}
+          {/* Right Scrollable Column: Product Info */}
           <div className="w-full lg:w-[45%] py-2">
             <div className="space-y-6">
 
-              {/* Category & Name */}
+              {/* Brand, Subcategory and SKU Header */}
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className="text-[16px] font-bold uppercase tracking-widest text-[#7A0E2E] bg-[#7A0E2E]/10 px-2.5 py-1 rounded-lg">
+                  {product.brand || "Velouraz"}
+                </span>
+                {product.subcategory && (
+                  <span className="text-[16px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+                    {product.subcategory}
+                  </span>
+                )}
+                {product.sku && (
+                  <span className="text-[16px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+                    SKU: {product.sku}
+                  </span>
+                )}
+              </div>
+
+              {/* Title & Collection */}
               <div>
-                <p className="text-[14px] tracking-[0.3em] font-bold uppercase text-[#7A0E2E] mb-3">
-                  {product.category || 'Velouraz Collection'}
-                </p>
                 <h1 className="text-3xl md:text-4xl font-serif text-[#2A2623] leading-snug tracking-tight">
                   {product.name}
                 </h1>
+                {product.collectionName && (
+                  <p className="text-base font-semibold text-[#C8A97A] uppercase tracking-widest mt-1.5 flex items-center gap-1.5">
+                    <Gem size={12} /> {product.collectionName}
+                  </p>
+                )}
               </div>
 
               {/* Rating */}
@@ -221,7 +284,7 @@ const ProductDetail = () => {
                     <Star key={i} size={14} fill="#D4A853" stroke="#D4A853" className={i >= 4 ? 'opacity-30' : ''} />
                   ))}
                 </div>
-                <span className="text-[12px] text-[#7B6D63]">4.8 (128 reviews)</span>
+                <span className="text-[16px] text-[#7B6D63]">4.8 (128 reviews)</span>
               </div>
 
               {/* Price Block */}
@@ -234,27 +297,27 @@ const ProductDetail = () => {
                     <span className="text-lg text-[#7B6D63]/50 line-through font-serif">
                       ₹{Number(product.original_price).toLocaleString()}
                     </span>
-                    <span className="text-[14px] font-bold text-[#7A0E2E] bg-[#7A0E2E]/8 px-2.5 py-1 rounded-full">
-                      Save {discountPercent}%
+                    <span className="text-[16px] font-bold text-[#7A0E2E] bg-[#7A0E2E]/8 px-2.5 py-1 rounded-full">
+                      Save {discountPercent || product.discountPercentage}%
                     </span>
                   </>
                 )}
               </div>
 
-              <p className="text-[14px] text-[#7B6D63]">Inclusive of all taxes. Free shipping on orders above ₹999.</p>
+              <p className="text-[16px] text-[#7B6D63]">Inclusive of all taxes. Free shipping on orders above ₹999.</p>
 
               {/* Divider */}
               <div className="h-px bg-[#D8CBBE]/40" />
 
               {/* Description */}
-              <p className="text-[15px] text-[#2A2623]/70 leading-relaxed font-serif">
+              <p className="text-[16px] text-[#2A2623]/70 leading-relaxed font-serif">
                 {product.description || "An exceptional masterwork of artisanal design, meticulously handcrafted to embody Velouraz's philosophy of timeless elegance and modern sophistication."}
               </p>
 
               {/* Quantity & Add to Cart */}
               <div className="space-y-4 pt-2">
                 <div className="flex items-center gap-6">
-                  <span className="text-[14px] uppercase tracking-[0.2em] font-bold text-[#7B6D63]">Qty</span>
+                  <span className="text-[16px] uppercase tracking-[0.2em] font-bold text-[#7B6D63]">Qty</span>
                   <div className="flex items-center border border-[#D8CBBE] rounded-lg overflow-hidden bg-white">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -274,7 +337,7 @@ const ProductDetail = () => {
                     </button>
                   </div>
                   {product.stock <= 5 && product.stock > 0 && (
-                    <span className="text-[14px] text-amber-600 font-bold uppercase tracking-wider animate-pulse">
+                    <span className="text-[16px] text-amber-600 font-bold uppercase tracking-wider animate-pulse">
                       Only {product.stock} left
                     </span>
                   )}
@@ -284,7 +347,7 @@ const ProductDetail = () => {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0 || cartLoading}
-                    className={`flex-1 h-14 text-[14px] uppercase tracking-[0.3em] font-bold rounded-xl transition-all duration-500 flex items-center justify-center gap-3 ${
+                    className={`flex-1 h-14 text-[16px] uppercase tracking-[0.3em] font-bold rounded-xl transition-all duration-500 flex items-center justify-center gap-3 ${
                       product.stock <= 0
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : isInCart(product.id)
@@ -305,7 +368,7 @@ const ProductDetail = () => {
                 <button
                   onClick={handleBuyNow}
                   disabled={product.stock <= 0}
-                  className="w-full h-14 text-[14px] uppercase tracking-[0.3em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] hover:bg-[#2A2623] hover:text-white transition-all duration-500 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-full h-14 text-[16px] uppercase tracking-[0.3em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] hover:bg-[#2A2623] hover:text-white transition-all duration-500 disabled:opacity-30 disabled:cursor-not-allowed"
                 >
                   Buy Now
                 </button>
@@ -314,7 +377,7 @@ const ProductDetail = () => {
               {/* Divider */}
               <div className="h-px bg-[#D8CBBE]/40" />
 
-              {/* Trust Signals - Horizontal */}
+              {/* Trust Signals */}
               <div className="grid grid-cols-4 gap-4">
                 {[
                   { icon: Shield, label: "Secure\nCheckout" },
@@ -326,7 +389,7 @@ const ProductDetail = () => {
                     <div className="w-10 h-10 rounded-full bg-[#F4EEE8] flex items-center justify-center">
                       <item.icon size={18} className="text-[#7A0E2E]" strokeWidth={1.5} />
                     </div>
-                    <span className="text-[9px] uppercase tracking-wider font-bold text-[#7B6D63] whitespace-pre-line leading-tight">{item.label}</span>
+                    <span className="text-[16px] uppercase tracking-wider font-bold text-[#7B6D63] whitespace-pre-line leading-tight">{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -334,7 +397,7 @@ const ProductDetail = () => {
               {/* Divider */}
               <div className="h-px bg-[#D8CBBE]/40" />
 
-              {/* Accordion-Style Tabs */}
+              {/* Accordion Tabs */}
               <div className="space-y-0">
                 {[
                   { 
@@ -343,14 +406,14 @@ const ProductDetail = () => {
                     content: (
                       <div className="grid grid-cols-2 gap-4 py-1">
                         {[
-                          { label: 'Reference', value: product.id.slice(0, 10).toUpperCase() },
-                          { label: 'Material', value: 'Demi-Fine / Gold Plated' },
-                          { label: 'Country of Origin', value: product.country || 'Imported' },
-                          { label: 'Collection', value: product.category || 'Velouraz' },
+                          { label: 'Reference ID', value: product.id.slice(0, 10).toUpperCase() },
+                          { label: 'Product Type', value: product.productType || 'Handcrafted Fine Jewelry' },
+                          { label: 'Inspired Country', value: `${getFlag(product.country)} ${product.country || 'Global Luxe'}` },
+                          { label: 'Collection Name', value: product.collectionName || 'Velouraz Signature' },
                         ].map((d, i) => (
                           <div key={i}>
-                            <p className="text-[14px] uppercase tracking-wider text-[#7B6D63]/60 font-bold mb-1">{d.label}</p>
-                            <p className="text-[13px] text-[#2A2623] font-medium">{d.value}</p>
+                            <p className="text-[16px] uppercase tracking-wider text-[#7B6D63]/60 font-bold mb-1">{d.label}</p>
+                            <p className="text-[16px] text-[#2A2623] font-semibold">{d.value}</p>
                           </div>
                         ))}
                       </div>
@@ -361,12 +424,12 @@ const ProductDetail = () => {
                     label: 'Craftsmanship',
                     content: (
                       <div className="space-y-3 py-1">
-                        <p className="text-[13px] text-[#2A2623]/70 leading-relaxed">
+                        <p className="text-[16px] text-[#2A2623]/70 leading-relaxed">
                           Each piece undergoes meticulous hand-polishing for a high-lustre finish. Advanced plating techniques including gold, rose gold, and rhodium enhance both appearance and longevity.
                         </p>
                         <div className="flex items-center gap-2 text-[#7A0E2E]">
                           <Sparkles size={14} />
-                          <span className="text-[14px] uppercase tracking-wider font-bold">Signature Anti-Tarnish Finish</span>
+                          <span className="text-[16px] uppercase tracking-wider font-bold">Signature Anti-Tarnish Finish</span>
                         </div>
                       </div>
                     )
@@ -382,7 +445,7 @@ const ProductDetail = () => {
                           "Wipe gently with a soft, dry cloth after use",
                           "Keep away from direct sunlight"
                         ].map((item, i) => (
-                          <li key={i} className="flex items-start gap-3 text-[13px] text-[#2A2623]/70">
+                          <li key={i} className="flex items-start gap-3 text-[16px] text-[#2A2623]/70">
                             <span className="w-1 h-1 rounded-full bg-[#7A0E2E] mt-2 flex-shrink-0" />
                             {item}
                           </li>
@@ -397,11 +460,11 @@ const ProductDetail = () => {
                       <div className="space-y-3 py-1">
                         <div className="flex items-start gap-3">
                           <Package size={16} className="text-[#7A0E2E] mt-0.5 flex-shrink-0" />
-                          <p className="text-[13px] text-[#2A2623]/70">Free standard shipping on all orders above ₹999. Delivered within 5-7 business days.</p>
+                          <p className="text-[16px] text-[#2A2623]/70">Free standard shipping on all orders above ₹999. Delivered within 5-7 business days.</p>
                         </div>
                         <div className="flex items-start gap-3">
                           <Clock size={16} className="text-[#7A0E2E] mt-0.5 flex-shrink-0" />
-                          <p className="text-[13px] text-[#2A2623]/70">Easy 7-day returns. Items must be unworn and in original packaging.</p>
+                          <p className="text-[16px] text-[#2A2623]/70">Easy 7-day returns. Items must be unworn and in original packaging.</p>
                         </div>
                       </div>
                     )
@@ -412,7 +475,7 @@ const ProductDetail = () => {
                       onClick={() => setActiveTab(activeTab === tab.id ? '' : tab.id)}
                       className="w-full flex items-center justify-between py-4 text-left group"
                     >
-                      <span className="text-[13px] font-bold text-[#2A2623] uppercase tracking-wider">{tab.label}</span>
+                      <span className="text-[16px] font-bold text-[#2A2623] uppercase tracking-wider">{tab.label}</span>
                       <ChevronRight 
                         size={16} 
                         className={`text-[#7B6D63] transition-transform duration-300 ${activeTab === tab.id ? 'rotate-90' : ''}`} 
@@ -446,7 +509,7 @@ const ProductDetail = () => {
         <button
           onClick={handleAddToCart}
           disabled={product.stock <= 0 || cartLoading}
-          className={`flex-1 h-12 text-[14px] uppercase tracking-[0.2em] font-bold rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 h-12 text-[16px] uppercase tracking-[0.2em] font-bold rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
             product.stock <= 0
             ? 'bg-gray-100 text-gray-400'
             : isInCart(product.id)
@@ -460,7 +523,7 @@ const ProductDetail = () => {
         <button
           onClick={handleBuyNow}
           disabled={product.stock <= 0}
-          className="flex-1 h-12 text-[14px] uppercase tracking-[0.2em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] active:scale-[0.98] transition-all disabled:opacity-30"
+          className="flex-1 h-12 text-[16px] uppercase tracking-[0.2em] font-bold rounded-xl border-2 border-[#2A2623] text-[#2A2623] active:scale-[0.98] transition-all disabled:opacity-30"
         >
           Buy Now
         </button>

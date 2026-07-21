@@ -25,7 +25,7 @@ const EditorialBanner = () => {
             className="flex gap-4"
           >
             {['JOURNAL', 'CRAFTSMANSHIP'].map(tag => (
-              <span key={tag} className="bg-[#640D14]/10 backdrop-blur-md border border-[#640D14]/20 px-4 md:px-5 py-2 rounded-full text-[9px] md:text-[14px] tracking-[0.3em] font-black text-[#640D14] uppercase">
+              <span key={tag} className="bg-[#640D14]/10 backdrop-blur-md border border-[#640D14]/20 px-4 md:px-5 py-2 rounded-full text-[16px] md:text-[16px] tracking-[0.3em] font-black text-[#640D14] uppercase">
                 {tag}
               </span>
             ))}
@@ -66,7 +66,7 @@ const EditorialBanner = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.6 }}
-            className="text-[#640D14]/60 text-[14px] md:text-[14px] tracking-[0.4em] font-black uppercase pt-6 flex items-center gap-6"
+            className="text-[#640D14]/60 text-[16px] md:text-[16px] tracking-[0.4em] font-black uppercase pt-6 flex items-center gap-6"
           >
             <span className="h-[1px] w-12 bg-[#640D14]/30"></span>
             WRITTEN BY KATERINA PEREZ
@@ -80,7 +80,7 @@ const EditorialBanner = () => {
             transition={{ delay: 0.8 }}
             className="pt-4"
           >
-            <button className="px-10 py-4 bg-[#640D14] text-[#FDFAF5] text-[14px] tracking-[0.3em] font-black uppercase rounded-full hover:bg-[#2C1A0E] transition-colors duration-500 shadow-xl shadow-[#640D14]/20">
+            <button className="px-10 py-4 bg-[#640D14] text-[#FDFAF5] text-[16px] tracking-[0.3em] font-black uppercase rounded-full hover:bg-[#2C1A0E] transition-colors duration-500 shadow-xl shadow-[#640D14]/20">
               Read the Story
             </button>
           </motion.div>

@@ -291,19 +291,19 @@ const Checkout = () => {
             <PackageCheck size={42} />
           </div>
           <div className="space-y-2">
-            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C8A97A]">Order Confirmed</span>
+            <span className="text-[16px] font-bold uppercase tracking-[0.3em] text-[#C8A97A]">Order Confirmed</span>
             <h1 className="text-3xl font-serif text-[#2A2623]">Thank you for your purchase</h1>
-            <p className="text-xs text-[#7B6D63]">Order ID: <span className="font-mono font-bold text-[#7A0E2E]">{orderSuccess.id}</span></p>
+            <p className="text-base text-[#7B6D63]">Order ID: <span className="font-mono font-bold text-[#7A0E2E]">{orderSuccess.id}</span></p>
           </div>
 
           <div className="bg-[#FDFAF5] p-5 rounded-2xl border border-[#D8CBBE]/30 text-left space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#7B6D63]">Order Summary</h4>
+            <h4 className="text-base font-bold uppercase tracking-wider text-[#7B6D63]">Order Summary</h4>
             <div className="space-y-2 divide-y divide-[#D8CBBE]/20">
               {orderSuccess.items.map((item, idx) => (
-                <div key={idx} className="pt-2 flex justify-between items-center text-xs">
+                <div key={idx} className="pt-2 flex justify-between items-center text-base">
                   <div>
                     <p className="font-semibold text-[#2A2623]">{item.name}</p>
-                    <p className="text-[10px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
+                    <p className="text-[16px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
                   </div>
                   <span className="font-bold text-[#7A0E2E]">₹{(Number(item.price) * (item.quantity || 1)).toLocaleString()}</span>
                 </div>
@@ -318,13 +318,13 @@ const Checkout = () => {
           <div className="pt-4 flex flex-col sm:flex-row gap-3">
             <Link
               to="/account"
-              className="flex-1 py-3 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-colors"
+              className="flex-1 py-3 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-colors"
             >
               View Order in Account
             </Link>
             <Link
               to="/shop"
-              className="flex-1 py-3 border border-[#2A2623] text-[#2A2623] text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] hover:text-white transition-colors"
+              className="flex-1 py-3 border border-[#2A2623] text-[#2A2623] text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] hover:text-white transition-colors"
             >
               Continue Shopping
             </Link>
@@ -338,10 +338,10 @@ const Checkout = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center p-6 text-center pt-24">
         <h1 className="text-3xl sm:text-4xl font-serif text-[#2A2623] mb-4 italic">Your checkout bag is empty</h1>
-        <p className="text-xs text-[#7B6D63] mb-8">Add exquisite jewellery pieces to your collection to proceed.</p>
+        <p className="text-base text-[#7B6D63] mb-8">Add exquisite jewellery pieces to your collection to proceed.</p>
         <Link
           to="/shop"
-          className="px-8 py-3.5 bg-[#7A0E2E] text-white font-bold rounded-xl uppercase tracking-[0.2em] text-xs shadow-lg hover:bg-[#2A2623] transition-colors"
+          className="px-8 py-3.5 bg-[#7A0E2E] text-white font-bold rounded-xl uppercase tracking-[0.2em] text-base shadow-lg hover:bg-[#2A2623] transition-colors"
         >
           Explore Shop Collections
         </Link>
@@ -358,7 +358,7 @@ const Checkout = () => {
           <div>
             <Link
               to={isBuyNow ? `/product/${buyNowItem.id}` : "/cart"}
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#7B6D63] hover:text-[#7A0E2E] transition-colors mb-2"
+              className="inline-flex items-center gap-2 text-base font-bold uppercase tracking-[0.2em] text-[#7B6D63] hover:text-[#7A0E2E] transition-colors mb-2"
             >
               <ArrowLeft size={14} /> Back to {isBuyNow ? "Product Details" : "Shopping Cart"}
             </Link>
@@ -369,7 +369,7 @@ const Checkout = () => {
           
           <div className="flex items-center gap-3 bg-white px-5 py-2.5 rounded-full border border-[#D8CBBE]/50 shadow-sm w-fit">
             <Lock size={15} className="text-[#7A0E2E]" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#7B6D63]">
+            <span className="text-[16px] font-bold uppercase tracking-[0.15em] text-[#7B6D63]">
               256-Bit SSL Encrypted
             </span>
           </div>
@@ -378,7 +378,7 @@ const Checkout = () => {
         {/* {isBuyNow && (
           <div className="mb-8 p-4 bg-[#7A0E2E]/10 border border-[#7A0E2E]/30 rounded-2xl flex items-center gap-3">
             <Sparkles size={18} className="text-[#7A0E2E] flex-shrink-0" />
-            <p className="text-xs text-[#7A0E2E] font-semibold">
+            <p className="text-base text-[#7A0E2E] font-semibold">
               Direct Buy Now Checkout for <span className="font-bold">"{buyNowItem.name}"</span>. Your main shopping cart items remain saved!
             </p>
           </div>
@@ -392,13 +392,13 @@ const Checkout = () => {
             {/* Step 1: Customer Details */}
             <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-6">
               <div className="flex items-center gap-3 border-b border-[#D8CBBE]/30 pb-4">
-                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-xs">1</span>
+                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-base">1</span>
                 <h2 className="font-serif text-xl font-bold text-[#2A2623]">Customer Details</h2>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Full Name *</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Full Name *</label>
                   <input
                     type="text"
                     name="name"
@@ -406,11 +406,11 @@ const Checkout = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Email Address *</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Email Address *</label>
                   <input
                     type="email"
                     name="email"
@@ -418,11 +418,11 @@ const Checkout = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="name@example.com"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Phone Number (Primary) *</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Phone Number (Primary) *</label>
                   <input
                     type="tel"
                     name="phone"
@@ -430,18 +430,18 @@ const Checkout = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+91 98765 43210"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Alternate Phone Number (Optional)</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Alternate Phone Number (Optional)</label>
                   <input
                     type="tel"
                     name="altPhone"
                     value={formData.altPhone || ""}
                     onChange={handleInputChange}
                     placeholder="+91 98765 00000"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
               </div>
@@ -450,13 +450,13 @@ const Checkout = () => {
             {/* Step 2: Delivery Address */}
             <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-6">
               <div className="flex items-center gap-3 border-b border-[#D8CBBE]/30 pb-4">
-                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-xs">2</span>
+                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-base">2</span>
                 <h2 className="font-serif text-xl font-bold text-[#2A2623]">Delivery Address</h2>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Street Address *</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Street Address *</label>
                   <input
                     type="text"
                     name="address"
@@ -464,38 +464,38 @@ const Checkout = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     placeholder="Street Name, Area, Locality"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Apartment / Flat / Building (Optional)</label>
+                    <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Apartment / Flat / Building (Optional)</label>
                     <input
                       type="text"
                       name="apartment"
                       value={formData.apartment || ""}
                       onChange={handleInputChange}
                       placeholder="Flat 402, Building A, Floor 4"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Landmark / Nearby Place (Optional)</label>
+                    <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Landmark / Nearby Place (Optional)</label>
                     <input
                       type="text"
                       name="landmark"
                       value={formData.landmark || ""}
                       onChange={handleInputChange}
                       placeholder="Near Apollo Hospital, Opp. City Mall"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">City *</label>
+                    <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">City *</label>
                     <input
                       type="text"
                       name="city"
@@ -503,22 +503,22 @@ const Checkout = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       placeholder="City"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">State</label>
+                    <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">State</label>
                     <input
                       type="text"
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
                       placeholder="State"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Pincode *</label>
+                    <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Pincode *</label>
                     <input
                       type="text"
                       name="pincode"
@@ -526,20 +526,20 @@ const Checkout = () => {
                       value={formData.pincode}
                       onChange={handleInputChange}
                       placeholder="Pincode"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Delivery Instructions / Notes (Optional)</label>
+                  <label className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Delivery Instructions / Notes (Optional)</label>
                   <input
                     type="text"
                     name="deliveryNotes"
                     value={formData.deliveryNotes || ""}
                     onChange={handleInputChange}
                     placeholder="e.g. Ring doorbell, leave parcel at gate security"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-xs outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
                   />
                 </div>
               </div>
@@ -548,7 +548,7 @@ const Checkout = () => {
             {/* Step 3: Payment Method */}
             <div className="bg-white p-6 sm:p-8 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-6">
               <div className="flex items-center gap-3 border-b border-[#D8CBBE]/30 pb-4">
-                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-xs">3</span>
+                <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white flex items-center justify-center font-bold text-base">3</span>
                 <h2 className="font-serif text-xl font-bold text-[#2A2623]">Payment Option</h2>
               </div>
               
@@ -565,11 +565,11 @@ const Checkout = () => {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2 text-[#7A0E2E]">
                       <CreditCard size={20} />
-                      <span className="text-xs font-bold uppercase tracking-wider">Razorpay Online</span>
+                      <span className="text-base font-bold uppercase tracking-wider">Razorpay Online</span>
                     </div>
                     {paymentMethod === "razorpay" && <CheckCircle2 size={18} className="text-[#7A0E2E]" />}
                   </div>
-                  <p className="text-[11px] text-[#7B6D63]">
+                  <p className="text-[16px] text-[#7B6D63]">
                     Instant Pay via UPI (GPay, PhonePe), Credit/Debit Cards, NetBanking.
                   </p>
                 </div>
@@ -586,11 +586,11 @@ const Checkout = () => {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-2 text-[#2A2623]">
                       <Truck size={20} />
-                      <span className="text-xs font-bold uppercase tracking-wider">Cash on Delivery</span>
+                      <span className="text-base font-bold uppercase tracking-wider">Cash on Delivery</span>
                     </div>
                     {paymentMethod === "cod" && <CheckCircle2 size={18} className="text-[#7A0E2E]" />}
                   </div>
-                  <p className="text-[11px] text-[#7B6D63]">
+                  <p className="text-[16px] text-[#7B6D63]">
                     Pay in cash when your luxury parcel arrives at your doorstep.
                   </p>
                 </div>
@@ -613,14 +613,14 @@ const Checkout = () => {
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[9px] uppercase tracking-widest font-bold text-[#7A0E2E]">
+                      <p className="text-[16px] uppercase tracking-widest font-bold text-[#7A0E2E]">
                         {item.category || "Jewellery"}
                       </p>
-                      <h4 className="text-xs font-semibold text-[#2A2623] truncate">{item.name}</h4>
-                      <p className="text-[11px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
+                      <h4 className="text-base font-semibold text-[#2A2623] truncate">{item.name}</h4>
+                      <p className="text-[16px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
                     </div>
                     <div className="text-right">
-                      <span className="text-xs font-bold text-[#7A0E2E]">
+                      <span className="text-base font-bold text-[#7A0E2E]">
                         ₹{(Number(item.price || 0) * (item.quantity || 1)).toLocaleString()}
                       </span>
                     </div>
@@ -629,7 +629,7 @@ const Checkout = () => {
               </div>
 
               {/* Price Calculation */}
-              <div className="space-y-3 pt-4 border-t border-[#D8CBBE]/30 text-xs text-[#7B6D63]">
+              <div className="space-y-3 pt-4 border-t border-[#D8CBBE]/30 text-base text-[#7B6D63]">
                 <div className="flex justify-between">
                   <span>Bag Subtotal</span>
                   <span className="font-semibold text-[#2A2623]">₹{subtotal.toLocaleString()}</span>
@@ -650,7 +650,7 @@ const Checkout = () => {
               <button
                 onClick={handlePlaceOrder}
                 disabled={loading || isAnyOutOfStock}
-                className={`w-full py-4 rounded-xl text-xs font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-lg ${
+                className={`w-full py-4 rounded-xl text-base font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-lg ${
                   isAnyOutOfStock
                     ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                     : "bg-[#7A0E2E] text-white hover:bg-[#2A2623]"
@@ -669,7 +669,7 @@ const Checkout = () => {
                 )}
               </button>
 
-              <div className="pt-2 grid grid-cols-2 gap-2 text-[10px] text-[#7B6D63] font-medium text-center">
+              <div className="pt-2 grid grid-cols-2 gap-2 text-[16px] text-[#7B6D63] font-medium text-center">
                 <div className="p-2 bg-[#FDFAF5] rounded-lg border border-[#D8CBBE]/20 flex items-center justify-center gap-1.5">
                   <ShieldCheck size={14} className="text-[#7A0E2E]" /> 100% Authentic
                 </div>

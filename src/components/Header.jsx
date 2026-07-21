@@ -241,7 +241,7 @@ const LuxuryHeader = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.35 }}
-            className="text-[12px] md:text-[13px] tracking-[0.18em] font-medium text-white/90 truncate max-w-full"
+            className="text-[16px] md:text-[16px] tracking-[0.18em] font-medium text-white/90 truncate max-w-full"
           >
             {announcements[annIndex]}
           </motion.p>
@@ -458,7 +458,7 @@ const LuxuryHeader = () => {
               className="w-full max-w-3xl flex flex-col items-center my-auto"
             >
               <p
-                className="text-center text-[12px] sm:text-[13px] tracking-[0.4em] uppercase mb-6 font-semibold"
+                className="text-center text-[16px] sm:text-[16px] tracking-[0.4em] uppercase mb-6 font-semibold"
                 style={{ color: GOLD }}
               >
                 Search Our Luxury Collections
@@ -490,7 +490,7 @@ const LuxuryHeader = () => {
                   ) : null}
                   <button
                     type="submit"
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#7A0E2E] text-white text-[11px] uppercase tracking-widest font-semibold rounded hover:bg-[#921438] transition-all ml-2 whitespace-nowrap"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#7A0E2E] text-white text-[16px] uppercase tracking-widest font-semibold rounded hover:bg-[#921438] transition-all ml-2 whitespace-nowrap"
                   >
                     Search <ArrowRight size={13} />
                   </button>
@@ -500,13 +500,13 @@ const LuxuryHeader = () => {
               {/* Popular Tags when search is empty */}
               {!searchVal.trim() && (
                 <div className="w-full text-center space-y-4">
-                  <p className="text-[11px] tracking-[0.25em] text-white/40 uppercase font-medium">Popular Searches</p>
+                  <p className="text-[16px] tracking-[0.25em] text-white/40 uppercase font-medium">Popular Searches</p>
                   <div className="flex flex-wrap gap-2.5 justify-center">
                     {['Kundan Sets', 'Pearl Necklaces', 'Statement Rings', 'Korean Edit', 'Minimal Luxe', 'Bangles', 'Earrings'].map((tag) => (
                       <button
                         key={tag}
                         onClick={() => handleTagClick(tag)}
-                        className="px-4 py-2 rounded-full border border-white/10 text-white/70 hover:border-[#C8A97A] hover:text-[#C8A97A] hover:bg-[#C8A97A]/5 transition-all duration-200 text-[12px] tracking-wider uppercase font-medium"
+                        className="px-4 py-2 rounded-full border border-white/10 text-white/70 hover:border-[#C8A97A] hover:text-[#C8A97A] hover:bg-[#C8A97A]/5 transition-all duration-200 text-[16px] tracking-wider uppercase font-medium"
                       >
                         {tag}
                       </button>
@@ -519,13 +519,13 @@ const LuxuryHeader = () => {
               {searchVal.trim() && (
                 <div className="w-full space-y-6">
                   <div className="flex justify-between items-center border-b border-white/10 pb-3">
-                    <span className="text-[12px] tracking-[0.2em] text-white/60 uppercase">
+                    <span className="text-[16px] tracking-[0.2em] text-white/60 uppercase">
                       {fetchingProducts ? 'Searching...' : `Found ${liveResults.length} ${liveResults.length === 1 ? 'product' : 'products'}`}
                     </span>
                     {liveResults.length > 0 && (
                       <button
                         onClick={handleSearchSubmit}
-                        className="text-[12px] tracking-[0.15em] text-[#C8A97A] hover:underline uppercase font-medium flex items-center gap-1"
+                        className="text-[16px] tracking-[0.15em] text-[#C8A97A] hover:underline uppercase font-medium flex items-center gap-1"
                       >
                         View all in shop <ArrowRight size={12} />
                       </button>
@@ -553,7 +553,7 @@ const LuxuryHeader = () => {
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8A97A] font-semibold truncate">
+                              <p className="text-[16px] tracking-[0.2em] uppercase text-[#C8A97A] font-semibold truncate">
                                 {product.category || 'Jewellery'}
                               </p>
                               <h4
@@ -562,7 +562,7 @@ const LuxuryHeader = () => {
                               >
                                 {product.name}
                               </h4>
-                              <p className="text-white/70 text-xs font-semibold mt-0.5">
+                              <p className="text-white/70 text-base font-semibold mt-0.5">
                                 ₹{Number(product.price || 0).toLocaleString()}
                               </p>
                             </div>
@@ -573,7 +573,7 @@ const LuxuryHeader = () => {
                       <div className="pt-2 text-center">
                         <button
                           onClick={handleSearchSubmit}
-                          className="w-full sm:w-auto px-8 py-3.5 bg-[#7A0E2E] text-white text-[12px] font-bold tracking-[0.2em] uppercase rounded hover:bg-[#921438] transition-all flex items-center justify-center gap-2 mx-auto"
+                          className="w-full sm:w-auto px-8 py-3.5 bg-[#7A0E2E] text-white text-[16px] font-bold tracking-[0.2em] uppercase rounded hover:bg-[#921438] transition-all flex items-center justify-center gap-2 mx-auto"
                         >
                           View all {liveResults.length} results for "{searchVal.trim()}" <ArrowRight size={14} />
                         </button>
@@ -586,7 +586,7 @@ const LuxuryHeader = () => {
                       </p>
                       <button
                         onClick={handleSearchSubmit}
-                        className="px-6 py-2.5 border border-[#C8A97A] text-[#C8A97A] text-[12px] font-bold tracking-widest uppercase rounded hover:bg-[#C8A97A] hover:text-[#0E0B09] transition-all"
+                        className="px-6 py-2.5 border border-[#C8A97A] text-[#C8A97A] text-[16px] font-bold tracking-widest uppercase rounded hover:bg-[#C8A97A] hover:text-[#0E0B09] transition-all"
                       >
                         Search for "{searchVal}" in Shop catalog
                       </button>
@@ -700,7 +700,7 @@ const LuxuryHeader = () => {
                             {link.megaMenu.sections.map((section, idx) => (
                               <div key={idx} className="space-y-3">
                                 <p
-                                  className="text-[9px] tracking-[0.28em] uppercase font-bold"
+                                  className="text-[16px] tracking-[0.28em] uppercase font-bold"
                                   style={{ color: GOLD }}
                                 >
                                   {section.icon} {section.title}
@@ -749,7 +749,7 @@ const LuxuryHeader = () => {
                     >
                       <span className="group-hover:text-[#C8A97A] transition-colors">{icon}</span>
                       <span
-                        className="text-[9px] tracking-[0.22em] uppercase group-hover:text-[#C8A97A] transition-colors"
+                        className="text-[16px] tracking-[0.22em] uppercase group-hover:text-[#C8A97A] transition-colors"
                       >
                         {label}
                       </span>
@@ -768,7 +768,7 @@ const LuxuryHeader = () => {
 /* ─── Badge Dot ──────────────────────────────────────── */
 const BadgeDot = ({ count }) => (
   <span
-    className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-bold text-white"
+    className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[16px] font-bold text-white"
     style={{ background: '#7A0E2E' }}
   >
     {count}
@@ -817,7 +817,7 @@ const MegaMenuPanel = ({ link }) => (
               <div className="flex items-center gap-3">
                 <span className="text-xl opacity-60" style={{ color: '#7A0E2E' }}>{section.icon || '✦'}</span>
                 <h4
-                  className="text-[14px] tracking-[0.26em] font-bold uppercase"
+                  className="text-[16px] tracking-[0.26em] font-bold uppercase"
                   style={{ color: '#7A0E2E' }}
                 >
                   {section.title}
@@ -838,7 +838,7 @@ const MegaMenuPanel = ({ link }) => (
                 <li className="pt-1">
                   <Link
                     to={`${link.href}?category=${section.title.toLowerCase().replace(/ /g, '-')}`}
-                    className="inline-flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-wider transition-colors"
+                    className="inline-flex items-center gap-1.5 text-[16px] font-bold uppercase tracking-wider transition-colors"
                     style={{ color: '#C8A97A' }}
                   >
                     Shop all <ArrowRight size={11} strokeWidth={2.5} />
@@ -865,7 +865,7 @@ const MegaMenuPanel = ({ link }) => (
           style={{ background: 'linear-gradient(to top, rgba(10,7,5,0.85) 0%, rgba(10,7,5,0.15) 55%, transparent 100%)' }}
         >
           <span
-            className="text-[9px] tracking-[0.45em] font-bold uppercase mb-3"
+            className="text-[16px] tracking-[0.45em] font-bold uppercase mb-3"
             style={{ color: '#C8A97A' }}
           >
             {link.megaMenu.tagline}
@@ -878,7 +878,7 @@ const MegaMenuPanel = ({ link }) => (
           </h3>
           <Link
             to={link.href}
-            className="inline-flex items-center gap-3 text-[14px] font-bold tracking-[0.25em] uppercase px-7 py-3.5 transition-all duration-300 hover:gap-5 w-fit"
+            className="inline-flex items-center gap-3 text-[16px] font-bold tracking-[0.25em] uppercase px-7 py-3.5 transition-all duration-300 hover:gap-5 w-fit"
             style={{ background: '#7A0E2E', color: '#fff' }}
           >
             Explore Collections <ArrowRight size={12} strokeWidth={2} />

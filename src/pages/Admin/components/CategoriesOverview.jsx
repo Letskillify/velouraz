@@ -11,17 +11,17 @@ const CategoriesOverview = () => (
   <section className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8">
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h2 className="text-[15px] font-bold text-slate-900 flex items-center gap-2.5">
+        <h2 className="text-[16px] font-bold text-slate-900 flex items-center gap-2.5">
           <span className="p-1.5 bg-[#811331]/10 rounded-lg">
             <Layers size={15} className="text-[#811331]" />
           </span>
           Categories
         </h2>
-        <p className="text-xs text-slate-400 font-medium mt-1 ml-0.5">
+        <p className="text-base text-slate-400 font-medium mt-1 ml-0.5">
           High-level structure of your jewelry catalog
         </p>
       </div>
-      <span className="text-[14px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
+      <span className="text-[16px] font-bold text-slate-400 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
         {categories.length} Groups
       </span>
     </div>
@@ -38,7 +38,7 @@ const CategoriesOverview = () => (
           </div>
 
           <div className="flex justify-between items-start mb-4">
-            <span className={`text-[14px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${cat.badge}`}>
+            <span className={`text-[16px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg ${cat.badge}`}>
               {cat.group}
             </span>
             <ChevronRight size={14} className="text-slate-300 group-hover:text-[#811331] transition-colors" />
@@ -46,7 +46,7 @@ const CategoriesOverview = () => (
 
           <div className="text-2xl mb-2">{cat.icon}</div>
           <p className="text-base font-bold text-slate-900">{cat.name}</p>
-          <p className="mt-1 text-xs font-medium text-slate-500">{cat.count} active products</p>
+          <p className="mt-1 text-base font-medium text-slate-500">{cat.count} active products</p>
 
           {/* Bottom highlight bar */}
           <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#811331] group-hover:w-full transition-all duration-500 rounded-b-2xl" />

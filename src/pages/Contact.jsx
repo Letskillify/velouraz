@@ -70,9 +70,9 @@ const Contact = () => {
               <div className="w-16 h-16 rounded-full bg-[#F8F4EF] flex items-center justify-center mb-8 mx-auto group-hover:bg-[#2A2623] group-hover:text-white transition-all duration-500">
                 <item.icon size={24} strokeWidth={1} />
               </div>
-              <p className="text-[14px] tracking-[0.4em] font-bold uppercase text-[#7B6D63] mb-3">{item.label}</p>
+              <p className="text-[16px] tracking-[0.4em] font-bold uppercase text-[#7B6D63] mb-3">{item.label}</p>
               <p className="text-xl md:text-2xl font-serif text-[#2A2623] mb-2">{item.value}</p>
-              <p className="text-[13px] text-[#7B6D63] font-light">{item.sub}</p>
+              <p className="text-[16px] text-[#7B6D63] font-light">{item.sub}</p>
             </motion.div>
           ))}
         </div>
@@ -91,41 +91,41 @@ const Contact = () => {
               
               <div className="relative z-10">
                 <h2 className="text-3xl md:text-4xl font-serif text-[#2A2623] mb-4">Send a message</h2>
-                <p className="text-[15px] text-[#7B6D63] mb-12 font-light">Fill in the details below and our concierge will reach out to you.</p>
+                <p className="text-[16px] text-[#7B6D63] mb-12 font-light">Fill in the details below and our concierge will reach out to you.</p>
                 
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid sm:grid-cols-2 gap-8">
                     <div className="space-y-2">
-                      <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
+                      <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Full Name</label>
                       <input 
                         type="text" 
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[15px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
                         placeholder="E.g. Sophia Anderson" 
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
+                      <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
                       <input 
                         type="email" 
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[15px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
                         placeholder="sophia@example.com" 
                       />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
-                    <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Inquiry Type</label>
+                    <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Inquiry Type</label>
                     <div className="relative">
                       <select 
                         value={formData.subject}
                         onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[15px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all appearance-none cursor-pointer"
                       >
                         <option>General Inquiry</option>
                         <option>Order Support</option>
@@ -138,13 +138,13 @@ const Contact = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Your Message</label>
+                    <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Your Message</label>
                     <textarea 
                       rows="4" 
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[15px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all resize-none placeholder:text-[#7B6D63]/30" 
+                      className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all resize-none placeholder:text-[#7B6D63]/30" 
                       placeholder="Share your thoughts with us..."
                     />
                   </div>
@@ -155,7 +155,7 @@ const Contact = () => {
                     type="submit"
                     className="relative group w-full sm:w-auto bg-[#2A2623] text-white px-12 py-5 rounded-full overflow-hidden shadow-xl"
                   >
-                    <span className="relative z-10 text-[14px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-4">
+                    <span className="relative z-10 text-[16px] font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-4">
                       {submitted ? 'Inquiry Sent' : 'Submit Message'}
                       <Send size={14} className={submitted ? 'animate-bounce' : 'group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300'} />
                     </span>
@@ -178,7 +178,7 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-full bg-[#F8F4EF] flex items-center justify-center">
                   <Clock size={20} className="text-[#D4A853]" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-[13px] font-bold uppercase tracking-widest text-[#2A2623]">Concierge Hours</h3>
+                <h3 className="text-[16px] font-bold uppercase tracking-widest text-[#2A2623]">Concierge Hours</h3>
               </div>
               <div className="space-y-4 font-serif">
                 {[
@@ -186,7 +186,7 @@ const Contact = () => {
                   { day: 'Saturday', time: '10:00 — 17:00' },
                   { day: 'Sunday', time: 'By Appointment' },
                 ].map((item, i) => (
-                  <div key={i} className="flex justify-between items-center text-[15px] pb-3 border-b border-[#D8CBBE]/10 last:border-0 last:pb-0">
+                  <div key={i} className="flex justify-between items-center text-[16px] pb-3 border-b border-[#D8CBBE]/10 last:border-0 last:pb-0">
                     <span className="text-[#7B6D63]">{item.day}</span>
                     <span className="text-[#2A2623] font-medium">{item.time}</span>
                   </div>
@@ -200,7 +200,7 @@ const Contact = () => {
                
                <Award size={32} className="text-[#fff] mb-8 relative z-10" />
                <h3 className="text-2xl font-serif mb-4 relative z-10">Global Presence</h3>
-               <p className="text-[14px] text-white/60 mb-8 font-light leading-relaxed relative z-10">
+               <p className="text-[16px] text-white/60 mb-8 font-light leading-relaxed relative z-10">
                  Though we are rooted in <span className="text-white font-medium italic">Mumbai</span>, our heart beats for patrons across the globe. We facilitate international inquiries via our dedicated concierge.
                </p>
                <div className="flex gap-4 relative z-10">
@@ -227,8 +227,8 @@ const Contact = () => {
             >
                <Globe size={24} className="text-[#7A0E2E]" strokeWidth={1} />
                <div>
-                  <p className="text-[14px] font-bold uppercase tracking-widest text-[#7B6D63]">Chat With Us</p>
-                  <p className="text-[15px] font-serif text-[#2A2623]">Instant support via WhatsApp</p>
+                  <p className="text-[16px] font-bold uppercase tracking-widest text-[#7B6D63]">Chat With Us</p>
+                  <p className="text-[16px] font-serif text-[#2A2623]">Instant support via WhatsApp</p>
                </div>
                <MessageCircle size={18} className="ml-auto text-[#D8CBBE]" />
             </motion.div>

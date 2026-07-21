@@ -262,27 +262,27 @@ const Admin = () => {
     <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
       <div>
         <div className="flex items-center gap-2 mb-1.5">
-          <span className="text-xs font-medium text-slate-400">Velauraz</span>
+          <span className="text-base font-medium text-slate-400">Velauraz</span>
           <ChevronRight size={12} className="text-slate-300" />
-          <span className="text-xs font-semibold text-[#811331]">{activeItem}</span>
+          <span className="text-base font-semibold text-[#811331]">{activeItem}</span>
         </div>
         <h1 className={`text-xl sm:text-2xl font-bold tracking-tight ${isDarkMode ? "text-white" : "text-slate-900"}`}>
           {activeItem}
         </h1>
-        <p className={`mt-1 text-xs sm:text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+        <p className={`mt-1 text-base sm:text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
           {currentItem?.desc} — manage your jewellery store
         </p>
       </div>
       <div className="flex items-center gap-3 self-end sm:self-auto">
         <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full shadow-sm border ${isDarkMode ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"}`}>
           <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_1px_rgba(52,211,153,0.6)] animate-pulse" />
-          <span className={`text-xs font-medium ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
+          <span className={`text-base font-medium ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
             Store: <span className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Live</span>
           </span>
         </div>
         <button
           onClick={openProductEditor}
-          className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
+          className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
         >
           <Plus size={14} />
           <span>Add Product</span>
@@ -371,7 +371,7 @@ const Admin = () => {
             <div className="text-center flex-1">
               <div className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-[#e8c37b]/70 text-[#e8c37b]"><Gem size={21} /></div>
               <p className="mt-2 font-serif text-[25px] leading-none tracking-wide text-white">VELOURAZ</p>
-              <p className="mt-1 text-[8px] tracking-[.18em] text-[#e8c37b]/80">TIMELESS ELEGANCE</p>
+              <p className="mt-1 text-[16px] tracking-[.18em] text-[#e8c37b]/80">TIMELESS ELEGANCE</p>
             </div>
           )}
           {!collapsed && (
@@ -385,7 +385,7 @@ const Admin = () => {
         </div>
       </div>
 
-      <nav className={`flex-1 overflow-y-auto py-4 text-[12px] ${collapsed ? "px-2" : "px-3"}`}>
+      <nav className={`flex-1 overflow-y-auto py-4 text-[16px] ${collapsed ? "px-2" : "px-3"}`}>
         {/* Dashboard */}
         <button
           onClick={() => setActiveItem("Dashboard")}
@@ -398,7 +398,7 @@ const Admin = () => {
           {!collapsed && "Dashboard"}
         </button>
 
-        {!collapsed && <p className="mb-2 px-3 text-[9px] font-medium tracking-wide text-white/50">CATALOG</p>}
+        {!collapsed && <p className="mb-2 px-3 text-[16px] font-medium tracking-wide text-white/50">CATALOG</p>}
         {collapsed && <div className="my-2 border-t border-white/10" />}
 
         {/* Products */}
@@ -423,7 +423,7 @@ const Admin = () => {
               <button
                 key={label}
                 onClick={() => setActiveItem(target)}
-                className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[14px] ${activeItem === target ? "bg-[#84112f] text-white" : "text-white/75 hover:bg-white/10"}`}
+                className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[16px] ${activeItem === target ? "bg-[#84112f] text-white" : "text-white/75 hover:bg-white/10"}`}
               >
                 <Icon size={12} />{label}
               </button>
@@ -456,7 +456,7 @@ const Admin = () => {
 
         {!collapsed && (
           <>
-            <p className="mb-2 mt-4 px-3 text-[9px] font-medium tracking-wide text-white/50">CONTENT</p>
+            <p className="mb-2 mt-4 px-3 text-[16px] font-medium tracking-wide text-white/50">CONTENT</p>
             {[["Pages", FileText, "Pages"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
               <button
                 key={label}
@@ -491,7 +491,7 @@ const Admin = () => {
         <button
           onClick={() => setIsSidebarCollapsed(!collapsed)}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={`hidden lg:flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/60 hover:bg-white/10 transition-all ${collapsed ? "justify-center" : "gap-3"}`}
+          className={`hidden lg:flex w-full items-center rounded-lg px-2 py-2 text-[16px] text-white/60 hover:bg-white/10 transition-all ${collapsed ? "justify-center" : "gap-3"}`}
         >
           {collapsed ? <PanelLeftOpen size={16} /> : <><PanelLeftClose size={16} /><span>Collapse</span></>}
         </button>
@@ -499,7 +499,7 @@ const Admin = () => {
         <button
           onClick={() => setActiveItem("Profile")}
           title="Profile"
-          className={`flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"} ${activeItem === "Profile" ? "bg-[#a4143e] text-white" : ""}`}
+          className={`flex w-full items-center rounded-lg px-2 py-2 text-[16px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"} ${activeItem === "Profile" ? "bg-[#a4143e] text-white" : ""}`}
         >
           {adminUser?.photoURL
             ? <img src={adminUser.photoURL} alt="" className="h-6 w-6 rounded-full object-cover flex-shrink-0" />
@@ -509,7 +509,7 @@ const Admin = () => {
         <button
           onClick={handleLogout}
           title="Logout"
-          className={`flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
+          className={`flex w-full items-center rounded-lg px-2 py-2 text-[16px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
         >
           <LogOut size={15} />
           {!collapsed && "Logout"}
@@ -528,7 +528,7 @@ const Admin = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="w-10 h-10 border-[3px] border-white/10 border-t-[#811331] rounded-full"
           />
-          <p className="text-xs text-white/30 font-medium tracking-widest uppercase">Loading...</p>
+          <p className="text-base text-white/30 font-medium tracking-widest uppercase">Loading...</p>
         </div>
       </div>
     );
@@ -592,7 +592,7 @@ const Admin = () => {
             <label className={`flex items-center gap-3 rounded-xl border px-3.5 py-2 ${inputBg} transition-colors`}>
               <Search size={17} className={textMuted} />
               <input
-                className={`w-full bg-transparent text-xs outline-none ${isDarkMode ? "text-white" : "text-slate-700"}`}
+                className={`w-full bg-transparent text-base outline-none ${isDarkMode ? "text-white" : "text-slate-700"}`}
                 placeholder="Search products, orders, customers…"
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
@@ -604,7 +604,7 @@ const Admin = () => {
                   <X size={14} />
                 </button>
               )}
-              <kbd className={`rounded-md border px-1.5 py-0.5 text-[9px] ${isDarkMode ? "border-slate-700 bg-slate-800 text-slate-400" : "border-slate-200 bg-white text-slate-500"}`}>
+              <kbd className={`rounded-md border px-1.5 py-0.5 text-[16px] ${isDarkMode ? "border-slate-700 bg-slate-800 text-slate-400" : "border-slate-200 bg-white text-slate-500"}`}>
                 Ctrl K
               </kbd>
             </label>
@@ -617,7 +617,7 @@ const Admin = () => {
                   transition={{ duration: 0.15 }}
                   className={`absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-2xl border overflow-hidden ${resultsBg}`}
                 >
-                  <div className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest ${textMuted} border-b ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
+                  <div className={`px-4 py-2 text-[16px] font-bold uppercase tracking-widest ${textMuted} border-b ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
                     {searchResults.length} result{searchResults.length !== 1 ? "s" : ""}
                   </div>
                   {searchResults.map((r) => (
@@ -641,8 +641,8 @@ const Admin = () => {
                         }
                       </div>
                       <div className="min-w-0">
-                        <p className={`text-[13px] font-semibold truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{r.label}</p>
-                        <p className={`text-[11px] truncate ${textMuted}`}>{r.type} · {r.sub}</p>
+                        <p className={`text-[16px] font-semibold truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{r.label}</p>
+                        <p className={`text-[16px] truncate ${textMuted}`}>{r.type} · {r.sub}</p>
                       </div>
                     </button>
                   ))}
@@ -654,7 +654,7 @@ const Admin = () => {
                   className={`absolute top-[calc(100%+8px)] left-0 right-0 z-50 rounded-2xl border px-4 py-6 text-center ${resultsBg}`}
                 >
                   <Search size={24} className={`mx-auto mb-2 ${textMuted}`} />
-                  <p className={`text-xs ${textMuted}`}>No results for "<strong>{globalSearch}</strong>"</p>
+                  <p className={`text-base ${textMuted}`}>No results for "<strong>{globalSearch}</strong>"</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -689,7 +689,7 @@ const Admin = () => {
                 title={`${orders.length} order${orders.length !== 1 ? "s" : ""} pending`}
               >
                 <Bell size={20} />
-                <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[9px] text-white">
+                <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-[#9c1237] text-[16px] text-white">
                   {orders.length > 99 ? "99+" : orders.length}
                 </span>
               </button>
@@ -702,15 +702,15 @@ const Admin = () => {
             >
               {adminUser?.photoURL
                 ? <img src={adminUser.photoURL} alt="" className="h-9 w-9 rounded-full object-cover border-2 border-[#811331]/30" />
-                : <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">
+                : <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-base font-bold text-white">
                     {((adminUser?.displayName || adminUser?.name || adminUser?.adminId || "A").charAt(0)).toUpperCase()}
                   </span>
               }
               <div>
-                <p className={`text-xs font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                <p className={`text-base font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
                   {adminUser?.displayName || adminUser?.name || "Admin"}
                 </p>
-                <p className={`text-[11px] ${textMuted}`}>
+                <p className={`text-[16px] ${textMuted}`}>
                   {adminUser?.email || adminUser?.adminId || "Admin Panel"}
                 </p>
               </div>
@@ -727,7 +727,7 @@ const Admin = () => {
             </div>
             <div>
               <p className={`text-sm font-bold tracking-tight leading-none ${isDarkMode ? "text-white" : "text-slate-900"}`}>Velauraz</p>
-              <p className={`text-[9px] font-medium tracking-widest uppercase mt-0.5 ${textMuted}`}>{activeItem}</p>
+              <p className={`text-[16px] font-medium tracking-widest uppercase mt-0.5 ${textMuted}`}>{activeItem}</p>
             </div>
           </div>
           <div className="flex items-center gap-1.5">
@@ -779,7 +779,7 @@ const Admin = () => {
                   <div className={`p-1.5 rounded-xl transition-all duration-200 ${isActive ? "bg-[#811331]/10" : ""}`}>
                     <Icon size={18} strokeWidth={isActive ? 2.5 : 1.8} />
                   </div>
-                  <span className={`text-[9px] font-bold tracking-wide ${isActive ? "text-[#811331]" : isDarkMode ? "text-slate-500" : "text-slate-400"}`}>
+                  <span className={`text-[16px] font-bold tracking-wide ${isActive ? "text-[#811331]" : isDarkMode ? "text-slate-500" : "text-slate-400"}`}>
                     {item.name === "Dashboard" ? "Home" : item.name}
                   </span>
                   {isActive && (

@@ -190,7 +190,7 @@ const Shop = () => {
           <SlidersHorizontal size={18} className="text-[#7A0E2E]" />
           <h3 className="font-serif text-lg font-bold tracking-wide">Filters</h3>
           {activeFiltersCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-[#7A0E2E] text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="w-5 h-5 rounded-full bg-[#7A0E2E] text-white text-[16px] font-bold flex items-center justify-center">
               {activeFiltersCount}
             </span>
           )}
@@ -198,7 +198,7 @@ const Shop = () => {
         {activeFiltersCount > 0 && (
           <button
             onClick={clearAllFilters}
-            className="text-[11px] uppercase tracking-wider font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors flex items-center gap-1"
+            className="text-[16px] uppercase tracking-wider font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors flex items-center gap-1"
           >
             <RotateCcw size={12} /> Reset
           </button>
@@ -207,7 +207,7 @@ const Shop = () => {
 
       {/* Price Filter Slider */}
       <div className="space-y-3">
-        <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-[#7B6D63]">
+        <div className="flex justify-between items-center text-base font-bold uppercase tracking-wider text-[#7B6D63]">
           <span>Price Range</span>
           <span className="text-[#7A0E2E]">Up to ₹{Number(priceLimit).toLocaleString()}</span>
         </div>
@@ -220,7 +220,7 @@ const Shop = () => {
           onChange={(e) => setPriceLimit(Number(e.target.value))}
           className="w-full accent-[#7A0E2E] cursor-pointer"
         />
-        <div className="flex justify-between text-[11px] text-[#7B6D63] font-medium">
+        <div className="flex justify-between text-[16px] text-[#7B6D63] font-medium">
           <span>₹0</span>
           <span>₹{Number(maxProductPrice).toLocaleString()}</span>
         </div>
@@ -228,7 +228,7 @@ const Shop = () => {
 
       {/* Categories */}
       <div className="space-y-3">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
+        <h4 className="text-base font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
           Category
         </h4>
         <div className="space-y-1">
@@ -238,14 +238,14 @@ const Shop = () => {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-base font-semibold transition-all ${
                   isSelected
                     ? 'bg-[#7A0E2E] text-white shadow-sm'
                     : 'text-[#2A2623]/80 hover:bg-[#F4EEE8] hover:text-[#7A0E2E]'
                 }`}
               >
                 <span>{cat}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-[#D8CBBE]/30 text-[#7B6D63]'}`}>
+                <span className={`text-[16px] px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-[#D8CBBE]/30 text-[#7B6D63]'}`}>
                   {categoryCounts[cat] ?? 0}
                 </span>
               </button>
@@ -256,7 +256,7 @@ const Shop = () => {
 
       {/* Material & Style */}
       <div className="space-y-3">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
+        <h4 className="text-base font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
           Material & Craft
         </h4>
         <div className="space-y-2">
@@ -266,7 +266,7 @@ const Shop = () => {
               <label
                 key={mat}
                 onClick={() => toggleMaterial(mat)}
-                className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
+                className="flex items-center gap-2.5 cursor-pointer text-base font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
               >
                 <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
                   checked ? 'bg-[#7A0E2E] border-[#7A0E2E] text-white' : 'border-[#D8CBBE] bg-white'
@@ -282,7 +282,7 @@ const Shop = () => {
 
       {/* Availability */}
       <div className="space-y-3">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
+        <h4 className="text-base font-bold uppercase tracking-wider text-[#7B6D63] border-b border-[#D8CBBE]/20 pb-1">
           Availability
         </h4>
         <div className="space-y-2">
@@ -294,7 +294,7 @@ const Shop = () => {
             <label
               key={opt.id}
               onClick={() => setAvailability(opt.id)}
-              className="flex items-center gap-2.5 cursor-pointer text-xs font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
+              className="flex items-center gap-2.5 cursor-pointer text-base font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
             >
               <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
                 availability === opt.id ? 'border-[#7A0E2E]' : 'border-[#D8CBBE] bg-white'
@@ -347,7 +347,7 @@ const Shop = () => {
                   <input 
                     type="text" 
                     placeholder="Search jewellery, styles, collections..." 
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/50 rounded-xl pl-10 pr-9 py-2.5 text-xs text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/40"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/50 rounded-xl pl-10 pr-9 py-2.5 text-base text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/40"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -364,12 +364,12 @@ const Shop = () => {
                   {/* Mobile Filter Toggle Button */}
                   <button
                     onClick={() => setShowMobileFilters(true)}
-                    className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-[#2A2623] text-white rounded-xl text-xs font-bold tracking-wider uppercase shadow-sm"
+                    className="lg:hidden flex items-center gap-2 px-4 py-2.5 bg-[#2A2623] text-white rounded-xl text-base font-bold tracking-wider uppercase shadow-sm"
                   >
                     <SlidersHorizontal size={14} />
                     Filters
                     {activeFiltersCount > 0 && (
-                      <span className="w-4 h-4 rounded-full bg-[#7A0E2E] text-white text-[9px] font-bold flex items-center justify-center">
+                      <span className="w-4 h-4 rounded-full bg-[#7A0E2E] text-white text-[16px] font-bold flex items-center justify-center">
                         {activeFiltersCount}
                       </span>
                     )}
@@ -377,11 +377,11 @@ const Shop = () => {
 
                   {/* Sort Selector */}
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-[#7B6D63] uppercase tracking-wider hidden md:inline">Sort:</span>
+                    <span className="text-base font-bold text-[#7B6D63] uppercase tracking-wider hidden md:inline">Sort:</span>
                     <select 
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="bg-[#FDFAF5] border border-[#D8CBBE]/50 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all cursor-pointer appearance-none pr-8"
+                      className="bg-[#FDFAF5] border border-[#D8CBBE]/50 rounded-xl px-3.5 py-2.5 text-base font-semibold text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all cursor-pointer appearance-none pr-8"
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237B6D63' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
                     >
                       <option value="newest">Newest Arrivals</option>
@@ -390,7 +390,7 @@ const Shop = () => {
                     </select>
                   </div>
 
-                  <p className="text-xs text-[#7B6D63] font-medium hidden lg:block">
+                  <p className="text-base text-[#7B6D63] font-medium hidden lg:block">
                     {sortedProducts.length} items
                   </p>
                 </div>
@@ -399,38 +399,38 @@ const Shop = () => {
               {/* Active Filter Chips */}
               {activeFiltersCount > 0 && (
                 <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#D8CBBE]/30">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#7B6D63]">Active Filters:</span>
+                  <span className="text-[16px] font-bold uppercase tracking-wider text-[#7B6D63]">Active Filters:</span>
                   
                   {selectedCategory !== 'All' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-base font-semibold">
                       Category: {selectedCategory}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setSelectedCategory('All')} />
                     </span>
                   )}
 
                   {priceLimit < maxProductPrice && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-base font-semibold">
                       Max: ₹{Number(priceLimit).toLocaleString()}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setPriceLimit(maxProductPrice)} />
                     </span>
                   )}
 
                   {selectedMaterials.map(mat => (
-                    <span key={mat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-semibold">
+                    <span key={mat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-base font-semibold">
                       {mat}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => toggleMaterial(mat)} />
                     </span>
                   ))}
 
                   {availability !== 'all' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-base font-semibold">
                       {availability === 'inStock' ? 'In Stock' : 'On Sale'}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setAvailability('all')} />
                     </span>
                   )}
 
                   {searchTerm && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-base font-semibold">
                       "{searchTerm}"
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setSearchTerm('')} />
                     </span>
@@ -438,7 +438,7 @@ const Shop = () => {
 
                   <button
                     onClick={clearAllFilters}
-                    className="text-xs font-bold text-[#7A0E2E] underline hover:text-[#2A2623] ml-2"
+                    className="text-base font-bold text-[#7A0E2E] underline hover:text-[#2A2623] ml-2"
                   >
                     Clear All
                   </button>
@@ -480,12 +480,12 @@ const Shop = () => {
                       {/* Badges */}
                       <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
                         {product.original_price > product.price && (
-                          <span className="bg-[#7A0E2E] text-white px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider">
+                          <span className="bg-[#7A0E2E] text-white px-2 py-0.5 rounded-md text-[16px] font-bold tracking-wider">
                             -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
                           </span>
                         )}
                         {product.stock <= 0 && (
-                          <span className="bg-[#2A2623] text-white px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider">
+                          <span className="bg-[#2A2623] text-white px-2 py-0.5 rounded-md text-[16px] font-bold tracking-wider">
                             Sold Out
                           </span>
                         )}
@@ -521,7 +521,7 @@ const Shop = () => {
                         <button 
                           onClick={(e) => product.stock > 0 && handleAddToCart(e, product)}
                           disabled={product.stock <= 0 || cartLoadings[product.id]}
-                          className={`w-full py-2.5 text-[12px] tracking-wider font-bold uppercase flex items-center justify-center gap-2 rounded-lg transition-all ${
+                          className={`w-full py-2.5 text-[16px] tracking-wider font-bold uppercase flex items-center justify-center gap-2 rounded-lg transition-all ${
                             product.stock <= 0
                             ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             : isInCart(product.id) 
@@ -542,13 +542,13 @@ const Shop = () => {
                     {/* Product Info */}
                     <div className="space-y-1 px-1 flex-1 flex flex-col justify-between">
                       <div>
-                        <p className="text-[9px] tracking-[0.2em] font-bold uppercase text-[#7B6D63] mb-0.5">{product.category || "Jewellery"}</p>
-                        <h3 className="font-serif text-[14px] text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors leading-snug line-clamp-1 font-semibold">{product.name}</h3>
+                        <p className="text-[16px] tracking-[0.2em] font-bold uppercase text-[#7B6D63] mb-0.5">{product.category || "Jewellery"}</p>
+                        <h3 className="font-serif text-[16px] text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors leading-snug line-clamp-1 font-semibold">{product.name}</h3>
                       </div>
                       <div className="flex items-baseline gap-2 pt-1">
-                        <span className="text-[14px] font-bold text-[#2A2623]">₹{Number(product.price).toLocaleString()}</span>
+                        <span className="text-[16px] font-bold text-[#2A2623]">₹{Number(product.price).toLocaleString()}</span>
                         {product.original_price > product.price && (
-                          <span className="text-[11px] text-[#7B6D63]/50 line-through">₹{Number(product.original_price).toLocaleString()}</span>
+                          <span className="text-[16px] text-[#7B6D63]/50 line-through">₹{Number(product.original_price).toLocaleString()}</span>
                         )}
                       </div>
                     </div>
@@ -559,10 +559,10 @@ const Shop = () => {
               <div className="text-center py-24 bg-white rounded-2xl border border-[#D8CBBE]/30 p-8">
                 <ShoppingBag size={40} strokeWidth={1} className="mx-auto text-[#7A0E2E]/30 mb-4" />
                 <h3 className="font-serif text-2xl text-[#2A2623] mb-2">No matching pieces found</h3>
-                <p className="text-xs text-[#7B6D63] mb-6">Try adjusting your filters or price range to find what you're looking for.</p>
+                <p className="text-base text-[#7B6D63] mb-6">Try adjusting your filters or price range to find what you're looking for.</p>
                 <button 
                   onClick={clearAllFilters} 
-                  className="px-6 py-2.5 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#2A2623] transition-colors"
+                  className="px-6 py-2.5 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-wider rounded-xl hover:bg-[#2A2623] transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -602,7 +602,7 @@ const Shop = () => {
               <div className="pt-6 border-t border-[#D8CBBE]/30 mt-6">
                 <button
                   onClick={() => setShowMobileFilters(false)}
-                  className="w-full py-3 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-widest rounded-xl"
+                  className="w-full py-3 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-widest rounded-xl"
                 >
                   Apply Filters ({sortedProducts.length})
                 </button>

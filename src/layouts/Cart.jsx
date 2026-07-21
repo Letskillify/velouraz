@@ -121,10 +121,10 @@ const Cart = () => {
         
         {/* Continue Shopping Link */}
         <div className="flex items-center justify-between mb-8">
-          <p className="text-[13px] text-[#7B6D63]">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
+          <p className="text-[16px] text-[#7B6D63]">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
           <Link 
             to="/shop" 
-            className="inline-flex items-center gap-2 text-[12px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+            className="inline-flex items-center gap-2 text-[16px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
           >
             <ArrowLeft size={14} />
             Continue Shopping
@@ -138,10 +138,10 @@ const Cart = () => {
               <ShoppingBag size={32} strokeWidth={1} className="text-[#7A0E2E]/40" />
             </div>
             <h2 className="font-serif text-2xl text-[#2A2623] mb-2">Your cart is empty</h2>
-            <p className="text-[14px] text-[#7B6D63] mb-8 max-w-sm">Looks like you haven't added any pieces to your collection yet.</p>
+            <p className="text-[16px] text-[#7B6D63] mb-8 max-w-sm">Looks like you haven't added any pieces to your collection yet.</p>
             <Link 
               to="/shop" 
-              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[14px] font-bold uppercase tracking-[0.2em] hover:bg-[#7A0E2E] transition-all duration-500"
+              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[16px] font-bold uppercase tracking-[0.2em] hover:bg-[#7A0E2E] transition-all duration-500"
             >
               Explore Collection
             </Link>
@@ -153,9 +153,9 @@ const Cart = () => {
             <div className="flex-1 min-w-0">
               {/* Table Header - Desktop */}
               <div className="hidden sm:grid grid-cols-[1fr_120px_120px_40px] gap-6 pb-4 border-b border-[#D8CBBE]/40 mb-0">
-                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63]">Product</span>
-                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-center">Quantity</span>
-                <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-right">Total</span>
+                <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#7B6D63]">Product</span>
+                <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-center">Quantity</span>
+                <span className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#7B6D63] text-right">Total</span>
                 <span></span>
               </div>
 
@@ -178,14 +178,14 @@ const Cart = () => {
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </Link>
                       <div className="min-w-0">
-                        <p className="text-[9px] font-bold text-[#7A0E2E] uppercase tracking-[0.3em] mb-1">Velouraz</p>
-                        <Link to={`/product/${item.id}`} className="text-[15px] font-serif text-[#2A2623] hover:text-[#7A0E2E] transition-colors line-clamp-2 leading-snug block">
+                        <p className="text-[16px] font-bold text-[#7A0E2E] uppercase tracking-[0.3em] mb-1">Velouraz</p>
+                        <Link to={`/product/${item.id}`} className="text-[16px] font-serif text-[#2A2623] hover:text-[#7A0E2E] transition-colors line-clamp-2 leading-snug block">
                           {item.name}
                         </Link>
                         <div className="flex items-baseline gap-2 mt-1.5">
-                          <span className="text-[14px] font-medium text-[#2A2623]">₹{Number(item.price).toLocaleString()}</span>
+                          <span className="text-[16px] font-medium text-[#2A2623]">₹{Number(item.price).toLocaleString()}</span>
                           {Number(item.original_price) > Number(item.price) && (
-                            <span className="text-[12px] text-[#7B6D63]/50 line-through">₹{Number(item.original_price).toLocaleString()}</span>
+                            <span className="text-[16px] text-[#7B6D63]/50 line-through">₹{Number(item.original_price).toLocaleString()}</span>
                           )}
                         </div>
                       </div>
@@ -200,7 +200,7 @@ const Cart = () => {
                         >
                           <Minus size={12} />
                         </button>
-                        <span className="w-9 text-center font-bold text-[#2A2623] text-[13px]">
+                        <span className="w-9 text-center font-bold text-[#2A2623] text-[16px]">
                           {item.quantity || 1}
                         </span>
                         <button 
@@ -215,7 +215,7 @@ const Cart = () => {
 
                     {/* Line Total */}
                     <div className="text-right">
-                      <p className="text-[15px] font-medium text-[#2A2623]">
+                      <p className="text-[16px] font-medium text-[#2A2623]">
                         ₹{(Number(item.price) * (item.quantity || 1)).toLocaleString()}
                       </p>
                     </div>
@@ -240,33 +240,33 @@ const Cart = () => {
                 
                 {/* Summary Header */}
                 <div className="px-6 py-5 border-b border-[#D8CBBE]/20">
-                  <h2 className="text-[15px] font-bold text-[#2A2623] uppercase tracking-wider">Order Summary</h2>
+                  <h2 className="text-[16px] font-bold text-[#2A2623] uppercase tracking-wider">Order Summary</h2>
                 </div>
 
                 <div className="px-6 py-5 space-y-4">
                   {/* Subtotal */}
-                  <div className="flex justify-between text-[13px]">
+                  <div className="flex justify-between text-[16px]">
                     <span className="text-[#7B6D63]">Subtotal ({items.length} items)</span>
                     <span className="font-medium text-[#2A2623]">₹{subtotal.toLocaleString()}</span>
                   </div>
 
                   {/* Savings */}
                   {productSavings > 0 && (
-                    <div className="flex justify-between text-[13px]">
+                    <div className="flex justify-between text-[16px]">
                       <span className="text-emerald-600">Product Discount</span>
                       <span className="font-medium text-emerald-600">−₹{productSavings.toLocaleString()}</span>
                     </div>
                   )}
 
                   {/* Shipping */}
-                  <div className="flex justify-between text-[13px]">
+                  <div className="flex justify-between text-[16px]">
                     <span className="text-[#7B6D63]">Delivery</span>
                     <span className="font-medium text-emerald-600">Free</span>
                   </div>
 
                   {/* Coupon Discount */}
                   {discount > 0 && (
-                    <div className="flex justify-between text-[13px]">
+                    <div className="flex justify-between text-[16px]">
                       <span className="text-emerald-600">Coupon ({appliedCoupon})</span>
                       <span className="font-medium text-emerald-600">−₹{discount.toLocaleString()}</span>
                     </div>
@@ -277,7 +277,7 @@ const Cart = () => {
                     {!showCoupon && !appliedCoupon ? (
                       <button 
                         onClick={() => setShowCoupon(true)}
-                        className="flex items-center gap-2 text-[12px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+                        className="flex items-center gap-2 text-[16px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
                       >
                         <Tag size={14} />
                         Apply Coupon Code
@@ -288,20 +288,20 @@ const Cart = () => {
                           <input 
                             type="text" 
                             placeholder="Enter code" 
-                            className="flex-1 border border-[#D8CBBE] rounded-lg px-4 py-2.5 text-[12px] font-bold tracking-wider text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all uppercase placeholder:text-[#7B6D63]/30 placeholder:normal-case bg-[#FDFAF5]"
+                            className="flex-1 border border-[#D8CBBE] rounded-lg px-4 py-2.5 text-[16px] font-bold tracking-wider text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all uppercase placeholder:text-[#7B6D63]/30 placeholder:normal-case bg-[#FDFAF5]"
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
                           />
                           <button 
                             onClick={handleApplyCoupon}
-                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[14px] font-bold uppercase tracking-wider hover:bg-[#7A0E2E] transition-all"
+                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[16px] font-bold uppercase tracking-wider hover:bg-[#7A0E2E] transition-all"
                           >
                             Apply
                           </button>
                         </div>
                         {couponError && (
-                          <p className="text-[14px] text-red-500 flex items-center gap-1.5">
+                          <p className="text-[16px] text-red-500 flex items-center gap-1.5">
                             <AlertCircle size={12} /> {couponError}
                           </p>
                         )}
@@ -310,9 +310,9 @@ const Cart = () => {
                       <div className="flex items-center justify-between bg-emerald-50 border border-emerald-100 rounded-lg px-4 py-2.5">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 size={14} className="text-emerald-600" />
-                          <span className="text-[14px] font-bold text-emerald-700 uppercase tracking-wider">{appliedCoupon}</span>
+                          <span className="text-[16px] font-bold text-emerald-700 uppercase tracking-wider">{appliedCoupon}</span>
                         </div>
-                        <button onClick={removeCoupon} className="text-[14px] font-bold text-red-500 hover:text-red-700 transition-colors">
+                        <button onClick={removeCoupon} className="text-[16px] font-bold text-red-500 hover:text-red-700 transition-colors">
                           Remove
                         </button>
                       </div>
@@ -321,7 +321,7 @@ const Cart = () => {
 
                   {/* Total */}
                   <div className="pt-4 border-t border-[#D8CBBE]/30 flex justify-between items-baseline">
-                    <span className="text-[14px] font-bold text-[#2A2623]">Total</span>
+                    <span className="text-[16px] font-bold text-[#2A2623]">Total</span>
                     <span className="text-2xl font-serif text-[#2A2623]">₹{total.toLocaleString()}</span>
                   </div>
 
@@ -335,7 +335,7 @@ const Cart = () => {
                       }
                     }}
                     disabled={items.length === 0}
-                    className="w-full bg-[#2A2623] text-[#FDFAF5] py-4 rounded-xl text-[14px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+                    className="w-full bg-[#2A2623] text-[#FDFAF5] py-4 rounded-xl text-[16px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                   >
                     Proceed to Checkout
                   </button>
@@ -344,15 +344,15 @@ const Cart = () => {
                   <div className="flex items-center justify-center gap-6 pt-3">
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <ShieldCheck size={14} strokeWidth={1.5} />
-                      <span className="text-[14px] font-medium">Secure</span>
+                      <span className="text-[16px] font-medium">Secure</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <Truck size={14} strokeWidth={1.5} />
-                      <span className="text-[14px] font-medium">Free Shipping</span>
+                      <span className="text-[16px] font-medium">Free Shipping</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[#7B6D63]">
                       <Gift size={14} strokeWidth={1.5} />
-                      <span className="text-[14px] font-medium">Gift Ready</span>
+                      <span className="text-[16px] font-medium">Gift Ready</span>
                     </div>
                   </div>
                 </div>

@@ -98,7 +98,7 @@ const TermsAndConditions = () => {
           </div>
 
           <div className="mt-32 pt-16 border-t border-[#D8CBBE]/20 text-center">
-            <p className="text-[14px] tracking-[0.5em] uppercase text-[#7B6D63]/30 font-bold">© 2026 VELOURAZ. Artisans of Luxury.</p>
+            <p className="text-[16px] tracking-[0.5em] uppercase text-[#7B6D63]/30 font-bold">© 2026 VELOURAZ. Artisans of Luxury.</p>
           </div>
         </motion.div>
       </div>

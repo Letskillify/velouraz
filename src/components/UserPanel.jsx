@@ -98,18 +98,18 @@ const UserPanel = () => {
       <div className="px-4 sm:px-6 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <h2 className="text-sm font-semibold text-slate-900">My Orders</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base text-slate-500 mt-0.5">
             Track the status of your recent purchases.
           </p>
         </div>
-        <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-50 text-xs font-medium text-slate-600">
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-50 text-base font-medium text-slate-600">
           {orderRows.length} orders
         </span>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-slate-50/60">
-            <tr className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+            <tr className="text-base font-medium text-slate-500 uppercase tracking-wide">
               <th className="px-4 sm:px-6 py-3">Order</th>
               <th className="px-4 sm:px-6 py-3">Date</th>
               <th className="px-4 sm:px-6 py-3">Total</th>
@@ -130,7 +130,7 @@ const UserPanel = () => {
                 </td>
                 <td className="px-4 sm:px-6 py-3">
                   <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-full border text-xs font-medium ${statusBadgeClasses(
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full border text-base font-medium ${statusBadgeClasses(
                       row.status
                     )}`}
                   >
@@ -150,11 +150,11 @@ const UserPanel = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <div>
           <h2 className="text-sm font-semibold text-slate-900">Wishlist</h2>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-base text-slate-500 mt-0.5">
             Curated products you’re interested in.
           </p>
         </div>
-        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#811331]/5 text-xs font-medium text-[#811331]">
+        <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#811331]/5 text-base font-medium text-[#811331]">
           {wishlistItems.length} saved
         </span>
       </div>
@@ -169,11 +169,11 @@ const UserPanel = () => {
                 <p className="text-sm font-semibold text-slate-900">
                   {item.name}
                 </p>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-base text-slate-500">
                   {item.description}
                 </p>
               </div>
-              <span className="px-2.5 py-1 rounded-full bg-slate-50 text-[14px] font-medium text-slate-600">
+              <span className="px-2.5 py-1 rounded-full bg-slate-50 text-[16px] font-medium text-slate-600">
                 {item.tag}
               </span>
             </div>
@@ -183,7 +183,7 @@ const UserPanel = () => {
               </p>
               <button
                 type="button"
-                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-[#811331] text-white shadow-sm hover:bg-[#6a0f29] transition-colors"
+                className="inline-flex items-center px-3 py-1.5 rounded-full text-base font-medium bg-[#811331] text-white shadow-sm hover:bg-[#6a0f29] transition-colors"
               >
                 Move to cart
               </button>
@@ -210,7 +210,7 @@ const UserPanel = () => {
                 <p className="text-sm font-medium text-slate-900">
                   {item.name}
                 </p>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <p className="mt-0.5 text-base text-slate-500">
                   Quantity: {item.quantity}
                 </p>
               </div>
@@ -240,7 +240,7 @@ const UserPanel = () => {
             <span className="font-medium text-slate-900">₹180.00</span>
           </div>
           <div className="border-t border-dashed border-slate-200 pt-3 mt-2 flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <span className="text-base font-semibold uppercase tracking-wide text-slate-500">
               Total
             </span>
             <span className="text-base font-semibold text-slate-900">
@@ -254,7 +254,7 @@ const UserPanel = () => {
         >
           Proceed to checkout
         </button>
-        <p className="mt-2 text-[14px] text-slate-500 text-center">
+        <p className="mt-2 text-[16px] text-slate-500 text-center">
           Secure checkout. No additional fees at this step.
         </p>
       </div>
@@ -295,27 +295,27 @@ const UserPanel = () => {
           <h2 className="text-sm font-semibold text-slate-900 mb-2.5">
             Jewellery Style Preferences
           </h2>
-          <p className="text-xs text-slate-500 mb-3">
+          <p className="text-base text-slate-500 mb-3">
             We personalize recommendations based on your unique style.
           </p>
           <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-xs font-medium text-slate-700">
+            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-base font-medium text-slate-700">
               Traditional
             </span>
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-xs font-medium text-slate-700">
+            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-base font-medium text-slate-700">
               Minimalist
             </span>
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-xs font-medium text-slate-700">
+            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-base font-medium text-slate-700">
               Ethnic Wear
             </span>
-            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-xs font-medium text-slate-700">
+            <span className="px-3 py-1.5 rounded-full bg-slate-50 text-base font-medium text-slate-700">
               Modern
             </span>
           </div>
         </div>
         <button
           type="button"
-          className="self-start inline-flex items-center px-4 py-2 rounded-lg text-xs font-medium bg-[#811331]/5 text-[#811331] hover:bg-[#811331]/10 transition-colors"
+          className="self-start inline-flex items-center px-4 py-2 rounded-lg text-base font-medium bg-[#811331]/5 text-[#811331] hover:bg-[#811331]/10 transition-colors"
         >
           Update preferences
         </button>
@@ -343,12 +343,12 @@ const UserPanel = () => {
               <p className="text-sm font-semibold tracking-tight text-slate-900">
                 User Panel
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-base text-slate-500">
                 Personal dashboard & activity
               </p>
             </div>
           </div>
-          <div className="hidden sm:flex flex-col items-end text-xs">
+          <div className="hidden sm:flex flex-col items-end text-base">
             <span className="text-slate-500">Signed in as</span>
             <span className="font-medium text-slate-900">
               jordan.rivera@jewellery.com

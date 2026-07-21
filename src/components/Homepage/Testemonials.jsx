@@ -56,7 +56,7 @@ const TestimonialSection = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-[1px] bg-white/40" />
-              <span className="text-xs lg:text-[14px] tracking-[0.35em] font-bold text-white/60 uppercase">
+              <span className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-white/60 uppercase">
                 Patron Stories
               </span>
             </div>
@@ -69,7 +69,7 @@ const TestimonialSection = () => {
             >
               Real Stories. <span className="italic" style={{ color: 'rgba(255,255,255,0.65)' }}>Real Love.</span>
             </h2>
-            <p className="text-white/55 text-[14px] lg:text-[16px] max-w-md leading-relaxed" style={{ fontFamily: SERIF }}>
+            <p className="text-white/55 text-[16px] lg:text-[16px] max-w-md leading-relaxed" style={{ fontFamily: SERIF }}>
               Hear from our community of jewellery enthusiasts who found their defining piece with Velauraz.
             </p>
           </div>
@@ -132,7 +132,7 @@ const TestimonialSection = () => {
                   </div>
 
                   <p 
-                    className="text-white/85 text-[15px] lg:text-[17px] leading-relaxed italic font-light flex-grow"
+                    className="text-white/85 text-[16px] lg:text-[17px] leading-relaxed italic font-light flex-grow"
                     style={{ fontFamily: SERIF }}
                   >
                     "{review.quote}"
@@ -140,16 +140,16 @@ const TestimonialSection = () => {
 
                   <div className="mt-7 pt-5 border-t border-white/10 flex items-center gap-3">
                     <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-[#7A0E2E]"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-base font-bold text-[#7A0E2E]"
                       style={{ background: 'rgba(255,255,255,0.9)', fontFamily: SERIF }}
                     >
                       {review.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-[14px] tracking-widest font-bold uppercase text-white">
+                      <p className="text-[16px] tracking-widest font-bold uppercase text-white">
                         {review.name}
                       </p>
-                      <p className="text-[12px] text-white/40 mt-0.5" style={{ fontFamily: SERIF }}>
+                      <p className="text-[16px] text-white/40 mt-0.5" style={{ fontFamily: SERIF }}>
                         {review.title}
                       </p>
                     </div>

@@ -87,7 +87,7 @@ const PremiumPreloader = ({ onComplete }) => {
               transition={{ delay: 0.5, duration: 2.5, ease: luxuryEase }}
               className="flex flex-col items-center"
             >
-              <span className="text-[14px] uppercase text-[#2A2623] font-bold tracking-widest ml-[1.2em]">
+              <span className="text-[16px] uppercase text-[#2A2623] font-bold tracking-widest ml-[1.2em]">
                 Excellence Personified
               </span>
             </motion.div>
@@ -131,9 +131,9 @@ const PremiumPreloader = ({ onComplete }) => {
 
           {/* 5. Minimalist Metadata */}
           <div className="absolute top-20 left-1/2 -translate-x-1/2 flex items-center gap-20">
-            <span className="text-[9px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">London</span>
-            <span className="text-[9px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Paris</span>
-            <span className="text-[9px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Mumbai</span>
+            <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">London</span>
+            <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Paris</span>
+            <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Mumbai</span>
           </div>
 
           {/* Background Noise for texture */}

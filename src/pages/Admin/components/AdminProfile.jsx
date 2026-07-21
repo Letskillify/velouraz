@@ -11,7 +11,7 @@ import { uploadToCloudinary } from "../../../config/cloudinary";
 // ─── Sub-components ───────────────────────────────────────────────────────────
 const Field = ({ label, icon: Icon, children, isDark, full }) => (
   <div className={`rounded-xl border p-3.5 sm:p-4 ${isDark ? "border-slate-700 bg-slate-800/60" : "border-slate-100 bg-slate-50/50"} ${full ? "col-span-full" : ""}`}>
-    <label className={`flex items-center gap-1.5 mb-2 text-[10px] sm:text-[11px] font-bold uppercase tracking-widest ${isDark ? "text-slate-400" : "text-slate-400"}`}>
+    <label className={`flex items-center gap-1.5 mb-2 text-[16px] sm:text-[16px] font-bold uppercase tracking-widest ${isDark ? "text-slate-400" : "text-slate-400"}`}>
       <Icon size={11} />
       {label}
     </label>
@@ -227,11 +227,11 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
                 <h2 className={`text-base sm:text-xl font-bold leading-tight ${textPrimary}`}>
                   {profileData.displayName || adminUser?.adminId || "Admin User"}
                 </h2>
-                <p className={`text-xs sm:text-sm mt-0.5 ${textMuted}`}>
+                <p className={`text-base sm:text-sm mt-0.5 ${textMuted}`}>
                   {profileData.role || "Admin"} · {profileData.department || "Velouraz Team"}
                 </p>
                 {uploading && (
-                  <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-semibold text-amber-600">
+                  <span className="inline-flex items-center gap-1 mt-1 text-[16px] font-semibold text-amber-600">
                     <Loader2 size={10} className="animate-spin" /> Uploading photo…
                   </span>
                 )}
@@ -270,7 +270,7 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
             className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
           >
             <AlertCircle size={15} className="shrink-0 mt-0.5" />
-            <span className="flex-1 text-xs sm:text-sm">{error}</span>
+            <span className="flex-1 text-base sm:text-sm">{error}</span>
             <button onClick={() => setError("")} className="text-red-400 hover:text-red-600 flex-shrink-0">
               <X size={14} />
             </button>
@@ -290,8 +290,8 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
             <Edit3 size={14} className="text-[#811331]" />
           </div>
           <div>
-            <h3 className={`text-sm sm:text-[15px] font-bold ${textPrimary}`}>Personal Information</h3>
-            <p className={`text-xs ${textMuted}`}>Update your profile details below</p>
+            <h3 className={`text-sm sm:text-[16px] font-bold ${textPrimary}`}>Personal Information</h3>
+            <p className={`text-base ${textMuted}`}>Update your profile details below</p>
           </div>
         </div>
 
@@ -376,7 +376,7 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
         transition={{ duration: 0.3, delay: 0.16 }}
         className={`rounded-2xl border shadow-sm p-4 sm:p-6 ${cardBg}`}
       >
-        <h3 className={`text-sm sm:text-[15px] font-bold mb-4 ${textPrimary}`}>Account Credentials</h3>
+        <h3 className={`text-sm sm:text-[16px] font-bold mb-4 ${textPrimary}`}>Account Credentials</h3>
         <div className={`rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
           {[
             ["Admin ID", adminUser?.adminId || "—", true],
@@ -385,20 +385,20 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
           ].map(([key, val, mono], idx, arr) => (
             <div key={key}>
               <div className="flex items-center justify-between px-4 py-3">
-                <span className={`text-xs font-semibold ${textMuted}`}>{key}</span>
+                <span className={`text-base font-semibold ${textMuted}`}>{key}</span>
                 {key === "Account Type" ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#811331]/10 px-2.5 py-0.5 text-xs font-bold text-[#811331]">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#811331]/10 px-2.5 py-0.5 text-base font-bold text-[#811331]">
                     <Shield size={11} /> Admin
                   </span>
                 ) : (
-                  <span className={`${mono ? "font-mono" : "font-semibold"} text-xs sm:text-sm ${textPrimary}`}>{val}</span>
+                  <span className={`${mono ? "font-mono" : "font-semibold"} text-base sm:text-sm ${textPrimary}`}>{val}</span>
                 )}
               </div>
               {idx < arr.length - 1 && <div className={`border-t ${divider}`} />}
             </div>
           ))}
         </div>
-        <p className={`mt-3 text-[11px] ${textMuted}`}>
+        <p className={`mt-3 text-[16px] ${textMuted}`}>
           To change your Admin ID or password, contact a Super Admin.
         </p>
       </motion.div>

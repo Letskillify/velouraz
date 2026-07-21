@@ -381,9 +381,9 @@ const SuperAdmin = () => {
     <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-xs font-medium text-slate-400">Velauraz SuperAdmin</span>
+          <span className="text-base font-medium text-slate-400">Velauraz SuperAdmin</span>
           <ChevronRight size={12} className="text-slate-300" />
-          <span className="text-xs font-semibold text-[#811331]">{activeItem}</span>
+          <span className="text-base font-semibold text-[#811331]">{activeItem}</span>
         </div>
         <h1 className={`text-2xl font-bold tracking-tight ${isDarkMode ? "text-white" : "text-slate-900"}`}>
           {activeItem}
@@ -395,7 +395,7 @@ const SuperAdmin = () => {
       <div className="flex items-center gap-3 self-end sm:self-auto">
         <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full shadow-sm border ${isDarkMode ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"}`}>
           <span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_6px_1px_rgba(239,68,68,0.6)] animate-pulse" />
-          <span className={`text-xs font-medium ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
+          <span className={`text-base font-medium ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
             Access: <span className="font-bold text-red-500">Super User Mode</span>
           </span>
         </div>
@@ -404,7 +404,7 @@ const SuperAdmin = () => {
             setEditingProduct(null);
             setIsProductModalOpen(true);
           }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-xs font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
+          className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
         >
           <Plus size={14} />
           <span>Add Product</span>
@@ -424,14 +424,14 @@ const SuperAdmin = () => {
               <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Income</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Income</p>
                     <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{grossRevenue.toLocaleString("en-IN")}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-rose-50 text-[#811331]">
                     <TrendingUp size={20} />
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-3 text-xs text-emerald-600 font-semibold">
+                <div className="flex items-center gap-1 mt-3 text-base text-emerald-600 font-semibold">
                   <ArrowUpRight size={14} />
                   <span>Platform live transactions</span>
                 </div>
@@ -440,14 +440,14 @@ const SuperAdmin = () => {
               <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Total Orders</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Total Orders</p>
                     <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{orders.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-blue-50 text-blue-600">
                     <ShoppingBag size={20} />
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-3 text-xs text-blue-600 font-semibold">
+                <div className="flex items-center gap-1 mt-3 text-base text-blue-600 font-semibold">
                   <span>Across all regions</span>
                 </div>
               </div>
@@ -455,14 +455,14 @@ const SuperAdmin = () => {
               <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Live Catalog Products</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Live Catalog Products</p>
                     <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{products.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-[#811331]/10 text-[#811331]">
                     <Package size={20} />
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-3 text-xs text-amber-600 font-semibold">
+                <div className="flex items-center gap-1 mt-3 text-base text-amber-600 font-semibold">
                   <span>{lowStockCount} low stock alerts</span>
                 </div>
               </div>
@@ -470,14 +470,14 @@ const SuperAdmin = () => {
               <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Active Customers</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Active Customers</p>
                     <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{users.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-purple-50 text-purple-600">
                     <Users size={20} />
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-3 text-xs text-purple-600 font-semibold">
+                <div className="flex items-center gap-1 mt-3 text-base text-purple-600 font-semibold">
                   <span>Platform accounts</span>
                 </div>
               </div>
@@ -509,12 +509,12 @@ const SuperAdmin = () => {
           <div className={`rounded-2xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
             <div className="px-6 py-5 border-b border-slate-100/10">
               <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Platform Order Fulfillments</h3>
-              <p className={`text-xs ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Review platform order status and set status updates</p>
+              <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Review platform order status and set status updates</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className={`text-[11px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
+                  <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
                     <th className="px-6 py-4">Order ID</th>
                     <th className="px-6 py-4">Customer</th>
                     <th className="px-6 py-4">Date</th>
@@ -523,20 +523,20 @@ const SuperAdmin = () => {
                     <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100/10 text-xs font-medium">
+                <tbody className="divide-y divide-slate-100/10 text-base font-medium">
                   {orders.map((o) => (
                     <tr key={o.id} className="hover:bg-slate-50/5">
                       <td className="px-6 py-4 font-mono font-bold">{o.id.slice(0, 8)}</td>
                       <td className="px-6 py-4">
                         <div>
                           <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{o.customerName || "Platform Guest"}</p>
-                          <p className={`text-[10px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
+                          <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
                         </div>
                       </td>
                       <td className={`px-6 py-4 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.createdAt ? new Date(o.createdAt).toLocaleDateString("en-IN") : "Recent"}</td>
                       <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{Number(o.total || 0).toLocaleString("en-IN")}</td>
                       <td className="px-6 py-4">
-                        <span className={`inline-block px-2.5 py-1 rounded-full font-bold border text-[10px] uppercase ${statusBadgeClasses(o.status)}`}>
+                        <span className={`inline-block px-2.5 py-1 rounded-full font-bold border text-[16px] uppercase ${statusBadgeClasses(o.status)}`}>
                           {o.status || "Pending"}
                         </span>
                       </td>
@@ -544,7 +544,7 @@ const SuperAdmin = () => {
                         <select
                           value={o.status || "Pending"}
                           onChange={(e) => handleUpdateOrderStatus(o.id, e.target.value)}
-                          className="bg-transparent border border-slate-200 dark:border-slate-700 rounded-lg p-1 text-xs outline-none focus:border-[#811331]"
+                          className="bg-transparent border border-slate-200 dark:border-slate-700 rounded-lg p-1 text-base outline-none focus:border-[#811331]"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Processing">Processing</option>
@@ -566,19 +566,19 @@ const SuperAdmin = () => {
           <div className={`rounded-2xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
             <div className="px-6 py-5 border-b border-slate-100/10">
               <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Inventory Control</h3>
-              <p className={`text-xs ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Super Admin inventory controls. Perform quick stock operations</p>
+              <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Super Admin inventory controls. Perform quick stock operations</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className={`text-[11px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
+                  <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
                     <th className="px-6 py-4">Product</th>
                     <th className="px-6 py-4">Category</th>
                     <th className="px-6 py-4">Stock Level</th>
                     <th className="px-6 py-4">Adjustment</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100/10 text-xs">
+                <tbody className="divide-y divide-slate-100/10 text-base">
                   {products.map((p) => {
                     const isLow = Number(p.stock || 0) <= 10;
                     return (
@@ -588,7 +588,7 @@ const SuperAdmin = () => {
                             <img src={p.images?.[0] || p.image} alt="" className="w-10 h-10 rounded-xl object-cover bg-slate-100" />
                             <div>
                               <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{p.name}</p>
-                              <p className={`text-[10px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>SKU: {p.sku || "N/A"}</p>
+                              <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>SKU: {p.sku || "N/A"}</p>
                             </div>
                           </div>
                         </td>
@@ -604,13 +604,13 @@ const SuperAdmin = () => {
                             </button>
                             <button
                               onClick={() => handleQuickStockAdjustment(p.id, 5)}
-                              className="px-2.5 py-1 bg-[#811331]/10 text-[#811331] rounded-lg font-bold text-[10px]"
+                              className="px-2.5 py-1 bg-[#811331]/10 text-[#811331] rounded-lg font-bold text-[16px]"
                             >
                               +5
                             </button>
                             <button
                               onClick={() => handleQuickStockAdjustment(p.id, 25)}
-                              className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg font-bold text-[10px]"
+                              className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg font-bold text-[16px]"
                             >
                               +25
                             </button>
@@ -638,15 +638,15 @@ const SuperAdmin = () => {
               <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-900"} mb-2`}>Billing Statements & Gross Sales</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-xs font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Revenue</p>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Revenue</p>
                   <p className={`text-2xl font-bold mt-1 ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{grossRevenue.toLocaleString("en-IN")}</p>
                 </div>
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-xs font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Estimated Margins</p>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Estimated Margins</p>
                   <p className="text-2xl font-bold mt-1 text-emerald-600">₹{profitMargin.toLocaleString("en-IN")}</p>
                 </div>
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-xs font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Average Invoices</p>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Average Invoices</p>
                   <p className={`text-2xl font-bold mt-1 ${isDarkMode ? "text-white" : "text-slate-900"}`}>
                     ₹{orders.length ? Math.round(grossRevenue / orders.length).toLocaleString("en-IN") : 0}
                   </p>
@@ -661,26 +661,26 @@ const SuperAdmin = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className={`text-[11px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
+                    <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
                       <th className="px-6 py-4">Invoice #</th>
                       <th className="px-6 py-4">Customer</th>
                       <th className="px-6 py-4">Order Value</th>
                       <th className="px-6 py-4">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100/10 text-xs">
+                  <tbody className="divide-y divide-slate-100/10 text-base">
                     {orders.map((o) => (
                       <tr key={o.id} className="hover:bg-slate-50/5">
                         <td className="px-6 py-4 font-mono font-bold">INV-{o.id.slice(0, 6).toUpperCase()}</td>
                         <td className="px-6 py-4">
                           <div>
                             <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{o.customerName || "Platform Guest"}</p>
-                            <p className={`text-[10px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
+                            <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
                           </div>
                         </td>
                         <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{Number(o.total || 0).toLocaleString("en-IN")}</td>
                         <td className="px-6 py-4">
-                          <span className={`inline-block px-2.5 py-0.5 rounded-full font-bold border text-[9px] uppercase ${statusBadgeClasses(o.status)}`}>
+                          <span className={`inline-block px-2.5 py-0.5 rounded-full font-bold border text-[16px] uppercase ${statusBadgeClasses(o.status)}`}>
                             {o.status || "Pending"}
                           </span>
                         </td>
@@ -711,7 +711,7 @@ const SuperAdmin = () => {
         return (
           <div className="space-y-6">
             {emailStatus && (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-semibold">
+              <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-base font-semibold">
                 {emailStatus}
               </div>
             )}
@@ -720,11 +720,11 @@ const SuperAdmin = () => {
               <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
                 <div>
                   <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Remote Access Control</h3>
-                  <p className={`text-xs ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-0.5`}>Create admin accounts, assign photo, and set credentials</p>
+                  <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-0.5`}>Create admin accounts, assign photo, and set credentials</p>
                 </div>
                 <button
                   onClick={() => setIsAdminModalOpen(true)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-[#811331] text-white rounded-xl text-xs font-bold hover:bg-[#9d1a3d] transition-all"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#811331] text-white rounded-xl text-base font-bold hover:bg-[#9d1a3d] transition-all"
                 >
                   <Plus size={14} /> Add new admin
                 </button>
@@ -733,7 +733,7 @@ const SuperAdmin = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className={`text-[11px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
+                    <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
                       <th className="px-6 py-4">Administrator</th>
                       <th className="px-6 py-4">Email</th>
                       <th className="px-6 py-4">Access key</th>
@@ -741,7 +741,7 @@ const SuperAdmin = () => {
                       <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100/10 text-xs">
+                  <tbody className="divide-y divide-slate-100/10 text-base">
                     {adminsList.map((admin) => (
                       <tr key={admin.firestoreId} className="hover:bg-slate-50/5">
                         <td className="px-6 py-4">
@@ -749,20 +749,20 @@ const SuperAdmin = () => {
                             {admin.photoURL ? (
                               <img src={admin.photoURL} alt="" className="w-8 h-8 rounded-full object-cover border" />
                             ) : (
-                              <span className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold">
+                              <span className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[16px] font-bold">
                                 {admin.adminId?.charAt(0).toUpperCase()}
                               </span>
                             )}
                             <div>
                               <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{admin.displayName || admin.adminId}</p>
-                              <p className={`text-[10px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>ID: {admin.adminId}</p>
+                              <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>ID: {admin.adminId}</p>
                             </div>
                           </div>
                         </td>
                         <td className={`px-6 py-4 font-semibold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{admin.email || "No Email"}</td>
                         <td className="px-6 py-4 font-mono font-bold text-slate-600 dark:text-slate-300">{admin.password}</td>
                         <td className="px-6 py-4">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full font-bold bg-[#811331]/10 text-[#811331] text-[9px] uppercase">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full font-bold bg-[#811331]/10 text-[#811331] text-[16px] uppercase">
                             {admin.role || "Admin"}
                           </span>
                         </td>
@@ -808,13 +808,13 @@ const SuperAdmin = () => {
             <div className="text-center flex-1">
               <div className="mx-auto grid h-10 w-10 place-items-center rounded-full border border-[#e8c37b]/70 text-[#e8c37b]"><Gem size={21} /></div>
               <p className="mt-2 font-serif text-[25px] leading-none tracking-wide text-white">VELOURAZ</p>
-              <p className="mt-1 text-[8px] tracking-[.18em] text-[#e8c37b]/80">SUPER ADMIN CONSOLE</p>
+              <p className="mt-1 text-[16px] tracking-[.18em] text-[#e8c37b]/80">SUPER ADMIN CONSOLE</p>
             </div>
           )}
         </div>
       </div>
 
-      <nav className={`flex-1 overflow-y-auto py-4 text-[12px] ${collapsed ? "px-2" : "px-3"}`}>
+      <nav className={`flex-1 overflow-y-auto py-4 text-[16px] ${collapsed ? "px-2" : "px-3"}`}>
         {sidebarItems.map((item) => {
           const isActive = item.name === activeItem;
           const Icon = item.icon;
@@ -836,7 +836,7 @@ const SuperAdmin = () => {
       <div className={`border-t border-white/10 py-3 space-y-1 ${collapsed ? "px-2" : "px-3"}`}>
         <button
           onClick={() => signOut(auth)}
-          className={`flex w-full items-center rounded-lg px-2 py-2 text-[12px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
+          className={`flex w-full items-center rounded-lg px-2 py-2 text-[16px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
         >
           <LogOut size={15} />
           {!collapsed && "Logout"}
@@ -854,7 +854,7 @@ const SuperAdmin = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="w-10 h-10 border-[3px] border-white/10 border-t-[#811331] rounded-full"
           />
-          <p className="text-xs text-white/30 font-medium tracking-widest uppercase">Loading...</p>
+          <p className="text-base text-white/30 font-medium tracking-widest uppercase">Loading...</p>
         </div>
       </div>
     );
@@ -887,7 +887,7 @@ const SuperAdmin = () => {
             <label className={`flex items-center gap-3 rounded-xl border px-3.5 py-2 ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50/50 border-slate-200 text-slate-700"} transition-colors`}>
               <Search size={17} className="text-slate-400" />
               <input
-                className="w-full bg-transparent text-xs outline-none"
+                className="w-full bg-transparent text-base outline-none"
                 placeholder="Search products, orders, customers…"
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
@@ -906,10 +906,10 @@ const SuperAdmin = () => {
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-xs font-bold text-white">SA</span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-base font-bold text-white">SA</span>
               <div>
-                <p className={`text-xs font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Super Admin</p>
-                <p className="text-[11px] text-slate-400">{superAdminUser.email}</p>
+                <p className={`text-base font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Super Admin</p>
+                <p className="text-[16px] text-slate-400">{superAdminUser.email}</p>
               </div>
             </div>
           </div>
@@ -923,7 +923,7 @@ const SuperAdmin = () => {
             </div>
             <div>
               <p className={`text-sm font-bold tracking-tight leading-none ${isDarkMode ? "text-white" : "text-slate-900"}`}>Velauraz</p>
-              <p className="text-[9px] font-medium tracking-widest uppercase mt-0.5 text-slate-400">SuperAdmin</p>
+              <p className="text-[16px] font-medium tracking-widest uppercase mt-0.5 text-slate-400">SuperAdmin</p>
             </div>
           </div>
           <button
@@ -954,7 +954,7 @@ const SuperAdmin = () => {
               <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
                 <div>
                   <h2 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>{editingProduct ? "Edit Product" : "Add New Product"}</h2>
-                  <p className="text-xs text-slate-400">Super admins can manage catalog items directly</p>
+                  <p className="text-base text-slate-400">Super admins can manage catalog items directly</p>
                 </div>
                 <button type="button" onClick={() => setIsProductModalOpen(false)} className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-400"><X size={16} /></button>
               </div>
@@ -978,59 +978,59 @@ const SuperAdmin = () => {
               <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
                 <div>
                   <h2 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Grant Admin Access</h2>
-                  <p className="text-xs text-slate-400">Add admin credentials & email access details</p>
+                  <p className="text-base text-slate-400">Add admin credentials & email access details</p>
                 </div>
                 <button type="button" onClick={() => setIsAdminModalOpen(false)} className="p-1.5 rounded-lg text-slate-400"><X size={16} /></button>
               </div>
               <div className="px-6 py-6">
                 <form onSubmit={handleCreateAdmin} className="space-y-4">
                   <div className="space-y-1">
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Admin ID / User Name</label>
+                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Admin ID / User Name</label>
                     <input
                       type="text" required value={newAdmin.adminId}
                       onChange={(e) => setNewAdmin({ ...newAdmin, adminId: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-xs outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
                       placeholder="e.g. catalog_mgr"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Display Name / Full Name</label>
+                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Display Name / Full Name</label>
                     <input
                       type="text" value={newAdmin.displayName}
                       onChange={(e) => setNewAdmin({ ...newAdmin, displayName: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-xs outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
                       placeholder="e.g. John Doe"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">User's Email</label>
+                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">User's Email</label>
                     <input
                       type="email" required value={newAdmin.email}
                       onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-xs outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
                       placeholder="john@velouraz.com"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Access Password</label>
+                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Access Password</label>
                     <input
                       type="text" required value={newAdmin.password}
                       onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-xs outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
                       placeholder="Password"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Photo URL</label>
+                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Photo URL</label>
                     <div className="flex gap-2">
                       <input
                         type="text" value={newAdmin.photoURL}
                         onChange={(e) => setNewAdmin({ ...newAdmin, photoURL: e.target.value })}
-                        className={`flex-1 px-4 py-2.5 rounded-xl text-xs outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
+                        className={`flex-1 px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
                         placeholder="Image Link"
                       />
                       <label className="flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800">
@@ -1038,12 +1038,12 @@ const SuperAdmin = () => {
                         <input type="file" accept="image/*" className="hidden" onChange={handleAdminPhotoUpload} />
                       </label>
                     </div>
-                    {uploadingAdminPhoto && <p className="text-[10px] text-amber-600 font-semibold animate-pulse">Uploading photo...</p>}
+                    {uploadingAdminPhoto && <p className="text-[16px] text-amber-600 font-semibold animate-pulse">Uploading photo...</p>}
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-3 bg-[#811331] hover:bg-[#9d1a3d] text-white text-xs font-bold rounded-xl transition-all shadow-md mt-2"
+                    className="w-full py-3 bg-[#811331] hover:bg-[#9d1a3d] text-white text-base font-bold rounded-xl transition-all shadow-md mt-2"
                   >
                     Grant Access & Send Email
                   </button>

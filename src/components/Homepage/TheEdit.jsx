@@ -12,7 +12,7 @@ const TheEdit = () => {
         <div className="text-center mb-16 space-y-4">
           <div className="flex items-center justify-center gap-4 text-[#7B6D63]">
             <div className="w-8 lg:w-16 h-[1px] bg-[#D8CBBE]" />
-            <span className="text-[14px] md:text-[12px] tracking-[0.4em] font-bold uppercase">The Edit</span>
+            <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold uppercase">The Edit</span>
             <div className="w-8 lg:w-16 h-[1px] bg-[#D8CBBE]" />
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#2A2623] leading-tight">
@@ -36,18 +36,18 @@ const TheEdit = () => {
             <div className="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-6 z-10 relative">
               <div className="flex items-center gap-3 text-white md:text-[#7A0E2E]">
                 <Sparkles size={16} className="group-hover:rotate-12 transition-transform duration-500" />
-                <span className="text-[14px] tracking-[0.3em] font-bold uppercase">Trending Luxe</span>
+                <span className="text-[16px] tracking-[0.3em] font-bold uppercase">Trending Luxe</span>
               </div>
               <h3 className="text-3xl md:text-4xl font-serif text-white md:text-[#2A2623] leading-tight md:group-hover:text-[#7A0E2E] transition-colors duration-500">
                 Bold. Beautiful. <br />
                 Unmistakably You.
               </h3>
-              <p className="text-[14px]  text-white/80 md:text-[#7B6D63] font-serif leading-relaxed max-w-[250px]">
+              <p className="text-[16px]  text-white/80 md:text-[#7B6D63] font-serif leading-relaxed max-w-[250px]">
                 This season's must-have designs, chosen for you.
               </p>
               <Link 
                 to="/shop?filter=trending"
-                className="bg-[#7A0E2E] text-white px-8 py-3.5 text-[14px] tracking-[0.2em] font-bold uppercase transition-all w-fit shadow-xl hover:bg-[#5E0B24] group-hover:scale-105 active:scale-95"
+                className="bg-[#7A0E2E] text-white px-8 py-3.5 text-[16px] tracking-[0.2em] font-bold uppercase transition-all w-fit shadow-xl hover:bg-[#5E0B24] group-hover:scale-105 active:scale-95"
               >
                 Shop Trending
               </Link>
@@ -73,18 +73,18 @@ const TheEdit = () => {
             <div className="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-6 z-10 relative">
               <div className="flex items-center gap-3 text-white md:text-[#7A0E2E]">
                 <Heart size={16} className="group-hover:scale-110 transition-transform duration-500" />
-                <span className="text-[14px] tracking-[0.3em] font-bold uppercase">Best Sellers</span>
+                <span className="text-[16px] tracking-[0.3em] font-bold uppercase">Best Sellers</span>
               </div>
               <h3 className="text-3xl md:text-4xl font-serif text-white md:text-[#2A2623] leading-tight md:group-hover:text-[#7A0E2E] transition-colors duration-500">
                 Loved for a Reason. <br />
                 Chosen by You.
               </h3>
-              <p className="text-[14px] text-white/80 md:text-[#7B6D63] font-serif leading-relaxed max-w-[250px]">
+              <p className="text-[16px] text-white/80 md:text-[#7B6D63] font-serif leading-relaxed max-w-[250px]">
                 Customer favorites that never go out of style.
               </p>
               <Link 
                 to="/shop?filter=best-sellers"
-                className="bg-[#7A0E2E] text-white px-8 py-3.5 text-[14px] tracking-[0.2em] font-bold uppercase transition-all w-fit shadow-xl hover:bg-[#5E0B24] group-hover:scale-105 active:scale-95"
+                className="bg-[#7A0E2E] text-white px-8 py-3.5 text-[16px] tracking-[0.2em] font-bold uppercase transition-all w-fit shadow-xl hover:bg-[#5E0B24] group-hover:scale-105 active:scale-95"
               >
                 Shop Best Sellers
               </Link>
