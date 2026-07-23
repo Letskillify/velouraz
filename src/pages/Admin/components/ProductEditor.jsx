@@ -342,6 +342,14 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
         scheduledAt: scheduleEnabled ? values.scheduledAt : null,
       };
 
+      // Clean undefined fields to prevent Firestore crashes
+      delete payload._tags;
+      Object.keys(payload).forEach((key) => {
+        if (payload[key] === undefined) {
+          delete payload[key];
+        }
+      });
+
       if (product?.id) await updateProduct(product.id, payload);
       else await createProduct(payload, { status: intent, visibility: values.visibility, images });
 
