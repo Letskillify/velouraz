@@ -62,6 +62,7 @@ import ProductEditor from "./components/ProductEditor";
 import CatalogManager from "./components/CatalogManager";
 import AdminProfile from "./components/AdminProfile";
 import SiteSettingsManager from "./components/SiteSettingsManager";
+import BlogManager from "./components/BlogManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -70,6 +71,7 @@ const sidebarItems = [
   { name: "Products", icon: Package, desc: "Catalog" },
   { name: "Orders", icon: ShoppingBag, desc: "Transactions" },
   { name: "Categories", icon: List, desc: "Structure" },
+  { name: "Blogs", icon: FileText, desc: "Journal & News" },
   { name: "Users", icon: Users, desc: "Accounts" },
   { name: "Media", icon: Image, desc: "Assets" },
   { name: "Profile", icon: Users, desc: "My Account" },
@@ -344,6 +346,8 @@ const Admin = () => {
         );
       case "Media":
         return <MediaLibrary />;
+      case "Blogs":
+        return <BlogManager />;
       case "Banners":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
       case "Profile":
@@ -457,7 +461,7 @@ const Admin = () => {
         {!collapsed && (
           <>
             <p className="mb-2 mt-4 px-3 text-[16px] font-medium tracking-wide text-white/50">CONTENT</p>
-            {[["Pages", FileText, "Pages"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 onClick={() => setActiveItem(target)}
@@ -471,7 +475,7 @@ const Admin = () => {
         {collapsed && (
           <>
             <div className="my-2 border-t border-white/10" />
-            {[["Pages", FileText, "Pages"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 title={label}

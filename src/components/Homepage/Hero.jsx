@@ -229,7 +229,7 @@ const Hero = () => {
               >
                 <span style={{ color: GOLD, flexShrink: 0 }}>{u.icon}</span>
                 <div>
-                  <p className="text-[16px] tracking-[0.18em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
+                  <p className="text-[14px] tracking-[0.18em] font-bold uppercase mb-0.5" style={{ color: GOLD }}>
                     {u.title}
                   </p>
                   <p className="text-[16px] text-white/50 font-light" style={{ fontFamily: SERIF }}>

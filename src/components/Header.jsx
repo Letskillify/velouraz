@@ -218,7 +218,7 @@ const LuxuryHeader = () => {
     },
     { name: 'Journal',          href: '/journal' },
     { name: 'Our Story',        href: '/about' },
-    { name: 'Exclusive Offers', href: '/offers' },
+   
   ];
 
   /* ─── Derived header style ────────────────────────── */
@@ -241,7 +241,7 @@ const LuxuryHeader = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.35 }}
-            className="text-[16px] md:text-[16px] tracking-[0.18em] font-medium text-white/90 truncate max-w-full"
+            className="text-[14px] md:text-[14px] tracking-[0.18em] font-medium text-white/90 truncate max-w-full"
           >
             {announcements[annIndex]}
           </motion.p>
@@ -282,9 +282,19 @@ const LuxuryHeader = () => {
 
             {/* Desktop icon buttons */}
             <div className="hidden lg:flex items-center gap-2">
-              <HdrIconBtn onClick={() => setSearchOpen(true)} label="Search" scrolled={scrolled}>
-                <Search size={15} strokeWidth={1.5} />
-              </HdrIconBtn>
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 group cursor-pointer"
+                style={{
+                  borderColor: scrolled ? 'rgba(42,38,35,0.18)' : 'rgba(255,255,255,0.22)',
+                  color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)',
+                }}
+              >
+                <Search size={16} strokeWidth={1.5} className="group-hover:text-[#7A0E2E] transition-colors" />
+                <span className="text-[13px] font-bold tracking-[0.15em] uppercase group-hover:text-[#7A0E2E] transition-colors font-sans">
+                  Search
+                </span>
+              </button>
             </div>
 
             {/* Mobile Search */}
@@ -382,7 +392,7 @@ const LuxuryHeader = () => {
           className="hidden lg:block"
           style={{ borderTop: `1px solid ${scrolled ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)'}` }}
         >
-          <div className="max-w-[1440px] mx-auto flex justify-center">
+          <div className="max-w-[1440px] mx-auto flex justify-center gap-2">
             {navLinks.map((link) => (
               <div
                 key={link.name}
@@ -392,11 +402,11 @@ const LuxuryHeader = () => {
               >
                 <Link
                   to={link.href}
-                  className="flex items-center gap-1.5 px-7 py-4 relative group transition-colors duration-200"
+                  className="flex items-center gap-2 px-6 py-3.5 relative group transition-colors duration-200"
                   style={{
                     color: megaMenu === link.name ? '#7A0E2E' : (scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)'),
-                    fontSize: '10.5px',
-                    letterSpacing: '0.22em',
+                    fontSize: '14px',
+                    letterSpacing: '0.18em',
                     fontWeight: 600,
                     textTransform: 'uppercase',
                   }}
@@ -404,14 +414,14 @@ const LuxuryHeader = () => {
                   {link.name}
                   {link.megaMenu && (
                     <ChevronDown
-                      size={11}
+                      size={13}
                       className="transition-transform duration-300"
                       style={{ transform: megaMenu === link.name ? 'rotate(180deg)' : 'none' }}
                     />
                   )}
                   {/* Gold underline */}
                   <span
-                    className="absolute bottom-0 left-6 right-6 h-[1.5px] transition-all duration-300 origin-left"
+                    className="absolute bottom-0 left-4 right-4 h-[2px] transition-all duration-300 origin-left"
                     style={{
                       background: GOLD,
                       transform: megaMenu === link.name ? 'scaleX(1)' : 'scaleX(0)',

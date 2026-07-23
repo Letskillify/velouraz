@@ -13,45 +13,45 @@ import 'swiper/css/navigation';
 const staticCollections = [
   {
     id: '1',
-    country: 'TURKEY',
+    country: 'Turkey',
     collection: 'EVIL EYE COLLECTION',
     image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/turkey'
+    link: '/shop?country=Turkey'
   },
   {
     id: '2',
-    country: 'JAPAN',
+    country: 'Japan',
     collection: 'MIYUKI COLLECTION',
     image: 'https://images.unsplash.com/photo-1544413660-299165566b1d?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/japan'
+    link: '/shop?country=Japan'
   },
   {
     id: '3',
-    country: 'CHINA',
+    country: 'China',
     collection: 'JADE COLLECTION',
     image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/china'
+    link: '/shop?country=China'
   },
   {
     id: '4',
-    country: 'SOUTH KOREA',
+    country: 'South Korea',
     collection: 'PEARLS & SILVER Collection',
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/south-korea'
+    link: '/shop?country=South Korea'
   },
   {
     id: '5',
-    country: 'INDIA',
+    country: 'India',
     collection: 'HERITAGE COLLECTION',
     image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/india'
+    link: '/shop?country=India'
   },
   {
     id: '6',
-    country: 'EUROPE',
+    country: 'Europe',
     collection: 'CHARMS COLLECTION',
     image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
-    link: '/world-edit/europe'
+    link: '/shop?country=Europe'
   }
 ];
 
@@ -68,7 +68,15 @@ const PromoSlider = () => {
   useEffect(() => {
     return onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
       if (!snap.empty) {
-        setCollections(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setCollections(snap.docs.map((d) => {
+          const data = d.data();
+          const countryName = data.country || '';
+          return {
+            id: d.id,
+            ...data,
+            link: `/shop?country=${encodeURIComponent(countryName)}`
+          };
+        }));
       } else {
         setCollections(staticCollections);
       }
@@ -195,7 +203,7 @@ const PromoSlider = () => {
                     </h3>
 
                     {/* Collection Subtitle */}
-                    <p className="text-[#C8A97A] text-[16px] font-bold tracking-[0.15em] uppercase pb-1.5 break-words">
+                    <p className="text-[#C8A97A] text-[13px] font-bold tracking-[0.15em] uppercase pb-1.5 break-words">
                       {item.collection}
                     </p>
 

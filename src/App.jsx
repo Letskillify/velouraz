@@ -30,6 +30,9 @@ const Checkout = lazy(() => import("./pages/Checkout"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const WorldEdit = lazy(() => import("./pages/WorldEdit"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const AppRoutes = () => {
@@ -64,6 +67,10 @@ const AppRoutes = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="/return-policy" element={<ReturnPolicy />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogDetail />} />
+          <Route path="/journal" element={<Blog />} />
+          <Route path="/world-edit" element={<WorldEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
