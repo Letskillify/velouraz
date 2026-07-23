@@ -292,8 +292,8 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Micro Guarantees Strip below Image */}
-            <div className="grid grid-cols-3 gap-3 pt-2">
+            {/* Micro Guarantees Strip below Image - Hidden on Mobile */}
+            <div className="hidden sm:grid sm:grid-cols-3 gap-3 pt-2">
               <div className="bg-[#FFFDF9] border border-[#EBE3D7] rounded-2xl p-3 flex items-center gap-3 text-left shadow-sm">
                 <Award className="text-[#B58E58] flex-shrink-0" size={20} />
                 <div>
@@ -393,11 +393,11 @@ const ProductDetail = () => {
             {/* Pricing Section */}
             <div className="bg-[#FFFDF9] p-6 rounded-3xl border border-[#EBE3D7] space-y-3 shadow-sm">
               <div className="flex items-baseline gap-4">
-                <span className="font-serif text-3xl sm:text-4xl font-light text-[#222222]">
+                <span className="font-sans font-bold text-3xl sm:text-4xl text-[#222222]">
                   ₹{Number(product.price).toLocaleString()}
                 </span>
                 {product.original_price > product.price && (
-                  <span className="font-serif text-lg text-[#7B6D63]/50 line-through">
+                  <span className="font-sans font-semibold text-base sm:text-lg text-[#7B6D63]/60 line-through">
                     ₹{Number(product.original_price).toLocaleString()}
                   </span>
                 )}
@@ -459,28 +459,28 @@ const ProductDetail = () => {
               </label>
 
               {/* Main Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0 || cartLoading}
-                  className={`flex-1 h-14 text-xs font-bold uppercase tracking-[0.25em] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-md ${
+                  className={`w-full sm:flex-1 min-h-[58px] py-4 px-6 text-sm font-bold uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md ${
                     product.stock <= 0
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      ? 'bg-[#EAE6E1] text-[#8C857E] border border-[#D8D2C9] cursor-not-allowed'
                       : isInCart(product.id)
                       ? 'bg-[#7A0E2E] text-white hover:bg-[#5E0B24]'
                       : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E]'
                   }`}
                 >
-                  {cartLoading ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
+                  {cartLoading ? <Loader2 size={18} className="animate-spin" /> : <ShoppingBag size={18} />}
                   {product.stock <= 0 ? 'Out of Stock' : isInCart(product.id) ? 'Added to Bag' : 'Add to Shopping Bag'}
                 </button>
 
                 <button
                   onClick={handleBuyNow}
                   disabled={product.stock <= 0}
-                  className={`flex-1 h-14 text-xs font-bold uppercase tracking-[0.25em] rounded-2xl transition-all duration-300 cursor-pointer shadow-md ${
+                  className={`w-full sm:flex-1 min-h-[58px] py-4 px-6 text-sm font-bold uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 flex items-center justify-center cursor-pointer shadow-md ${
                     product.stock <= 0
-                      ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed'
+                      ? 'bg-[#F5F2ED] border border-[#E2DDD4] text-[#A29A90] cursor-not-allowed'
                       : 'border-2 border-[#7A0E2E] text-[#7A0E2E] hover:bg-[#7A0E2E] hover:text-white'
                   }`}
                 >
@@ -638,6 +638,36 @@ const ProductDetail = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Mobile Floating Sticky Bar for Ultra-Premium Mobile UX */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FFFDF9]/95 backdrop-blur-md border-t border-[#EBE3D7] p-3 px-4 shadow-[0_-5px_25px_rgba(0,0,0,0.08)] flex items-center gap-2.5">
+        <button
+          onClick={handleAddToCart}
+          disabled={product.stock <= 0 || cartLoading}
+          className={`flex-1 min-h-[50px] py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            product.stock <= 0
+              ? 'bg-[#EAE6E1] text-[#8C857E] border border-[#D8D2C9] cursor-not-allowed'
+              : isInCart(product.id)
+              ? 'bg-[#7A0E2E] text-white'
+              : 'bg-[#2A2623] text-white'
+          }`}
+        >
+          {cartLoading ? <Loader2 size={16} className="animate-spin" /> : <ShoppingBag size={16} />}
+          {product.stock <= 0 ? 'Out of Stock' : isInCart(product.id) ? 'In Bag' : 'Add to Bag'}
+        </button>
+
+        <button
+          onClick={handleBuyNow}
+          disabled={product.stock <= 0}
+          className={`flex-1 min-h-[50px] py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center cursor-pointer ${
+            product.stock <= 0
+              ? 'bg-[#F5F2ED] border border-[#E2DDD4] text-[#A29A90] cursor-not-allowed'
+              : 'border-2 border-[#7A0E2E] text-[#7A0E2E] bg-white'
+          }`}
+        >
+          Buy Now
+        </button>
+      </div>
 
       <style dangerouslySetInnerHTML={{__html: `
         .scrollbar-hide::-webkit-scrollbar { display: none; }
