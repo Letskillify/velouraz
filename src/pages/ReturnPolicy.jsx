@@ -33,15 +33,15 @@ const ReturnPolicy = () => {
           <div className="grid gap-20 lg:gap-32">
             {/* Return Process */}
             <div className="grid md:grid-cols-12 gap-10 items-start group">
-              <div className="md:col-span-4 flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="md:col-span-4 flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-14 h-14 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <RefreshCcw size={24} />
                 </div>
                 <h2 className="text-[16px] font-bold uppercase tracking-[0.4em]">Return Process</h2>
               </div>
               <div className="md:col-span-8 space-y-8">
                 <p className="text-base sm:text-lg text-[#7B6D63] leading-relaxed font-light">
-                  Returns are only accepted for defective products and must be made within 7 days of purchase. A clear video of the product unboxing is required as proof to process any return request. The product must be unused, in its original packaging, with the tag intact, and should include the invoice. To start the return process for defective products, please contact us at <a href="mailto:info@velouraz.in" className="text-[#7A0E2E] border-b-2 border-[#7A0E2E]/20 hover:border-[#7A0E2E] transition-all font-bold">info@velouraz.in</a>.
+                  Returns are only accepted for defective products and must be made within 7 days of purchase. A clear video of the product unboxing is required as proof to process any return request. The product must be unused, in its original packaging, with the tag intact, and should include the invoice. To start the return process for defective products, please contact us at <a href="mailto:info@velouraz.in" className="text-[#2e0e43] border-b-2 border-[#2e0e43]/20 hover:border-[#2e0e43] transition-all font-bold">info@velouraz.in</a>.
                 </p>
                 <div className="p-10 bg-white/40 rounded-[32px] border border-[#D8CBBE]/30 shadow-sm italic">
                   <p className="text-base text-[#2A2623] leading-relaxed font-serif">
@@ -53,8 +53,8 @@ const ReturnPolicy = () => {
 
             {/* Return Charges */}
             <div className="grid md:grid-cols-12 gap-10 items-start group">
-              <div className="md:col-span-4 flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="md:col-span-4 flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-14 h-14 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Globe size={24} />
                 </div>
                 <h2 className="text-[16px] font-bold uppercase tracking-[0.4em]">Return Charges</h2>
@@ -68,8 +68,8 @@ const ReturnPolicy = () => {
 
             {/* How to Initiate */}
             <div className="grid md:grid-cols-12 gap-10 items-start group">
-              <div className="md:col-span-4 flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="md:col-span-4 flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-14 h-14 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Sparkles size={24} />
                 </div>
                 <h2 className="text-[16px] font-bold uppercase tracking-[0.4em]">Refunding Steps</h2>
@@ -82,7 +82,7 @@ const ReturnPolicy = () => {
                     "Ensure all returns are in their original condition with the invoice included."
                   ].map((step, i) => (
                     <li key={i} className="flex gap-4 text-base sm:text-lg text-[#7B6D63] font-light leading-relaxed">
-                      <span className="text-[#7A0E2E] font-bold">•</span>
+                      <span className="text-[#2e0e43] font-bold">•</span>
                       {step}
                     </li>
                   ))}
@@ -92,8 +92,8 @@ const ReturnPolicy = () => {
 
             {/* Refunds */}
             <div className="grid md:grid-cols-12 gap-10 items-start group">
-              <div className="md:col-span-4 flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-14 h-14 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="md:col-span-4 flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-14 h-14 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <ShieldCheck size={24} />
                 </div>
                 <h2 className="text-[16px] font-bold uppercase tracking-[0.4em]">Refunds</h2>

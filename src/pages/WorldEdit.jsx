@@ -145,7 +145,7 @@ const WorldEdit = () => {
             <span className="w-8 h-px bg-[#B58E58]" />
           </div>
           <h2 className="font-serif font-light text-3xl md:text-5xl text-[#222222]">
-            Curated by <span className="italic text-[#7A0E2E]">Country & Culture</span>
+            Curated by <span className="italic text-[#2e0e43]">Country & Culture</span>
           </h2>
           <p className="text-xs md:text-sm text-[#7B6D63] font-serif font-light leading-relaxed">
             Select a region below to discover handcrafted statement pieces, traditional motifs, and iconic craftsmanship from across the globe.
@@ -158,8 +158,8 @@ const WorldEdit = () => {
             onClick={() => setSelectedCountry('All')}
             className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
               selectedCountry === 'All'
-                ? 'bg-[#7A0E2E] text-white shadow-md'
-                : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#7A0E2E]'
+                ? 'bg-[#2e0e43] text-white shadow-md'
+                : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
             }`}
           >
             🌐 All Countries ({defaultCountries.length})
@@ -170,8 +170,8 @@ const WorldEdit = () => {
               onClick={() => setSelectedCountry(country.name)}
               className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
                 selectedCountry === country.name
-                  ? 'bg-[#7A0E2E] text-white shadow-md'
-                  : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#7A0E2E]'
+                  ? 'bg-[#2e0e43] text-white shadow-md'
+                  : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
               }`}
             >
               <span>{country.flag}</span>
@@ -215,7 +215,7 @@ const WorldEdit = () => {
                   </div>
 
                   {/* Dynamic Product Count */}
-                  <div className="absolute top-4 right-4 bg-[#7A0E2E] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md">
+                  <div className="absolute top-4 right-4 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md">
                     {countryCounts[c.name] || 0} Products Available
                   </div>
 
@@ -256,7 +256,7 @@ const WorldEdit = () => {
               <div className="p-6 pt-0 mt-auto">
                 <button
                   onClick={() => navigate(`/shop?country=${encodeURIComponent(c.name)}`)}
-                  className="w-full h-12 bg-[#2A2623] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 group-hover:bg-[#7A0E2E] transition-all duration-300 cursor-pointer shadow-sm"
+                  className="w-full h-12 bg-[#2A2623] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 group-hover:bg-[#2e0e43] transition-all duration-300 cursor-pointer shadow-sm"
                 >
                   Explore {c.name} Collection <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </button>
@@ -278,7 +278,7 @@ const WorldEdit = () => {
 
               <button
                 onClick={() => navigate(`/shop${selectedCountry !== 'All' ? `?country=${encodeURIComponent(selectedCountry)}` : ''}`)}
-                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#7A0E2E] hover:text-[#2A2623] transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#2e0e43] hover:text-[#2A2623] transition-colors cursor-pointer"
               >
                 View All {selectedCountry !== 'All' ? selectedCountry : ''} Products in Shop <ArrowRight size={14} />
               </button>
@@ -308,7 +308,7 @@ const WorldEdit = () => {
                     <span className="text-[10px] font-semibold text-[#B58E58] uppercase tracking-wider block">
                       {product.category || 'Jewellery'}
                     </span>
-                    <h4 className="font-serif text-sm font-bold text-[#2A2623] truncate group-hover:text-[#7A0E2E] transition-colors">
+                    <h4 className="font-serif text-sm font-bold text-[#2A2623] truncate group-hover:text-[#2e0e43] transition-colors">
                       {product.name}
                     </h4>
                     <p className="font-serif text-base font-light text-[#222222]">

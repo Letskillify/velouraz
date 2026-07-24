@@ -32,8 +32,8 @@ const PrivacyPolicy = () => {
           
           <div className="space-y-20 sm:space-y-24 text-[#7B6D63] leading-relaxed tracking-wide text-base sm:text-lg font-light">
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <ShieldCheck size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">01. Commitment to Privacy</h2>
@@ -46,8 +46,8 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Database size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">02. Data We Collect</h2>
@@ -64,7 +64,7 @@ const PrivacyPolicy = () => {
                   { label: "Technical Data", desc: "IP address, login data, browser type and version" }
                 ].map((item, i) => (
                   <li key={i} className="flex gap-4 items-start">
-                    <span className="text-[#7A0E2E] font-bold mt-1.5">•</span>
+                    <span className="text-[#2e0e43] font-bold mt-1.5">•</span>
                     <span><strong className="text-[#2A2623] font-bold">{item.label}:</strong> {item.desc}</span>
                   </li>
                 ))}
@@ -72,8 +72,8 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Eye size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">03. How We Use Your Data</h2>
@@ -88,7 +88,7 @@ const PrivacyPolicy = () => {
                   "Where we need to comply with a legal obligation."
                 ].map((step, i) => (
                   <li key={i} className="flex gap-4">
-                    <span className="text-[#7A0E2E] font-bold">•</span>
+                    <span className="text-[#2e0e43] font-bold">•</span>
                     {step}
                   </li>
                 ))}
@@ -96,8 +96,8 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Lock size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">04. Data Security</h2>

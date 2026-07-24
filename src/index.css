@@ -12,7 +12,7 @@
     --font-script: "Italianno", cursive;
 
     /* Luxury Palette */
-    --color-primary-burgundy: #7A0E2E;
+    --color-primary-burgundy: #2e0e43;
     --color-royal-burgundy: #5E0B24;
     --color-dusty-wine: #A64D68;
     --color-warm-ivory: #F8F4EF;
@@ -54,7 +54,7 @@
 
 /* Register luxury colors in Tailwind v4 */
 @theme {
-  --color-primary-burgundy: #7A0E2E;
+  --color-primary-burgundy: #2e0e43;
   --color-royal-burgundy: #5E0B24;
   --color-dusty-wine: #A64D68;
   --color-warm-ivory: #F8F4EF;

@@ -173,10 +173,10 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center gap-4">
         <div className="relative flex items-center justify-center">
-          <div className="w-14 h-14 border-2 border-[#7A0E2E]/20 border-t-[#7A0E2E] rounded-full animate-spin" />
-          <Gem size={20} className="absolute text-[#7A0E2E]" />
+          <div className="w-14 h-14 border-2 border-[#2e0e43]/20 border-t-[#2e0e43] rounded-full animate-spin" />
+          <Gem size={20} className="absolute text-[#2e0e43]" />
         </div>
-        <p className="text-xs uppercase tracking-[0.4em] text-[#7A0E2E] font-bold">Unveiling Masterpiece</p>
+        <p className="text-xs uppercase tracking-[0.4em] text-[#2e0e43] font-bold">Unveiling Masterpiece</p>
       </div>
     );
   }
@@ -189,7 +189,7 @@ const ProductDetail = () => {
         <p className="text-xs text-[#7B6D63] max-w-sm">Explore our curated collections for similar high jewellery designs.</p>
         <button 
           onClick={() => navigate('/shop')} 
-          className="px-8 py-3 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-lg"
+          className="px-8 py-3 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-lg"
         >
           Explore Catalogue
         </button>
@@ -231,13 +231,13 @@ const ProductDetail = () => {
                       onClick={() => setSelectedImageIndex(i)}
                       className={`flex-shrink-0 w-16 h-20 md:w-20 md:h-24 rounded-2xl overflow-hidden border-2 transition-all duration-300 relative group cursor-pointer ${
                         selectedImageIndex === i 
-                          ? 'border-[#7A0E2E] ring-2 ring-[#7A0E2E]/20 shadow-md scale-105' 
+                          ? 'border-[#2e0e43] ring-2 ring-[#2e0e43]/20 shadow-md scale-105' 
                           : 'border-[#EBE3D7] opacity-60 hover:opacity-100'
                       }`}
                     >
                       <img src={img} alt="" className="w-full h-full object-cover" />
                       {selectedImageIndex === i && (
-                        <div className="absolute inset-0 bg-[#7A0E2E]/10" />
+                        <div className="absolute inset-0 bg-[#2e0e43]/10" />
                       )}
                     </button>
                   ))}
@@ -265,7 +265,7 @@ const ProductDetail = () => {
                   {/* Floating Luxe Badges */}
                   <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none z-10">
                     {discountPercent > 0 && (
-                      <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-lg text-[10px] uppercase font-bold tracking-[0.2em] shadow-md backdrop-blur-md">
+                      <span className="bg-[#2e0e43] text-white px-3 py-1.5 rounded-lg text-[10px] uppercase font-bold tracking-[0.2em] shadow-md backdrop-blur-md">
                         Save {discountPercent}%
                       </span>
                     )}
@@ -274,7 +274,7 @@ const ProductDetail = () => {
                         Only {product.stock} Left
                       </span>
                     )}
-                    <span className="bg-[#FFFDF9]/90 text-[#7A0E2E] border border-[#B58E58]/30 px-3 py-1 rounded-lg text-[10px] uppercase font-bold tracking-[0.18em] shadow-sm backdrop-blur-md flex items-center gap-1">
+                    <span className="bg-[#FFFDF9]/90 text-[#2e0e43] border border-[#B58E58]/30 px-3 py-1 rounded-lg text-[10px] uppercase font-bold tracking-[0.18em] shadow-sm backdrop-blur-md flex items-center gap-1">
                       <Sparkles size={11} /> 100% Anti-Tarnish
                     </span>
                   </div>
@@ -326,7 +326,7 @@ const ProductDetail = () => {
             {/* Header: Category & Share */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="bg-[#7A0E2E]/10 text-[#7A0E2E] text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-md">
+                <span className="bg-[#2e0e43]/10 text-[#2e0e43] text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-md">
                   {product.category || "Fine Jewellery"}
                 </span>
                 {product.country && (
@@ -342,8 +342,8 @@ const ProductDetail = () => {
                   disabled={wishlistLoading}
                   className={`p-2.5 rounded-full border transition-all cursor-pointer ${
                     isInWishlist(product.id)
-                      ? 'bg-[#7A0E2E] text-white border-[#7A0E2E] shadow-sm'
-                      : 'bg-[#FFFDF9] text-[#2A2623] border-[#EBE3D7] hover:border-[#7A0E2E]'
+                      ? 'bg-[#2e0e43] text-white border-[#2e0e43] shadow-sm'
+                      : 'bg-[#FFFDF9] text-[#2A2623] border-[#EBE3D7] hover:border-[#2e0e43]'
                   }`}
                   title="Wishlist"
                 >
@@ -352,7 +352,7 @@ const ProductDetail = () => {
 
                 <button
                   onClick={handleShare}
-                  className="p-2.5 rounded-full bg-[#FFFDF9] border border-[#EBE3D7] text-[#2A2623] hover:border-[#7A0E2E] transition-all cursor-pointer relative"
+                  className="p-2.5 rounded-full bg-[#FFFDF9] border border-[#EBE3D7] text-[#2A2623] hover:border-[#2e0e43] transition-all cursor-pointer relative"
                   title="Share Article"
                 >
                   {copiedLink ? <Check size={16} className="text-emerald-600" /> : <Share2 size={16} />}
@@ -402,7 +402,7 @@ const ProductDetail = () => {
                   </span>
                 )}
                 {discountPercent > 0 && (
-                  <span className="bg-[#7A0E2E]/10 text-[#7A0E2E] text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                  <span className="bg-[#2e0e43]/10 text-[#2e0e43] text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
                     {discountPercent}% OFF
                   </span>
                 )}
@@ -444,7 +444,7 @@ const ProductDetail = () => {
               {/* Gift Wrap Toggle */}
               <label className="flex items-center justify-between p-3.5 bg-[#FFFDF9] rounded-2xl border border-[#EBE3D7] cursor-pointer hover:border-[#B58E58] transition-all">
                 <div className="flex items-center gap-3">
-                  <Gift size={18} className="text-[#7A0E2E]" />
+                  <Gift size={18} className="text-[#2e0e43]" />
                   <div>
                     <p className="text-xs font-bold text-[#2A2623] uppercase tracking-wider">Add Signature Velvet Gift Packaging</p>
                     <p className="text-[10px] text-[#7B6D63]">Includes complimentary satin ribbon & handwritten wax-sealed gift note.</p>
@@ -454,7 +454,7 @@ const ProductDetail = () => {
                   type="checkbox"
                   checked={giftWrap}
                   onChange={(e) => setGiftWrap(e.target.checked)}
-                  className="w-4 h-4 accent-[#7A0E2E] cursor-pointer"
+                  className="w-4 h-4 accent-[#2e0e43] cursor-pointer"
                 />
               </label>
 
@@ -467,8 +467,8 @@ const ProductDetail = () => {
                     product.stock <= 0
                       ? 'bg-[#EAE6E1] text-[#8C857E] border border-[#D8D2C9] cursor-not-allowed'
                       : isInCart(product.id)
-                      ? 'bg-[#7A0E2E] text-white hover:bg-[#5E0B24]'
-                      : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E]'
+                      ? 'bg-[#2e0e43] text-white hover:bg-[#5E0B24]'
+                      : 'bg-[#2A2623] text-white hover:bg-[#2e0e43]'
                   }`}
                 >
                   {cartLoading ? <Loader2 size={18} className="animate-spin" /> : <ShoppingBag size={18} />}
@@ -481,7 +481,7 @@ const ProductDetail = () => {
                   className={`w-full sm:flex-1 min-h-[58px] py-4 px-6 text-sm font-bold uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 flex items-center justify-center cursor-pointer shadow-md ${
                     product.stock <= 0
                       ? 'bg-[#F5F2ED] border border-[#E2DDD4] text-[#A29A90] cursor-not-allowed'
-                      : 'border-2 border-[#7A0E2E] text-[#7A0E2E] hover:bg-[#7A0E2E] hover:text-white'
+                      : 'border-2 border-[#2e0e43] text-[#2e0e43] hover:bg-[#2e0e43] hover:text-white'
                   }`}
                 >
                   Buy Now
@@ -502,9 +502,9 @@ const ProductDetail = () => {
                     placeholder="Enter 6-digit Pincode"
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
-                    className="flex-1 px-4 py-2 bg-[#FAF7F2] border border-[#EBE3D7] rounded-xl text-xs outline-none focus:border-[#7A0E2E]"
+                    className="flex-1 px-4 py-2 bg-[#FAF7F2] border border-[#EBE3D7] rounded-xl text-xs outline-none focus:border-[#2e0e43]"
                   />
-                  <button type="submit" className="px-5 py-2 bg-[#2A2623] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#7A0E2E] transition-colors cursor-pointer">
+                  <button type="submit" className="px-5 py-2 bg-[#2A2623] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#2e0e43] transition-colors cursor-pointer">
                     Check
                   </button>
                 </form>
@@ -608,7 +608,7 @@ const ProductDetail = () => {
                   </div>
                   <div className="p-4 space-y-1 text-center">
                     <h4 className="font-serif text-base font-bold text-[#2A2623] truncate">{rel.name}</h4>
-                    <p className="text-xs font-bold text-[#7A0E2E]">₹{Number(rel.price).toLocaleString()}</p>
+                    <p className="text-xs font-bold text-[#2e0e43]">₹{Number(rel.price).toLocaleString()}</p>
                   </div>
                 </div>
               ))}
@@ -648,7 +648,7 @@ const ProductDetail = () => {
             product.stock <= 0
               ? 'bg-[#EAE6E1] text-[#8C857E] border border-[#D8D2C9] cursor-not-allowed'
               : isInCart(product.id)
-              ? 'bg-[#7A0E2E] text-white'
+              ? 'bg-[#2e0e43] text-white'
               : 'bg-[#2A2623] text-white'
           }`}
         >
@@ -662,7 +662,7 @@ const ProductDetail = () => {
           className={`flex-1 min-h-[50px] py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center cursor-pointer ${
             product.stock <= 0
               ? 'bg-[#F5F2ED] border border-[#E2DDD4] text-[#A29A90] cursor-not-allowed'
-              : 'border-2 border-[#7A0E2E] text-[#7A0E2E] bg-white'
+              : 'border-2 border-[#2e0e43] text-[#2e0e43] bg-white'
           }`}
         >
           Buy Now

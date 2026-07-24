@@ -111,7 +111,7 @@ const CategorySection = () => {
             <h2
               className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[48px] text-[#222222]"
             >
-              Shop By <span className="italic text-[#7A0E2E]">Category</span>
+              Shop By <span className="italic text-[#2e0e43]">Category</span>
             </h2>
 
             {/* Star Accent */}
@@ -131,14 +131,14 @@ const CategorySection = () => {
             <button
               ref={prevRef}
               aria-label="Previous categories"
-              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#7A0E2E] hover:text-[#7A0E2E] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#2e0e43] hover:text-[#2e0e43] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronLeft size={18} strokeWidth={1.5} />
             </button>
             <button
               ref={nextRef}
               aria-label="Next categories"
-              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#7A0E2E] hover:text-[#7A0E2E] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#2e0e43] hover:text-[#2e0e43] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronRight size={18} strokeWidth={1.5} />
             </button>
@@ -205,7 +205,7 @@ const CategorySection = () => {
 
                     {/* Category Title */}
                     <h3 
-                      className="text-xs md:text-sm font-semibold tracking-[0.14em] text-[#2A2623] uppercase text-center font-sans mb-4 group-hover:text-[#7A0E2E] transition-colors"
+                      className="text-xs md:text-sm font-semibold tracking-[0.14em] text-[#2A2623] uppercase text-center font-sans mb-4 group-hover:text-[#2e0e43] transition-colors"
                     >
                       {category.name}
                     </h3>
@@ -215,7 +215,7 @@ const CategorySection = () => {
                   <div className="flex items-center justify-between pt-3 border-t border-[#EFE8DC]/60 mt-auto">
                     <Link 
                       to={category.link}
-                      className="text-[10px] md:text-[11px] font-semibold tracking-[0.2em] text-[#B58E58] uppercase group-hover:text-[#7A0E2E] transition-colors"
+                      className="text-[10px] md:text-[11px] font-semibold tracking-[0.2em] text-[#B58E58] uppercase group-hover:text-[#2e0e43] transition-colors"
                     >
                       VIEW EDIT
                     </Link>
@@ -223,7 +223,7 @@ const CategorySection = () => {
                     <Link 
                       to={category.link}
                       aria-label={`Explore ${category.name}`}
-                      className="w-7 h-7 rounded-full border border-[#D5C6B1] flex items-center justify-center text-[#B58E58] group-hover:text-[#7A0E2E] group-hover:border-[#7A0E2E] transition-colors duration-300 bg-white/50"
+                      className="w-7 h-7 rounded-full border border-[#D5C6B1] flex items-center justify-center text-[#B58E58] group-hover:text-[#2e0e43] group-hover:border-[#2e0e43] transition-colors duration-300 bg-white/50"
                     >
                       <ArrowRight size={12} strokeWidth={1.5} />
                     </Link>
@@ -238,7 +238,7 @@ const CategorySection = () => {
         <div className="flex justify-center mt-12 md:mt-16">
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#7A0E2E] text-[#7A0E2E] text-xs font-semibold tracking-[0.25em] uppercase hover:bg-[#7A0E2E] hover:text-white transition-all duration-300 bg-transparent group"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#2e0e43] text-[#2e0e43] text-xs font-semibold tracking-[0.25em] uppercase hover:bg-[#2e0e43] hover:text-white transition-all duration-300 bg-transparent group"
           >
             <span>EXPLORE ALL COLLECTIONS</span>
             <span className="text-xs text-[#B58E58] group-hover:text-white transition-colors">✦</span>
@@ -250,4 +250,4 @@ const CategorySection = () => {
   );
 };
 
-export default CategorySection;
+export default CategorySection;

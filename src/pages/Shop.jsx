@@ -303,7 +303,7 @@ const Shop = () => {
           <SlidersHorizontal size={17} className="text-[#B58E58]" />
           <h3 className="font-serif text-lg font-semibold tracking-wide text-[#2A2623]">FILTERS</h3>
           {activeFiltersCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-[#7A0E2E] text-white text-[11px] font-bold flex items-center justify-center">
+            <span className="w-5 h-5 rounded-full bg-[#2e0e43] text-white text-[11px] font-bold flex items-center justify-center">
               {activeFiltersCount}
             </span>
           )}
@@ -311,7 +311,7 @@ const Shop = () => {
         {activeFiltersCount > 0 && (
           <button
             onClick={clearAllFilters}
-            className="text-[11px] uppercase tracking-widest font-semibold text-[#7A0E2E] hover:text-[#2A2623] transition-colors flex items-center gap-1 cursor-pointer"
+            className="text-[11px] uppercase tracking-widest font-semibold text-[#2e0e43] hover:text-[#2A2623] transition-colors flex items-center gap-1 cursor-pointer"
           >
             <RotateCcw size={11} /> Reset
           </button>
@@ -322,7 +322,7 @@ const Shop = () => {
       <div className="space-y-3">
         <div className="flex justify-between items-center text-xs font-semibold uppercase tracking-[0.15em] text-[#B58E58] font-sans">
           <span>PRICE RANGE</span>
-          <span className="text-[#7A0E2E] font-bold">₹{Number(priceLimit).toLocaleString()}</span>
+          <span className="text-[#2e0e43] font-bold">₹{Number(priceLimit).toLocaleString()}</span>
         </div>
         <input
           type="range"
@@ -331,7 +331,7 @@ const Shop = () => {
           step={250}
           value={priceLimit}
           onChange={(e) => setPriceLimit(Number(e.target.value))}
-          className="w-full accent-[#7A0E2E] cursor-pointer h-1.5 bg-[#EFE8DC] rounded-lg border-none"
+          className="w-full accent-[#2e0e43] cursor-pointer h-1.5 bg-[#EFE8DC] rounded-lg border-none"
         />
         <div className="flex justify-between text-[11px] text-[#7B6D63] font-medium font-sans">
           <span>₹0</span>
@@ -353,8 +353,8 @@ const Shop = () => {
                 onClick={() => setSelectedCategory(cat)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all cursor-pointer ${
                   isSelected
-                    ? 'bg-[#7A0E2E] text-white shadow-sm font-semibold'
-                    : 'text-[#2A2623]/80 hover:bg-[#F5EFE6] hover:text-[#7A0E2E]'
+                    ? 'bg-[#2e0e43] text-white shadow-sm font-semibold'
+                    : 'text-[#2A2623]/80 hover:bg-[#F5EFE6] hover:text-[#2e0e43]'
                 }`}
               >
                 <span>{cat}</span>
@@ -379,10 +379,10 @@ const Shop = () => {
               <label
                 key={mat}
                 onClick={() => toggleMaterial(mat)}
-                className="flex items-center gap-2.5 cursor-pointer text-xs md:text-sm font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
+                className="flex items-center gap-2.5 cursor-pointer text-xs md:text-sm font-medium text-[#2A2623]/80 hover:text-[#2e0e43] transition-colors"
               >
                 <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${
-                  checked ? 'bg-[#7A0E2E] border-[#7A0E2E] text-white' : 'border-[#D5C6B1] bg-white'
+                  checked ? 'bg-[#2e0e43] border-[#2e0e43] text-white' : 'border-[#D5C6B1] bg-white'
                 }`}>
                   {checked && <Check size={10} strokeWidth={3} />}
                 </div>
@@ -407,12 +407,12 @@ const Shop = () => {
             <label
               key={opt.id}
               onClick={() => setAvailability(opt.id)}
-              className="flex items-center gap-2.5 cursor-pointer text-xs md:text-sm font-medium text-[#2A2623]/80 hover:text-[#7A0E2E] transition-colors"
+              className="flex items-center gap-2.5 cursor-pointer text-xs md:text-sm font-medium text-[#2A2623]/80 hover:text-[#2e0e43] transition-colors"
             >
               <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
-                availability === opt.id ? 'border-[#7A0E2E]' : 'border-[#D5C6B1] bg-white'
+                availability === opt.id ? 'border-[#2e0e43]' : 'border-[#D5C6B1] bg-white'
               }`}>
-                {availability === opt.id && <div className="w-2 h-2 rounded-full bg-[#7A0E2E]" />}
+                {availability === opt.id && <div className="w-2 h-2 rounded-full bg-[#2e0e43]" />}
               </div>
               <span>{opt.label}</span>
             </label>
@@ -460,7 +460,7 @@ const Shop = () => {
                   <input 
                     type="text" 
                     placeholder="Search jewellery, styles, materials..." 
-                    className="w-full bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl pl-10 pr-9 py-2.5 text-xs md:text-sm text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/50"
+                    className="w-full bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl pl-10 pr-9 py-2.5 text-xs md:text-sm text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all placeholder:text-[#7B6D63]/50"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -482,7 +482,7 @@ const Shop = () => {
                     <SlidersHorizontal size={14} />
                     Filters
                     {activeFiltersCount > 0 && (
-                      <span className="w-4 h-4 rounded-full bg-[#7A0E2E] text-white text-[10px] font-bold flex items-center justify-center">
+                      <span className="w-4 h-4 rounded-full bg-[#2e0e43] text-white text-[10px] font-bold flex items-center justify-center">
                         {activeFiltersCount}
                       </span>
                     )}
@@ -494,7 +494,7 @@ const Shop = () => {
                     <select 
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl px-3.5 py-2.5 text-xs font-medium text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all cursor-pointer appearance-none pr-8 font-sans"
+                      className="bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl px-3.5 py-2.5 text-xs font-medium text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all cursor-pointer appearance-none pr-8 font-sans"
                       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23B58E58' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
                     >
                       <option value="newest">Newest Arrivals</option>
@@ -515,42 +515,42 @@ const Shop = () => {
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-[#B58E58] font-sans">Active:</span>
                   
                   {selectedCategory !== 'All' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       Category: {selectedCategory}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setSelectedCategory('All')} />
                     </span>
                   )}
 
                   {selectedCountry !== 'All' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       Country: {selectedCountry}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setSelectedCountry('All')} />
                     </span>
                   )}
 
                   {priceLimit < maxProductPrice && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       Max: ₹{Number(priceLimit).toLocaleString()}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setPriceLimit(maxProductPrice)} />
                     </span>
                   )}
 
                   {selectedMaterials.map(mat => (
-                    <span key={mat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span key={mat} className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       {mat}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => toggleMaterial(mat)} />
                     </span>
                   ))}
 
                   {availability !== 'all' && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       {availability === 'inStock' ? 'In Stock' : 'On Sale'}
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setAvailability('all')} />
                     </span>
                   )}
 
                   {searchTerm && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] rounded-full text-xs font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       "{searchTerm}"
                       <X size={12} className="cursor-pointer hover:scale-110" onClick={() => setSearchTerm('')} />
                     </span>
@@ -558,7 +558,7 @@ const Shop = () => {
 
                   <button
                     onClick={clearAllFilters}
-                    className="text-xs font-semibold text-[#7A0E2E] underline hover:text-[#2A2623] ml-2 cursor-pointer"
+                    className="text-xs font-semibold text-[#2e0e43] underline hover:text-[#2A2623] ml-2 cursor-pointer"
                   >
                     Clear All
                   </button>
@@ -604,7 +604,7 @@ const Shop = () => {
                         {/* Badges */}
                         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
                           {product.original_price > product.price && (
-                            <span className="bg-[#7A0E2E] text-white text-[10px] font-semibold tracking-[0.18em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
+                            <span className="bg-[#2e0e43] text-white text-[10px] font-semibold tracking-[0.18em] uppercase px-2.5 py-1 rounded-sm shadow-sm">
                               -{Math.round(((product.original_price - product.price) / product.original_price) * 100)}%
                             </span>
                           )}
@@ -621,19 +621,19 @@ const Shop = () => {
                             onClick={(e) => handleAddToWishlist(e, product)} 
                             disabled={wishlistLoadings[product.id]}
                             aria-label="Add to wishlist"
-                            className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#7A0E2E] transition-all duration-300 border border-black/5 hover:scale-105 cursor-pointer"
+                            className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#2e0e43] transition-all duration-300 border border-black/5 hover:scale-105 cursor-pointer"
                           >
                             {wishlistLoadings[product.id] ? (
                               <Loader2 size={13} className="animate-spin" />
                             ) : (
-                              <Heart size={14} fill={inWishlist ? '#7A0E2E' : 'none'} stroke={inWishlist ? '#7A0E2E' : 'currentColor'} strokeWidth={inWishlist ? 0 : 1.5} />
+                              <Heart size={14} fill={inWishlist ? '#2e0e43' : 'none'} stroke={inWishlist ? '#2e0e43' : 'currentColor'} strokeWidth={inWishlist ? 0 : 1.5} />
                             )}
                           </button>
 
                           <button 
                             onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }} 
                             aria-label="Quick View"
-                            className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#7A0E2E] transition-all duration-300 border border-black/5 hover:scale-105 cursor-pointer"
+                            className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#2e0e43] transition-all duration-300 border border-black/5 hover:scale-105 cursor-pointer"
                           >
                             <Eye size={14} />
                           </button>
@@ -645,7 +645,7 @@ const Shop = () => {
                             <button 
                               onClick={(e) => handleAddToCart(e, product)}
                               disabled={cartLoadings[product.id]}
-                              className="w-full py-2.5 text-[11px] tracking-[0.2em] font-semibold uppercase flex items-center justify-center gap-2 rounded-lg border border-transparent bg-[#2A2623] text-white hover:bg-[#7A0E2E] transition-colors duration-300 shadow-md cursor-pointer"
+                              className="w-full py-2.5 text-[11px] tracking-[0.2em] font-semibold uppercase flex items-center justify-center gap-2 rounded-lg border border-transparent bg-[#2A2623] text-white hover:bg-[#2e0e43] transition-colors duration-300 shadow-md cursor-pointer"
                             >
                               {cartLoadings[product.id] ? (
                                 <Loader2 size={12} className="animate-spin" />
@@ -666,14 +666,14 @@ const Shop = () => {
                           </span>
                           
                           <h3 
-                            className="text-xs md:text-sm font-normal text-[#2A2623] font-serif leading-snug group-hover:text-[#7A0E2E] transition-colors duration-300 line-clamp-2"
+                            className="text-xs md:text-sm font-normal text-[#2A2623] font-serif leading-snug group-hover:text-[#2e0e43] transition-colors duration-300 line-clamp-2"
                           >
                             {product.name}
                           </h3>
                         </div>
 
                         <div className="flex items-center justify-center gap-2 pt-2">
-                          <span className="text-sm font-bold text-[#7A0E2E]">
+                          <span className="text-sm font-bold text-[#2e0e43]">
                             ₹{Number(product.price || 0).toLocaleString()}
                           </span>
                           {product.original_price && Number(product.original_price) > Number(product.price) && (
@@ -694,7 +694,7 @@ const Shop = () => {
                 <p className="text-xs md:text-sm text-[#7B6D63] max-w-md mx-auto mb-6">Try clearing or adjusting your search filters to explore the rest of our luxury collection.</p>
                 <button 
                   onClick={clearAllFilters} 
-                  className="px-8 py-3 bg-[#7A0E2E] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer"
+                  className="px-8 py-3 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer"
                 >
                   Clear All Filters
                 </button>
@@ -734,7 +734,7 @@ const Shop = () => {
               <div className="pt-6 border-t border-[#EFE8DC] mt-6">
                 <button
                   onClick={() => setShowMobileFilters(false)}
-                  className="w-full py-3 bg-[#7A0E2E] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl shadow-md cursor-pointer"
+                  className="w-full py-3 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl shadow-md cursor-pointer"
                 >
                   Apply Filters ({sortedProducts.length})
                 </button>
@@ -748,4 +748,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Shop;

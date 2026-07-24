@@ -252,8 +252,8 @@ const Account = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-3">
-        <div className="w-10 h-10 border-2 border-[#7A0E2E] border-t-transparent rounded-full animate-spin" />
-        <p className="text-base uppercase tracking-[0.3em] font-bold text-[#7A0E2E]">Loading Your Atelier Profile</p>
+        <div className="w-10 h-10 border-2 border-[#2e0e43] border-t-transparent rounded-full animate-spin" />
+        <p className="text-base uppercase tracking-[0.3em] font-bold text-[#2e0e43]">Loading Your Atelier Profile</p>
       </div>
     );
   }
@@ -273,10 +273,10 @@ const Account = () => {
       {/* Top Banner Header */}
       <div className="max-w-[1340px] mx-auto px-4 sm:px-8 mb-8">
         <div className="bg-[#0E0B09] rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl border border-[#C8A97A]/20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#7A0E2E]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2e0e43]/20 rounded-full blur-3xl pointer-events-none" />
           
           <div className="flex items-center gap-5 z-10">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#7A0E2E] border-2 border-[#C8A97A] flex items-center justify-center text-white text-2xl font-serif font-bold shadow-lg">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#2e0e43] border-2 border-[#C8A97A] flex items-center justify-center text-white text-2xl font-serif font-bold shadow-lg">
               {userData?.displayName ? userData.displayName.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
             </div>
             <div className="space-y-1">
@@ -300,7 +300,7 @@ const Account = () => {
             </Link>
             <Link
               to="/cart"
-              className="flex-1 md:flex-none px-4 py-2.5 bg-[#7A0E2E] hover:bg-[#921438] rounded-xl text-base font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+              className="flex-1 md:flex-none px-4 py-2.5 bg-[#2e0e43] hover:bg-[#921438] rounded-xl text-base font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
             >
               <ShoppingBag size={14} /> Cart ({cartCount})
             </Link>
@@ -328,12 +328,12 @@ const Account = () => {
                     onClick={() => setActiveTab(link.id)}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
                       active
-                        ? "bg-[#7A0E2E] text-white shadow-sm"
-                        : "text-[#2A2623]/80 hover:bg-[#FDFAF5] hover:text-[#7A0E2E]"
+                        ? "bg-[#2e0e43] text-white shadow-sm"
+                        : "text-[#2A2623]/80 hover:bg-[#FDFAF5] hover:text-[#2e0e43]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon size={16} className={active ? "text-white" : "text-[#7A0E2E]"} />
+                      <Icon size={16} className={active ? "text-white" : "text-[#2e0e43]"} />
                       <span>{link.label}</span>
                     </div>
                     {link.badge !== undefined && link.badge > 0 && (
@@ -372,7 +372,7 @@ const Account = () => {
                   {/* Quick Overview Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="bg-white p-6 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-2">
-                      <div className="flex justify-between items-center text-[#7A0E2E]">
+                      <div className="flex justify-between items-center text-[#2e0e43]">
                         <Package size={22} />
                         <span className="text-[16px] uppercase font-bold tracking-widest text-[#7B6D63]">Orders</span>
                       </div>
@@ -381,7 +381,7 @@ const Account = () => {
                     </div>
 
                     <div className="bg-white p-6 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-2">
-                      <div className="flex justify-between items-center text-[#7A0E2E]">
+                      <div className="flex justify-between items-center text-[#2e0e43]">
                         <MapPin size={22} />
                         <span className="text-[16px] uppercase font-bold tracking-widest text-[#7B6D63]">Saved Address</span>
                       </div>
@@ -390,11 +390,11 @@ const Account = () => {
                     </div>
 
                     <div className="bg-white p-6 rounded-2xl border border-[#D8CBBE]/40 shadow-sm space-y-2">
-                      <div className="flex justify-between items-center text-[#7A0E2E]">
+                      <div className="flex justify-between items-center text-[#2e0e43]">
                         <Crown size={22} />
                         <span className="text-[16px] uppercase font-bold tracking-widest text-[#7B6D63]">Status</span>
                       </div>
-                      <p className="text-2xl font-serif font-bold text-[#7A0E2E]">Privé Gold</p>
+                      <p className="text-2xl font-serif font-bold text-[#2e0e43]">Privé Gold</p>
                       <p className="text-[16px] text-[#7B6D63]">Complimentary Insured Shipping</p>
                     </div>
                   </div>
@@ -408,7 +408,7 @@ const Account = () => {
                       </div>
                       <button
                         onClick={() => setActiveTab("orders")}
-                        className="text-base font-bold text-[#7A0E2E] hover:underline flex items-center gap-1 uppercase tracking-wider"
+                        className="text-base font-bold text-[#2e0e43] hover:underline flex items-center gap-1 uppercase tracking-wider"
                       >
                         View All ({orders.length}) <ArrowRight size={12} />
                       </button>
@@ -422,7 +422,7 @@ const Account = () => {
                             className="p-4 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                           >
                             <div className="flex items-center gap-4">
-                              <div className="w-12 h-12 rounded-xl bg-white border border-[#D8CBBE]/40 flex items-center justify-center text-[#7A0E2E]">
+                              <div className="w-12 h-12 rounded-xl bg-white border border-[#D8CBBE]/40 flex items-center justify-center text-[#2e0e43]">
                                 <Package size={20} />
                               </div>
                               <div>
@@ -433,10 +433,10 @@ const Account = () => {
                               </div>
                             </div>
                             <div className="flex items-center justify-between sm:justify-end gap-4">
-                              <span className="text-sm font-bold text-[#7A0E2E]">₹{Number(order.total || 0).toLocaleString()}</span>
+                              <span className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || 0).toLocaleString()}</span>
                               <button
                                 onClick={() => { setSelectedOrder(order); setShowOrderModal(true); }}
-                                className="px-3 py-1.5 border border-[#7A0E2E] text-[#7A0E2E] text-[16px] font-bold uppercase rounded-lg hover:bg-[#7A0E2E] hover:text-white transition-all"
+                                className="px-3 py-1.5 border border-[#2e0e43] text-[#2e0e43] text-[16px] font-bold uppercase rounded-lg hover:bg-[#2e0e43] hover:text-white transition-all"
                               >
                                 Details
                               </button>
@@ -446,9 +446,9 @@ const Account = () => {
                       </div>
                     ) : (
                       <div className="text-center py-12 space-y-3">
-                        <ShoppingBag size={36} className="mx-auto text-[#7A0E2E]/30" />
+                        <ShoppingBag size={36} className="mx-auto text-[#2e0e43]/30" />
                         <p className="text-sm font-serif text-[#7B6D63]">No recent orders found</p>
-                        <Link to="/shop" className="inline-block px-5 py-2.5 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-wider rounded-xl">
+                        <Link to="/shop" className="inline-block px-5 py-2.5 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-wider rounded-xl">
                           Discover Shop
                         </Link>
                       </div>
@@ -471,7 +471,7 @@ const Account = () => {
                       <h3 className="font-serif text-xl font-bold text-[#2A2623]">Order History</h3>
                       <p className="text-base text-[#7B6D63]">Full chronological archive of your luxury orders</p>
                     </div>
-                    <span className="text-base font-semibold text-[#7A0E2E] bg-[#7A0E2E]/10 px-3 py-1 rounded-full w-fit">
+                    <span className="text-base font-semibold text-[#2e0e43] bg-[#2e0e43]/10 px-3 py-1 rounded-full w-fit">
                       {orders.length} Total Orders
                     </span>
                   </div>
@@ -481,7 +481,7 @@ const Account = () => {
                       {orders.map((order) => (
                         <div
                           key={order.id}
-                          className="p-5 rounded-2xl bg-[#FDFAF5] border border-[#D8CBBE]/40 space-y-4 hover:border-[#7A0E2E]/40 transition-all"
+                          className="p-5 rounded-2xl bg-[#FDFAF5] border border-[#D8CBBE]/40 space-y-4 hover:border-[#2e0e43]/40 transition-all"
                         >
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D8CBBE]/30 pb-3">
                             <div>
@@ -489,7 +489,7 @@ const Account = () => {
                               <p className="text-base font-bold text-[#2A2623] font-mono">#{order.id}</p>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className="px-3 py-1 bg-[#7A0E2E]/10 text-[#7A0E2E] text-[16px] font-bold uppercase tracking-wider rounded-full">
+                              <span className="px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] text-[16px] font-bold uppercase tracking-wider rounded-full">
                                 {order.status || "Paid"}
                               </span>
                               <span className="text-base text-[#7B6D63]">
@@ -517,7 +517,7 @@ const Account = () => {
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-[#D8CBBE]/20">
                             <div>
                               <span className="text-[16px] text-[#7B6D63] uppercase font-bold">Total Amount</span>
-                              <p className="text-sm font-bold text-[#7A0E2E]">₹{Number(order.total || 0).toLocaleString()}</p>
+                              <p className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || 0).toLocaleString()}</p>
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -529,7 +529,7 @@ const Account = () => {
                               </button>
                               <button
                                 onClick={() => generateInvoicePDF(order)}
-                                className="px-4 py-2 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-wider rounded-xl hover:bg-[#2A2623] transition-all flex items-center gap-1.5"
+                                className="px-4 py-2 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-wider rounded-xl hover:bg-[#2A2623] transition-all flex items-center gap-1.5"
                               >
                                 <Download size={12} /> PDF Invoice
                               </button>
@@ -540,9 +540,9 @@ const Account = () => {
                     </div>
                   ) : (
                     <div className="text-center py-16 space-y-4">
-                      <Package size={42} className="mx-auto text-[#7A0E2E]/30" />
+                      <Package size={42} className="mx-auto text-[#2e0e43]/30" />
                       <p className="text-base font-serif text-[#7B6D63]">You haven't placed any orders yet.</p>
-                      <Link to="/shop" className="inline-block px-6 py-3 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-widest rounded-xl">
+                      <Link to="/shop" className="inline-block px-6 py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl">
                         Shop Now
                       </Link>
                     </div>
@@ -595,7 +595,7 @@ const Account = () => {
                                 ].map((step, idx) => (
                                   <div key={idx} className="flex md:flex-col items-center gap-3 relative z-10">
                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-base font-bold ${
-                                      step.done ? "bg-[#7A0E2E] text-white" : "bg-gray-200 text-gray-400"
+                                      step.done ? "bg-[#2e0e43] text-white" : "bg-gray-200 text-gray-400"
                                     }`}>
                                       {step.done ? <CheckCircle2 size={16} /> : idx + 1}
                                     </div>
@@ -635,7 +635,7 @@ const Account = () => {
                     </div>
                     <button
                       onClick={openNewAddress}
-                      className="px-4 py-2.5 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-wider rounded-xl flex items-center gap-2 hover:bg-[#2A2623] transition-all"
+                      className="px-4 py-2.5 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-wider rounded-xl flex items-center gap-2 hover:bg-[#2A2623] transition-all"
                     >
                       <Plus size={14} /> Add New Address
                     </button>
@@ -647,7 +647,7 @@ const Account = () => {
                         <div
                           key={idx}
                           className={`p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${
-                            addr.isDefault ? "border-[#7A0E2E] bg-[#7A0E2E]/5 shadow-sm" : "border-[#D8CBBE]/50 bg-[#FDFAF5]"
+                            addr.isDefault ? "border-[#2e0e43] bg-[#2e0e43]/5 shadow-sm" : "border-[#D8CBBE]/50 bg-[#FDFAF5]"
                           }`}
                         >
                           <div className="space-y-2">
@@ -656,7 +656,7 @@ const Account = () => {
                                 {addr.type || "Home"}
                               </span>
                               {addr.isDefault && (
-                                <span className="text-[16px] font-bold uppercase tracking-widest text-[#7A0E2E] flex items-center gap-1">
+                                <span className="text-[16px] font-bold uppercase tracking-widest text-[#2e0e43] flex items-center gap-1">
                                   <CheckCircle2 size={12} /> Default
                                 </span>
                               )}
@@ -669,7 +669,7 @@ const Account = () => {
                           <div className="flex items-center gap-3 pt-3 border-t border-[#D8CBBE]/30">
                             <button
                               onClick={() => openEditAddress(idx)}
-                              className="text-base font-bold text-[#7A0E2E] flex items-center gap-1 hover:underline"
+                              className="text-base font-bold text-[#2e0e43] flex items-center gap-1 hover:underline"
                             >
                               <Edit2 size={12} /> Edit
                             </button>
@@ -685,11 +685,11 @@ const Account = () => {
                     </div>
                   ) : (
                     <div className="text-center py-12 text-[#7B6D63] space-y-3">
-                      <MapPin size={36} className="mx-auto text-[#7A0E2E]/30" />
+                      <MapPin size={36} className="mx-auto text-[#2e0e43]/30" />
                       <p className="text-sm font-serif">No saved addresses yet.</p>
                       <button
                         onClick={openNewAddress}
-                        className="px-5 py-2.5 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-wider rounded-xl"
+                        className="px-5 py-2.5 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-wider rounded-xl"
                       >
                         Add Your Address
                       </button>
@@ -720,7 +720,7 @@ const Account = () => {
                           className="p-4 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                         >
                           <div className="flex items-center gap-3">
-                            <FileText size={22} className="text-[#7A0E2E]" />
+                            <FileText size={22} className="text-[#2e0e43]" />
                             <div>
                               <p className="text-base font-bold text-[#2A2623] font-mono">Invoice #{order.id.slice(0, 10).toUpperCase()}</p>
                               <p className="text-[16px] text-[#7B6D63]">
@@ -729,10 +729,10 @@ const Account = () => {
                             </div>
                           </div>
                           <div className="flex items-center justify-between sm:justify-end gap-4">
-                            <span className="text-base font-bold text-[#7A0E2E]">₹{Number(order.total || 0).toLocaleString()}</span>
+                            <span className="text-base font-bold text-[#2e0e43]">₹{Number(order.total || 0).toLocaleString()}</span>
                             <button
                               onClick={() => { setInvoiceOrder(order); setShowInvoiceModal(true); }}
-                              className="px-4 py-2 bg-[#7A0E2E] text-white text-base font-bold uppercase rounded-lg hover:bg-[#2A2623] transition-all flex items-center gap-1.5"
+                              className="px-4 py-2 bg-[#2e0e43] text-white text-base font-bold uppercase rounded-lg hover:bg-[#2A2623] transition-all flex items-center gap-1.5"
                             >
                               <Printer size={12} /> View & Print
                             </button>
@@ -763,7 +763,7 @@ const Account = () => {
                   </div>
 
                   {profileMessage && (
-                    <div className="p-3 bg-[#7A0E2E]/10 border border-[#7A0E2E]/30 text-[#7A0E2E] rounded-xl text-base font-semibold">
+                    <div className="p-3 bg-[#2e0e43]/10 border border-[#2e0e43]/30 text-[#2e0e43] rounded-xl text-base font-semibold">
                       {profileMessage}
                     </div>
                   )}
@@ -775,7 +775,7 @@ const Account = () => {
                         type="text"
                         value={profileForm.displayName}
                         onChange={(e) => setProfileForm({ ...profileForm, displayName: e.target.value })}
-                        className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                        className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#2e0e43] transition-all font-medium text-[#2A2623]"
                       />
                     </div>
 
@@ -786,7 +786,7 @@ const Account = () => {
                         value={profileForm.phone}
                         onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
                         placeholder="+91 98765 43210"
-                        className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#7A0E2E] transition-all font-medium text-[#2A2623]"
+                        className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#2e0e43] transition-all font-medium text-[#2A2623]"
                       />
                     </div>
 
@@ -803,7 +803,7 @@ const Account = () => {
                     <button
                       type="submit"
                       disabled={profileUpdating}
-                      className="px-6 py-3 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all"
+                      className="px-6 py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all"
                     >
                       {profileUpdating ? "Saving Changes..." : "Save Profile Details"}
                     </button>
@@ -856,7 +856,7 @@ const Account = () => {
             >
               <div className="flex justify-between items-center border-b border-[#D8CBBE]/30 pb-4">
                 <div>
-                  <span className="text-[16px] font-bold uppercase tracking-widest text-[#7A0E2E]">Order Breakdown</span>
+                  <span className="text-[16px] font-bold uppercase tracking-widest text-[#2e0e43]">Order Breakdown</span>
                   <h3 className="font-serif text-xl font-bold font-mono">#{selectedOrder.id}</h3>
                 </div>
                 <button onClick={() => setShowOrderModal(false)} className="p-2 text-gray-400 hover:text-black">
@@ -874,7 +874,7 @@ const Account = () => {
                         <p className="text-base font-semibold text-[#2A2623] truncate">{item.name}</p>
                         <p className="text-[16px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
                       </div>
-                      <span className="text-base font-bold text-[#7A0E2E]">
+                      <span className="text-base font-bold text-[#2e0e43]">
                         ₹{(Number(item.price || 0) * (item.quantity || 1)).toLocaleString()}
                       </span>
                     </div>
@@ -886,12 +886,12 @@ const Account = () => {
                 <h4 className="font-bold text-[#2A2623] uppercase tracking-wider text-[16px]">Shipping Details</h4>
                 <p><span className="font-bold text-[#2A2623]">{selectedOrder.shippingDetails?.name}</span> ({selectedOrder.shippingDetails?.phone})</p>
                 <p>{selectedOrder.shippingDetails?.address}, {selectedOrder.shippingDetails?.city}, {selectedOrder.shippingDetails?.state} - {selectedOrder.shippingDetails?.pincode}</p>
-                <p className="pt-1 text-[16px]">Payment Method: <span className="font-bold text-[#7A0E2E]">{selectedOrder.paymentMethod}</span></p>
+                <p className="pt-1 text-[16px]">Payment Method: <span className="font-bold text-[#2e0e43]">{selectedOrder.paymentMethod}</span></p>
               </div>
 
               <div className="flex justify-between items-center pt-2 border-t border-[#D8CBBE]/30">
                 <span className="text-base font-bold uppercase tracking-wider text-[#7B6D63]">Grand Total</span>
-                <span className="text-xl font-serif font-bold text-[#7A0E2E]">₹{Number(selectedOrder.total || 0).toLocaleString()}</span>
+                <span className="text-xl font-serif font-bold text-[#2e0e43]">₹{Number(selectedOrder.total || 0).toLocaleString()}</span>
               </div>
             </motion.div>
           </div>
@@ -919,12 +919,12 @@ const Account = () => {
                 <div className="flex items-center gap-3">
                   <img src="/img/logo.png" alt="Velouraz" className="h-8" style={{ filter: 'brightness(0)' }} />
                   <div>
-                    <p className="text-[16px] tracking-[0.3em] uppercase font-bold text-[#7A0E2E]">Official Tax Invoice</p>
+                    <p className="text-[16px] tracking-[0.3em] uppercase font-bold text-[#2e0e43]">Official Tax Invoice</p>
                     <p className="text-base font-bold text-gray-700 font-mono">Invoice #{invoiceOrder.id.slice(0, 12).toUpperCase()}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => window.print()} className="p-2 text-base font-bold bg-[#7A0E2E] text-white rounded-lg flex items-center gap-1">
+                  <button onClick={() => window.print()} className="p-2 text-base font-bold bg-[#2e0e43] text-white rounded-lg flex items-center gap-1">
                     <Printer size={14} /> Print
                   </button>
                   <button onClick={() => setShowInvoiceModal(false)} className="p-2 text-gray-400 hover:text-black">
@@ -945,7 +945,7 @@ const Account = () => {
                   </div>
                   <div className="text-right">
                     <p className="text-[16px] uppercase font-bold text-[#7B6D63]">Merchant</p>
-                    <p className="font-bold text-[#7A0E2E]">House of Velouraz</p>
+                    <p className="font-bold text-[#2e0e43]">House of Velouraz</p>
                     <p>GSTIN: 07AAAAA0000A1Z5</p>
                     <p>Date: {new Date(invoiceOrder.createdAt?.seconds * 1000 || Date.now()).toLocaleDateString("en-IN")}</p>
                     <p>Payment ID: {invoiceOrder.paymentId || "N/A"}</p>
@@ -967,7 +967,7 @@ const Account = () => {
                         <td className="py-3 font-semibold text-gray-900">{item.name}</td>
                         <td className="py-3 text-center">{item.quantity || 1}</td>
                         <td className="py-3 text-right">₹{Number(item.price || 0).toLocaleString()}</td>
-                        <td className="py-3 text-right font-bold text-[#7A0E2E]">₹{(Number(item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                        <td className="py-3 text-right font-bold text-[#2e0e43]">₹{(Number(item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -982,7 +982,7 @@ const Account = () => {
                     <span>GST (3% Jewellery GST Included):</span>
                     <span className="font-semibold">Inclusive</span>
                   </div>
-                  <div className="flex justify-between text-sm font-bold text-[#7A0E2E] pt-2 border-t">
+                  <div className="flex justify-between text-sm font-bold text-[#2e0e43] pt-2 border-t">
                     <span>Total Amount Paid:</span>
                     <span>₹{Number(invoiceOrder.total || 0).toLocaleString()}</span>
                   </div>
@@ -1027,7 +1027,7 @@ const Account = () => {
                       type="button"
                       onClick={() => setAddrForm({ ...addrForm, type: t })}
                       className={`flex-1 py-2 text-base font-bold rounded-lg border uppercase tracking-wider ${
-                        addrForm.type === t ? "bg-[#7A0E2E] text-white border-[#7A0E2E]" : "border-[#D8CBBE]/50 text-[#7B6D63]"
+                        addrForm.type === t ? "bg-[#2e0e43] text-white border-[#2e0e43]" : "border-[#D8CBBE]/50 text-[#7B6D63]"
                       }`}
                     >
                       {t}
@@ -1042,7 +1042,7 @@ const Account = () => {
                     required
                     value={addrForm.name}
                     onChange={(e) => setAddrForm({ ...addrForm, name: e.target.value })}
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
                   />
                 </div>
 
@@ -1054,7 +1054,7 @@ const Account = () => {
                       required
                       value={addrForm.phone}
                       onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1064,7 +1064,7 @@ const Account = () => {
                       value={addrForm.altPhone || ""}
                       onChange={(e) => setAddrForm({ ...addrForm, altPhone: e.target.value })}
                       placeholder="+91 98765 00000"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                 </div>
@@ -1077,7 +1077,7 @@ const Account = () => {
                     value={addrForm.address}
                     onChange={(e) => setAddrForm({ ...addrForm, address: e.target.value })}
                     placeholder="Street Name, Area, Locality"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
                   />
                 </div>
 
@@ -1089,7 +1089,7 @@ const Account = () => {
                       value={addrForm.apartment || ""}
                       onChange={(e) => setAddrForm({ ...addrForm, apartment: e.target.value })}
                       placeholder="Flat 402, Building A"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1099,7 +1099,7 @@ const Account = () => {
                       value={addrForm.landmark || ""}
                       onChange={(e) => setAddrForm({ ...addrForm, landmark: e.target.value })}
                       placeholder="Near City Mall"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                 </div>
@@ -1112,7 +1112,7 @@ const Account = () => {
                       required
                       value={addrForm.city}
                       onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1121,7 +1121,7 @@ const Account = () => {
                       type="text"
                       value={addrForm.state}
                       onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                   <div className="space-y-1">
@@ -1131,7 +1131,7 @@ const Account = () => {
                       required
                       value={addrForm.pincode}
                       onChange={(e) => setAddrForm({ ...addrForm, pincode: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                 </div>
@@ -1143,7 +1143,7 @@ const Account = () => {
                     value={addrForm.deliveryNotes || ""}
                     onChange={(e) => setAddrForm({ ...addrForm, deliveryNotes: e.target.value })}
                     placeholder="e.g. Ring doorbell, leave at gate security"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#7A0E2E]"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
                   />
                 </div>
 
@@ -1152,14 +1152,14 @@ const Account = () => {
                     type="checkbox"
                     checked={addrForm.isDefault}
                     onChange={(e) => setAddrForm({ ...addrForm, isDefault: e.target.checked })}
-                    className="accent-[#7A0E2E]"
+                    className="accent-[#2e0e43]"
                   />
                   <span className="text-base text-[#7B6D63] font-semibold">Make this my default shipping address</span>
                 </label>
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#7A0E2E] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all mt-4"
+                  className="w-full py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all mt-4"
                 >
                   Save Address
                 </button>

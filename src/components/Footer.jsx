@@ -49,7 +49,7 @@ const Footer = () => {
       <div className="border-b border-[#EFE8DC] py-10 bg-[#FFFDF9]">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#7A0E2E] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#2e0e43] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
               <Truck size={24} />
             </div>
             <div>
@@ -59,7 +59,7 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#7A0E2E] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#2e0e43] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
               <ShieldCheck size={24} />
             </div>
             <div>
@@ -69,7 +69,7 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#7A0E2E] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#2e0e43] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
               <RefreshCw size={24} />
             </div>
             <div>
@@ -79,7 +79,7 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#7A0E2E] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAF7F2] border border-[#EBE3D7] flex items-center justify-center text-[#2e0e43] shadow-sm group-hover:border-[#B58E58] group-hover:scale-105 transition-all">
               <Gem size={24} />
             </div>
             <div>
@@ -91,7 +91,7 @@ const Footer = () => {
       </div>
 
       {/* Newsletter Section - Burgundy Light Luxe */}
-      <div className="bg-[#7A0E2E] py-12 text-white">
+      <div className="bg-[#2e0e43] py-12 text-white">
         <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-5 text-center lg:text-left">
             <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white flex-shrink-0 hidden sm:flex">
@@ -114,7 +114,7 @@ const Footer = () => {
               placeholder="Enter your email address" 
               className="bg-white/10 border border-white/30 px-6 py-3.5 text-white text-sm w-full lg:w-[360px] placeholder:text-white/60 focus:outline-none focus:border-white rounded-xl transition-all"
             />
-            <button type="submit" className="bg-[#FAF7F2] text-[#7A0E2E] px-8 py-3.5 text-sm tracking-[0.2em] font-bold uppercase hover:bg-white transition-colors rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-md">
+            <button type="submit" className="bg-[#FAF7F2] text-[#2e0e43] px-8 py-3.5 text-sm tracking-[0.2em] font-bold uppercase hover:bg-white transition-colors rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-md">
               SUBSCRIBE <ArrowRight size={15} />
             </button>
           </form>
@@ -137,9 +137,9 @@ const Footer = () => {
               
               {/* Social Icons */}
               <div className="flex items-center gap-4 pt-2">
-                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#7A0E2E] hover:border-[#7A0E2E] transition-all shadow-sm"><Instagram size={18} /></a>
-                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#7A0E2E] hover:border-[#7A0E2E] transition-all shadow-sm"><Facebook size={18} /></a>
-                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#7A0E2E] hover:border-[#7A0E2E] transition-all shadow-sm"><Youtube size={20} /></a>
+                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#2e0e43] hover:border-[#2e0e43] transition-all shadow-sm"><Instagram size={18} /></a>
+                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#2e0e43] hover:border-[#2e0e43] transition-all shadow-sm"><Facebook size={18} /></a>
+                <a href="#" className="w-11 h-11 rounded-2xl bg-[#FFFDF9] border border-[#EBE3D7] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#2e0e43] hover:border-[#2e0e43] transition-all shadow-sm"><Youtube size={20} /></a>
               </div>
             </div>
 
@@ -147,7 +147,7 @@ const Footer = () => {
             <div className="lg:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
               {sections.map((section) => (
                 <div key={section.title} className="space-y-5">
-                  <h4 className="text-sm tracking-[0.2em] font-bold text-[#7A0E2E] uppercase font-sans">
+                  <h4 className="text-sm tracking-[0.2em] font-bold text-[#2e0e43] uppercase font-sans">
                     {section.title}
                   </h4>
                   <ul className="space-y-3.5">
@@ -155,7 +155,7 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link 
                           to={link.href} 
-                          className="text-sm text-[#2A2623]/85 hover:text-[#7A0E2E] transition-colors font-medium"
+                          className="text-sm text-[#2A2623]/85 hover:text-[#2e0e43] transition-colors font-medium"
                         >
                           {link.name}
                         </Link>
@@ -175,7 +175,7 @@ const Footer = () => {
                 © {currentYear} Velouraz Jewellery. All Rights Reserved.
               </p>
               <p className="text-sm text-[#7B6D63] font-medium font-sans">
-                Design by <a href="https://letskillify.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[#7A0E2E] hover:underline">Letskillify</a>
+                Design by <a href="https://letskillify.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[#2e0e43] hover:underline">Letskillify</a>
               </p>
             </div>
 

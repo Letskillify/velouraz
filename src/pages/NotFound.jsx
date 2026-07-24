@@ -68,7 +68,7 @@ const NotFound = () => {
               className="text-6xl md:text-9xl font-serif leading-none uppercase font-light"
             >
               Lost in <br />
-              <span className="italic font-normal text-[#7A0E2E]">Elegance</span>
+              <span className="italic font-normal text-[#2e0e43]">Elegance</span>
             </motion.h1>
             
             <motion.div 
@@ -99,7 +99,7 @@ const NotFound = () => {
               <ArrowLeft size={16} className="group-hover:-translate-x-2 transition-transform duration-500" />
               Return Home
             </span>
-            <div className="absolute inset-0 bg-[#7A0E2E] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.19, 1, 0.22, 1]" />
+            <div className="absolute inset-0 bg-[#2e0e43] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.19, 1, 0.22, 1]" />
           </Link>
 
           <Link 

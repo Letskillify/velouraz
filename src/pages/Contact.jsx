@@ -102,7 +102,7 @@ const Contact = () => {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all placeholder:text-[#7B6D63]/30" 
                         placeholder="E.g. Sophia Anderson" 
                       />
                     </div>
@@ -113,7 +113,7 @@ const Contact = () => {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/30" 
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] px-1 py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all placeholder:text-[#7B6D63]/30" 
                         placeholder="sophia@example.com" 
                       />
                     </div>
@@ -125,7 +125,7 @@ const Contact = () => {
                       <select 
                         value={formData.subject}
                         onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all appearance-none cursor-pointer"
+                        className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all appearance-none cursor-pointer"
                       >
                         <option>General Inquiry</option>
                         <option>Order Support</option>
@@ -144,7 +144,7 @@ const Contact = () => {
                       required
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all resize-none placeholder:text-[#7B6D63]/30" 
+                      className="w-full bg-[#F8F4EF]/50 border-b border-[#D8CBBE] py-4 text-[16px] text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all resize-none placeholder:text-[#7B6D63]/30" 
                       placeholder="Share your thoughts with us..."
                     />
                   </div>
@@ -159,7 +159,7 @@ const Contact = () => {
                       {submitted ? 'Inquiry Sent' : 'Submit Message'}
                       <Send size={14} className={submitted ? 'animate-bounce' : 'group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300'} />
                     </span>
-                    <div className="absolute inset-0 bg-[#7A0E2E] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.19, 1, 0.22, 1]" />
+                    <div className="absolute inset-0 bg-[#2e0e43] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.19, 1, 0.22, 1]" />
                   </motion.button>
                 </form>
               </div>
@@ -196,7 +196,7 @@ const Contact = () => {
 
             {/* Global Reach Card */}
             <div className="bg-[#2A2623] rounded-[40px] p-10 text-white relative overflow-hidden group">
-               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-[60px] group-hover:bg-[#7A0E2E]/20 transition-colors duration-1000" />
+               <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full blur-[60px] group-hover:bg-[#2e0e43]/20 transition-colors duration-1000" />
                
                <Award size={32} className="text-[#fff] mb-8 relative z-10" />
                <h3 className="text-2xl font-serif mb-4 relative z-10">Global Presence</h3>
@@ -225,7 +225,7 @@ const Contact = () => {
               whileHover={{ x: 10 }}
               className="flex items-center gap-6 p-6 rounded-[30px] bg-white border border-[#D8CBBE]/30 cursor-pointer"
             >
-               <Globe size={24} className="text-[#7A0E2E]" strokeWidth={1} />
+               <Globe size={24} className="text-[#2e0e43]" strokeWidth={1} />
                <div>
                   <p className="text-[16px] font-bold uppercase tracking-widest text-[#7B6D63]">Chat With Us</p>
                   <p className="text-[16px] font-serif text-[#2A2623]">Instant support via WhatsApp</p>

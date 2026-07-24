@@ -34,7 +34,7 @@ const reviews = [
   }
 ];
 
-const CRIMSON = '#7A0E2E';
+const CRIMSON = '#2e0e43';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 
 const TestimonialSection = () => {
@@ -140,7 +140,7 @@ const TestimonialSection = () => {
 
                   <div className="mt-7 pt-5 border-t border-white/10 flex items-center gap-3">
                     <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-base font-bold text-[#7A0E2E]"
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-base font-bold text-[#2e0e43]"
                       style={{ background: 'rgba(255,255,255,0.9)', fontFamily: SERIF }}
                     >
                       {review.name.charAt(0)}

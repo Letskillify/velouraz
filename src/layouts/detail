@@ -99,8 +99,8 @@ const ProductDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-4">
-        <div className="w-8 h-8 border-[1.5px] border-[#7A0E2E] border-t-transparent rounded-full animate-spin" />
-        <p className="text-[16px] uppercase tracking-[0.5em] text-[#7A0E2E] font-bold">Loading</p>
+        <div className="w-8 h-8 border-[1.5px] border-[#2e0e43] border-t-transparent rounded-full animate-spin" />
+        <p className="text-[16px] uppercase tracking-[0.5em] text-[#2e0e43] font-bold">Loading</p>
       </div>
     );
   }
@@ -109,7 +109,7 @@ const ProductDetail = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-6 text-center p-6">
         <h2 className="font-serif text-3xl text-[#2A2623]/80 italic">Piece not found.</h2>
-        <button onClick={() => navigate('/shop')} className="text-[16px] tracking-[0.3em] uppercase text-[#7A0E2E] border-b border-[#7A0E2E] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
+        <button onClick={() => navigate('/shop')} className="text-[16px] tracking-[0.3em] uppercase text-[#2e0e43] border-b border-[#2e0e43] pb-1 hover:text-[#2A2623] hover:border-[#2A2623] transition-all font-bold">Return to Shop</button>
       </div>
     );
   }
@@ -186,7 +186,7 @@ const ProductDetail = () => {
                     onClick={() => setSelectedImageIndex(i)}
                     className={`flex-shrink-0 w-16 h-20 sm:w-[72px] sm:h-[90px] rounded-xl overflow-hidden border-2 transition-all duration-300 ${
                       selectedImageIndex === i 
-                        ? 'border-[#7A0E2E] opacity-100 shadow-md shadow-[#7A0E2E]/10' 
+                        ? 'border-[#2e0e43] opacity-100 shadow-md shadow-[#2e0e43]/10' 
                         : 'border-transparent opacity-50 hover:opacity-80'
                     }`}
                   >
@@ -214,7 +214,7 @@ const ProductDetail = () => {
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
                   {discountPercent > 0 && (
-                    <span className="bg-[#7A0E2E] text-white px-3 py-1.5 rounded-full text-[16px] font-bold tracking-wider">
+                    <span className="bg-[#2e0e43] text-white px-3 py-1.5 rounded-full text-[16px] font-bold tracking-wider">
                       -{discountPercent}% OFF
                     </span>
                   )}
@@ -230,8 +230,8 @@ const ProductDetail = () => {
                   disabled={wishlistLoading}
                   className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-md ${
                     isInWishlist(product.id) 
-                      ? 'bg-[#7A0E2E] text-white shadow-md' 
-                      : 'bg-white/80 text-[#2A2623] hover:bg-[#7A0E2E] hover:text-white'
+                      ? 'bg-[#2e0e43] text-white shadow-md' 
+                      : 'bg-white/80 text-[#2A2623] hover:bg-[#2e0e43] hover:text-white'
                   }`}
                 >
                   {wishlistLoading ? (
@@ -250,7 +250,7 @@ const ProductDetail = () => {
 
               {/* Brand, Subcategory and SKU Header */}
               <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-[16px] font-bold uppercase tracking-widest text-[#7A0E2E] bg-[#7A0E2E]/10 px-2.5 py-1 rounded-lg">
+                <span className="text-[16px] font-bold uppercase tracking-widest text-[#2e0e43] bg-[#2e0e43]/10 px-2.5 py-1 rounded-lg">
                   {product.brand || "Velouraz"}
                 </span>
                 {product.subcategory && (
@@ -297,7 +297,7 @@ const ProductDetail = () => {
                     <span className="text-lg text-[#7B6D63]/50 line-through font-serif">
                       ₹{Number(product.original_price).toLocaleString()}
                     </span>
-                    <span className="text-[16px] font-bold text-[#7A0E2E] bg-[#7A0E2E]/8 px-2.5 py-1 rounded-full">
+                    <span className="text-[16px] font-bold text-[#2e0e43] bg-[#2e0e43]/8 px-2.5 py-1 rounded-full">
                       Save {discountPercent || product.discountPercentage}%
                     </span>
                   </>
@@ -351,8 +351,8 @@ const ProductDetail = () => {
                       product.stock <= 0
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : isInCart(product.id)
-                      ? 'bg-[#7A0E2E] text-white shadow-lg shadow-[#7A0E2E]/20'
-                      : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E] shadow-lg shadow-[#2A2623]/15'
+                      ? 'bg-[#2e0e43] text-white shadow-lg shadow-[#2e0e43]/20'
+                      : 'bg-[#2A2623] text-white hover:bg-[#2e0e43] shadow-lg shadow-[#2A2623]/15'
                     }`}
                   >
                     {cartLoading ? (
@@ -387,7 +387,7 @@ const ProductDetail = () => {
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center gap-2 text-center py-3">
                     <div className="w-10 h-10 rounded-full bg-[#F4EEE8] flex items-center justify-center">
-                      <item.icon size={18} className="text-[#7A0E2E]" strokeWidth={1.5} />
+                      <item.icon size={18} className="text-[#2e0e43]" strokeWidth={1.5} />
                     </div>
                     <span className="text-[16px] uppercase tracking-wider font-bold text-[#7B6D63] whitespace-pre-line leading-tight">{item.label}</span>
                   </div>
@@ -427,7 +427,7 @@ const ProductDetail = () => {
                         <p className="text-[16px] text-[#2A2623]/70 leading-relaxed">
                           Each piece undergoes meticulous hand-polishing for a high-lustre finish. Advanced plating techniques including gold, rose gold, and rhodium enhance both appearance and longevity.
                         </p>
-                        <div className="flex items-center gap-2 text-[#7A0E2E]">
+                        <div className="flex items-center gap-2 text-[#2e0e43]">
                           <Sparkles size={14} />
                           <span className="text-[16px] uppercase tracking-wider font-bold">Signature Anti-Tarnish Finish</span>
                         </div>
@@ -446,7 +446,7 @@ const ProductDetail = () => {
                           "Keep away from direct sunlight"
                         ].map((item, i) => (
                           <li key={i} className="flex items-start gap-3 text-[16px] text-[#2A2623]/70">
-                            <span className="w-1 h-1 rounded-full bg-[#7A0E2E] mt-2 flex-shrink-0" />
+                            <span className="w-1 h-1 rounded-full bg-[#2e0e43] mt-2 flex-shrink-0" />
                             {item}
                           </li>
                         ))}
@@ -459,11 +459,11 @@ const ProductDetail = () => {
                     content: (
                       <div className="space-y-3 py-1">
                         <div className="flex items-start gap-3">
-                          <Package size={16} className="text-[#7A0E2E] mt-0.5 flex-shrink-0" />
+                          <Package size={16} className="text-[#2e0e43] mt-0.5 flex-shrink-0" />
                           <p className="text-[16px] text-[#2A2623]/70">Free standard shipping on all orders above ₹999. Delivered within 5-7 business days.</p>
                         </div>
                         <div className="flex items-start gap-3">
-                          <Clock size={16} className="text-[#7A0E2E] mt-0.5 flex-shrink-0" />
+                          <Clock size={16} className="text-[#2e0e43] mt-0.5 flex-shrink-0" />
                           <p className="text-[16px] text-[#2A2623]/70">Easy 7-day returns. Items must be unworn and in original packaging.</p>
                         </div>
                       </div>
@@ -513,7 +513,7 @@ const ProductDetail = () => {
             product.stock <= 0
             ? 'bg-gray-100 text-gray-400'
             : isInCart(product.id)
-            ? 'bg-[#7A0E2E] text-white'
+            ? 'bg-[#2e0e43] text-white'
             : 'bg-[#2A2623] text-white'
           }`}
         >

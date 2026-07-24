@@ -13,7 +13,7 @@ export const generateInvoicePDF = (order) => {
         <td style="padding: 12px; font-weight: 600;">${item.name}</td>
         <td style="padding: 12px; text-align: center;">${item.quantity || 1}</td>
         <td style="padding: 12px; text-align: right;">₹${Number(item.price || 0).toLocaleString()}</td>
-        <td style="padding: 12px; text-align: right; font-weight: 700; color: #7A0E2E;">₹${(
+        <td style="padding: 12px; text-align: right; font-weight: 700; color: #2e0e43;">₹${(
           Number(item.price || 0) * (item.quantity || 1)
         ).toLocaleString()}</td>
       </tr>
@@ -35,20 +35,20 @@ export const generateInvoicePDF = (order) => {
         <style>
           @page { size: A4; margin: 20mm; }
           body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #2A2623; margin: 0; padding: 20px; background: #fff; }
-          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #7A0E2E; padding-bottom: 20px; margin-bottom: 30px; }
-          .logo { font-family: Georgia, serif; font-size: 26px; font-weight: bold; color: #7A0E2E; letter-spacing: 0.1em; text-transform: uppercase; }
+          .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2e0e43; padding-bottom: 20px; margin-bottom: 30px; }
+          .logo { font-family: Georgia, serif; font-size: 26px; font-weight: bold; color: #2e0e43; letter-spacing: 0.1em; text-transform: uppercase; }
           .badge { font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: #C8A97A; font-weight: bold; margin-top: 4px; }
           .grid { display: flex; justify-content: space-between; margin-bottom: 30px; }
           .card { background: #FDFAF5; border: 1px solid #E5E7EB; border-radius: 8px; padding: 15px; width: 46%; }
           .card h4 { margin: 0 0 8px 0; text-transform: uppercase; font-size: 11px; letter-spacing: 0.15em; color: #7B6D63; }
           .card p { margin: 3px 0; font-size: 13px; color: #2A2623; }
           table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-          th { background: #7A0E2E; color: white; text-transform: uppercase; font-size: 11px; letter-spacing: 0.15em; padding: 10px 12px; text-align: left; }
+          th { background: #2e0e43; color: white; text-transform: uppercase; font-size: 11px; letter-spacing: 0.15em; padding: 10px 12px; text-align: left; }
           th.right { text-align: right; }
           th.center { text-align: center; }
           .totals { margin-left: auto; width: 320px; font-size: 13px; }
           .row { display: flex; justify-content: space-between; padding: 6px 0; }
-          .grand-total { font-size: 16px; font-weight: bold; color: #7A0E2E; border-top: 2px solid #7A0E2E; padding-top: 10px; margin-top: 10px; }
+          .grand-total { font-size: 16px; font-weight: bold; color: #2e0e43; border-top: 2px solid #2e0e43; padding-top: 10px; margin-top: 10px; }
           .footer { margin-top: 50px; text-align: center; font-size: 11px; color: #7B6D63; border-top: 1px solid #E5E7EB; padding-top: 15px; }
         </style>
       </head>

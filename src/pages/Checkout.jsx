@@ -231,7 +231,7 @@ const Checkout = () => {
           contact: formData.phone,
         },
         theme: {
-          color: "#7A0E2E",
+          color: "#2e0e43",
         },
       };
 
@@ -255,7 +255,7 @@ const Checkout = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-xl w-full bg-[#FFFDF9] rounded-3xl border border-[#EFE8DC] p-8 md:p-12 text-center shadow-[0_12px_45px_rgba(0,0,0,0.06)] space-y-6"
         >
-          <div className="w-20 h-20 rounded-full bg-[#7A0E2E]/10 text-[#7A0E2E] flex items-center justify-center mx-auto border border-[#7A0E2E]/30">
+          <div className="w-20 h-20 rounded-full bg-[#2e0e43]/10 text-[#2e0e43] flex items-center justify-center mx-auto border border-[#2e0e43]/30">
             <CheckCircle2 size={42} />
           </div>
 
@@ -263,7 +263,7 @@ const Checkout = () => {
             <span className="text-xs uppercase font-bold tracking-[0.3em] text-[#B58E58]">Order Confirmed</span>
             <h1 className="font-serif text-3xl md:text-4xl text-[#222222] font-light mt-1">Thank You for Your Order</h1>
             <p className="text-xs md:text-sm text-[#7B6D63] font-light mt-2">
-              Your order <span className="font-bold text-[#7A0E2E]">#{orderSuccess.id.slice(0, 10).toUpperCase()}</span> has been placed successfully and is being prepared by our ateliers.
+              Your order <span className="font-bold text-[#2e0e43]">#{orderSuccess.id.slice(0, 10).toUpperCase()}</span> has been placed successfully and is being prepared by our ateliers.
             </p>
           </div>
 
@@ -279,14 +279,14 @@ const Checkout = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-[#7B6D63] uppercase font-bold tracking-wider">Total Paid</span>
-              <span className="font-bold text-[#7A0E2E] text-sm">₹{Number(orderSuccess.totalAmount).toLocaleString()}</span>
+              <span className="font-bold text-[#2e0e43] text-sm">₹{Number(orderSuccess.totalAmount).toLocaleString()}</span>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               onClick={() => navigate('/orders')}
-              className="flex-1 py-3.5 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-md"
+              className="flex-1 py-3.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-md"
             >
               Track My Orders
             </button>
@@ -310,7 +310,7 @@ const Checkout = () => {
         <p className="text-xs text-[#7B6D63] mt-2 mb-6">Select pieces from our catalog to proceed to checkout.</p>
         <button
           onClick={() => navigate('/shop')}
-          className="px-8 py-3.5 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-md"
+          className="px-8 py-3.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer shadow-md"
         >
           Explore Catalogue
         </button>
@@ -351,7 +351,7 @@ const Checkout = () => {
             <div className="bg-[#FFFDF9] p-6 sm:p-8 rounded-3xl border border-[#EFE8DC] shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-[#EFE8DC] pb-4">
                 <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white text-xs font-bold flex items-center justify-center">1</span>
+                  <span className="w-8 h-8 rounded-full bg-[#2e0e43] text-white text-xs font-bold flex items-center justify-center">1</span>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#222222] font-light">Shipping & Delivery Address</h3>
                 </div>
                 <span className="text-xs text-[#B58E58] font-bold uppercase tracking-wider">Step 1 of 2</span>
@@ -367,7 +367,7 @@ const Checkout = () => {
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
 
@@ -380,7 +380,7 @@ const Checkout = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="name@example.com"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
 
@@ -393,7 +393,7 @@ const Checkout = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="10-digit mobile number"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
 
@@ -406,7 +406,7 @@ const Checkout = () => {
                     value={formData.address}
                     onChange={handleInputChange}
                     placeholder="Apartment, building, street, area"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
 
@@ -419,7 +419,7 @@ const Checkout = () => {
                     value={formData.city}
                     onChange={handleInputChange}
                     placeholder="e.g. Mumbai"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
 
@@ -433,7 +433,7 @@ const Checkout = () => {
                     value={formData.pincode}
                     onChange={handleInputChange}
                     placeholder="6-digit pincode"
-                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#7A0E2E] transition-all"
+                    className="w-full px-4 py-3 bg-[#FAF7F2] border border-[#EFE8DC] rounded-xl outline-none focus:border-[#2e0e43] transition-all"
                   />
                 </div>
               </div>
@@ -443,7 +443,7 @@ const Checkout = () => {
             <div className="bg-[#FFFDF9] p-6 sm:p-8 rounded-3xl border border-[#EFE8DC] shadow-sm space-y-6">
               <div className="flex items-center justify-between border-b border-[#EFE8DC] pb-4">
                 <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#7A0E2E] text-white text-xs font-bold flex items-center justify-center">2</span>
+                  <span className="w-8 h-8 rounded-full bg-[#2e0e43] text-white text-xs font-bold flex items-center justify-center">2</span>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#222222] font-light">Payment Method</h3>
                 </div>
                 <span className="text-xs text-[#B58E58] font-bold uppercase tracking-wider">Step 2 of 2</span>
@@ -455,7 +455,7 @@ const Checkout = () => {
                   onClick={() => setPaymentMethod("razorpay")}
                   className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
                     paymentMethod === "razorpay"
-                      ? "bg-[#7A0E2E]/5 border-[#7A0E2E] shadow-sm"
+                      ? "bg-[#2e0e43]/5 border-[#2e0e43] shadow-sm"
                       : "bg-[#FAF7F2] border-[#EFE8DC] hover:border-[#B58E58]"
                   }`}
                 >
@@ -465,14 +465,14 @@ const Checkout = () => {
                       name="payment"
                       checked={paymentMethod === "razorpay"}
                       onChange={() => setPaymentMethod("razorpay")}
-                      className="accent-[#7A0E2E] w-4 h-4"
+                      className="accent-[#2e0e43] w-4 h-4"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#2A2623] uppercase tracking-wider">Razorpay Online Payment</p>
                       <p className="text-[11px] text-[#7B6D63]">Cards, UPI, NetBanking, Wallets</p>
                     </div>
                   </div>
-                  <CreditCard size={20} className="text-[#7A0E2E]" />
+                  <CreditCard size={20} className="text-[#2e0e43]" />
                 </label>
 
                 {/* Cash on Delivery */}
@@ -480,7 +480,7 @@ const Checkout = () => {
                   onClick={() => setPaymentMethod("cod")}
                   className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
                     paymentMethod === "cod"
-                      ? "bg-[#7A0E2E]/5 border-[#7A0E2E] shadow-sm"
+                      ? "bg-[#2e0e43]/5 border-[#2e0e43] shadow-sm"
                       : "bg-[#FAF7F2] border-[#EFE8DC] hover:border-[#B58E58]"
                   }`}
                 >
@@ -490,7 +490,7 @@ const Checkout = () => {
                       name="payment"
                       checked={paymentMethod === "cod"}
                       onChange={() => setPaymentMethod("cod")}
-                      className="accent-[#7A0E2E] w-4 h-4"
+                      className="accent-[#2e0e43] w-4 h-4"
                     />
                     <div>
                       <p className="text-xs font-bold text-[#2A2623] uppercase tracking-wider">Cash on Delivery (COD)</p>
@@ -505,7 +505,7 @@ const Checkout = () => {
             {/* Guarantee Highlights */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               <div className="bg-[#FFFDF9] p-4 rounded-2xl border border-[#EFE8DC] text-center space-y-1">
-                <ShieldCheck size={20} className="mx-auto text-[#7A0E2E]" />
+                <ShieldCheck size={20} className="mx-auto text-[#2e0e43]" />
                 <h5 className="text-xs font-bold uppercase tracking-wider text-[#2A2623]">256-Bit SSL</h5>
                 <p className="text-[10px] text-[#7B6D63]">Bank grade encryption</p>
               </div>
@@ -517,7 +517,7 @@ const Checkout = () => {
               </div>
 
               <div className="bg-[#FFFDF9] p-4 rounded-2xl border border-[#EFE8DC] text-center space-y-1">
-                <Gem size={20} className="mx-auto text-[#7A0E2E]" />
+                <Gem size={20} className="mx-auto text-[#2e0e43]" />
                 <h5 className="text-xs font-bold uppercase tracking-wider text-[#2A2623]">Hallmarked Gold</h5>
                 <p className="text-[10px] text-[#7B6D63]">Conflict free materials</p>
               </div>
@@ -544,7 +544,7 @@ const Checkout = () => {
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-bold text-[#2A2623] truncate">{item.name}</h4>
                       <p className="text-[11px] text-[#7B6D63]">Qty: {item.quantity || 1}</p>
-                      <p className="text-xs font-serif font-bold text-[#7A0E2E]">₹{Number(item.price).toLocaleString()}</p>
+                      <p className="text-xs font-serif font-bold text-[#2e0e43]">₹{Number(item.price).toLocaleString()}</p>
                     </div>
                   </div>
                 ))}
@@ -566,7 +566,7 @@ const Checkout = () => {
 
                 <div className="flex justify-between text-base font-serif font-bold text-[#2A2623] pt-3 border-t border-[#EFE8DC]">
                   <span>Total Amount</span>
-                  <span className="text-[#7A0E2E] text-xl">₹{total.toLocaleString()}</span>
+                  <span className="text-[#2e0e43] text-xl">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -577,7 +577,7 @@ const Checkout = () => {
                 className={`w-full h-14 text-xs font-bold uppercase tracking-[0.25em] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-lg ${
                   loading || isAnyOutOfStock
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#7A0E2E] text-white hover:bg-[#2A2623]'
+                    : 'bg-[#2e0e43] text-white hover:bg-[#2A2623]'
                 }`}
               >
                 {loading ? <Loader2 size={18} className="animate-spin" /> : <Lock size={16} />}

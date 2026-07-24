@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Breadcrumb from '../components/Breadcrumb';
 
-const CRIMSON = '#7A0E2E';
+const CRIMSON = '#2e0e43';
 const DARK = '#2A2623';
 const GOLD = '#C8A97A';
 const TAUPE = '#7B6D63';
@@ -76,7 +76,7 @@ const About = () => {
                   alt="Crafting and Designing" 
                   className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-[#7A0E2E]/[0.03] pointer-events-none" />
+                <div className="absolute inset-0 bg-[#2e0e43]/[0.03] pointer-events-none" />
               </div>
 
               {/* Minimal Brand Credo Box */}

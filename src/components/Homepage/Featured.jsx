@@ -58,7 +58,7 @@ const WorldEdit = () => {
     <section className="bg-[#F8F4EF] py-12 lg:py-20 overflow-hidden relative border-t border-[#D8CBBE]/30">
       {/* Background Decorative Element */}
       <div className="absolute top-20 right-0 pointer-events-none select-none overflow-hidden opacity-[0.02]">
-        <span className="text-[30rem] font-serif italic text-[#7A0E2E] leading-none">Global</span>
+        <span className="text-[30rem] font-serif italic text-[#2e0e43] leading-none">Global</span>
       </div>
 
       <div className="max-w-[1800px] mx-auto px-4 sm:px-8 lg:px-16">
@@ -72,7 +72,7 @@ const WorldEdit = () => {
               viewport={{ once: true }}
               className="flex items-center gap-3"
             >
-              <div className="w-8 h-[1px] bg-[#7A0E2E]" />
+              <div className="w-8 h-[1px] bg-[#2e0e43]" />
               <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                 WORLD EDIT
               </span>
@@ -85,7 +85,7 @@ const WorldEdit = () => {
               transition={{ delay: 0.1 }}
               className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#2A2623] leading-tight"
             >
-              Beauty <span className="text-[#7A0E2E] italic">Beyond Borders</span>
+              Beauty <span className="text-[#2e0e43] italic">Beyond Borders</span>
             </motion.h2>
             
             <motion.p 
@@ -101,10 +101,10 @@ const WorldEdit = () => {
 
           <div className="flex items-center gap-6">
              <div className="flex items-center gap-4 hidden md:flex">
-                <button className="world-prev w-14 h-14 rounded-full border border-[#D8CBBE] flex items-center justify-center text-[#2A2623] hover:bg-[#7A0E2E] hover:text-white hover:border-[#7A0E2E] transition-all duration-500 group">
+                <button className="world-prev w-14 h-14 rounded-full border border-[#D8CBBE] flex items-center justify-center text-[#2A2623] hover:bg-[#2e0e43] hover:text-white hover:border-[#2e0e43] transition-all duration-500 group">
                   <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
                 </button>
-                <button className="world-next w-14 h-14 rounded-full border border-[#D8CBBE] flex items-center justify-center text-[#2A2623] hover:bg-[#7A0E2E] hover:text-white hover:border-[#7A0E2E] transition-all duration-500 group">
+                <button className="world-next w-14 h-14 rounded-full border border-[#D8CBBE] flex items-center justify-center text-[#2A2623] hover:bg-[#2e0e43] hover:text-white hover:border-[#2e0e43] transition-all duration-500 group">
                   <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -156,7 +156,7 @@ const WorldEdit = () => {
                   <div className="absolute inset-0 p-8 flex flex-col justify-end">
                     <div className="space-y-4">
                       <div className="space-y-1">
-                        <span className="text-[16px] tracking-[0.4em] font-bold text-[#7A0E2E] uppercase">
+                        <span className="text-[16px] tracking-[0.4em] font-bold text-[#2e0e43] uppercase">
                            {item.subtext}
                         </span>
                         <h3 className="text-2xl lg:text-3xl font-serif text-white tracking-wide">{item.region}</h3>
@@ -167,7 +167,7 @@ const WorldEdit = () => {
                          <Link to={item.link} className="flex items-center gap-3 text-[16px] tracking-[0.3em] font-bold text-white uppercase group-hover:text-[#F8F4EF] transition-colors">
                             Explore Collection
                          </Link>
-                         <div className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white group-hover/btn:bg-[#7A0E2E] group-hover/btn:border-[#7A0E2E] transition-all duration-300">
+                         <div className="w-9 h-9 rounded-full border border-white/30 flex items-center justify-center text-white group-hover/btn:bg-[#2e0e43] group-hover/btn:border-[#2e0e43] transition-all duration-300">
                             <ArrowUpRight size={16} />
                          </div>
                       </div>
@@ -189,7 +189,7 @@ const WorldEdit = () => {
           {/* Custom Scroll Progress Bar for Premium touch */}
           <div className="mt-20 h-[1px] w-full bg-[#D8CBBE]/30 relative rounded-full hidden lg:block">
             <motion.div 
-              className="absolute top-0 left-0 h-full bg-[#7A0E2E] w-1/4 rounded-full"
+              className="absolute top-0 left-0 h-full bg-[#2e0e43] w-1/4 rounded-full"
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}

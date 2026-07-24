@@ -4,7 +4,7 @@ import { Mail } from 'lucide-react';
 
 const NewsletterBar = () => {
   return (
-    <section className="bg-[#7A0E2E] py-12 lg:py-16">
+    <section className="bg-[#2e0e43] py-12 lg:py-16">
       <div className="max-w-[1440px] mx-auto px-4 lg:px-10 flex flex-col lg:flex-row items-center justify-between gap-8">
         
         {/* Left: Text */}
@@ -30,7 +30,7 @@ const NewsletterBar = () => {
           />
           <button 
             type="submit"
-            className="bg-white text-[#7A0E2E] px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-[#F8F4EF] transition-all duration-500"
+            className="bg-white text-[#2e0e43] px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-[#F8F4EF] transition-all duration-500"
           >
             Subscribe
           </button>

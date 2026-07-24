@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 const GOLD = '#C8A97A';
-const CRIMSON = '#7A0E2E';
+const CRIMSON = '#2e0e43';
 
 const Login = () => {
   const { login } = useAuth();
@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex selection:bg-[#7A0E2E] selection:text-white">
+    <div className="min-h-screen flex selection:bg-[#2e0e43] selection:text-white">
       
       {/* Left Panel — Brand Visual */}
       <div className="hidden lg:flex lg:w-[48%] relative overflow-hidden items-end" style={{ background: '#0A0705' }}>
@@ -86,7 +86,7 @@ const Login = () => {
       {/* Right Panel — Login Form */}
       <div className="flex-1 flex flex-col justify-center items-center bg-[#FDFAF5] px-6 sm:px-12 py-12 relative">
         {/* Subtle decorative element */}
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#7A0E2E]/[0.03] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#2e0e43]/[0.03] rounded-full blur-[100px] pointer-events-none" />
         
         {/* Mobile logo */}
         <Link to="/" className="lg:hidden mb-10">
@@ -133,13 +133,13 @@ const Login = () => {
             <div className="space-y-2">
               <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623] ml-1">Email Address</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#2e0e43] transition-colors" size={16} />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full pl-12 pr-4 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
+                  className="w-full pl-12 pr-4 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#2e0e43] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
                   required
                 />
               </div>
@@ -148,22 +148,22 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
                 <label className="text-[16px] font-bold uppercase tracking-[0.2em] text-[#2A2623]">Password</label>
-                <button type="button" className="text-[16px] font-bold text-[#7A0E2E]/60 hover:text-[#7A0E2E] transition-colors uppercase tracking-wider">Forgot?</button>
+                <button type="button" className="text-[16px] font-bold text-[#2e0e43]/60 hover:text-[#2e0e43] transition-colors uppercase tracking-wider">Forgot?</button>
               </div>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#7A0E2E] transition-colors" size={16} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/30 group-focus-within:text-[#2e0e43] transition-colors" size={16} />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-12 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#7A0E2E] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
+                  className="w-full pl-12 pr-12 py-4 bg-white border border-[#D8CBBE]/50 rounded-xl focus:border-[#2e0e43] outline-none transition-all text-[16px] text-[#2A2623] placeholder:text-[#7B6D63]/30"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 hover:text-[#7A0E2E] transition-colors"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 hover:text-[#2e0e43] transition-colors"
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
@@ -199,7 +199,7 @@ const Login = () => {
           {/* Sign Up Link */}
           <p className="text-center text-[16px] text-[#7B6D63]" style={{ fontFamily: SERIF }}>
             New to Velouraz?{" "}
-            <Link to="/signup" state={location.state} className="text-[#7A0E2E] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#7A0E2E]/20 hover:border-[#2A2623] pb-px">
+            <Link to="/signup" state={location.state} className="text-[#2e0e43] font-semibold hover:text-[#2A2623] transition-colors border-b border-[#2e0e43]/20 hover:border-[#2A2623] pb-px">
               Create an account
             </Link>
           </p>

@@ -155,7 +155,7 @@ const Hero = () => {
               to={heroConfig.btn1Link}
               className="group relative inline-flex items-center overflow-hidden text-white"
               style={{
-                background: '#7A0E2E',
+                background: '#2e0e43',
                 padding: '12px 32px',
                 fontSize: '9px',
                 letterSpacing: '0.32em',

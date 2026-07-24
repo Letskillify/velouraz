@@ -146,14 +146,14 @@ const BlogManager = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
         <div>
           <h2 className="text-2xl font-serif font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="text-[#7A0E2E]" size={24} /> Blog & Journal Management
+            <FileText className="text-[#2e0e43]" size={24} /> Blog & Journal Management
           </h2>
           <p className="text-sm text-gray-500 mt-1">Create, edit and manage dynamic blog articles & editorial stories.</p>
         </div>
 
         <button
           onClick={openAddModal}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#7A0E2E] text-white text-sm font-semibold rounded-xl hover:bg-[#5E0B24] transition-all cursor-pointer shadow-md"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2e0e43] text-white text-sm font-semibold rounded-xl hover:bg-[#5E0B24] transition-all cursor-pointer shadow-md"
         >
           <Plus size={16} /> Create Article
         </button>
@@ -168,7 +168,7 @@ const BlogManager = () => {
             placeholder="Search articles..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E] transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43] transition-all"
           />
         </div>
         <p className="text-sm text-gray-500 font-medium">
@@ -194,7 +194,7 @@ const BlogManager = () => {
               <div>
                 <div className="relative aspect-video w-full bg-gray-100 overflow-hidden">
                   <img src={blog.image || 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=1200'} alt={blog.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-3 left-3 bg-[#7A0E2E] text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md">
+                  <span className="absolute top-3 left-3 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md">
                     {blog.category}
                   </span>
                 </div>
@@ -218,7 +218,7 @@ const BlogManager = () => {
                   href={`/blog/${blog.id}`} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="text-xs text-gray-500 hover:text-[#7A0E2E] flex items-center gap-1"
+                  className="text-xs text-gray-500 hover:text-[#2e0e43] flex items-center gap-1"
                 >
                   <Eye size={13} /> View
                 </a>
@@ -249,7 +249,7 @@ const BlogManager = () => {
           <p className="text-sm text-gray-500 mt-1 mb-4">Click "Create Article" to publish your first journal story.</p>
           <button
             onClick={openAddModal}
-            className="px-5 py-2.5 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer"
+            className="px-5 py-2.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer"
           >
             Create First Article
           </button>
@@ -284,7 +284,7 @@ const BlogManager = () => {
                     placeholder="e.g. The Ultimate Jewellery Care Guide for Daily Luxury"
                     value={formData.title}
                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                   />
                 </div>
 
@@ -294,7 +294,7 @@ const BlogManager = () => {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                     >
                       {defaultCategories.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -308,7 +308,7 @@ const BlogManager = () => {
                       placeholder="e.g. Velouraz Editorial"
                       value={formData.author}
                       onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                   <div>
@@ -318,7 +318,7 @@ const BlogManager = () => {
                       placeholder="e.g. 5 min read"
                       value={formData.readTime}
                       onChange={(e) => setFormData(prev => ({ ...prev, readTime: e.target.value }))}
-                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                      className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                     />
                   </div>
                 </div>
@@ -332,7 +332,7 @@ const BlogManager = () => {
                       placeholder="Paste image URL..."
                       value={formData.image}
                       onChange={(e) => setFormData(prev => ({ ...prev, image: e.target.value }))}
-                      className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                      className="flex-1 px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                     />
                     <label className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer hover:bg-gray-200">
                       <Image size={15} /> Upload File
@@ -353,7 +353,7 @@ const BlogManager = () => {
                     placeholder="Brief intro for the article card..."
                     value={formData.excerpt}
                     onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
-                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E]"
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43]"
                   />
                 </div>
 
@@ -365,7 +365,7 @@ const BlogManager = () => {
                     placeholder="Write your article content here..."
                     value={formData.content}
                     onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#7A0E2E] font-sans"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#2e0e43] font-sans"
                   />
                 </div>
 
@@ -380,7 +380,7 @@ const BlogManager = () => {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="px-6 py-2.5 bg-[#7A0E2E] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#5E0B24] transition-all cursor-pointer shadow-md"
+                    className="px-6 py-2.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#5E0B24] transition-all cursor-pointer shadow-md"
                   >
                     {saving ? 'Saving...' : editingBlog ? 'Update Article' : 'Publish Article'}
                   </button>

@@ -43,7 +43,7 @@ const Stories = () => {
                 viewport={{ once: true }}
                 className="flex items-center gap-3"
               >
-                <div className="w-8 h-[1px] bg-[#7A0E2E]" />
+                <div className="w-8 h-[1px] bg-[#2e0e43]" />
                 <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
                   THE JOURNAL
                 </span>
@@ -56,7 +56,7 @@ const Stories = () => {
                 transition={{ delay: 0.1 }}
                 className="text-4xl md:text-5xl lg:text-5xl font-serif text-[#2A2623] leading-tight"
               >
-                Stories, Style & <span className="text-[#7A0E2E] italic">Inspiration</span>
+                Stories, Style & <span className="text-[#2e0e43] italic">Inspiration</span>
               </motion.h2>
               
               <motion.p 
@@ -78,7 +78,7 @@ const Stories = () => {
             >
               <Link 
                 to="/journal" 
-                className="bg-[#7A0E2E] text-white px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-[#5E0B24] transition-all inline-block shadow-xl"
+                className="bg-[#2e0e43] text-white px-10 py-4 text-[16px] tracking-[0.2em] font-bold uppercase hover:bg-[#5E0B24] transition-all inline-block shadow-xl"
               >
                 Explore Journal
               </Link>
@@ -119,10 +119,10 @@ const Stories = () => {
                       />
                     </div>
                     <div className="space-y-3">
-                      <span className="text-[16px] tracking-[0.2em] font-bold text-[#7A0E2E] uppercase">
+                      <span className="text-[16px] tracking-[0.2em] font-bold text-[#2e0e43] uppercase">
                         {post.date}
                       </span>
-                      <h3 className="text-xl lg:text-2xl font-serif text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors leading-snug">
+                      <h3 className="text-xl lg:text-2xl font-serif text-[#2A2623] group-hover:text-[#2e0e43] transition-colors leading-snug">
                         {post.title}
                       </h3>
                     </div>
@@ -132,7 +132,7 @@ const Stories = () => {
             </Swiper>
             
             {/* Custom Pagination as seen in reference */}
-            <div className="journal-pagination mt-16 flex justify-center lg:justify-start gap-2 [&_.swiper-pagination-bullet]:!bg-transparent [&_.swiper-pagination-bullet]:!border [&_.swiper-pagination-bullet]:!border-[#7A0E2E] [&_.swiper-pagination-bullet]:!opacity-100 [&_.swiper-pagination-bullet-active]:!bg-[#7A0E2E] [&_.swiper-pagination-bullet]:!w-2.5 [&_.swiper-pagination-bullet]:!h-2.5 [&_.swiper-pagination-bullet]:!transition-all" />
+            <div className="journal-pagination mt-16 flex justify-center lg:justify-start gap-2 [&_.swiper-pagination-bullet]:!bg-transparent [&_.swiper-pagination-bullet]:!border [&_.swiper-pagination-bullet]:!border-[#2e0e43] [&_.swiper-pagination-bullet]:!opacity-100 [&_.swiper-pagination-bullet-active]:!bg-[#2e0e43] [&_.swiper-pagination-bullet]:!w-2.5 [&_.swiper-pagination-bullet]:!h-2.5 [&_.swiper-pagination-bullet]:!transition-all" />
           </div>
 
         </div>

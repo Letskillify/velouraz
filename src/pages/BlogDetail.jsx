@@ -152,7 +152,7 @@ const BlogDetail = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center pt-28">
-        <Loader2 size={36} className="animate-spin text-[#7A0E2E]" />
+        <Loader2 size={36} className="animate-spin text-[#2e0e43]" />
       </div>
     );
   }
@@ -162,7 +162,7 @@ const BlogDetail = () => {
       <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center pt-28 px-4 text-center">
         <h2 className="font-serif text-3xl text-[#222222] mb-4">Article Not Found</h2>
         <p className="text-sm text-[#7B6D63] mb-6">The article you are looking for does not exist or has been removed.</p>
-        <Link to="/blog" className="px-6 py-2.5 bg-[#7A0E2E] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors">
+        <Link to="/blog" className="px-6 py-2.5 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors">
           Back to Journal
         </Link>
       </div>
@@ -197,14 +197,14 @@ const BlogDetail = () => {
         
         {/* Navigation & Sharing Tools */}
         <div className="flex items-center justify-between border-b border-[#EFE8DC] pb-4 mb-8">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7B6D63] hover:text-[#7A0E2E] transition-colors">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7B6D63] hover:text-[#2e0e43] transition-colors">
             <ArrowLeft size={14} /> Back to Journal
           </Link>
           <div className="flex items-center gap-3">
-            <button onClick={handleShare} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#7A0E2E] hover:border-[#7A0E2E] transition-all cursor-pointer shadow-sm" title="Copy Link">
+            <button onClick={handleShare} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm" title="Copy Link">
               <Share2 size={14} />
             </button>
-            <button onClick={handleShareWhatsApp} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#7A0E2E] hover:border-[#7A0E2E] transition-all cursor-pointer shadow-sm" title="Share on WhatsApp">
+            <button onClick={handleShareWhatsApp} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm" title="Share on WhatsApp">
               <MessageCircle size={14} />
             </button>
           </div>
@@ -227,7 +227,7 @@ const BlogDetail = () => {
                   </div>
                   <div className="p-4 space-y-2">
                     <span className="text-[9px] uppercase font-bold tracking-widest text-[#B58E58] block">{rBlog.category}</span>
-                    <h4 className="font-serif text-sm font-bold text-[#2A2623] leading-snug line-clamp-2 group-hover:text-[#7A0E2E] transition-colors">
+                    <h4 className="font-serif text-sm font-bold text-[#2A2623] leading-snug line-clamp-2 group-hover:text-[#2e0e43] transition-colors">
                       <Link to={`/blog/${rBlog.id}`}>{rBlog.title}</Link>
                     </h4>
                   </div>

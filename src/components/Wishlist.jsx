@@ -75,8 +75,8 @@ const Wishlist = () => {
     return (
       <div className="min-h-screen bg-[#F8F4EF] flex items-center justify-center">
         <div className="relative">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#7A0E2E]"></div>
-          <Heart className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#7A0E2E]/50 animate-pulse" size={24} />
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#2e0e43]"></div>
+          <Heart className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#2e0e43]/50 animate-pulse" size={24} />
         </div>
       </div>
     );
@@ -140,7 +140,7 @@ const Wishlist = () => {
                         className={`w-full py-4 text-[16px] tracking-[0.2em] font-bold uppercase flex items-center justify-center gap-3 transition-all rounded-xl shadow-xl ${
                           item.stock <= 0
                           ? 'bg-red-50 text-red-400 cursor-not-allowed border border-red-100'
-                          : 'bg-[#2A2623] text-white hover:bg-[#7A0E2E]'
+                          : 'bg-[#2A2623] text-white hover:bg-[#2e0e43]'
                         }`}
                       >
                         {movingItems[item.id] ? (
@@ -157,13 +157,13 @@ const Wishlist = () => {
                   <div className="space-y-4 px-2 text-center">
                     <div className="space-y-1">
                       <p className="text-[16px] tracking-[0.3em] font-bold uppercase text-[#7B6D63] mb-2">{item.brand || "Velouraz Atelier"}</p>
-                      <h3 className="text-xl font-serif text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors duration-300">
+                      <h3 className="text-xl font-serif text-[#2A2623] group-hover:text-[#2e0e43] transition-colors duration-300">
                         {item.name}
                       </h3>
                     </div>
                     
                     <div className="flex items-center justify-center gap-4 pt-2">
-                      <p className="text-lg font-medium text-[#7A0E2E]">
+                      <p className="text-lg font-medium text-[#2e0e43]">
                         ₹{Number(item.price || 0).toLocaleString()}
                       </p>
                       {item.original_price > item.price && (
@@ -182,7 +182,7 @@ const Wishlist = () => {
               animate={{ opacity: 1 }}
               className="py-40 text-center bg-[#F4EEE8]/30 rounded-[64px] border border-[#D8CBBE]/20"
             >
-              <div className="w-32 h-32 bg-[#7A0E2E]/5 rounded-[40px] flex items-center justify-center mx-auto mb-10 text-[#7A0E2E]/20">
+              <div className="w-32 h-32 bg-[#2e0e43]/5 rounded-[40px] flex items-center justify-center mx-auto mb-10 text-[#2e0e43]/20">
                 <Heart size={64} />
               </div>
               <h3 className="text-4xl font-serif text-[#2A2623] mb-6 italic font-bold">Your collection is empty</h3>
@@ -191,7 +191,7 @@ const Wishlist = () => {
               </p>
               <Link 
                 to="/shop" 
-                className="inline-flex items-center gap-4 bg-[#7A0E2E] text-white px-16 py-6 rounded-2xl font-bold uppercase tracking-[0.4em] text-[16px] hover:bg-[#2A2623] transition-all shadow-xl shadow-[#7A0E2E]/20"
+                className="inline-flex items-center gap-4 bg-[#2e0e43] text-white px-16 py-6 rounded-2xl font-bold uppercase tracking-[0.4em] text-[16px] hover:bg-[#2A2623] transition-all shadow-xl shadow-[#2e0e43]/20"
               >
                 Start Exploring
                 <ArrowLeft size={20} strokeWidth={2} className="rotate-180" />

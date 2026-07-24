@@ -67,7 +67,7 @@ const QualitySection = () => {
           <h2
             className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-[#222222]"
           >
-            Quality You <span className="italic text-[#7A0E2E]">Can Trust</span>
+            Quality You <span className="italic text-[#2e0e43]">Can Trust</span>
           </h2>
 
           {/* Gold Star Accent */}
@@ -104,7 +104,7 @@ const QualitySection = () => {
 
                 {/* Title & Description */}
                 <h3 
-                  className="text-xs md:text-sm font-semibold tracking-[0.14em] uppercase mb-2.5 text-[#2A2623] group-hover:text-[#7A0E2E] transition-colors font-sans"
+                  className="text-xs md:text-sm font-semibold tracking-[0.14em] uppercase mb-2.5 text-[#2A2623] group-hover:text-[#2e0e43] transition-colors font-sans"
                 >
                   {feature.title}
                 </h3>
@@ -121,4 +121,4 @@ const QualitySection = () => {
   );
 };
 
-export default QualitySection;
+export default QualitySection;

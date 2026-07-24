@@ -32,8 +32,8 @@ const TermsAndConditions = () => {
           
           <div className="space-y-20 sm:space-y-24 text-[#7B6D63] leading-relaxed tracking-wide text-base sm:text-lg font-light">
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Scale size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">01. Acceptance of Terms</h2>
@@ -45,8 +45,8 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <FileText size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">02. Intellectual Property</h2>
@@ -58,8 +58,8 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Gavel size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">03. Termination</h2>
@@ -71,8 +71,8 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <Globe size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">04. Governing Law</h2>
@@ -84,8 +84,8 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-8 group">
-              <div className="flex items-center gap-5 text-[#7A0E2E]">
-                <div className="w-12 h-12 rounded-2xl bg-[#7A0E2E]/5 flex items-center justify-center shadow-sm group-hover:bg-[#7A0E2E] group-hover:text-white transition-all duration-500">
+              <div className="flex items-center gap-5 text-[#2e0e43]">
+                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500">
                   <RefreshCcw size={22} />
                 </div>
                 <h2 className="text-[#2A2623] text-2xl font-serif font-bold tracking-tight">05. Changes to This Agreement</h2>

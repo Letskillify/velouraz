@@ -12,7 +12,7 @@ import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 /* ─── Design Tokens ──────────────────────────────────── */
 const GOLD   = '#C8A97A';
-const CRIMSON = '#7A0E2E';
+const CRIMSON = '#2e0e43';
 const DARK   = 'rgba(10,7,5,0.88)';
 const NAV_SERIF = "'Cormorant Garamond', Georgia, serif";
 
@@ -290,8 +290,8 @@ const LuxuryHeader = () => {
                   color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)',
                 }}
               >
-                <Search size={16} strokeWidth={1.5} className="group-hover:text-[#7A0E2E] transition-colors" />
-                <span className="text-[13px] font-bold tracking-[0.15em] uppercase group-hover:text-[#7A0E2E] transition-colors font-sans">
+                <Search size={16} strokeWidth={1.5} className="group-hover:text-[#2e0e43] transition-colors" />
+                <span className="text-[13px] font-bold tracking-[0.15em] uppercase group-hover:text-[#2e0e43] transition-colors font-sans">
                   Search
                 </span>
               </button>
@@ -404,7 +404,7 @@ const LuxuryHeader = () => {
                   to={link.href}
                   className="flex items-center gap-2 px-6 py-3.5 relative group transition-colors duration-200"
                   style={{
-                    color: megaMenu === link.name ? '#7A0E2E' : (scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)'),
+                    color: megaMenu === link.name ? '#2e0e43' : (scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)'),
                     fontSize: '14px',
                     letterSpacing: '0.18em',
                     fontWeight: 600,
@@ -500,7 +500,7 @@ const LuxuryHeader = () => {
                   ) : null}
                   <button
                     type="submit"
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#7A0E2E] text-white text-[16px] uppercase tracking-widest font-semibold rounded hover:bg-[#921438] transition-all ml-2 whitespace-nowrap"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-[#2e0e43] text-white text-[16px] uppercase tracking-widest font-semibold rounded hover:bg-[#921438] transition-all ml-2 whitespace-nowrap"
                   >
                     Search <ArrowRight size={13} />
                   </button>
@@ -583,7 +583,7 @@ const LuxuryHeader = () => {
                       <div className="pt-2 text-center">
                         <button
                           onClick={handleSearchSubmit}
-                          className="w-full sm:w-auto px-8 py-3.5 bg-[#7A0E2E] text-white text-[16px] font-bold tracking-[0.2em] uppercase rounded hover:bg-[#921438] transition-all flex items-center justify-center gap-2 mx-auto"
+                          className="w-full sm:w-auto px-8 py-3.5 bg-[#2e0e43] text-white text-[16px] font-bold tracking-[0.2em] uppercase rounded hover:bg-[#921438] transition-all flex items-center justify-center gap-2 mx-auto"
                         >
                           View all {liveResults.length} results for "{searchVal.trim()}" <ArrowRight size={14} />
                         </button>
@@ -779,7 +779,7 @@ const LuxuryHeader = () => {
 const BadgeDot = ({ count }) => (
   <span
     className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[16px] font-bold text-white"
-    style={{ background: '#7A0E2E' }}
+    style={{ background: '#2e0e43' }}
   >
     {count}
   </span>
@@ -796,7 +796,7 @@ const HdrIconBtn = ({ children, onClick, label, scrolled }) => (
       color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.85)',
     }}
   >
-    <span className="group-hover:text-[#7A0E2E] transition-colors block">{children}</span>
+    <span className="group-hover:text-[#2e0e43] transition-colors block">{children}</span>
   </button>
 );
 
@@ -825,10 +825,10 @@ const MegaMenuPanel = ({ link }) => (
           {link.megaMenu.sections.map((section, idx) => (
             <div key={idx} className="space-y-4">
               <div className="flex items-center gap-3">
-                <span className="text-xl opacity-60" style={{ color: '#7A0E2E' }}>{section.icon || '✦'}</span>
+                <span className="text-xl opacity-60" style={{ color: '#2e0e43' }}>{section.icon || '✦'}</span>
                 <h4
                   className="text-[16px] tracking-[0.26em] font-bold uppercase"
-                  style={{ color: '#7A0E2E' }}
+                  style={{ color: '#2e0e43' }}
                 >
                   {section.title}
                 </h4>
@@ -838,7 +838,7 @@ const MegaMenuPanel = ({ link }) => (
                   <li key={i}>
                     <Link
                       to={`${link.href}?item=${item.toLowerCase().replace(/ /g, '-')}`}
-                      className="text-[14.5px] text-[#2A2623]/70 hover:text-white hover:bg-[#7A0E2E] px-2 py-0.5 -ml-2 transition-all duration-200 block"
+                      className="text-[14.5px] text-[#2A2623]/70 hover:text-white hover:bg-[#2e0e43] px-2 py-0.5 -ml-2 transition-all duration-200 block"
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                     >
                       {item}
@@ -889,7 +889,7 @@ const MegaMenuPanel = ({ link }) => (
           <Link
             to={link.href}
             className="inline-flex items-center gap-3 text-[16px] font-bold tracking-[0.25em] uppercase px-7 py-3.5 transition-all duration-300 hover:gap-5 w-fit"
-            style={{ background: '#7A0E2E', color: '#fff' }}
+            style={{ background: '#2e0e43', color: '#fff' }}
           >
             Explore Collections <ArrowRight size={12} strokeWidth={2} />
           </Link>

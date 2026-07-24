@@ -125,7 +125,7 @@ const BestSellers = () => {
             <h2
               className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[48px] text-[#222222]"
             >
-              The Atelier <span className="italic text-[#7A0E2E]">Bestsellers</span>
+              The Atelier <span className="italic text-[#2e0e43]">Bestsellers</span>
             </h2>
             
             <p className="text-[#7B6D63] text-sm sm:text-base leading-relaxed font-serif max-w-md font-light pt-1">
@@ -138,14 +138,14 @@ const BestSellers = () => {
             <button
               ref={prevRef}
               aria-label="Previous product"
-              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#7A0E2E] hover:text-[#7A0E2E] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#2e0e43] hover:text-[#2e0e43] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronLeft size={18} strokeWidth={1.5} />
             </button>
             <button
               ref={nextRef}
               aria-label="Next product"
-              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#7A0E2E] hover:text-[#7A0E2E] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+              className="w-10 h-10 rounded-full border border-[#D8CBBE] bg-white/60 flex items-center justify-center text-[#7B6D63] hover:border-[#2e0e43] hover:text-[#2e0e43] hover:bg-white transition-all duration-300 cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
             >
               <ChevronRight size={18} strokeWidth={1.5} />
             </button>
@@ -201,7 +201,7 @@ const BestSellers = () => {
                           <span 
                             className={`text-[10px] tracking-[0.18em] font-semibold uppercase px-2.5 py-1 rounded-sm shadow-sm ${
                               product.badgeType === 'burgundy' || isSoldOut 
-                                ? 'bg-[#7A0E2E] text-white' 
+                                ? 'bg-[#2e0e43] text-white' 
                                 : 'bg-[#B58E58] text-white'
                             }`}
                           >
@@ -210,7 +210,7 @@ const BestSellers = () => {
                         </div>
                       ) : isSoldOut ? (
                         <div className="absolute top-3 left-3 z-10">
-                          <span className="bg-[#7A0E2E] text-white text-[10px] tracking-[0.18em] font-semibold uppercase px-2.5 py-1 rounded-sm shadow-sm">
+                          <span className="bg-[#2e0e43] text-white text-[10px] tracking-[0.18em] font-semibold uppercase px-2.5 py-1 rounded-sm shadow-sm">
                             SOLD OUT
                           </span>
                         </div>
@@ -221,12 +221,12 @@ const BestSellers = () => {
                         onClick={(e) => handleAddToWishlist(e, product)}
                         disabled={wishlistLoadings[product.id]}
                         aria-label="Add to wishlist"
-                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#7A0E2E] transition-all duration-300 z-10 border border-black/5 hover:scale-105"
+                        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#2e0e43] transition-all duration-300 z-10 border border-black/5 hover:scale-105"
                       >
                         {wishlistLoadings[product.id] ? (
                           <Loader2 size={13} className="animate-spin" />
                         ) : (
-                          <Heart size={14} fill={inWishlist ? '#7A0E2E' : 'none'} stroke={inWishlist ? '#7A0E2E' : 'currentColor'} strokeWidth={inWishlist ? 0 : 1.5} />
+                          <Heart size={14} fill={inWishlist ? '#2e0e43' : 'none'} stroke={inWishlist ? '#2e0e43' : 'currentColor'} strokeWidth={inWishlist ? 0 : 1.5} />
                         )}
                       </button>
                     </div>
@@ -239,14 +239,14 @@ const BestSellers = () => {
                         </span>
                         
                         <h3 
-                          className="text-xs md:text-sm font-normal text-[#2A2623] font-serif leading-snug group-hover:text-[#7A0E2E] transition-colors duration-300 line-clamp-2"
+                          className="text-xs md:text-sm font-normal text-[#2A2623] font-serif leading-snug group-hover:text-[#2e0e43] transition-colors duration-300 line-clamp-2"
                         >
                           {product.name}
                         </h3>
                       </div>
 
                       <div className="flex items-center justify-center gap-2 pt-2">
-                        <span className="text-sm font-bold text-[#7A0E2E]">
+                        <span className="text-sm font-bold text-[#2e0e43]">
                           ₹{Number(product.price || 0).toLocaleString()}
                         </span>
                         {product.original_price && Number(product.original_price) > Number(product.price) && (
@@ -267,7 +267,7 @@ const BestSellers = () => {
         <div className="flex justify-center mt-12 md:mt-16">
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#7A0E2E] text-[#7A0E2E] text-xs font-semibold tracking-[0.25em] uppercase hover:bg-[#7A0E2E] hover:text-white transition-all duration-300 bg-transparent group"
+            className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#2e0e43] text-[#2e0e43] text-xs font-semibold tracking-[0.25em] uppercase hover:bg-[#2e0e43] hover:text-white transition-all duration-300 bg-transparent group"
           >
             <span>EXPLORE ALL BESTSELLERS</span>
             <span className="text-xs text-[#B58E58] group-hover:text-white transition-colors">✦</span>
@@ -279,4 +279,4 @@ const BestSellers = () => {
   );
 };
 
-export default BestSellers;
+export default BestSellers;

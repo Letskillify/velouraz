@@ -95,7 +95,7 @@ const Cart = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-[1.5px] border-[#7A0E2E]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-t-[1.5px] border-[#2e0e43]"></div>
       </div>
     );
   }
@@ -124,7 +124,7 @@ const Cart = () => {
           <p className="text-[16px] text-[#7B6D63]">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
           <Link 
             to="/shop" 
-            className="inline-flex items-center gap-2 text-[16px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+            className="inline-flex items-center gap-2 text-[16px] font-bold text-[#2e0e43] hover:text-[#2A2623] transition-colors"
           >
             <ArrowLeft size={14} />
             Continue Shopping
@@ -135,13 +135,13 @@ const Cart = () => {
           /* Empty Cart */
           <div className="py-24 flex flex-col items-center text-center">
             <div className="w-20 h-20 rounded-full bg-[#F4EEE8] flex items-center justify-center mb-6">
-              <ShoppingBag size={32} strokeWidth={1} className="text-[#7A0E2E]/40" />
+              <ShoppingBag size={32} strokeWidth={1} className="text-[#2e0e43]/40" />
             </div>
             <h2 className="font-serif text-2xl text-[#2A2623] mb-2">Your cart is empty</h2>
             <p className="text-[16px] text-[#7B6D63] mb-8 max-w-sm">Looks like you haven't added any pieces to your collection yet.</p>
             <Link 
               to="/shop" 
-              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[16px] font-bold uppercase tracking-[0.2em] hover:bg-[#7A0E2E] transition-all duration-500"
+              className="bg-[#2A2623] text-white px-8 py-3.5 rounded-xl text-[16px] font-bold uppercase tracking-[0.2em] hover:bg-[#2e0e43] transition-all duration-500"
             >
               Explore Collection
             </Link>
@@ -173,13 +173,13 @@ const Cart = () => {
                     <div className="flex items-center gap-4">
                       <Link 
                         to={`/product/${item.id}`}
-                        className="w-20 h-24 sm:w-[72px] sm:h-[90px] rounded-lg overflow-hidden bg-[#F4EEE8] flex-shrink-0 border border-[#D8CBBE]/30 hover:border-[#7A0E2E]/30 transition-colors"
+                        className="w-20 h-24 sm:w-[72px] sm:h-[90px] rounded-lg overflow-hidden bg-[#F4EEE8] flex-shrink-0 border border-[#D8CBBE]/30 hover:border-[#2e0e43]/30 transition-colors"
                       >
                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                       </Link>
                       <div className="min-w-0">
-                        <p className="text-[16px] font-bold text-[#7A0E2E] uppercase tracking-[0.3em] mb-1">Velouraz</p>
-                        <Link to={`/product/${item.id}`} className="text-[16px] font-serif text-[#2A2623] hover:text-[#7A0E2E] transition-colors line-clamp-2 leading-snug block">
+                        <p className="text-[16px] font-bold text-[#2e0e43] uppercase tracking-[0.3em] mb-1">Velouraz</p>
+                        <Link to={`/product/${item.id}`} className="text-[16px] font-serif text-[#2A2623] hover:text-[#2e0e43] transition-colors line-clamp-2 leading-snug block">
                           {item.name}
                         </Link>
                         <div className="flex items-baseline gap-2 mt-1.5">
@@ -224,7 +224,7 @@ const Cart = () => {
                     <div className="flex justify-end">
                       <button 
                         onClick={() => removeItem(item.id)}
-                        className="p-1.5 text-[#7B6D63]/40 hover:text-[#7A0E2E] transition-colors"
+                        className="p-1.5 text-[#7B6D63]/40 hover:text-[#2e0e43] transition-colors"
                       >
                         <Trash2 size={16} strokeWidth={1.5} />
                       </button>
@@ -277,7 +277,7 @@ const Cart = () => {
                     {!showCoupon && !appliedCoupon ? (
                       <button 
                         onClick={() => setShowCoupon(true)}
-                        className="flex items-center gap-2 text-[16px] font-bold text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+                        className="flex items-center gap-2 text-[16px] font-bold text-[#2e0e43] hover:text-[#2A2623] transition-colors"
                       >
                         <Tag size={14} />
                         Apply Coupon Code
@@ -288,14 +288,14 @@ const Cart = () => {
                           <input 
                             type="text" 
                             placeholder="Enter code" 
-                            className="flex-1 border border-[#D8CBBE] rounded-lg px-4 py-2.5 text-[16px] font-bold tracking-wider text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all uppercase placeholder:text-[#7B6D63]/30 placeholder:normal-case bg-[#FDFAF5]"
+                            className="flex-1 border border-[#D8CBBE] rounded-lg px-4 py-2.5 text-[16px] font-bold tracking-wider text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all uppercase placeholder:text-[#7B6D63]/30 placeholder:normal-case bg-[#FDFAF5]"
                             value={couponCode}
                             onChange={(e) => setCouponCode(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
                           />
                           <button 
                             onClick={handleApplyCoupon}
-                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[16px] font-bold uppercase tracking-wider hover:bg-[#7A0E2E] transition-all"
+                            className="bg-[#2A2623] text-white px-5 py-2.5 rounded-lg text-[16px] font-bold uppercase tracking-wider hover:bg-[#2e0e43] transition-all"
                           >
                             Apply
                           </button>
@@ -335,7 +335,7 @@ const Cart = () => {
                       }
                     }}
                     disabled={items.length === 0}
-                    className="w-full bg-[#2A2623] text-[#FDFAF5] py-4 rounded-xl text-[16px] font-bold uppercase tracking-[0.25em] hover:bg-[#7A0E2E] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
+                    className="w-full bg-[#2A2623] text-[#FDFAF5] py-4 rounded-xl text-[16px] font-bold uppercase tracking-[0.25em] hover:bg-[#2e0e43] transition-all duration-500 disabled:opacity-40 disabled:cursor-not-allowed mt-2"
                   >
                     Proceed to Checkout
                   </button>

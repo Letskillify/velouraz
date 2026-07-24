@@ -108,8 +108,8 @@ const Blog = () => {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-5 py-2 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
                   activeCategory === cat
-                    ? 'bg-[#7A0E2E] text-white shadow-sm'
-                    : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#7A0E2E]'
+                    ? 'bg-[#2e0e43] text-white shadow-sm'
+                    : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
                 }`}
               >
                 {cat}
@@ -125,7 +125,7 @@ const Blog = () => {
               placeholder="Search articles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-[#FFFDF9] border border-[#EFE8DC] rounded-xl pl-10 pr-4 py-2.5 text-xs md:text-sm text-[#2A2623] outline-none focus:border-[#7A0E2E] transition-all placeholder:text-[#7B6D63]/50"
+              className="w-full bg-[#FFFDF9] border border-[#EFE8DC] rounded-xl pl-10 pr-4 py-2.5 text-xs md:text-sm text-[#2A2623] outline-none focus:border-[#2e0e43] transition-all placeholder:text-[#7B6D63]/50"
             />
           </div>
         </div>
@@ -159,7 +159,7 @@ const Blog = () => {
                     alt={featuredBlog.title}
                     className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                   />
-                  <span className="absolute top-4 left-4 bg-[#7A0E2E] text-white text-[10px] uppercase font-bold tracking-[0.18em] px-3.5 py-1.5 rounded-sm">
+                  <span className="absolute top-4 left-4 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-[0.18em] px-3.5 py-1.5 rounded-sm">
                     {featuredBlog.category}
                   </span>
                 </div>
@@ -168,7 +168,7 @@ const Blog = () => {
                     <span className="flex items-center gap-1.5"><Calendar size={13} /> {formatDate(featuredBlog.createdAt)}</span>
                     <span className="flex items-center gap-1.5"><Clock size={13} /> {featuredBlog.readTime}</span>
                   </div>
-                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-light text-[#222222] leading-tight group-hover:text-[#7A0E2E] transition-colors">
+                  <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-light text-[#222222] leading-tight group-hover:text-[#2e0e43] transition-colors">
                     <Link to={`/blog/${featuredBlog.id}`}>{featuredBlog.title}</Link>
                   </h2>
                   <p className="text-sm text-[#7B6D63] font-sans font-light leading-relaxed">
@@ -178,7 +178,7 @@ const Blog = () => {
                     <span className="text-xs font-semibold text-[#2A2623]">{featuredBlog.author}</span>
                     <Link
                       to={`/blog/${featuredBlog.id}`}
-                      className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+                      className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2e0e43] hover:text-[#2A2623] transition-colors"
                     >
                       Read Article <ArrowRight size={13} />
                     </Link>
@@ -205,7 +205,7 @@ const Blog = () => {
                         alt={blog.title}
                         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       />
-                      <span className="absolute top-3 left-3 bg-[#7A0E2E] text-white text-[9px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-sm">
+                      <span className="absolute top-3 left-3 bg-[#2e0e43] text-white text-[9px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-sm">
                         {blog.category}
                       </span>
                     </div>
@@ -216,7 +216,7 @@ const Blog = () => {
                         <span className="flex items-center gap-1"><Clock size={11} /> {blog.readTime}</span>
                       </div>
 
-                      <h3 className="font-serif text-lg md:text-xl font-bold text-[#2A2623] leading-snug group-hover:text-[#7A0E2E] transition-colors line-clamp-2">
+                      <h3 className="font-serif text-lg md:text-xl font-bold text-[#2A2623] leading-snug group-hover:text-[#2e0e43] transition-colors line-clamp-2">
                         <Link to={`/blog/${blog.id}`}>{blog.title}</Link>
                       </h3>
 
@@ -230,7 +230,7 @@ const Blog = () => {
                     <span className="text-[11px] font-semibold text-[#2A2623]">{blog.author}</span>
                     <Link
                       to={`/blog/${blog.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#7A0E2E] hover:text-[#2A2623] transition-colors"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#2e0e43] hover:text-[#2A2623] transition-colors"
                     >
                       Read <ArrowRight size={12} />
                     </Link>
@@ -246,7 +246,7 @@ const Blog = () => {
             <p className="text-xs md:text-sm text-[#7B6D63] max-w-md mx-auto mb-6">Try broadening your search term or selecting another category.</p>
             <button
               onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
-              className="px-8 py-3 bg-[#7A0E2E] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer"
+              className="px-8 py-3 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
