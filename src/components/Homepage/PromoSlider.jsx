@@ -139,6 +139,14 @@ const PromoSlider = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const [collections, setCollections] = useState(staticCollections);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDesktop(window.innerWidth >= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     return onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
@@ -163,24 +171,21 @@ const PromoSlider = () => {
   }, []);
 
   return (
-    <section className="w-full relative py-12 lg:py-16 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-8 flex items-end justify-between">
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <span className="block h-px w-8" style={{ background: CRIMSON }} />
-            <span className="text-xs sm:text-sm tracking-[0.35em] font-bold text-[#7B6D63] uppercase">
-              Globally Inspired
-            </span>
-          </div>
+    <section className="w-full relative py-6 md:py-8 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-6 md:mb-8 flex items-center justify-between">
+        <div className="w-10 opacity-0 hidden sm:block" /> {/* Spacer for centering */}
+        
+        <div className="max-w-2xl mx-auto text-center">
           <h2
-            className="font-light leading-tight tracking-tight text-gray-900"
-            style={{
-              fontFamily: SERIF,
-              fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-            }}
+            className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
           >
-            The World <span className="italic font-normal" style={{ color: CRIMSON }}>Edits</span>
+            World <span className="italic font-normal text-[#2e0e43]">Edits</span>
           </h2>
+          <div className="flex items-center justify-center gap-3 mt-3">
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+            <span className="text-xs text-[#B58E58]">✦</span>
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+          </div>
         </div>
 
         {/* Custom Navigation buttons */}
@@ -203,35 +208,45 @@ const PromoSlider = () => {
       </div>
 
       {/* Grid on Desktop (4 columns) & Swiper Slider on Mobile/Tablet */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          spaceBetween={16}
-          slidesPerView={1.15}
-          autoplay={{ delay: 4500, disableOnInteraction: false }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          onBeforeInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          breakpoints={{
-            480: { slidesPerView: 1.8, spaceBetween: 16 },
-            640: { slidesPerView: 2.2, spaceBetween: 20 },
-            768: { slidesPerView: 3, spaceBetween: 20 },
-            1024: { slidesPerView: 4, spaceBetween: 24 },
-          }}
-          className="w-full"
-        >
-          {collections.map((item) => (
-            <SwiperSlide key={item.id}>
-              <CardItem item={item} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      {isDesktop ? (
+        <div className="w-full mx-auto px-4">
+          <div className="mx-auto grid grid-cols-4 gap-6">
+            {collections.map((item) => (
+              <CardItem key={item.id} item={item} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="mx-auto px-4 sm:px-6 lg:px-10">
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            spaceBetween={16}
+            slidesPerView={1.15}
+            autoplay={{ delay: 4500, disableOnInteraction: false }}
+            navigation={{
+              prevEl: prevRef.current,
+              nextEl: nextRef.current,
+            }}
+            onBeforeInit={(swiper) => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+            }}
+            breakpoints={{
+              480: { slidesPerView: 1.8, spaceBetween: 16 },
+              640: { slidesPerView: 2.2, spaceBetween: 20 },
+              768: { slidesPerView: 3, spaceBetween: 20 },
+              1024: { slidesPerView: 4, spaceBetween: 24 },
+            }}
+            className="w-full"
+          >
+            {collections.map((item) => (
+              <SwiperSlide key={item.id}>
+                <CardItem item={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
     </section>
   );
 };

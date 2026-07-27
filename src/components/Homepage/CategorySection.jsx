@@ -55,6 +55,45 @@ const defaultCategories = [
   }
 ];
 
+const getCategoryIcon = (name) => {
+  const n = (name || '').toLowerCase();
+  if (n.includes('bangle')) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5C794" strokeWidth="1.5">
+        <ellipse cx="12" cy="12" rx="9" ry="5" />
+      </svg>
+    );
+  }
+  if (n.includes('necklace')) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5C794" strokeWidth="1.5">
+        <path d="M4 6C4 13.5 7.58 19 12 19C16.42 19 20 13.5 20 6" />
+        <circle cx="12" cy="19" r="1.5" fill="#E5C794" />
+      </svg>
+    );
+  }
+  if (n.includes('bracelet')) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5C794" strokeWidth="1.5">
+        <ellipse cx="12" cy="12" rx="8" ry="6" strokeDasharray="3 2" />
+      </svg>
+    );
+  }
+  if (n.includes('ring')) {
+    return (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5C794" strokeWidth="1.5">
+        <circle cx="12" cy="14" r="5" />
+        <polygon points="12,5 15,9 9,9" fill="#E5C794" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E5C794" strokeWidth="1.5">
+      <path d="M12 2L15 8L21 9L16.5 13.5L18 19.5L12 16.5L6 19.5L7.5 13.5L3 9L9 8L12 2Z" />
+    </svg>
+  );
+};
+
 const CategorySection = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -95,35 +134,29 @@ const CategorySection = () => {
   }, []);
 
   return (
-    <section className="py-16 md:py-20 lg:py-24 overflow-hidden relative bg-[#FAF7F2]">
+    <section 
+      className="py-6 md:py-8 overflow-hidden relative bg-cover bg-center bg-no-repeat bg-[#FAF7F2]"
+      style={{
+        backgroundImage: `url('https://res.cloudinary.com/duzwys877/image/upload/v1785055538/ChatGPT_Image_Jul_26_2026_02_14_54_PM_ynzwqp.png')`
+      }}
+    >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-10 md:mb-14 gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="flex items-center gap-3">
-              <span className="w-6 h-[1px] bg-[#B58E58]/60" />
-              <span className="text-xs md:text-sm tracking-[0.3em] font-medium text-[#B58E58] uppercase">
-                BROWSE COLLECTIONS
-              </span>
-            </div>
-            
-            <h2
-              className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[48px] text-[#222222]"
-            >
-              Shop By <span className="italic text-[#2e0e43]">Category</span>
-            </h2>
+        <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between mb-6 md:mb-8 gap-6">
+          <div className="w-10 opacity-0 hidden lg:block" /> {/* Spacer for centering */}
 
-            {/* Star Accent */}
-            <div className="flex items-center py-0.5">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="#C5A267">
-                <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
-              </svg>
+          <div className="max-w-2xl mx-auto text-center">
+            <h2
+              className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
+            >
+              Shop By <span className="italic font-normal text-[#2e0e43]">Category</span>
+            </h2>
+            <div className="flex items-center justify-center gap-3 mt-3">
+              <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+              <span className="text-xs text-[#B58E58]">✦</span>
+              <span className="w-8 h-[1px] bg-[#B58E58]/40" />
             </div>
-            
-            <p className="text-[#7B6D63] text-sm sm:text-base leading-relaxed font-serif max-w-md font-light pt-1">
-              Indulge in a curated exploration of jewellery categories, each hand-finished with exceptional mastery.
-            </p>
           </div>
 
           {/* Slider Navigation Buttons */}
@@ -161,10 +194,10 @@ const CategorySection = () => {
               swiper.params.navigation.nextEl = nextRef.current;
             }}
             breakpoints={{
-              480: { slidesPerView: 2.1, spaceBetween: 20 },
-              768: { slidesPerView: 3.2, spaceBetween: 20 },
-              1024: { slidesPerView: 4.2, spaceBetween: 24 },
-              1280: { slidesPerView: 6, spaceBetween: 20 },
+              480: { slidesPerView: 2, spaceBetween: 16 },
+              768: { slidesPerView: 4, spaceBetween: 16 },
+              1024: { slidesPerView: 4, spaceBetween: 20 },
+              1280: { slidesPerView: 4, spaceBetween: 24 },
             }}
             className="!overflow-visible"
           >
@@ -175,59 +208,34 @@ const CategorySection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
-                  className="group flex flex-col h-full rounded-3xl border border-[#EFE8DC] bg-[#FAF7F2] p-4 md:p-5 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-[#D5C6B1] transition-all duration-300"
+                  className="group flex flex-col h-full rounded-2xl border border-[#D5C29D]/50 bg-black overflow-hidden shadow-[0_6px_25px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.22)] hover:border-[#B58E58] transition-all duration-500 cursor-pointer relative aspect-[3/3.8]"
                 >
-                  <Link to={category.link} className="flex flex-col flex-1">
-                    {/* Top Index Number */}
-                    <div className="text-center mb-3">
-                      <span className="text-xs font-semibold tracking-[0.2em] text-[#B58E58] inline-block relative px-3 py-0.5">
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-[1px] bg-[#B58E58]/40" />
-                        {category.num}
-                        <span className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-[1px] bg-[#B58E58]/40" />
-                      </span>
+                  <Link to={category.link} className="relative w-full h-full block">
+                    {/* Background Full Image */}
+                    <img 
+                      src={category.image} 
+                      alt={category.name} 
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+
+                    {/* Top-Left Circular Jewellery Icon Badge */}
+                    <div className="absolute top-4 left-4 z-10">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#D5C29D]/60 bg-black/40 backdrop-blur-md flex items-center justify-center text-[#E5C794] shadow-md group-hover:bg-[#2E0E43]/80 transition-colors duration-300">
+                        {getCategoryIcon(category.name)}
+                      </div>
                     </div>
 
-                    {/* Dome Arch Frame Window */}
-                    <div className="w-full aspect-[4/4.8] rounded-t-full rounded-b-none bg-[#F3ECE1] border border-[#EBE3D7]/60 overflow-hidden relative shadow-inner mb-3">
-                      <img 
-                        src={category.image} 
-                        alt={category.name} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
+                    {/* Bottom Dark Gradient Overlay with Title & Arrow */}
+                    <div className="absolute inset-x-0 bottom-0 z-10 p-4 sm:p-5 bg-gradient-to-t from-[#14061F]/90 via-[#14061F]/50 to-transparent flex items-center justify-between gap-3">
+                      <h3 className="text-xs sm:text-sm font-serif font-medium tracking-[0.18em] text-white uppercase group-hover:text-[#E5C794] transition-colors duration-300">
+                        {category.name}
+                      </h3>
 
-                    {/* Star Accent */}
-                    <div className="flex items-center justify-center my-1.5">
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="#C5A267">
-                        <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
-                      </svg>
+                      <div className="w-8 h-8 rounded-full bg-[#1F0A2C] border border-[#D5C29D]/50 text-[#E5C794] flex items-center justify-center shrink-0 group-hover:bg-[#B58E58] group-hover:border-[#B58E58] group-hover:text-white transition-all duration-300 shadow-md">
+                        <ArrowRight size={13} strokeWidth={1.5} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+                      </div>
                     </div>
-
-                    {/* Category Title */}
-                    <h3 
-                      className="text-xs md:text-sm font-semibold tracking-[0.14em] text-[#2A2623] uppercase text-center font-sans mb-4 group-hover:text-[#2e0e43] transition-colors"
-                    >
-                      {category.name}
-                    </h3>
                   </Link>
-                  
-                  {/* Bottom Footer Action */}
-                  <div className="flex items-center justify-between pt-3 border-t border-[#EFE8DC]/60 mt-auto">
-                    <Link 
-                      to={category.link}
-                      className="text-[10px] md:text-[11px] font-semibold tracking-[0.2em] text-[#B58E58] uppercase group-hover:text-[#2e0e43] transition-colors"
-                    >
-                      VIEW EDIT
-                    </Link>
-                    
-                    <Link 
-                      to={category.link}
-                      aria-label={`Explore ${category.name}`}
-                      className="w-7 h-7 rounded-full border border-[#D5C6B1] flex items-center justify-center text-[#B58E58] group-hover:text-[#2e0e43] group-hover:border-[#2e0e43] transition-colors duration-300 bg-white/50"
-                    >
-                      <ArrowRight size={12} strokeWidth={1.5} />
-                    </Link>
-                  </div>
                 </motion.div>
               </SwiperSlide>
             ))}
@@ -251,3 +259,5 @@ const CategorySection = () => {
 };
 
 export default CategorySection;
+
+

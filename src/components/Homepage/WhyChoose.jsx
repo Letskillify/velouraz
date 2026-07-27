@@ -50,36 +50,22 @@ const features = [
 const QualitySection = () => {
   return (
     <section 
-      className="py-16 md:py-20 lg:py-24 relative overflow-hidden bg-[#FAF7F2]"
+      className="py-6 md:py-8 relative overflow-hidden bg-[#FAF7F2]"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-10">
         
         {/* Header Section */}
-        <div className="max-w-2xl mx-auto text-center space-y-3 mb-12 md:mb-16">
-          <div className="flex items-center justify-center gap-3">
-            <span className="w-6 h-[1px] bg-[#B58E58]/60" />
-            <span className="text-xs md:text-sm tracking-[0.3em] font-medium text-[#B58E58] uppercase">
-              WHY VELOURAZ
-            </span>
-            <span className="w-6 h-[1px] bg-[#B58E58]/60" />
-          </div>
-
+        <div className="max-w-2xl mx-auto text-center mb-6 md:mb-8">
           <h2
-            className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[52px] text-[#222222]"
+            className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
           >
-            Quality You <span className="italic text-[#2e0e43]">Can Trust</span>
+            Quality You <span className="italic font-normal text-[#2e0e43]">Can Trust</span>
           </h2>
-
-          {/* Gold Star Accent */}
-          <div className="flex items-center justify-center py-1">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="#C5A267">
-              <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
-            </svg>
+          <div className="flex items-center justify-center gap-3 mt-3">
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+            <span className="text-xs text-[#B58E58]">✦</span>
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
           </div>
-          
-          <p className="text-[#7B6D63] text-sm sm:text-base leading-relaxed font-serif max-w-xl mx-auto font-light">
-            Unrivaled excellence in metal-smithing, ethical gems, and lifelong wear.
-          </p>
         </div>
 
         {/* 5-Column Grid Layout */}

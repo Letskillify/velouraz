@@ -42,7 +42,7 @@ const TestimonialSection = () => {
   const nextRef = useRef(null);
 
   return (
-    <section className="py-16 lg:py-24 relative overflow-hidden border-t border-[#D8CBBE]/30" style={{ background: CRIMSON }}>
+    <section className="py-6 md:py-8 relative overflow-hidden border-t border-[#D8CBBE]/30" style={{ background: CRIMSON }}>
       {/* Subtle pattern overlay */}
       <div 
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -52,26 +52,20 @@ const TestimonialSection = () => {
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
         
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row items-end justify-between mb-14 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-[1px] bg-white/40" />
-              <span className="text-base lg:text-[16px] tracking-[0.35em] font-bold text-white/60 uppercase">
-                Patron Stories
-              </span>
-            </div>
+        <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between mb-6 md:mb-8 gap-8">
+          <div className="w-10 opacity-0 hidden lg:block" /> {/* Spacer for centering */}
+
+          <div className="max-w-2xl mx-auto text-center">
             <h2
-              className="font-light leading-tight tracking-tight text-white"
-              style={{
-                fontFamily: SERIF,
-                fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-              }}
+              className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-white"
             >
-              Real Stories. <span className="italic" style={{ color: 'rgba(255,255,255,0.65)' }}>Real Love.</span>
+              Real Stories. <span className="italic font-normal text-white/75">Real Love.</span>
             </h2>
-            <p className="text-white/55 text-[16px] lg:text-[16px] max-w-md leading-relaxed" style={{ fontFamily: SERIF }}>
-              Hear from our community of jewellery enthusiasts who found their defining piece with Velauraz.
-            </p>
+            <div className="flex items-center justify-center gap-3 mt-3">
+              <span className="w-8 h-[1px] bg-white/30" />
+              <span className="text-xs text-white/70">✦</span>
+              <span className="w-8 h-[1px] bg-white/30" />
+            </div>
           </div>
 
           {/* Navigation Controls */}

@@ -37,42 +37,24 @@ const socialPosts = [
 
 const TheJournal = () => {
   return (
-    <section className="bg-[#F8F4EF] py-12 lg:py-20 overflow-hidden relative border-t border-[#D8CBBE]/30">
+    <section className="bg-[#F8F4EF] py-6 md:py-8 overflow-hidden relative border-t border-[#D8CBBE]/30">
       <div className="max-w-[1440px] mx-auto px-4 lg:px-10 text-left">
 
         {/* Header */}
-        <div className="mb-16 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-8 h-[1px] bg-[#2e0e43]" />
-            <span className="text-[16px] md:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
-              BEHIND THE SPARKLE
-            </span>
-          </motion.div>
-
+        <div className="mb-6 md:mb-8 text-center max-w-2xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#2A2623] leading-tight"
+            className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
           >
-            Moments that <span className="text-[#2e0e43] italic">inspire us</span>
+            Moments That <span className="italic font-normal text-[#2e0e43]">Inspire Us</span>
           </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-[#7B6D63] font-serif text-base leading-relaxed max-w-2xl"
-          >
-            A glimpse into our world of craftsmanship, creativity and culture. Explore the stories behind each unique collection.
-          </motion.p>
+          <div className="flex items-center justify-center gap-3 mt-3">
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+            <span className="text-xs text-[#B58E58]">✦</span>
+            <span className="w-8 h-[1px] bg-[#B58E58]/40" />
+          </div>
         </div>
 
         {/* Instagram Slider */}
