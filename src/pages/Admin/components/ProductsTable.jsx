@@ -1,9 +1,70 @@
-// ProductsTable.jsx
 import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Edit2, Trash2, Package, Plus, RefreshCw, Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit2, Trash2, Package, Plus, Minus, RefreshCw, Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
+import { quickUpdateStock } from "../../../services/productService";
+
+const QuickStockEditor = ({ productId, currentStock }) => {
+  const [val, setVal] = useState(currentStock ?? 0);
+  const [updating, setUpdating] = useState(false);
+
+  React.useEffect(() => {
+    setVal(currentStock ?? 0);
+  }, [currentStock]);
+
+  const handleUpdate = async (newStock) => {
+    const s = Math.max(0, Number(newStock) || 0);
+    setVal(s);
+    setUpdating(true);
+    try {
+      await quickUpdateStock(productId, s);
+    } catch (err) {
+      console.error("Failed to update stock:", err);
+      setVal(currentStock ?? 0);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-1">
+      <button
+        type="button"
+        disabled={updating || val <= 0}
+        onClick={() => handleUpdate(Number(val) - 1)}
+        className="w-6 h-6 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-30 flex items-center justify-center text-xs font-bold transition-all"
+        title="Decrease stock"
+      >
+        <Minus size={11} />
+      </button>
+      <input
+        type="number"
+        min="0"
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+        onBlur={(e) => handleUpdate(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.target.blur();
+          }
+        }}
+        className={`w-14 px-1.5 py-1 text-center text-sm font-bold border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#811331]/30 transition-all ${
+          val > 10 ? "border-emerald-200 text-emerald-700 bg-emerald-50/40" : val > 0 ? "border-amber-200 text-amber-700 bg-amber-50/40" : "border-red-200 text-red-700 bg-red-50/50"
+        }`}
+      />
+      <button
+        type="button"
+        disabled={updating}
+        onClick={() => handleUpdate(Number(val) + 1)}
+        className="w-6 h-6 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-30 flex items-center justify-center text-xs font-bold transition-all"
+        title="Increase stock"
+      >
+        <Plus size={11} />
+      </button>
+    </div>
+  );
+};
 
 const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct, onRefresh }) => {
   const [search, setSearch] = useState("");
@@ -232,10 +293,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                     <p className="text-[16px] font-bold text-slate-900">₹{Number(row.price || 0).toLocaleString()}</p>
                   </td>
                   <td className="px-5 py-4">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`w-1.5 h-1.5 rounded-full ${row.stock > 10 ? "bg-emerald-500" : row.stock > 0 ? "bg-amber-500" : "bg-red-500"}`} />
-                      <span className="text-[16px] font-semibold text-slate-700">{row.stock || 0}</span>
-                    </div>
+                    <QuickStockEditor productId={row.id} currentStock={row.stock} />
                   </td>
                   <td className="px-5 py-4">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[16px] font-bold uppercase tracking-wide border ${statusBadgeClasses(row.stock_status || "In Stock")}`}>
@@ -302,10 +360,14 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-slate-900 truncate">{row.name}</p>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <span className="text-[16px] font-bold text-slate-400 uppercase">{row.category}</span>
                     <span className="w-1 h-1 rounded-full bg-slate-300" />
                     <span className="text-sm font-bold text-[#811331]">₹{Number(row.price || 0).toLocaleString()}</span>
+                  </div>
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-400 uppercase">Stock:</span>
+                    <QuickStockEditor productId={row.id} currentStock={row.stock} />
                   </div>
                 </div>
               </div>

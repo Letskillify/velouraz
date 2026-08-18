@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../components/Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingBag, Trash2, ArrowLeft, ShieldCheck, Truck, Minus, Plus, CheckCircle2, AlertCircle, Tag, ChevronRight, Gift, Sparkles } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
@@ -24,38 +24,38 @@ const Cart = () => {
 
   useEffect(() => {
     setItems(cartItems);
-    
-    const validateStock = async () => {
-      if (cartItems.length === 0) return;
-      
-      const newLiveStocks = {};
-      for (const item of cartItems) {
-        try {
-          if (!item.id || item.id.startsWith('bs-')) continue;
-          const pRef = doc(db, "products", item.id);
-          const pSnap = await getDoc(pRef);
-          
-          if (pSnap.exists()) {
-            const actualStock = Number(pSnap.data().stock || 0);
-            newLiveStocks[item.id] = actualStock;
-            if (actualStock <= 0) {
-              await removeFromCart(item.id);
-            } else if (item.quantity > actualStock) {
-              await updateCartQuantity(item.id, actualStock);
-            }
-          }
-        } catch (e) {
-          console.error("Stock validation error:", e);
-        }
-      }
-      setLiveStocks(newLiveStocks);
-    };
 
-    if (cartItems.length > 0) {
-      validateStock();
+    if (cartItems.length === 0) {
+      setLoading(false);
+      setLiveStocks({});
+      return undefined;
     }
-    
+
+    const unsubs = [];
+    cartItems.forEach((item) => {
+      if (!item.id || item.id.startsWith('bs-')) return;
+      const pRef = doc(db, "products", item.id);
+      const unsub = onSnapshot(pRef, async (snap) => {
+        if (snap.exists()) {
+          const actualStock = Number(snap.data().stock || 0);
+          setLiveStocks((prev) => ({ ...prev, [item.id]: actualStock }));
+          if (actualStock <= 0) {
+            await removeFromCart(item.id);
+          } else if (item.quantity > actualStock) {
+            await updateCartQuantity(item.id, actualStock);
+          }
+        }
+      }, (err) => {
+        console.error("Live stock subscription error for item", item.id, err);
+      });
+      unsubs.push(unsub);
+    });
+
     setLoading(false);
+
+    return () => {
+      unsubs.forEach((unsub) => unsub());
+    };
   }, [cartItems, updateCartQuantity, removeFromCart]);
 
   const removeItem = async (id) => {
