@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Globe, Gem, Package, RotateCcw, ShieldCheck, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Globe, Gem, Package, RotateCcw, ShieldCheck } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -25,13 +24,6 @@ const Hero = () => {
   const [loaded, setLoaded] = useState(false);
   const [heroConfig, setHeroConfig] = useState({
     videoURL: "/img/video1.mp4",
-    eyebrow: "Curated · Inspired · Timeless",
-    title: "Jewellery that Travels the World",
-    subtitle: "Handpicked designs from iconic cultures, crafted for the modern you.",
-    btn1Text: "Explore Collections",
-    btn1Link: "/shop",
-    btn2Text: "World Edit",
-    btn2Link: "/world-edit"
   });
 
   useEffect(() => {
@@ -42,7 +34,6 @@ const Hero = () => {
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
   const videoScale   = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const contentY     = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
   useEffect(() => { videoRef.current?.play().catch(() => {}); }, []);
 
@@ -87,117 +78,6 @@ const Hero = () => {
         className="absolute inset-x-0 top-0 z-10 h-28"
         style={{ background: 'linear-gradient(to bottom, rgba(8,5,3,0.30) 0%, transparent 100%)' }}
       />
-
-      {/* ── CONTENT ──────────────────────────────────── */}
-      <motion.div
-        className="absolute inset-0 z-20 flex flex-col justify-center"
-        style={{ y: contentY }}
-      >
-        <div className="max-w-[1440px] mx-auto w-full px-6 lg:px-16 ">
-
-          {/* Eyebrow line */}
-          <motion.div
-            className="flex items-center gap-3 mb-5"
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="block h-px w-8 shrink-0" style={{ background: GOLD }} />
-            <span
-              className="text-[16px] tracking-[0.45em] uppercase font-semibold"
-              style={{ color: GOLD, fontFamily: SERIF }}
-            >
-              {heroConfig.eyebrow}
-            </span>
-          </motion.div>
-
-          {/* Headline */}
-          <motion.h1
-            className="font-light text-white mb-4 lg:mb-5"
-            style={{
-              fontFamily: SERIF,
-              fontSize: 'clamp(2.4rem, 5vw, 5rem)',
-              lineHeight: 1.07,
-              letterSpacing: '-0.01em',
-            }}
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {heroConfig.title.split("<br />").map((text, idx) => (
-              <React.Fragment key={idx}>
-                {text}
-                {idx < heroConfig.title.split("<br />").length - 1 && <br />}
-              </React.Fragment>
-            ))}
-          </motion.h1>
-
-          {/* Sub-copy */}
-          <motion.p
-            className="mb-7 lg:mb-8 max-w-xs text-white/65 font-light leading-snug"
-            style={{ fontFamily: SERIF, fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)' }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {heroConfig.subtitle}
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            className="flex items-center gap-5 flex-wrap"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.36, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* Primary */}
-            <Link
-              to={heroConfig.btn1Link}
-              className="group relative inline-flex items-center overflow-hidden text-white"
-              style={{
-                background: '#2e0e43',
-                padding: '12px 32px',
-                fontSize: '9px',
-                letterSpacing: '0.32em',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-              }}
-            >
-              <span className="relative z-10">{heroConfig.btn1Text}</span>
-              <span
-                className="absolute left-[-100%] top-0 h-full w-full transition-transform duration-700 group-hover:translate-x-[200%]"
-                style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)' }}
-              />
-            </Link>
-
-            {/* Ghost */}
-            <Link
-              to={heroConfig.btn2Link}
-              className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
-              style={{ fontSize: '9px', letterSpacing: '0.3em', fontWeight: 600, textTransform: 'uppercase' }}
-            >
-              <span className="border-b border-white/30 hover:border-white pb-px">{heroConfig.btn2Text}</span>
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* ── SCROLL CUE ───────────────────────────────── */}
-      <motion.button
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-        className="absolute z-30 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/35 hover:text-[#C8A97A] transition-colors duration-300"
-        style={{ bottom: 108 }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.7 }}
-      >
-        <motion.div
-          animate={{ y: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.9, ease: 'easeInOut' }}
-        >
-          <ChevronDown size={20} strokeWidth={1.2} />
-        </motion.div>
-      </motion.button>
 
       {/* ── USP BAR ──────────────────────────────────── */}
       <div className="absolute bottom-0 inset-x-0 z-30">
@@ -281,3 +161,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

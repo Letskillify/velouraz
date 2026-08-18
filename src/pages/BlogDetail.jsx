@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { db } from '../components/Firebase';
-import { doc, getDoc, collection, getDocs, limit, query, where } from 'firebase/firestore';
-import { Calendar, User, Clock, ArrowLeft, Share2, MessageCircle, Loader2 } from 'lucide-react';
+import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { Calendar, User, Clock, ArrowLeft, Share2, MessageCircle, Loader2, Sparkles, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const GOLD = '#C8A97A';
+const SERIF = "'Cormorant Garamond', Georgia, serif";
 
 const defaultBlogs = [
   {
@@ -145,7 +148,7 @@ const BlogDetail = () => {
   };
 
   const handleShareWhatsApp = () => {
-    const text = encodeURIComponent(`Check out this beautiful article: "${blog.title}" at ${window.location.href}`);
+    const text = encodeURIComponent(`Check out this beautiful article: "${blog?.title}" at ${window.location.href}`);
     window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
   };
 
@@ -160,9 +163,10 @@ const BlogDetail = () => {
   if (!blog) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center pt-28 px-4 text-center">
-        <h2 className="font-serif text-3xl text-[#222222] mb-4">Article Not Found</h2>
+        <BookOpen size={48} className="text-[#C8A97A] mb-4" />
+        <h2 className="text-3xl text-[#222222] mb-4 font-normal" style={{ fontFamily: SERIF }}>Article Not Found</h2>
         <p className="text-sm text-[#7B6D63] mb-6">The article you are looking for does not exist or has been removed.</p>
-        <Link to="/blog" className="px-6 py-2.5 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-[0.2em] rounded-xl hover:bg-[#2A2623] transition-colors">
+        <Link to="/blog" className="px-8 py-3 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-full hover:bg-[#C8A97A] hover:text-[#2e0e43] transition-all">
           Back to Journal
         </Link>
       </div>
@@ -170,73 +174,212 @@ const BlogDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] font-sans text-[#2A2623] pt-24 pb-20">
-      
-      {/* Banner / Cover Image */}
-      <div className="w-full h-[50vh] min-h-[350px] relative overflow-hidden bg-[#F3ECE1]">
-        <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/35 to-black/10" />
-        
-        {/* Banner Details Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 pb-10 text-white space-y-4">
-          <span className="bg-[#B58E58] text-white text-[10px] uppercase font-bold tracking-[0.18em] px-3.5 py-1.5 rounded-sm inline-block">
-            {blog.category}
-          </span>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-[46px] leading-tight font-light tracking-tight">
-            {blog.title}
-          </h1>
-          <div className="flex flex-wrap items-center gap-6 text-xs text-white/80 font-medium">
-            <span className="flex items-center gap-1.5"><Calendar size={13} /> {formatDate(blog.createdAt)}</span>
-            <span className="flex items-center gap-1.5"><User size={13} /> {blog.author}</span>
-            <span className="flex items-center gap-1.5"><Clock size={13} /> {blog.readTime}</span>
+    <div className="min-h-screen bg-[#FAF7F2] font-sans text-[#2A2623] pt-28 pb-24">
+      {/* Clean Header Breadcrumb & Controls (NO image in breadcrumb) */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#E7DEC8]">
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#5C5248] hover:text-[#2e0e43] transition-colors group"
+          >
+            <ArrowLeft size={14} className="transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Back to Journal</span>
+          </Link>
+
+          <div className="hidden sm:flex items-center gap-2 text-xs text-[#6C6055] font-medium">
+            <Link to="/" className="hover:text-[#2e0e43]">Home</Link>
+            <span>/</span>
+            <Link to="/blog" className="hover:text-[#2e0e43]">Journal</Link>
+            <span>/</span>
+            <span className="text-[#C8A97A] font-semibold truncate max-w-[200px] sm:max-w-[300px]">
+              {blog.title}
+            </span>
+          </div>
+
+          {/* Social Share Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white rounded-full border border-[#E7DEC8] text-xs font-semibold text-[#5C5248] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm"
+              title="Copy Link"
+            >
+              <Share2 size={13} />
+              <span className="hidden sm:inline">Share</span>
+            </button>
+            <button
+              onClick={handleShareWhatsApp}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white rounded-full border border-[#E7DEC8] text-xs font-semibold text-[#5C5248] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm"
+              title="Share on WhatsApp"
+            >
+              <MessageCircle size={13} />
+              <span className="hidden sm:inline">WhatsApp</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 pt-10">
-        
-        {/* Navigation & Sharing Tools */}
-        <div className="flex items-center justify-between border-b border-[#EFE8DC] pb-4 mb-8">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#7B6D63] hover:text-[#2e0e43] transition-colors">
-            <ArrowLeft size={14} /> Back to Journal
-          </Link>
-          <div className="flex items-center gap-3">
-            <button onClick={handleShare} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm" title="Copy Link">
-              <Share2 size={14} />
-            </button>
-            <button onClick={handleShareWhatsApp} className="p-2 bg-[#FFFDF9] rounded-full border border-[#EFE8DC] text-[#7B6D63] hover:text-[#2e0e43] hover:border-[#2e0e43] transition-all cursor-pointer shadow-sm" title="Share on WhatsApp">
-              <MessageCircle size={14} />
-            </button>
-          </div>
+      {/* Main Split-Screen Layout (Image on One Side, Content on Another) */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+          {/* Left Column: Sticky Featured Image */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 lg:sticky lg:top-28"
+          >
+            <div className="relative rounded-3xl border border-[#E7DEC8] overflow-hidden bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)] group">
+              <div className="aspect-[4/5] w-full overflow-hidden bg-[#F3ECE1]">
+                <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Floating Category Tag */}
+              <span className="absolute top-5 left-5 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-white/10 shadow-md">
+                {blog.category || 'Journal'}
+              </span>
+
+              {/* Image Footer Details */}
+              <div className="p-5 bg-white border-t border-[#E7DEC8]/80 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#C8A97A]">
+                  <Sparkles size={14} />
+                  <span>Velouraz Editorial</span>
+                </div>
+                <span className="text-[11px] text-[#7B6D63] font-medium">{blog.readTime || '5 min read'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Editorial Article Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-7 space-y-8"
+          >
+            {/* Category & Title Header */}
+            <div className="space-y-4 border-b border-[#E7DEC8] pb-8">
+              <span
+                className="text-xs uppercase font-bold tracking-[0.3em] text-[#C8A97A]"
+                style={{ fontFamily: SERIF }}
+              >
+                {blog.category || 'Editorial Story'}
+              </span>
+
+              <h1
+                className="text-3xl sm:text-4xl lg:text-5xl font-normal text-[#2A2623] leading-[1.15]"
+                style={{ fontFamily: SERIF }}
+              >
+                {blog.title}
+              </h1>
+
+              {/* Meta Info Bar */}
+              <div className="flex flex-wrap items-center gap-6 pt-2 text-xs font-semibold text-[#5C5248] tracking-wider font-sans">
+                <span className="flex items-center gap-2 text-[#C8A97A]">
+                  <Calendar size={14} strokeWidth={1.5} /> {formatDate(blog.createdAt)}
+                </span>
+                <span className="inline-block w-1 h-1 rounded-full bg-[#C8A97A]/50" />
+                <span className="flex items-center gap-2">
+                  <User size={14} strokeWidth={1.5} /> {blog.author || 'Velouraz Editorial Team'}
+                </span>
+                <span className="inline-block w-1 h-1 rounded-full bg-[#C8A97A]/50" />
+                <span className="flex items-center gap-2">
+                  <Clock size={14} strokeWidth={1.5} /> {blog.readTime || '5 min read'}
+                </span>
+              </div>
+            </div>
+
+            {/* Excerpt Highlight Box */}
+            {blog.excerpt && (
+              <div className="p-6 rounded-2xl bg-[#F6F1E7] border-l-4 border-[#C8A97A] text-sm sm:text-base text-[#4E443B] font-light leading-relaxed italic">
+                "{blog.excerpt}"
+              </div>
+            )}
+
+            {/* Article Content */}
+            <div
+              className="prose prose-lg max-w-none text-base sm:text-lg text-[#3D352E] leading-relaxed space-y-6 whitespace-pre-line font-sans font-light"
+            >
+              {blog.content}
+            </div>
+
+            {/* Author & Share Footer Box */}
+            <div className="pt-8 border-t border-[#E7DEC8] flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#C8A97A]">Written By</p>
+                <p className="text-base font-normal text-[#2A2623]" style={{ fontFamily: SERIF }}>
+                  {blog.author || 'Velouraz Editorial Team'}
+                </p>
+              </div>
+
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.18em] rounded-full hover:bg-[#C8A97A] hover:text-[#2e0e43] transition-all cursor-pointer shadow-md"
+              >
+                <Share2 size={13} /> Share Story
+              </button>
+            </div>
+          </motion.div>
+
         </div>
 
-        {/* Full Rich Text Content */}
-        <article className="prose prose-[#2A2623] max-w-none font-serif text-base sm:text-lg text-[#2A2623]/95 leading-relaxed space-y-6 whitespace-pre-line">
-          {blog.content}
-        </article>
-
-        {/* Related Articles Panel */}
+        {/* Related Stories Section */}
         {relatedBlogs.length > 0 && (
-          <div className="mt-20 pt-10 border-t border-[#EFE8DC]">
-            <h3 className="font-serif text-2xl font-light text-[#222222] mb-8 text-center">Related Stories</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mt-24 pt-12 border-t border-[#E7DEC8]">
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#C8A97A]">Explore More</span>
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#2A2623]" style={{ fontFamily: SERIF }}>
+                  Related Journal Stories
+                </h3>
+              </div>
+              <Link
+                to="/blog"
+                className="hidden sm:inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors"
+              >
+                View All Journal <ArrowLeft size={13} className="rotate-180" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedBlogs.map((rBlog) => (
-                <div key={rBlog.id} className="group bg-[#FFFDF9] rounded-xl border border-[#EFE8DC] overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                  <div className="relative aspect-video w-full overflow-hidden bg-[#F3ECE1]">
-                    <img src={rBlog.image} alt={rBlog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div
+                  key={rBlog.id}
+                  className="group bg-white rounded-2xl border border-[#E7DEC8] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(46,14,67,0.08)] hover:border-[#C8A97A] transition-all duration-500 flex flex-col justify-between"
+                >
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#F3ECE1]">
+                    <img
+                      src={rBlog.image}
+                      alt={rBlog.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-3 left-3 bg-[#2e0e43]/90 text-white text-[9px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-full">
+                      {rBlog.category}
+                    </span>
                   </div>
-                  <div className="p-4 space-y-2">
-                    <span className="text-[9px] uppercase font-bold tracking-widest text-[#B58E58] block">{rBlog.category}</span>
-                    <h4 className="font-serif text-sm font-bold text-[#2A2623] leading-snug line-clamp-2 group-hover:text-[#2e0e43] transition-colors">
+                  <div className="p-5 space-y-2 flex-1 flex flex-col justify-between">
+                    <h4
+                      className="text-lg font-normal text-[#2A2623] leading-snug line-clamp-2 group-hover:text-[#2e0e43] transition-colors"
+                      style={{ fontFamily: SERIF }}
+                    >
                       <Link to={`/blog/${rBlog.id}`}>{rBlog.title}</Link>
                     </h4>
+                    <Link
+                      to={`/blog/${rBlog.id}`}
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors pt-2"
+                    >
+                      Read Story <ArrowLeft size={12} className="rotate-180" />
+                    </Link>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

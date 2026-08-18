@@ -5,7 +5,6 @@ import Breadcrumb from '../components/Breadcrumb';
 const CRIMSON = '#2e0e43';
 const DARK = '#2A2623';
 const GOLD = '#C8A97A';
-const TAUPE = '#7B6D63';
 const CREAM = '#FDFAF6';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 
@@ -27,13 +26,13 @@ const About = () => {
       
       {/* ── BREADCRUMB HERO ────────────────────────────────────── */}
       <Breadcrumb
-        title="Our Story"
-        subtitle="The journey of Zahabiya & Alefiya — bringing global craftsmanship home."
+        title="About Us"
+        subtitle="About the Brand and our Story — The journey of Zahabiya & Alefiya."
         bgImage="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=1600"
         links={breadcrumbLinks}
       />
 
-      {/* ── SECTION 1: MEET THE FOUNDERS ───────────────────────── */}
+      {/* ── SECTION 1: ABOUT THE BRAND AND OUR STORY ────────────── */}
       <section className="relative px-6 py-20 lg:py-32">
         <div className="max-w-[1320px] mx-auto">
           
@@ -42,7 +41,7 @@ const About = () => {
             <div className="flex items-center gap-3">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
               <span className="text-base lg:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
-                Meet The Founders
+                About the Brand & Our Story
               </span>
             </div>
             
@@ -54,17 +53,17 @@ const About = () => {
                 color: DARK
               }}
             >
-              A Friendship. A Shared Love <br />
-              <span className="italic" style={{ color: CRIMSON }}>for Travel. A World of Inspiration.</span>
+              A Friendship Transformed <br />
+              <span className="italic" style={{ color: CRIMSON }}>into a Global Journey.</span>
             </h1>
           </div>
 
-          {/* Asymmetric 2-Column Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
+          {/* 2-Column Editorial Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
             
-            {/* Left: Premium Editorial Imagery */}
+            {/* Left: Editorial Imagery */}
             <motion.div 
-              className="lg:col-span-5 flex flex-col justify-between space-y-8"
+              className="lg:col-span-5 flex flex-col justify-between space-y-8 lg:sticky lg:top-28"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -73,82 +72,139 @@ const About = () => {
               <div className="relative group overflow-hidden rounded-[4px] border border-[#D8CBBE]/25 shadow-[0_20px_50px_rgba(42,38,35,0.04)] aspect-[4/5] bg-[#F6F2EB]">
                 <img 
                   src="https://images.unsplash.com/photo-1534126511673-b6899657816a?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Crafting and Designing" 
+                  alt="Zahabiya & Alefiya Journey" 
                   className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-[#2e0e43]/[0.03] pointer-events-none" />
               </div>
 
-              {/* Minimal Brand Credo Box */}
               <div className="border-l border-[#D8CBBE] pl-6 space-y-3 hidden lg:block">
-                <span className="text-[16px] tracking-widest font-bold uppercase text-[#7B6D63]">Philosophy</span>
+                <span className="text-[16px] tracking-widest font-bold uppercase text-[#7B6D63]">Our Essence</span>
                 <p className="text-[17px] font-light leading-relaxed italic text-[#5C534C]" style={{ fontFamily: SERIF }}>
-                  "Jewellery that feels effortless, looks sophisticated, and adds beauty without trying too hard."
+                  "Inspired by our travels, curated for your story — VELourAZ brings the world a little closer to home."
                 </p>
               </div>
             </motion.div>
 
-            {/* Right: The Founders Narrative */}
-            <div className="lg:col-span-7 flex flex-col justify-center space-y-8">
-              <div className="text-[16px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
-                
-                <motion.p 
-                  className="text-[19px] lg:text-[21px] text-[#2A2623] leading-relaxed font-light"
+            {/* Right: Narrative Text Part 1 */}
+            <div className="lg:col-span-7 flex flex-col space-y-8 text-[#5C534C] text-[16px] lg:text-[17px] leading-relaxed font-light">
+              
+              <motion.p 
+                className="text-[20px] lg:text-[22px] text-[#2A2623] leading-relaxed font-light"
+                style={{ fontFamily: SERIF }}
+                {...fadeUp}
+              >
+                As best friends, Zahabiya Kalabhai and Alefiya Bohra found inspiration wherever their journeys took them—from vibrant city streets to hidden local markets and beautiful destinations across the globe. Every journey revealed something new: A craft, a gemstone, a texture, a tradition or a piece of jewellery that carried a story of its own.
+              </motion.p>
+
+              <motion.p {...fadeUp} transition={{ delay: 0.05 }}>
+                From the delicate artistry of Japan, where intricate Miyuki beads bring colour and precision to jewellery, to the luminous beauty of South Korea’s pearls; from the ancient symbolism of Turkish stones and the iconic Evil Eye, to the timeless allure of Chinese jade; from sapphires and rubbies from Thailand,The opals from Australia to the rich gemstone heritage of India to the refined craftsmanship found across the world — each destination became part of our inspiration.
+              </motion.p>
+
+              <motion.p {...fadeUp} transition={{ delay: 0.1 }}>
+                What began as a love for discovering beautiful jewellery evolved into something more meaningful: a desire to bring the world’s most captivating jewellery traditions together in one collection.
+              </motion.p>
+
+              <motion.p {...fadeUp} transition={{ delay: 0.15 }}>
+                We call it globally curated jewellery — thoughtfully discovered pieces that blend heritage with contemporary style, designed to feel effortless yet distinctive, elegant yet expressive.
+              </motion.p>
+
+              <motion.p {...fadeUp} transition={{ delay: 0.2 }}>
+                Because to us, jewellery is never simply an accessory. It is a memory of a place, a reflection of your individuality, and a little piece of the world you can carry with you.
+              </motion.p>
+
+              <motion.div 
+                className="py-6 border-t border-b border-[#D8CBBE]/30 italic text-[19px] lg:text-[23px] text-[#2A2623] font-light text-center"
+                style={{ fontFamily: SERIF }}
+                {...fadeUp}
+                transition={{ delay: 0.25 }}
+              >
+                Inspired by our travels, curated for your story — VELourAZ brings the world a little closer to home.
+              </motion.div>
+
+              {/* AND SO, VELourAZ WAS BORN */}
+              <div className="pt-6 space-y-6">
+                <motion.h2 
+                  className="text-2xl lg:text-3xl font-serif font-bold text-[#2A2623] uppercase tracking-wider"
                   style={{ fontFamily: SERIF }}
                   {...fadeUp}
                 >
-                  VELOURAZ began with a friendship and a shared curiosity for the world.
-                </motion.p>
+                  AND SO, VELourAZ WAS BORN.
+                </motion.h2>
 
                 <motion.p {...fadeUp} transition={{ delay: 0.05 }}>
-                  As best friends, Zahabiya Kalabhai and Alefiya Bohra found inspiration wherever their journeys took them—from vibrant city streets to hidden local markets and beautiful destinations across the globe. Every place introduced them to new cultures, distinctive styles, and jewellery that told a story of its own.
+                  From countless journeys, discoveries, and conversations about the beauty we found around the world, an idea began to take shape.
                 </motion.p>
 
-                <motion.p {...fadeUp} transition={{ delay: 0.1 }}>
-                  Along the way, they discovered a shared fascination for demi-fine jewellery—pieces that captured the beauty of global trends while remaining elegant, effortless, and wearable every day. They saw jewellery as more than an accessory; it could be a memory of a place, an expression of individuality, and a reflection of personal style.
-                </motion.p>
-
-                <motion.div 
-                  className="py-6 border-t border-b border-[#D8CBBE]/30 italic text-[19px] lg:text-[23px] text-[#2A2623] leading-snug font-light text-center"
+                <motion.p 
+                  className="text-[18px] lg:text-[20px] font-medium text-[#2A2623]" 
                   style={{ fontFamily: SERIF }}
-                  {...fadeUp}
-                  transition={{ delay: 0.15 }}
+                  {...fadeUp} 
+                  transition={{ delay: 0.1 }}
                 >
-                  Inspired by their travels, they dreamed of bringing the world a little closer to home.
-                </motion.div>
+                  And so, VELourAZ was born.
+                </motion.p>
 
-                <motion.div 
-                  className="p-6 rounded-[2px] border-l-2 bg-[#FBF9F4] space-y-3"
-                  style={{ borderColor: CRIMSON }}
-                  {...fadeUp}
+                <motion.p {...fadeUp} transition={{ delay: 0.15 }}>
+                  The name itself is inspired by velour — a fabric celebrated for its softness, richness, warmth, and understated elegance. It became the perfect expression of what we wanted VELourAZ to feel like: luxury that is felt rather than flaunted, beauty that feels effortless, and jewellery that becomes a natural extension of you.
+                </motion.p>
+
+                <motion.p 
+                  className="text-[18px] lg:text-[20px] font-medium text-[#2A2623]" 
+                  style={{ fontFamily: SERIF }}
+                  {...fadeUp} 
                   transition={{ delay: 0.2 }}
                 >
-                  <p className="text-[18px] lg:text-[20px] font-medium text-[#2A2623] leading-none" style={{ fontFamily: SERIF }}>
-                    And so, VELOURAZ was born.
-                  </p>
-                  <p className="text-sm text-[#7B6D63] leading-relaxed">
-                    The name draws inspiration from velour—a fabric known for its softness, warmth, and quiet sense of luxury. That same philosophy lies at the heart of VELOURAZ: jewellery that feels effortless, looks sophisticated, and adds beauty without trying too hard.
-                  </p>
-                </motion.div>
+                  But VELourAZ is more than a name.
+                </motion.p>
 
                 <motion.p {...fadeUp} transition={{ delay: 0.25 }}>
-                  Today, VELOURAZ is a curated world of jewellery inspired by global influences and reimagined for the modern Indian woman. Each collection brings together stories, cultures, and contemporary trends from around the world—designed to become part of your own story.
+                  It is our way of bringing the world closer — discovering the artistry, colours, gemstones, pearls, traditions, and jewellery cultures that make every destination extraordinary, and reimagining them for the woman of today.
                 </motion.p>
 
                 <motion.p {...fadeUp} transition={{ delay: 0.3 }}>
-                  For Zahabiya and Alefiya, VELOURAZ is more than a brand. It is a dream built on friendship, passion, travel, and the belief that true luxury is personal.
+                  We believe the most beautiful pieces are not simply worn — they are discovered, collected, remembered, and made your own.
                 </motion.p>
+
+                <motion.p {...fadeUp} transition={{ delay: 0.35 }}>
+                  Today, VELourAZ is a world of globally curated jewellery, created for women who carry their own stories, follow their own style, and find beauty beyond the ordinary.
+                </motion.p>
+
+                <motion.div 
+                  className="p-8 rounded-[4px] border-l-2 bg-[#FBF9F4] space-y-3"
+                  style={{ borderColor: CRIMSON }}
+                  {...fadeUp}
+                  transition={{ delay: 0.4 }}
+                >
+                  <p className="text-[18px] lg:text-[20px] font-medium text-[#2A2623]" style={{ fontFamily: SERIF }}>
+                    For Zahabiya and Alefiya, VELourAZ is more than a brand.
+                  </p>
+                  <ul className="space-y-1 text-base text-[#5C534C]">
+                    <li>It is a friendship transformed into a journey.</li>
+                    <li>A curiosity transformed into a collection.</li>
+                    <li>And a dream transformed into something you can wear.</li>
+                  </ul>
+                </motion.div>
+
+                <motion.div className="space-y-2 pt-2" {...fadeUp} transition={{ delay: 0.45 }}>
+                  <p className="italic text-[18px] lg:text-[20px] text-[#2e0e43]" style={{ fontFamily: SERIF }}>
+                    Because every journey leaves a trace.
+                  </p>
+                  <p className="italic text-[18px] lg:text-[20px] text-[#2e0e43]" style={{ fontFamily: SERIF }}>
+                    Ours just happens to be jewellery.
+                  </p>
+                </motion.div>
 
                 <motion.p 
-                  className="text-[17px] lg:text-[19px] font-medium text-[#2A2623] pt-4"
+                  className="text-[19px] lg:text-[21px] font-medium text-[#2A2623] pt-4"
                   style={{ fontFamily: SERIF }}
                   {...fadeUp}
-                  transition={{ delay: 0.35 }}
+                  transition={{ delay: 0.5 }}
                 >
-                  Welcome to VELOURAZ — where global inspiration meets your personal style.
+                  Welcome to VELourAZ — where the world becomes jewellery, and jewellery becomes part of your story.
                 </motion.p>
-
               </div>
+
             </div>
 
           </div>
@@ -172,25 +228,25 @@ const About = () => {
               className="text-[16px] lg:text-[16px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
               style={{ fontFamily: SERIF }}
             >
-              ✦ Trends That Travel the World
+              ✦ Inspired by Travels, Curated for Your Story ✦
             </span>
           ))}
         </motion.div>
       </div>
 
-      {/* ── SECTION 2: FROM OUR JOURNEY TO YOURS ────────────────── */}
+      {/* ── SECTION 2: FROM OUR HANDS, INTO YOUR STORY ────────────── */}
       <section className="px-6 py-20 lg:py-32 border-t border-[#D8CBBE]/30" style={{ backgroundColor: '#FDFCF7' }}>
         <div className="max-w-[1320px] mx-auto">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             
-            {/* Left Hand: Typography Introduction */}
+            {/* Left Column: Story Text Part 2 */}
             <div className="lg:col-span-7 space-y-8">
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
                   <span className="text-base lg:text-[16px] tracking-[0.4em] font-bold text-[#7B6D63] uppercase">
-                    From Our Journey to Yours
+                    From Our Hands, Into Your Story
                   </span>
                 </div>
                 
@@ -202,36 +258,64 @@ const About = () => {
                     color: DARK
                   }}
                 >
-                  What began as our journey <br />
-                  <span className="italic" style={{ color: CRIMSON }}>around the world is now a part of yours.</span>
+                  Jewellery that becomes <br />
+                  <span className="italic" style={{ color: CRIMSON }}>part of your journey.</span>
                 </h2>
               </div>
 
-              <div className="text-[16px] lg:text-[16px] text-[#5C534C] leading-relaxed font-light space-y-6">
-                <motion.p {...fadeUp}>
-                  We created VELOURAZ for women who love to express themselves in their own way—who believe that jewellery doesn’t need an occasion to feel special. Whether it becomes part of your everyday moments, your celebrations, your travels, or a gift filled with meaning, we hope every VELOURAZ piece becomes connected to a memory that is uniquely yours.
+              <div className="text-[16px] lg:text-[17px] text-[#5C534C] leading-relaxed font-light space-y-6">
+                
+                <motion.p 
+                  className="text-[19px] lg:text-[21px] text-[#2A2623] font-light"
+                  style={{ fontFamily: SERIF }}
+                  {...fadeUp}
+                >
+                  We created VELourAZ for women who believe jewellery is more than something you wear — it is something you feel, remember, and make your own.
                 </motion.p>
+
+                <motion.ul className="space-y-2 pt-1 border-l-2 border-[#C8A97A]/40 pl-6" {...fadeUp} transition={{ delay: 0.05 }}>
+                  <li className="text-[17px] sm:text-[18px] text-[#2A2623] font-serif italic">For the woman who dresses for herself.</li>
+                  <li className="text-[17px] sm:text-[18px] text-[#2A2623] font-serif italic">For the woman who finds beauty in the everyday.</li>
+                  <li className="text-[17px] sm:text-[18px] text-[#2A2623] font-serif italic">For the woman who carries memories from places she has been — and dreams of places yet to discover.</li>
+                </motion.ul>
 
                 <motion.p {...fadeUp} transition={{ delay: 0.1 }}>
-                  When you choose VELOURAZ, you’re not simply choosing jewellery. You’re carrying a little piece of the world with you—and making it entirely your own.
-                </motion.p>
-
-                <motion.p {...fadeUp} transition={{ delay: 0.15 }}>
-                  As founders, there is something incredibly special about seeing our pieces become part of your stories. You are not just our customer; you are part of the journey we began together as two best friends with one shared dream.
+                  It can be the necklace you reach for every morning, the bracelet that travels with you, the earrings you wear on a night worth remembering, or a carefully chosen piece gifted to someone you love.
                 </motion.p>
 
                 <motion.p 
-                  className="text-[18px] lg:text-[20px] italic font-light text-[#2A2623]"
+                  className="text-[18px] lg:text-[20px] font-medium text-[#2A2623]" 
                   style={{ fontFamily: SERIF }}
-                  {...fadeUp}
-                  transition={{ delay: 0.2 }}
+                  {...fadeUp} 
+                  transition={{ delay: 0.15 }}
                 >
-                  Our journey inspired VELOURAZ. Now, we can’t wait to be part of yours.
+                  Every VELourAZ piece begins with a story from somewhere in the world — and finds its meaning with you.
                 </motion.p>
+
+                <motion.p {...fadeUp} transition={{ delay: 0.2 }}>
+                  When you choose VELourAZ, you aren’t simply choosing jewellery. You are choosing a little piece of the world — a colour, a craft, a tradition, a feeling — and making it entirely your own.
+                </motion.p>
+
+                <motion.p {...fadeUp} transition={{ delay: 0.25 }}>
+                  And as founders, perhaps the most beautiful part of our journey is seeing where those pieces go next.
+                </motion.p>
+
+                <motion.div className="space-y-2 pt-4 border-t border-[#D8CBBE]/30" {...fadeUp} transition={{ delay: 0.3 }}>
+                  <p className="text-[20px] lg:text-[22px] font-medium text-[#2A2623]" style={{ fontFamily: SERIF }}>
+                    From our hands, into your story.
+                  </p>
+                  <p className="text-[18px] lg:text-[20px] italic text-[#2e0e43]" style={{ fontFamily: SERIF }}>
+                    Our journey inspired VELourAZ.
+                  </p>
+                  <p className="text-[18px] lg:text-[20px] italic text-[#2e0e43]" style={{ fontFamily: SERIF }}>
+                    Now, we can’t wait to see where yours takes it.
+                  </p>
+                </motion.div>
+
               </div>
             </div>
 
-            {/* Right Hand: Elegant Fine Art Frame */}
+            {/* Right Column: Fine Art Image */}
             <motion.div 
               className="lg:col-span-5 relative group"
               initial={{ opacity: 0, scale: 0.98 }}
@@ -239,7 +323,6 @@ const About = () => {
               viewport={{ once: true }}
               transition={{ duration: 1, ease: 'easeOut' }}
             >
-              {/* Outer floating border accent */}
               <div className="absolute -inset-3 border border-[#D8CBBE]/30 translate-x-3 translate-y-3 pointer-events-none rounded-[4px] transition-transform duration-500 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
               
               <div className="relative overflow-hidden aspect-[4/5] rounded-[4px] border border-[#D8CBBE]/25 bg-[#F6F2EB] shadow-[0_15px_40px_rgba(42,38,35,0.03)] z-10">
@@ -256,7 +339,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ── SECTION 3: LIGHT PREMIUM SIGN-OFF ──────────────────── */}
+      {/* ── SECTION 3: SIGN-OFF ───────────────────────────────── */}
       <section className="border-t border-[#D8CBBE]/30" style={{ background: CREAM }}>
         <div className="max-w-[1320px] mx-auto px-6 py-14 lg:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
@@ -279,12 +362,12 @@ const About = () => {
               <div className="flex items-center gap-3">
                 <span className="w-6 h-[1px]" style={{ background: GOLD }} />
                 <span className="text-[16px] tracking-[0.2em] uppercase font-bold text-[#2A2623]">
-                  Founders, VELOURAZ
+                  Founders, VELourAZ
                 </span>
               </div>
             </motion.div>
 
-            {/* Giant Monogram brand stamp */}
+            {/* Monogram brand stamp */}
             <motion.div 
               className="lg:col-span-4 flex justify-start lg:justify-end"
               initial={{ opacity: 0, y: 10 }}

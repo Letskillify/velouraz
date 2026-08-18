@@ -32,5 +32,26 @@ export const createProduct = async (values, { status, visibility, images = [] } 
   return addDoc(collection(db, "products"), record);
 };
 
-export const updateProduct = (id, values) => updateDoc(doc(db, "products", id), { ...values, updatedAt: serverTimestamp() });
+export const updateProduct = (id, values) => {
+  const updates = { ...values, updatedAt: serverTimestamp() };
+  if (values.stock !== undefined) {
+    const s = Math.max(0, Number(values.stock) || 0);
+    updates.stock = s;
+    if (!values.stock_status) {
+      updates.stock_status = s <= 0 ? "Out of Stock" : "In Stock";
+    }
+  }
+  return updateDoc(doc(db, "products", id), updates);
+};
+
+export const quickUpdateStock = (id, newStock) => {
+  const s = Math.max(0, Number(newStock) || 0);
+  return updateDoc(doc(db, "products", id), {
+    stock: s,
+    stock_status: s <= 0 ? "Out of Stock" : "In Stock",
+    updatedAt: serverTimestamp()
+  });
+};
+
 export const removeProduct = (id) => deleteDoc(doc(db, "products", id));
+

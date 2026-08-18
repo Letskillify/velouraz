@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { db } from '../components/Firebase';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { 
   Search, Heart, ShoppingBag, Eye, ChevronRight, 
   Loader2, SlidersHorizontal, X, RotateCcw, Check, Sparkles, Filter
@@ -157,24 +157,23 @@ const Shop = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        if (!snap.empty) {
-          const dbProducts = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          setProducts(dbProducts);
-        } else {
-          setProducts(fallbackProducts);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
+    setLoading(true);
+    const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snap) => {
+      if (!snap.empty) {
+        const dbProducts = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setProducts(dbProducts);
+      } else {
         setProducts(fallbackProducts);
-      } finally {
-        setLoading(false);
       }
-    };
-    fetchProducts();
+      setLoading(false);
+    }, (error) => {
+      console.error("Error listening to products:", error);
+      setProducts(fallbackProducts);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const { addToCart, addToWishlist, isInCart, isInWishlist } = useStore();

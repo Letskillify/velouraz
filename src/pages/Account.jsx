@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Package, Heart, LogOut, ChevronRight, Settings,
   ShoppingBag, CreditCard, MapPin, Bell, Award, Crown,
-  ArrowRight, FileText, Truck, Search, Plus, Edit2, Trash2,
+  ArrowRight, ArrowLeft, FileText, Truck, Search, Plus, Edit2, Trash2,
   CheckCircle2, Clock, Printer, X, ShieldCheck, Sparkles, Phone, Mail, Map, RefreshCw, Download
 } from "lucide-react";
 import { generateInvoicePDF } from "../utils/invoice";
@@ -268,8 +268,39 @@ const Account = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FDFAF5] font-sans text-[#2A2623] pt-36 sm:pt-40 pb-20">
+    <div className="min-h-screen bg-[#FDFAF5] font-sans text-[#2A2623] pt-44 sm:pt-52 lg:pt-56 pb-20">
       
+      {/* Top User-Friendly Back Button & Navigation Bar */}
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-8 mb-6 flex flex-wrap items-center justify-between gap-4">
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-[#D8CBBE]/60 text-[#2A2623] hover:bg-[#2e0e43] hover:text-white hover:border-[#2e0e43] transition-all duration-300 shadow-sm font-bold text-xs uppercase tracking-widest group cursor-pointer"
+        >
+          <ArrowLeft size={16} className="text-[#2e0e43] group-hover:text-white group-hover:-translate-x-1 transition-transform" />
+          <span>Back</span>
+        </button>
+
+        <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full border border-[#D8CBBE]/40 shadow-xs">
+          <Link
+            to="/"
+            className="text-xs uppercase tracking-widest font-bold text-[#7B6D63] hover:text-[#2e0e43] transition-colors"
+          >
+            Home
+          </Link>
+          <span className="text-[#D8CBBE]">•</span>
+          <Link
+            to="/shop"
+            className="text-xs uppercase tracking-widest font-bold text-[#7B6D63] hover:text-[#2e0e43] transition-colors"
+          >
+            Shop Collection
+          </Link>
+          <span className="text-[#D8CBBE]">•</span>
+          <span className="text-xs uppercase tracking-widest font-bold text-[#2e0e43]">
+            My Account
+          </span>
+        </div>
+      </div>
+
       {/* Top Banner Header */}
       <div className="max-w-[1340px] mx-auto px-4 sm:px-8 mb-8">
         <div className="bg-[#0E0B09] rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl border border-[#C8A97A]/20">
@@ -358,6 +389,16 @@ const Account = () => {
 
           {/* Tab Content Area */}
           <main className="lg:col-span-9 min-w-0">
+            {activeTab !== "dashboard" && (
+              <button
+                onClick={() => setActiveTab("dashboard")}
+                className="inline-flex items-center gap-2 mb-4 px-3.5 py-1.5 rounded-full bg-white border border-[#D8CBBE]/50 text-xs font-bold uppercase tracking-wider text-[#2e0e43] hover:bg-[#2e0e43] hover:text-white transition-all shadow-xs group cursor-pointer"
+              >
+                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform text-[#2e0e43] group-hover:text-white" />
+                <span>Back to Dashboard</span>
+              </button>
+            )}
+
             <AnimatePresence mode="wait">
               
               {/* TAB 1: DASHBOARD OVERVIEW */}
@@ -855,9 +896,18 @@ const Account = () => {
               className="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative z-10 border border-[#D8CBBE]/40 shadow-2xl space-y-6"
             >
               <div className="flex justify-between items-center border-b border-[#D8CBBE]/30 pb-4">
-                <div>
-                  <span className="text-[16px] font-bold uppercase tracking-widest text-[#2e0e43]">Order Breakdown</span>
-                  <h3 className="font-serif text-xl font-bold font-mono">#{selectedOrder.id}</h3>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowOrderModal(false)}
+                    className="px-3 py-1.5 rounded-full bg-[#F8F4EF] hover:bg-[#2e0e43] text-[#2e0e43] hover:text-white transition-all flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider group cursor-pointer"
+                  >
+                    <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+                    <span>Back</span>
+                  </button>
+                  <div>
+                    <span className="text-[16px] font-bold uppercase tracking-widest text-[#2e0e43]">Order Breakdown</span>
+                    <h3 className="font-serif text-xl font-bold font-mono">#{selectedOrder.id}</h3>
+                  </div>
                 </div>
                 <button onClick={() => setShowOrderModal(false)} className="p-2 text-gray-400 hover:text-black">
                   <X size={20} />
