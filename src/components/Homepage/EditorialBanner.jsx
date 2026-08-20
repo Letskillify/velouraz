@@ -7,18 +7,18 @@ const EditorialBanner = () => {
       <div className="relative w-full h-[550px] md:h-[600px] lg:h-[750px] rounded-[32px] md:rounded-[48px] overflow-hidden group border border-[#C9A96E]/20 shadow-[0_20px_50px_rgba(44,26,14,0.08)]">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=80" 
+          <img
+            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=80"
             alt="Diamonds Macro"
             className="w-full h-full object-cover transition-transform duration-[8s] group-hover:scale-110 opacity-60"
           />
           {/* Light-themed Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#FDFAF5]/95 via-[#FDFAF5]/60 to-transparent md:from-[#FDFAF5]" /> 
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FDFAF5]/95 via-[#FDFAF5]/60 to-transparent md:from-[#FDFAF5]" />
         </div>
 
         {/* Content Overlay */}
         <div className="relative h-full flex flex-col justify-center px-8 md:px-16 lg:px-24 max-w-4xl space-y-8 md:space-y-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -32,15 +32,15 @@ const EditorialBanner = () => {
           </motion.div>
 
           <div className="space-y-6 md:space-y-8">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 1 }}
               className="font-serif text-[#2C1A0E] leading-[1.1] tracking-tight"
             >
-              <span 
-                style={{ fontFamily: 'var(--font-script)', fontWeight: 100 }} 
+              <span
+                style={{ fontFamily: 'var(--font-script)', fontWeight: 100 }}
                 className="text-6xl md:text-7xl lg:text-7xl block mb-2 md:mb-6 text-[#640D14]/60"
               >
                 From Mine, to Klein,
@@ -50,18 +50,18 @@ const EditorialBanner = () => {
               </span>
             </motion.h2>
 
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 1 }}
               className="text-[#5C3D1E] text-sm md:text-lg font-sans leading-relaxed max-w-2xl font-medium"
             >
-              Mark Klein greets me with the easy confidence of a third-generation diamantaire. His desk tells a deeper story—part archive, part playground where light is sculpted into legacy. Discover the visionary approach behind our most iconic creations.
+              Mark Klein greets me with the easy confidence of a third-generation diamantaire. His desk tells a deeper story part archive, part playground where light is sculpted into legacy. Discover the visionary approach behind our most iconic creations.
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

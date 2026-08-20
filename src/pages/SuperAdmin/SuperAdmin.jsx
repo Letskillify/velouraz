@@ -179,7 +179,7 @@ const SuperAdmin = () => {
   // ─── Listen to Collections in Real-time ─────────────────────────────────────
   useEffect(() => {
     if (!superAdminUser) return undefined;
-    
+
     const snapProducts = onSnapshot(collection(db, "products"), (snapshot) => {
       setProducts(sortNewest(snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))));
     });
@@ -389,7 +389,7 @@ const SuperAdmin = () => {
           {activeItem}
         </h1>
         <p className={`mt-1 text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-          Control Center — fully configure products, catalog, transactions & remote administrative accounts
+          Control Center   fully configure products, catalog, transactions & remote administrative accounts
         </p>
       </div>
       <div className="flex items-center gap-3 self-end sm:self-auto">
@@ -500,7 +500,7 @@ const SuperAdmin = () => {
             onAddProduct={() => { setEditingProduct(null); setIsProductModalOpen(true); }}
             onEditProduct={(p) => { setEditingProduct(p); setIsProductModalOpen(true); }}
             onDeleteProduct={handleDeleteProduct}
-            onRefresh={() => {}}
+            onRefresh={() => { }}
           />
         );
 
@@ -822,9 +822,8 @@ const SuperAdmin = () => {
             <button
               key={item.name}
               onClick={() => setActiveItem(item.name)}
-              className={`flex w-full items-center rounded-lg font-semibold transition-all mb-1 ${
-                collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
-              } ${isActive ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
+              className={`flex w-full items-center rounded-lg font-semibold transition-all mb-1 ${collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
+                } ${isActive ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
             >
               <Icon size={15} />
               {!collapsed && <span>{item.name}</span>}

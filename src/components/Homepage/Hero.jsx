@@ -88,7 +88,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Desktop grid */}
-          <div
+          {/* <div
             className="hidden lg:grid lg:grid-cols-5 divide-x"
             style={{
               background: 'rgba(8,5,3,0.58)',
@@ -118,10 +118,10 @@ const Hero = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Mobile slider */}
-          <div
+          {/* <div
             className="lg:hidden overflow-hidden"
             style={{
               background: 'rgba(8,5,3,0.62)',
@@ -153,7 +153,7 @@ const Hero = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
+          </div> */}
         </motion.div>
       </div>
     </section>

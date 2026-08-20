@@ -198,9 +198,8 @@ const MediaSection = ({ media, setMedia }) => {
           {media.map((item, idx) => (
             <div
               key={item.id}
-              className={`relative aspect-square overflow-hidden rounded-xl border-2 bg-slate-100 ${
-                idx === 0 ? "border-[#941232] ring-2 ring-[#941232]/20" : "border-slate-200"
-              }`}
+              className={`relative aspect-square overflow-hidden rounded-xl border-2 bg-slate-100 ${idx === 0 ? "border-[#941232] ring-2 ring-[#941232]/20" : "border-slate-200"
+                }`}
             >
               <img src={item.url} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1.5 flex items-center justify-between">
@@ -484,7 +483,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     {...register("description")}
                     rows={4}
                     className={`${inp} resize-none leading-relaxed`}
-                    placeholder="Describe the product — materials, style, occasion…"
+                    placeholder="Describe the product   materials, style, occasion…"
                   />
                 </div>
 
@@ -622,13 +621,12 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                   {["Published", "Draft"].map((opt) => (
                     <label
                       key={opt}
-                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border py-2.5 text-base font-bold transition-all ${
-                        statusWatch === opt
+                      className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border py-2.5 text-base font-bold transition-all ${statusWatch === opt
                           ? opt === "Published"
                             ? "border-emerald-400 bg-emerald-50 text-emerald-700"
                             : "border-amber-400 bg-amber-50 text-amber-700"
                           : "border-slate-200 text-slate-500 hover:border-slate-300"
-                      }`}
+                        }`}
                     >
                       <input type="radio" value={opt} {...register("status")} className="sr-only" />
                       <span className={`h-2 w-2 rounded-full ${opt === "Published" ? "bg-emerald-500" : "bg-amber-400"}`} />
@@ -666,9 +664,8 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                 <button
                   type="button"
                   onClick={() => setScheduleEnabled(!scheduleEnabled)}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-all ${
-                    scheduleEnabled ? "bg-[#941232]" : "bg-slate-200"
-                  }`}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-all ${scheduleEnabled ? "bg-[#941232]" : "bg-slate-200"
+                    }`}
                 >
                   <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${scheduleEnabled ? "translate-x-4" : "translate-x-0.5"}`} />
                 </button>

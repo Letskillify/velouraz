@@ -49,9 +49,8 @@ const QuickStockEditor = ({ productId, currentStock }) => {
             e.target.blur();
           }
         }}
-        className={`w-14 px-1.5 py-1 text-center text-sm font-bold border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#811331]/30 transition-all ${
-          val > 10 ? "border-emerald-200 text-emerald-700 bg-emerald-50/40" : val > 0 ? "border-amber-200 text-amber-700 bg-amber-50/40" : "border-red-200 text-red-700 bg-red-50/50"
-        }`}
+        className={`w-14 px-1.5 py-1 text-center text-sm font-bold border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#811331]/30 transition-all ${val > 10 ? "border-emerald-200 text-emerald-700 bg-emerald-50/40" : val > 0 ? "border-amber-200 text-amber-700 bg-amber-50/40" : "border-red-200 text-red-700 bg-red-50/50"
+          }`}
       />
       <button
         type="button"
@@ -286,7 +285,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                         🌍 {row.country}
                       </span>
                     ) : (
-                      <span className="text-slate-400 text-[16px]">—</span>
+                      <span className="text-slate-400 text-[16px]"> </span>
                     )}
                   </td>
                   <td className="px-5 py-4">
@@ -301,7 +300,7 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
                     </span>
                   </td>
                   <td className="px-5 py-4 text-[16px] text-slate-500">
-                    {row.createdAt?.toDate ? row.createdAt.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
+                    {row.createdAt?.toDate ? row.createdAt.toDate().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : " "}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex justify-end gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -15,9 +15,9 @@ function Home() {
      <Hero />
      <Marquee />
      <PromoSlider />
-     <BestSellers />
+     {/* <BestSellers /> */}
      <QualitySection />
-     <CategorySection />
+     {/* <CategorySection /> */}
      {/* <TheEdit /> */}
      <TestimonialSection />
      {/* <Stories/> */}

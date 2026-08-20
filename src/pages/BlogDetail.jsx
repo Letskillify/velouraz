@@ -47,7 +47,7 @@ Store your pieces individually in a soft fabric-lined tray or their original Vel
     createdAt: { toMillis: () => new Date('2026-07-02').getTime() },
     image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=1200',
     excerpt: 'From stacked crystal cuffs to statement emerald chokers, explore how leading tastemakers are layering jewellery this season.',
-    content: `As we transition into the cooler months of 2026, high fashion and high jewellery are merging in spectacular ways. This season is defined by contrast—combining structured, heavy tailoring with delicate, light-catching accessories. 
+    content: `As we transition into the cooler months of 2026, high fashion and high jewellery are merging in spectacular ways. This season is defined by contrast combining structured, heavy tailoring with delicate, light-catching accessories. 
 
 Here are the major trends our design editors are tracking.
 

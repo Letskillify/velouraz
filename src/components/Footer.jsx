@@ -29,7 +29,7 @@ const Footer = () => {
         { name: "Our Story & Heritage", href: "/about" },
         { name: "Atelier Journal", href: "/blog" },
         { name: "My Account", href: "/account" },
-        { name: "Customer Concierge", href: "/contact" }
+        { name: "Contact Us", href: "/contact" }
       ]
     },
     {
@@ -46,49 +46,7 @@ const Footer = () => {
     <footer className="w-full bg-[#14061F] text-[#F3ECE1] font-sans border-t border-[#3A1B54]">
       
       {/* Top Value Proposition Highlights */}
-      <div className="border-b border-[#2D1244] py-10 bg-[#1A0829]">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-12 h-12 rounded-full bg-[#290F3E] border border-[#B58E58]/40 flex items-center justify-center text-[#E5C794] shadow-md group-hover:border-[#E5C794] group-hover:scale-105 transition-all duration-300 shrink-0">
-              <Truck size={20} strokeWidth={1.5} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5EFE6]">Insured Free Shipping</h4>
-              <p className="text-xs text-[#C5B39A] font-serif font-light mt-0.5">Complimentary delivery across India</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-12 h-12 rounded-full bg-[#290F3E] border border-[#B58E58]/40 flex items-center justify-center text-[#E5C794] shadow-md group-hover:border-[#E5C794] group-hover:scale-105 transition-all duration-300 shrink-0">
-              <ShieldCheck size={20} strokeWidth={1.5} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5EFE6]">Certified Authenticity</h4>
-              <p className="text-xs text-[#C5B39A] font-serif font-light mt-0.5">Hallmarked conflict-free materials</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-12 h-12 rounded-full bg-[#290F3E] border border-[#B58E58]/40 flex items-center justify-center text-[#E5C794] shadow-md group-hover:border-[#E5C794] group-hover:scale-105 transition-all duration-300 shrink-0">
-              <RefreshCw size={20} strokeWidth={1.5} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5EFE6]">Hassle-Free Returns</h4>
-              <p className="text-xs text-[#C5B39A] font-serif font-light mt-0.5">7-day doorstep replacement guarantee</p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center md:justify-start gap-4 group">
-            <div className="w-12 h-12 rounded-full bg-[#290F3E] border border-[#B58E58]/40 flex items-center justify-center text-[#E5C794] shadow-md group-hover:border-[#E5C794] group-hover:scale-105 transition-all duration-300 shrink-0">
-              <Gem size={20} strokeWidth={1.5} />
-            </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#F5EFE6]">Artisanal Ateliers</h4>
-              <p className="text-xs text-[#C5B39A] font-serif font-light mt-0.5">Crafted by master goldsmiths</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Newsletter Section */}
       <div className="bg-gradient-to-r from-[#240A35] via-[#14061F] to-[#240A35] py-14 border-b border-[#2D1244]">

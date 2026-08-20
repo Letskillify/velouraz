@@ -136,7 +136,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
         <Stat label="In Stock" value={inStock.toLocaleString("en-IN")} note={`${outOfStock} out of stock`} icon={ShoppingBag} tint="bg-blue-50 text-blue-600" isDark={isDarkMode} />
         {catalogueLow
           ? <Stat label="Low Stock Alert" value={lowStock} note={`Catalogue < 100 products (${products.length} total)`} icon={PackageCheck} tint="bg-rose-50 text-rose-600" isDark={isDarkMode} warning />
-          : <Stat label="Catalogue Health" value="Good" note={`${products.length} products — healthy stock`} icon={PackageCheck} tint="bg-emerald-50 text-emerald-600" isDark={isDarkMode} />}
+          : <Stat label="Catalogue Health" value="Good" note={`${products.length} products   healthy stock`} icon={PackageCheck} tint="bg-emerald-50 text-emerald-600" isDark={isDarkMode} />}
       </section>
 
       {/* ─── Charts Row ─── */}
@@ -194,14 +194,14 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
           <div className="mt-5 space-y-2.5 text-[16px]">
             {categoryNames.length
               ? categoryNames.slice(0, 5).map((name, index) => (
-                  <div className="flex justify-between" key={name}>
-                    <span className={`flex items-center gap-2 ${textMuted}`}>
-                      <i className="h-2 w-2 rounded-full" style={{ backgroundColor: doughnutData.datasets[0].backgroundColor[index] }} />
-                      {name}
-                    </span>
-                    <b className={textPrimary}>{data.categoryTotals[name]}</b>
-                  </div>
-                ))
+                <div className="flex justify-between" key={name}>
+                  <span className={`flex items-center gap-2 ${textMuted}`}>
+                    <i className="h-2 w-2 rounded-full" style={{ backgroundColor: doughnutData.datasets[0].backgroundColor[index] }} />
+                    {name}
+                  </span>
+                  <b className={textPrimary}>{data.categoryTotals[name]}</b>
+                </div>
+              ))
               : <p className={`text-center ${textMuted}`}>Categories will appear here.</p>}
           </div>
           <button onClick={onViewProducts} className={`mt-5 flex w-full items-center justify-between border-t pt-4 text-[16px] font-semibold ${divider} ${textPrimary}`}>
@@ -247,7 +247,7 @@ const DashboardOverview = ({ products, users, orders, onViewProducts, isDarkMode
                     <td className="px-4 py-3">
                       {p.country
                         ? <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-0.5 text-[16px] font-semibold text-blue-600">🌍 {p.country}</span>
-                        : <span className={textMuted}>—</span>}
+                        : <span className={textMuted}> </span>}
                     </td>
                     <td className={`px-4 py-3 font-semibold ${textPrimary}`}>{money(p.price)}</td>
                     <td className={`px-4 py-3 font-semibold ${Number(p.stock || 0) ? "text-emerald-600" : "text-rose-500"}`}>{p.stock || 0}</td>

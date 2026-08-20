@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Gem, Award, ShieldCheck } from 'lucide-react';
+import { Gem, Award, ShieldCheck, Sparkles, CheckCircle2 } from 'lucide-react';
 
-// Custom icons to match screenshot 1 perfectly
+// Custom icons
 const ArtisanalIcon = ({ size = 22, className = "" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M12 2v6" />
@@ -12,54 +12,52 @@ const ArtisanalIcon = ({ size = 22, className = "" }) => (
   </svg>
 );
 
-const LeafIcon = ({ size = 22, className = "" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 9 0 5.5-4.5 9-10 9z" />
-    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-  </svg>
-);
-
 const features = [
   {
     icon: Gem,
-    title: "PREMIUM MATERIALS",
-    description: "Finest precious conflict-free stones and 18k solid gold base."
+    title: "PRECIOUS MATERIALS",
+    subtitle: "Chosen for beauty, quality and lasting elegance.",
+    description: "We carefully select materials for their finish, character and enduring appeal, ensuring every piece feels refined and special."
   },
   {
     icon: ArtisanalIcon,
-    title: "ARTISANAL FINISH",
-    description: "Each masterpiece is meticulously hand-detailed by lead artisans."
+    title: "ARTISAN CRAFT",
+    subtitle: "Finished with skill, care and precision.",
+    description: "Every detail is thoughtfully considered, from the setting and polish to the final finishing touches that give each piece its distinctive character."
   },
   {
     icon: ShieldCheck,
-    title: "ANTI-TARNISH WEAR",
-    description: "Hypoallergenic coating to lock in reflectivity and shine."
-  },
-  {
-    icon: LeafIcon,
-    title: "SKIN FRIENDLY ALLOYS",
-    description: "Nickel-free and lead-free alloys designed for daily comfort."
+    title: "MADE TO LAST",
+    subtitle: "Designed for enduring beauty and everyday wear.",
+    description: "Our pieces are created with durability, comfort and timeless style in mind, so they can remain part of your collection for years to come."
   },
   {
     icon: Award,
-    title: "ATELIER GUARANTEE",
-    description: "Backed by our lifetime authenticity and preservation promise."
+    title: "THE VELOURAZ PROMISE",
+    subtitle: "Curated with care, presented with distinction.",
+    description: "Every Velouraz piece is thoughtfully selected, carefully checked and beautifully presented to make your experience feel special from discovery to delivery."
+  },
+  {
+    icon: CheckCircle2,
+    title: "925 STERLING SILVER CERTIFICATION",
+    subtitle: "Crafted in genuine 925 sterling silver.",
+    description: "Containing 92.5% pure silver blended with 7.5% strengthening metals for enhanced durability and lasting beauty."
   }
 ];
 
 const QualitySection = () => {
   return (
     <section 
-      className="py-6 md:py-8 relative overflow-hidden bg-[#FAF7F2]"
+      className="py-10 md:py-14 relative overflow-hidden bg-[#FAF7F2]"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-10">
         
         {/* Header Section */}
-        <div className="max-w-2xl mx-auto text-center mb-6 md:mb-8">
+        <div className="max-w-2xl mx-auto text-center mb-8 md:mb-10">
           <h2
             className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
           >
-            Quality You <span className="italic font-normal text-[#2e0e43]">Can Trust</span>
+            The Velouraz <span className="italic font-normal text-[#2e0e43]">Standard</span>
           </h2>
           <div className="flex items-center justify-center gap-3 mt-3">
             <span className="w-8 h-[1px] bg-[#B58E58]/40" />
@@ -69,7 +67,7 @@ const QualitySection = () => {
         </div>
 
         {/* 5-Column Grid Layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 md:gap-6">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (
@@ -88,13 +86,20 @@ const QualitySection = () => {
                   <IconComponent size={22} strokeWidth={1.2} className="text-[#B58E58]" />
                 </div>
 
-                {/* Title & Description */}
+                {/* Title */}
                 <h3 
-                  className="text-xs md:text-sm font-semibold tracking-[0.14em] uppercase mb-2.5 text-[#2A2623] group-hover:text-[#2e0e43] transition-colors font-sans"
+                  className="text-xs md:text-[13px] font-bold tracking-[0.14em] uppercase mb-2 text-[#2A2623] group-hover:text-[#2e0e43] transition-colors font-sans"
                 >
                   {feature.title}
                 </h3>
-                <p className="text-xs md:text-[13px] text-[#7B6D63] leading-relaxed font-light font-sans">
+
+                {/* Subtitle */}
+                <p className="text-xs font-semibold text-[#2e0e43]/90 italic mb-2.5 leading-snug">
+                  {feature.subtitle}
+                </p>
+
+                {/* Full Description */}
+                <p className="text-xs text-[#7B6D63] leading-relaxed font-light font-sans">
                   {feature.description}
                 </p>
               </motion.div>
@@ -108,3 +113,4 @@ const QualitySection = () => {
 };
 
 export default QualitySection;
+

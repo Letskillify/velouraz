@@ -54,11 +54,11 @@ const UsersTable = ({ users }) => (
               <td className="px-5 py-4 space-y-1">
                 <div className="flex items-center gap-1.5 text-[16px] text-slate-600 font-medium">
                   <Mail size={11} className="text-slate-400 flex-shrink-0" />
-                  <span className="truncate max-w-[160px]">{user.email || "—"}</span>
+                  <span className="truncate max-w-[160px]">{user.email || " "}</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-[16px] text-slate-400 font-medium">
                   <Phone size={11} className="text-slate-400 flex-shrink-0" />
-                  {user.phone || "—"}
+                  {user.phone || " "}
                 </div>
               </td>
               <td className="px-5 py-4">
@@ -72,11 +72,11 @@ const UsersTable = ({ users }) => (
                   <Calendar size={11} className="text-slate-400" />
                   {user.createdAt
                     ? new Date(user.createdAt.toDate?.() || user.createdAt).toLocaleDateString(undefined, {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "—"}
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                    : " "}
                 </div>
               </td>
               <td className="px-8 py-4 text-right">
@@ -124,14 +124,14 @@ const UsersTable = ({ users }) => (
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-slate-50 p-2.5 rounded-xl">
               <p className="text-[16px] font-bold text-slate-400 uppercase tracking-wider mb-1">Phone</p>
-              <p className="text-base font-semibold text-slate-700">{user.phone || "—"}</p>
+              <p className="text-base font-semibold text-slate-700">{user.phone || " "}</p>
             </div>
             <div className="bg-slate-50 p-2.5 rounded-xl">
               <p className="text-[16px] font-bold text-slate-400 uppercase tracking-wider mb-1">Joined</p>
               <p className="text-base font-semibold text-slate-700">
                 {user.createdAt
                   ? new Date(user.createdAt.toDate?.() || user.createdAt).toLocaleDateString()
-                  : "—"}
+                  : " "}
               </p>
             </div>
           </div>

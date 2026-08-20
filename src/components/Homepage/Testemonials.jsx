@@ -17,19 +17,19 @@ const reviews = [
   {
     name: "Ananya R.",
     title: "Bride, Delhi",
-    quote: "Stunning pieces and super fast delivery. I felt the luxury in the packaging too — it felt like opening a gift from a couture house.",
+    quote: "Stunning pieces and super fast delivery. I felt the luxury in the packaging too   it felt like opening a gift from a couture house.",
     rating: 5
   },
   {
     name: "Neha K.",
     title: "Fashion Editor, Bangalore",
-    quote: "Finally found a brand that brings global styles with such elegance. The Korean edit was impeccable — I've been wearing it every single day.",
+    quote: "Finally found a brand that brings global styles with such elegance. The Korean edit was impeccable   I've been wearing it every single day.",
     rating: 5
   },
   {
     name: "Meera J.",
     title: "Entrepreneur, Hyderabad",
-    quote: "Exquisite craftsmanship! The pieces are even more beautiful in person. The Heritage collection is a standout — museum-quality at every angle.",
+    quote: "Exquisite craftsmanship! The pieces are even more beautiful in person. The Heritage collection is a standout   museum-quality at every angle.",
     rating: 5
   }
 ];
@@ -44,13 +44,13 @@ const TestimonialSection = () => {
   return (
     <section className="py-6 md:py-8 relative overflow-hidden border-t border-[#D8CBBE]/30" style={{ background: CRIMSON }}>
       {/* Subtle pattern overlay */}
-      <div 
+      <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{ backgroundImage: 'radial-gradient(circle at 30% 70%, #fff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
       />
-      
+
       <div className="max-w-[1440px] mx-auto px-6 lg:px-12 relative z-10">
-        
+
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between mb-6 md:mb-8 gap-8">
           <div className="w-10 opacity-0 hidden lg:block" /> {/* Spacer for centering */}
@@ -125,7 +125,7 @@ const TestimonialSection = () => {
                     ))}
                   </div>
 
-                  <p 
+                  <p
                     className="text-white/85 text-[16px] lg:text-[17px] leading-relaxed italic font-light flex-grow"
                     style={{ fontFamily: SERIF }}
                   >
@@ -133,7 +133,7 @@ const TestimonialSection = () => {
                   </p>
 
                   <div className="mt-7 pt-5 border-t border-white/10 flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-base font-bold text-[#2e0e43]"
                       style={{ background: 'rgba(255,255,255,0.9)', fontFamily: SERIF }}
                     >

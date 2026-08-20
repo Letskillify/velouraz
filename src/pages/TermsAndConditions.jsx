@@ -519,11 +519,11 @@ const TermsAndConditions = () => {
               </p>
 
               <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4 max-w-xl">
-                <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">VelourAZ</h3>
+                <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Velouraz</h3>
                 <div className="space-y-3 text-sm sm:text-base">
-                  <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> [your official customer-service email]</p>
-                  <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone/WhatsApp:</strong> [your business number]</p>
-                  <p className="flex items-start gap-3"><MapPin size={16} className="text-[#2e0e43] shrink-0 mt-1" /><strong className="text-[#2A2623] shrink-0">Business Address:</strong> [your registered/business address]</p>
+                  <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
+                  <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone/WhatsApp:</strong> +91 83494 40045</p>
+                  <p className="flex items-start gap-3"><MapPin size={16} className="text-[#2e0e43] shrink-0 mt-1" /><strong className="text-[#2A2623] shrink-0">Business Address:</strong> 783 Khatiwala tank, Indore 452014</p>
                   <p className="flex items-center gap-3"><Globe size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Website:</strong> velouraz.in</p>
                 </div>
               </div>

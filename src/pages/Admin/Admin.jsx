@@ -82,7 +82,7 @@ const metricCards = (productCount, userCount, orderCount) => [
   { label: "Active Products", value: productCount, hint: "Across all categories", icon: Package, color: "crimson" },
   { label: "Total Users", value: userCount, hint: "Registered accounts", icon: Users, color: "blue" },
   { label: "Live Orders", value: orderCount, hint: "Orders from database", icon: ShoppingBag, color: "blue" },
-  { label: "Pending Tasks", value: "—", hint: "No new alerts", icon: Activity, color: "green" },
+  { label: "Pending Tasks", value: " ", hint: "No new alerts", icon: Activity, color: "green" },
 ];
 
 const sortNewest = (rows) => [...rows].sort((a, b) => {
@@ -272,7 +272,7 @@ const Admin = () => {
           {activeItem}
         </h1>
         <p className={`mt-1 text-base sm:text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-          {currentItem?.desc} — manage your jewellery store
+          {currentItem?.desc}   manage your jewellery store
         </p>
       </div>
       <div className="flex items-center gap-3 self-end sm:self-auto">
@@ -394,9 +394,8 @@ const Admin = () => {
         <button
           onClick={() => setActiveItem("Dashboard")}
           title="Dashboard"
-          className={`mb-4 flex w-full items-center rounded-lg font-semibold transition-all ${
-            collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
-          } ${activeItem === "Dashboard" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
+          className={`mb-4 flex w-full items-center rounded-lg font-semibold transition-all ${collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
+            } ${activeItem === "Dashboard" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
         >
           <LayoutDashboard size={15} />
           {!collapsed && "Dashboard"}
@@ -409,9 +408,8 @@ const Admin = () => {
         <button
           onClick={() => { setActiveItem("Products"); if (!collapsed) setProductsMenuOpen(!productsMenuOpen); }}
           title="Products"
-          className={`flex w-full items-center rounded-lg font-semibold transition-all ${
-            collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
-          } ${activeItem === "Products" || activeItem === "AddProduct" || activeItem === "EditProduct" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
+          className={`flex w-full items-center rounded-lg font-semibold transition-all ${collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
+            } ${activeItem === "Products" || activeItem === "AddProduct" || activeItem === "EditProduct" ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
         >
           <Package size={15} />
           {!collapsed && (
@@ -448,9 +446,8 @@ const Admin = () => {
             <button
               onClick={() => setActiveItem(target)}
               title={title}
-              className={`flex w-full items-center rounded-lg transition-all ${
-                collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2"
-              } ${activeItem === target ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
+              className={`flex w-full items-center rounded-lg transition-all ${collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2"
+                } ${activeItem === target ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
             >
               <Icon size={15} />
               {!collapsed && <span className="flex-1 text-left">{title}</span>}
@@ -491,7 +488,7 @@ const Admin = () => {
 
       {/* Footer: collapse toggle + profile + logout */}
       <div className={`border-t border-white/10 py-3 space-y-1 ${collapsed ? "px-2" : "px-3"}`}>
-        {/* Collapse toggle — desktop only */}
+        {/* Collapse toggle   desktop only */}
         <button
           onClick={() => setIsSidebarCollapsed(!collapsed)}
           title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -552,11 +549,10 @@ const Admin = () => {
 
   return (
     <div className={`min-h-screen ${bg} ${textPrimary} font-sans selection:bg-[#811331]/10 transition-colors duration-300`}>
-      {/* ─── Fixed Sidebar — Desktop ─── */}
+      {/* ─── Fixed Sidebar   Desktop ─── */}
       <aside
-        className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-300 ease-in-out ${
-          isSidebarCollapsed ? "w-16" : "w-60"
-        }`}
+        className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-300 ease-in-out ${isSidebarCollapsed ? "w-16" : "w-60"
+          }`}
       >
         <SidebarContent collapsed={isSidebarCollapsed} />
       </aside>
@@ -640,8 +636,8 @@ const Admin = () => {
                         {r.img
                           ? <img src={r.img} alt="" className="h-full w-full object-cover" />
                           : r.type === "product" ? <Package size={14} className="text-[#811331]" />
-                          : r.type === "order" ? <ShoppingBag size={14} className="text-amber-500" />
-                          : <Users size={14} className="text-blue-500" />
+                            : r.type === "order" ? <ShoppingBag size={14} className="text-amber-500" />
+                              : <Users size={14} className="text-blue-500" />
                         }
                       </div>
                       <div className="min-w-0">
@@ -668,9 +664,8 @@ const Admin = () => {
             {/* Day / Night Toggle */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`relative flex h-9 w-9 items-center justify-center rounded-xl transition-all ${
-                isDarkMode ? "bg-slate-700 text-yellow-400 hover:bg-slate-600" : "text-slate-600 hover:bg-slate-100"
-              }`}
+              className={`relative flex h-9 w-9 items-center justify-center rounded-xl transition-all ${isDarkMode ? "bg-slate-700 text-yellow-400 hover:bg-slate-600" : "text-slate-600 hover:bg-slate-100"
+                }`}
               title={isDarkMode ? "Switch to Day Mode" : "Switch to Night Mode"}
             >
               <AnimatePresence mode="wait">
@@ -686,7 +681,7 @@ const Admin = () => {
               </AnimatePresence>
             </button>
 
-            {/* Notification Bell — dynamic: hidden if 0 */}
+            {/* Notification Bell   dynamic: hidden if 0 */}
             {orders.length > 0 && (
               <button
                 className={`relative ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}
@@ -699,7 +694,7 @@ const Admin = () => {
               </button>
             )}
             <div className={`h-8 w-px ${isDarkMode ? "bg-slate-700" : "bg-slate-200"}`} />
-            {/* Profile avatar — real photo + name + email from adminUser */}
+            {/* Profile avatar   real photo + name + email from adminUser */}
             <button
               onClick={() => setActiveItem("Profile")}
               className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
@@ -707,8 +702,8 @@ const Admin = () => {
               {adminUser?.photoURL
                 ? <img src={adminUser.photoURL} alt="" className="h-9 w-9 rounded-full object-cover border-2 border-[#811331]/30" />
                 : <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-base font-bold text-white">
-                    {((adminUser?.displayName || adminUser?.name || adminUser?.adminId || "A").charAt(0)).toUpperCase()}
-                  </span>
+                  {((adminUser?.displayName || adminUser?.name || adminUser?.adminId || "A").charAt(0)).toUpperCase()}
+                </span>
               }
               <div>
                 <p className={`text-base font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>

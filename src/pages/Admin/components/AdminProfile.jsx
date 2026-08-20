@@ -20,12 +20,11 @@ const Field = ({ label, icon: Icon, children, isDark, full }) => (
 );
 
 const inputCls = (isDark, error) =>
-  `w-full rounded-lg border px-3 sm:px-3.5 py-2 sm:py-2.5 text-sm outline-none transition-all ${
-    error
-      ? "border-red-400 bg-red-50 text-red-800 focus:ring-2 focus:ring-red-100"
-      : isDark
-        ? "border-slate-600 bg-slate-700 text-white placeholder:text-slate-500 focus:border-[#9c1237] focus:ring-2 focus:ring-[#9c1237]/20"
-        : "border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 focus:border-[#9c1237] focus:ring-2 focus:ring-[#9c1237]/10"
+  `w-full rounded-lg border px-3 sm:px-3.5 py-2 sm:py-2.5 text-sm outline-none transition-all ${error
+    ? "border-red-400 bg-red-50 text-red-800 focus:ring-2 focus:ring-red-100"
+    : isDark
+      ? "border-slate-600 bg-slate-700 text-white placeholder:text-slate-500 focus:border-[#9c1237] focus:ring-2 focus:ring-[#9c1237]/20"
+      : "border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 focus:border-[#9c1237] focus:ring-2 focus:ring-[#9c1237]/10"
   }`;
 
 // ─── Main Component ───────────────────────────────────────────────────────────
@@ -79,14 +78,14 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
     setError("");
 
     try {
-      // Use the shared uploadToCloudinary from config — this is the one that works for products too
+      // Use the shared uploadToCloudinary from config   this is the one that works for products too
       const cloudUrl = await uploadToCloudinary(file);
       setProfileData((prev) => ({ ...prev, photoURL: cloudUrl }));
       setPreviewUrl(cloudUrl);
       setUploadProgress(100);
     } catch (err) {
       console.error("Profile photo upload error:", err);
-      // Keep local preview but store the blob URL — will be lost on refresh
+      // Keep local preview but store the blob URL   will be lost on refresh
       // Show clear actionable error
       setError(
         "Photo uploaded locally but Cloudinary upload failed. " +
@@ -243,11 +242,10 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
               type="button"
               onClick={handleSave}
               disabled={saving || uploading}
-              className={`self-end sm:self-auto flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${
-                saved
+              className={`self-end sm:self-auto flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${saved
                   ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
                   : "bg-[#811331] text-white shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d]"
-              }`}
+                }`}
             >
               {saving
                 ? <Loader2 size={14} className="animate-spin" />
@@ -352,11 +350,11 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
               value={profileData.location}
               onChange={(e) => setProfileData((p) => ({ ...p, location: e.target.value }))}
               className={inputCls(isDarkMode)}
-              placeholder="e.g. Mumbai, India"
+              placeholder="e.g. Indore, India"
             />
           </Field>
 
-          {/* Bio — full width */}
+          {/* Bio   full width */}
           <Field label="About / Bio" icon={Globe2} isDark={isDarkMode} full>
             <textarea
               rows={3}
@@ -379,7 +377,7 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
         <h3 className={`text-sm sm:text-[16px] font-bold mb-4 ${textPrimary}`}>Account Credentials</h3>
         <div className={`rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
           {[
-            ["Admin ID", adminUser?.adminId || "—", true],
+            ["Admin ID", adminUser?.adminId || " ", true],
             ["Account Type", null, false],
             ["Access Level", "Catalog & Content", false],
           ].map(([key, val, mono], idx, arr) => (

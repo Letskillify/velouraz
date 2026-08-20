@@ -22,7 +22,7 @@ const blogsToSeed = [
     readTime: "5 min read",
     image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=1200",
     excerpt: "Japan is known for its love of simplicity, precision and detail. Discover the fascinating history and craftsmanship of Miyuki glass seed beads born in Hiroshima.",
-    content: `Japan is known for its love of simplicity, precision and detail. These qualities come beautifully together in one of its most fascinating contributions to jewellery — Miyuki beads.
+    content: `Japan is known for its love of simplicity, precision and detail. These qualities come beautifully together in one of its most fascinating contributions to jewellery   Miyuki beads.
 
 Born in Hiroshima in the 1930s, MIYUKI has spent decades perfecting glass seed beads, developing an extraordinary range of colours, shapes, sizes and finishes. Today, its beads are used by designers and artisans around the world.
 
@@ -39,7 +39,7 @@ Miyuki’s glass beads are produced with a strong focus on consistency and craft
 The beauty of Miyuki jewellery is that the smallest details can become the main attraction.
 
 A single carefully designed bracelet, necklace or pair of earrings can add colour and personality without overwhelming the look.
-That is the essence of Japanese-inspired jewellery — precision, balance and beauty in the smallest details.
+That is the essence of Japanese-inspired jewellery   precision, balance and beauty in the smallest details.
 Sometimes, the tiniest bead creates the biggest impression.
 Japanese-inspired styling is about balance. Let one beautiful detail stand out rather than wearing everything at once.`
   },
@@ -50,20 +50,20 @@ Japanese-inspired styling is about balance. Let one beautiful detail stand out r
     readTime: "6 min read",
     image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=1200",
     excerpt: "For generations, Paris and Place Vendôme have been at the heart of haute joaillerie. Explore legendary houses like Cartier, Van Cleef & Arpels, Boucheron, and Chaumet.",
-    content: `When we think of luxury jewellery, one city immediately comes to mind — Paris.
+    content: `When we think of luxury jewellery, one city immediately comes to mind   Paris.
 For generations, Paris has been at the heart of jewellery design, craftsmanship and haute joaillerie. At the centre of this world is Place Vendôme, one of the most famous addresses in the jewellery industry. The square and nearby Rue de la Paix are home to legendary jewellery houses including Cartier, Van Cleef & Arpels, Boucheron, Chaumet, Bulgari and Dior Joaillerie.
 
-💎 Cartier — The Icon of Parisian Jewellery
+💎 Cartier   The Icon of Parisian Jewellery
 Cartier has been creating jewellery since 1847 and has become one of the most recognised names in luxury jewellery.
 
-🌸 Van Cleef & Arpels — Jewellery Inspired by Nature
+🌸 Van Cleef & Arpels   Jewellery Inspired by Nature
 Van Cleef & Arpels opened its first boutique at 22 Place Vendôme in 1906.
 One of its most recognizable creations is the Alhambra, introduced in 1968 and inspired by the idea of luck.
 
-🐍 Boucheron — A Pioneer of Place Vendôme
+🐍 Boucheron   A Pioneer of Place Vendôme
 Boucheron became the first jeweller to establish itself on Place Vendôme in 1893, helping transform the area into the legendary jewellery destination it is today.
 
-👑 Chaumet — Jewellery Fit for Royalty
+👑 Chaumet   Jewellery Fit for Royalty
 Chaumet’s history goes back to 1780 and is deeply connected with French history. The Maison became the official jeweller to Empress Joséphine and became particularly renowned for its tiaras and royal jewellery.`
   },
   {
@@ -73,13 +73,13 @@ Chaumet’s history goes back to 1780 and is deeply connected with French histor
     readTime: "5 min read",
     image: "https://images.unsplash.com/photo-1611591475281-8d995e85764d?auto=format&fit=crop&q=80&w=1200",
     excerpt: "Behind India's grand jewellery traditions lies a metal with an equally fascinating story. Explore the heritage of silver from Rajasthan to Odisha's Tarakasi filigree.",
-    content: `When we think of Indian jewellery, gold often takes centre stage. But behind India’s grand jewellery traditions lies another metal with an equally fascinating story — silver.
+    content: `When we think of Indian jewellery, gold often takes centre stage. But behind India’s grand jewellery traditions lies another metal with an equally fascinating story   silver.
 For centuries, silver jewellery has been part of India’s cultural and artistic heritage. From royal ornaments to tribal jewellery and everyday adornments, silver has travelled across generations and regions, taking on a different character in every part of the country.
 
-💎 Rajasthan — Silver with a Royal Soul
+💎 Rajasthan   Silver with a Royal Soul
 Rajasthan is known for bold, detailed jewellery where traditional motifs, intricate carving and oxidised finishes create a distinctive heritage look. Silver jewellery here reflects the colours, architecture and rich craftsmanship of the region.
 
-🌿 Odisha — The Art of Silver Filigree
+🌿 Odisha   The Art of Silver Filigree
 Cuttack is famous for Tarakasi, its delicate silver filigree tradition. Artisans transform fine silver wires into intricate, lace-like patterns, creating jewellery that looks almost impossibly light and detailed.
 
 🌙 Silver Across India
@@ -88,7 +88,7 @@ From Himachal Pradesh and Maharashtra to Gujarat and South India, silver appears
 ✨ Why Silver Still Matters
 What makes Indian silver jewellery special is its ability to feel both traditional and effortlessly modern. A centuries-old craft can become a delicate everyday ring, a statement bracelet or a contemporary necklace without losing its connection to Indian artistry.
 
-Silver is not simply a metal in India — it is a part of the country’s craftsmanship, culture and history.
+Silver is not simply a metal in India   it is a part of the country’s craftsmanship, culture and history.
 And that is what makes Indian silver jewelry timeless.`
   },
   {
@@ -115,15 +115,15 @@ They are typically found in elegant white, cream and silver tones, sometimes wit
 A Fascinating New Pearl Fact
 Here is something particularly relevant to jewellery lovers today: some modern freshwater pearls can now look remarkably similar to Akoya pearls.
 
-In 2026, the Gemological Institute of America highlighted the growing popularity of small, bead-nucleated freshwater pearls from China that can have round shapes, bright white colour and impressive lustre—qualities traditionally associated with Akoya pearls.
+In 2026, the Gemological Institute of America highlighted the growing popularity of small, bead-nucleated freshwater pearls from China that can have round shapes, bright white colour and impressive lustre qualities traditionally associated with Akoya pearls.
 
-But they are not “freshwater Akoya.” Akoya refers to a specific saltwater pearl type, so the origin and growing environment matter—not just how the pearl looks.
+But they are not “freshwater Akoya.” Akoya refers to a specific saltwater pearl type, so the origin and growing environment matter not just how the pearl looks.
 
 From Japan to Korea and Beyond
 Japan remains the name most strongly associated with Akoya pearls, with famous pearl-growing regions including Mie, Ehime and Nagasaki. South Korea, China and Vietnam have also had Akoya cultivation, showing how the pearl travelled across East Asian waters and cultures.
 
 Perhaps that is what makes pearls so captivating: their beauty is shaped not only by the oyster, but by the sea, the climate and the place in which they grow.
-For jewellery, an ocean-born pearl is more than an accessory—it is a tiny piece of the sea, transformed into something timeless.`
+For jewellery, an ocean-born pearl is more than an accessory it is a tiny piece of the sea, transformed into something timeless.`
   }
 ];
 

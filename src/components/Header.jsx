@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Search, Menu, X, ShoppingBag, Heart, User,
-  ChevronDown, ArrowRight, Loader2, Globe2
+  ChevronDown, ArrowRight, Loader2, Globe2, Sparkles, Tag
 } from 'lucide-react';
 import { useAuth } from './useAuth';
 import { useStore } from '../hooks/useStore';
@@ -20,6 +20,8 @@ const fallbackCountries = [
   "China", "United Arab Emirates", "Italy", "Sri Lanka", "Brazil",
   "Thailand", "France", "Spain", "Germany", "United Kingdom"
 ];
+
+const trendingTags = ['Kundan', 'Pearls', 'Bangles', 'Choker', 'Gold Plated', 'Silver', 'Rings'];
 
 const getCountryFlag = (name = "") => {
   const n = name.toLowerCase();
@@ -45,10 +47,13 @@ const LuxuryHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [announcements, setAnnouncements] = useState([
-    "✦ Free Shipping Across India | Use Code VEL5 for 5% OFF on your first order ✦"
+    "✦ Complimentary Shipping Across India ✦"
   ]);
   const [annIndex, setAnnIndex] = useState(0);
   const [dbCountries, setDbCountries] = useState([]);
+
+  // Search State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     getDoc(doc(db, "site_settings", "announcements")).then((snap) => {
@@ -88,7 +93,7 @@ const LuxuryHeader = () => {
     location.pathname === '/about' ||
     location.pathname.startsWith('/product/');
 
-  const [scrolled, setScrolled] = useState(!isTransparentRoute || window.scrollY > 40);
+  const [scrolled, setScrolled] = useState(!isTransparentRoute || window.scrollY > 20);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaMenu, setMegaMenu] = useState(null);
   const [mobileExpanded, setMobileExpanded] = useState(null);
@@ -97,9 +102,9 @@ const LuxuryHeader = () => {
   const { cartCount, wishlistCount } = useStore();
 
   const navLinks = [
-    { name: 'World Edit',    href: '/world-edit', hasDropdown: true },
     { name: 'New Arrivals',  href: '/shop?filter=new' },
     { name: 'Best Sellers',  href: '/shop?filter=bestsellers' },
+    { name: 'World Edit',    href: '/world-edit', hasDropdown: true },
     { name: 'Blogs',         href: '/blog' },
     { name: 'Our Story',     href: '/about' },
     { name: 'Contact Us',    href: '/contact' },
@@ -110,30 +115,42 @@ const LuxuryHeader = () => {
       setScrolled(true);
       return;
     }
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, [isTransparentRoute]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    document.body.style.overflow = (mobileOpen || isSearchOpen) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [mobileOpen]);
+  }, [mobileOpen, isSearchOpen]);
 
-  const headerBg = scrolled ? '#ffffff' : 'transparent';
+  const headerBg = scrolled ? 'rgba(255, 255, 255, 0.96)' : 'transparent';
   const headerBorder = scrolled ? 'rgba(0,0,0,0.06)' : 'transparent';
   const textColor = scrolled ? '#2A2623' : '#ffffff';
 
   return (
     <>
-      <div className="relative z-[60] text-center py-2.5 px-4 h-[42px] overflow-hidden flex items-center justify-center" style={{ background: CRIMSON, position: 'fixed', top: 0, left: 0, right: 0 }}>
+      {/* Announcement Bar */}
+      <div 
+        className="relative z-[60] text-center py-1.5 px-4 h-[34px] overflow-hidden flex items-center justify-center shadow-xs" 
+        style={{ background: CRIMSON, position: 'fixed', top: 0, left: 0, right: 0 }}
+      >
         <AnimatePresence mode="wait">
-          <motion.p key={annIndex} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -15 }} transition={{ duration: 0.35 }} className="text-[14px] tracking-[0.18em] font-medium text-white/90 truncate">
+          <motion.p 
+            key={annIndex} 
+            initial={{ opacity: 0, y: 12 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            exit={{ opacity: 0, y: -12 }} 
+            transition={{ duration: 0.3 }} 
+            className="text-[12px] sm:text-[13px] tracking-[0.16em] font-medium text-white/90 truncate uppercase"
+          >
             {announcements[annIndex]}
           </motion.p>
         </AnimatePresence>
       </div>
 
+      {/* Main Header Container */}
       <header
         ref={(el) => {
           if (el) {
@@ -143,35 +160,106 @@ const LuxuryHeader = () => {
             );
           }
         }}
-        className="w-full fixed z-50 transition-all duration-500"
-        style={{ top: 0, paddingTop: 42, background: headerBg, borderBottom: `1px solid ${headerBorder}`, boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.08)' : 'none' }}
+        className="w-full fixed z-50 transition-all duration-300 backdrop-blur-md"
+        style={{ 
+          top: 0, 
+          paddingTop: 34, 
+          background: headerBg, 
+          borderBottom: `1px solid ${headerBorder}`, 
+          boxShadow: scrolled ? '0 4px 25px rgba(0,0,0,0.06)' : 'none' 
+        }}
       >
-        <div className="max-w-[1440px] mx-auto px-5 lg:px-12 flex items-center justify-between" style={{ height: scrolled ? '64px' : '80px', transition: 'height 0.4s ease' }}>
-          <div className="flex items-center gap-3 flex-1">
-            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2" style={{ color: textColor }} aria-label="Menu"><Menu size={22} /></button>
-            <div className="hidden lg:flex items-center gap-2">
-              <Link to="/shop" className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all group" style={{ borderColor: scrolled ? 'rgba(42,38,35,0.18)' : 'rgba(255,255,255,0.22)', color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)' }}>
-                <Search size={16} /> <span className="text-[13px] font-bold tracking-[0.15em] uppercase">Search</span>
-              </Link>
-            </div>
+        {/* Compact Header Top Bar */}
+        <div 
+          className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between" 
+          style={{ height: scrolled ? '56px' : '64px', transition: 'height 0.3s ease' }}
+        >
+          {/* Left: Mobile Menu & Icon-only Search */}
+          <div className="flex items-center gap-1 sm:gap-3 flex-1">
+            <button 
+              onClick={() => setMobileOpen(true)} 
+              className="lg:hidden p-1.5 sm:p-2 rounded-full hover:bg-black/5 transition-all" 
+              style={{ color: textColor }} 
+              aria-label="Menu"
+            >
+              <Menu className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px]" />
+            </button>
+            
+            {/* Search Icon Only (Desktop & Mobile) */}
+            <button 
+              onClick={() => setIsSearchOpen(true)} 
+              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer group" 
+              style={{ color: textColor }} 
+              title="Search Products"
+              aria-label="Search"
+            >
+              <Search className="w-[17px] h-[17px] sm:w-[21px] sm:h-[21px] group-hover:text-[#2e0e43] transition-colors" />
+            </button>
           </div>
-          <div className="flex-1 flex justify-center">
-            <Link to="/"><img src="/img/logo.png" alt="Velouraz" className="h-[36px] sm:h-[44px]" /></Link>
+
+          {/* Center: Larger Prominent Logo */}
+          <div className="flex-1 flex justify-center items-center">
+            <Link to="/" className="inline-block transition-transform hover:scale-102 active:scale-98">
+              <img 
+                src="/img/logo.png" 
+                alt="Velouraz" 
+                className="transition-all duration-300 object-contain drop-shadow-xs" 
+                style={{ 
+                  height: scrolled ? '38px' : '48px',
+                  maxHeight: '56px'
+                }}
+              />
+            </Link>
           </div>
-          <div className="flex items-center justify-end gap-3 flex-1">
-            <Link to="/wishlist" className="relative p-2" style={{ color: textColor }}><Heart size={20} />{wishlistCount > 0 && <BadgeDot count={wishlistCount} />}</Link>
-            <Link to={user ? '/account' : '/login'} className="p-2" style={{ color: textColor }}><User size={20} /></Link>
-            <Link to="/cart" className="relative p-2" style={{ color: textColor }}><ShoppingBag size={20} />{cartCount > 0 && <BadgeDot count={cartCount} />}</Link>
+
+          {/* Right: Icons (Wishlist, Account, Cart) */}
+          <div className="flex items-center justify-end gap-0.5 sm:gap-2 flex-1">
+            <Link 
+              to="/wishlist" 
+              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+              style={{ color: textColor }}
+              title="Wishlist"
+            >
+              <Heart className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px]" />
+              {wishlistCount > 0 && <BadgeDot count={wishlistCount} />}
+            </Link>
+            
+            <Link 
+              to={user ? '/account' : '/login'} 
+              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+              style={{ color: textColor }}
+              title={user ? "My Account" : "Sign In"}
+            >
+              <User className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px]" />
+            </Link>
+            
+            <Link 
+              to="/cart" 
+              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+              style={{ color: textColor }}
+              title="Shopping Bag"
+            >
+              <ShoppingBag className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px]" />
+              {cartCount > 0 && <BadgeDot count={cartCount} />}
+            </Link>
           </div>
         </div>
 
-        <nav className="hidden lg:block" style={{ borderTop: `1px solid ${scrolled ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)'}` }}>
-          <div className="max-w-[1440px] mx-auto flex justify-center gap-2">
+        {/* Navigation Links Bar */}
+        <nav className="hidden lg:block" style={{ borderTop: `1px solid ${scrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)'}` }}>
+          <div className="max-w-[1440px] mx-auto flex justify-center gap-1">
             {navLinks.map((link) => (
               <div key={link.name} className="relative" onMouseEnter={() => setMegaMenu(link.name)} onMouseLeave={() => setMegaMenu(null)}>
-                <Link to={link.href} className="flex items-center gap-1.5 px-6 py-3.5 text-[14px] tracking-[0.18em] font-bold uppercase transition-colors" style={{ color: megaMenu === link.name ? '#2e0e43' : (scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)') }}>
-                  {link.name} {link.hasDropdown && <ChevronDown size={13} style={{ transform: megaMenu === link.name ? 'rotate(180deg)' : 'none' }} />}
-                  <span className="absolute bottom-0 left-4 right-4 h-[2px] transition-all" style={{ background: GOLD, transform: megaMenu === link.name ? 'scaleX(1)' : 'scaleX(0)' }} />
+                <Link 
+                  to={link.href} 
+                  className="flex items-center gap-1.5 px-5 py-2.5 text-[13px] tracking-[0.18em] font-bold uppercase transition-colors" 
+                  style={{ color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)' }}
+                >
+                  {link.name} {link.hasDropdown && <ChevronDown size={12} style={{ transform: megaMenu === link.name ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />}
+                  <span 
+                    className="absolute bottom-0 left-4 right-4 h-[2px] transition-all duration-300" 
+                    style={{ background: GOLD, transform: megaMenu === link.name ? 'scaleX(1)' : 'scaleX(0)' }} 
+                  />
                 </Link>
               </div>
             ))}
@@ -179,7 +267,14 @@ const LuxuryHeader = () => {
         </nav>
       </header>
 
-      {/* World Edit Mega Menu — rendered at root so fixed positioning works across full viewport */}
+      {/* Interactive Search Overlay Modal */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <SearchOverlayModal onClose={() => setIsSearchOpen(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* World Edit Mega Menu */}
       <AnimatePresence>
         {megaMenu && navLinks.find(l => l.name === megaMenu)?.hasDropdown && (
           <div onMouseEnter={() => setMegaMenu(megaMenu)} onMouseLeave={() => setMegaMenu(null)}>
@@ -188,21 +283,34 @@ const LuxuryHeader = () => {
         )}
       </AnimatePresence>
 
+      {/* Mobile Drawer Navigation */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setMobileOpen(false)} className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm" />
-            <motion.aside initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed left-0 top-0 bottom-0 z-[100] w-[88vw] max-w-sm flex flex-col bg-[#0E0B09]">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setMobileOpen(false)} 
+              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm" 
+            />
+            <motion.aside 
+              initial={{ x: '-100%' }} 
+              animate={{ x: 0 }} 
+              exit={{ x: '-100%' }} 
+              transition={{ type: "spring", damping: 25, stiffness: 250 }}
+              className="fixed left-0 top-0 bottom-0 z-[100] w-[88vw] max-w-sm flex flex-col bg-[#0E0B09] shadow-2xl"
+            >
               <div className="flex items-center justify-between px-6 py-5 border-b border-[#C8A97A]/20">
-                <img src="/img/logo.png" alt="Velouraz" className="h-9" />
-                <button onClick={() => setMobileOpen(false)} className="text-white/60"><X size={18} /></button>
+                <img src="/img/logo.png" alt="Velouraz" className="h-10 object-contain" />
+                <button onClick={() => setMobileOpen(false)} className="p-2 text-white/60 hover:text-white rounded-full"><X size={20} /></button>
               </div>
               <div className="flex-1 overflow-y-auto px-6 py-4">
                 {navLinks.map((link) => (
                   <div key={link.name} className="border-b border-[#C8A97A]/10">
-                    <div className="flex justify-between items-center py-5 cursor-pointer" onClick={() => { if (link.hasDropdown) setMobileExpanded(mobileExpanded === link.name ? null : link.name); else { setMobileOpen(false); navigate(link.href); } }}>
+                    <div className="flex justify-between items-center py-4 cursor-pointer" onClick={() => { if (link.hasDropdown) setMobileExpanded(mobileExpanded === link.name ? null : link.name); else { setMobileOpen(false); navigate(link.href); } }}>
                       <Link to={link.href} onClick={() => setMobileOpen(false)} className="text-xl text-white font-light" style={{ fontFamily: NAV_SERIF }}>{link.name}</Link>
-                      {link.hasDropdown && <ChevronDown size={18} style={{ color: GOLD, transform: mobileExpanded === link.name ? 'rotate(180deg)' : 'none' }} />}
+                      {link.hasDropdown && <ChevronDown size={18} style={{ color: GOLD, transform: mobileExpanded === link.name ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />}
                     </div>
                     {link.hasDropdown && mobileExpanded === link.name && (
                       <div className="mb-5 rounded-xl p-4 bg-[#C8A97A]/10 space-y-4">
@@ -238,10 +346,190 @@ const LuxuryHeader = () => {
 };
 
 const BadgeDot = ({ count }) => (
-  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-[#2e0e43]">
+  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-[#2e0e43] border border-white">
     {count}
   </span>
 );
+
+/* ─── Interactive Search Overlay Modal ────────────────────── */
+const SearchOverlayModal = ({ onClose }) => {
+  const [queryStr, setQueryStr] = useState('');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+
+    // Fetch initial products for search lookup
+    setLoading(true);
+    getDocs(collection(db, "products"))
+      .then((snap) => {
+        if (!snap.empty) {
+          setProducts(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        }
+      })
+      .catch((err) => console.error("Search fetch error:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const searchResults = useMemo(() => {
+    if (!queryStr.trim()) return [];
+    const q = queryStr.toLowerCase().trim();
+    return products.filter(p => {
+      const nameMatch = p.name?.toLowerCase().includes(q);
+      const catMatch = p.category?.toLowerCase().includes(q);
+      const matMatch = p.material?.toLowerCase().includes(q);
+      const tagMatch = Array.isArray(p.tags) && p.tags.some(t => String(t).toLowerCase().includes(q));
+      return nameMatch || catMatch || matMatch || tagMatch;
+    }).slice(0, 6);
+  }, [queryStr, products]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (queryStr.trim()) {
+      navigate(`/shop?search=${encodeURIComponent(queryStr.trim())}`);
+      onClose();
+    }
+  };
+
+  const handleTagClick = (tag) => {
+    setQueryStr(tag);
+    navigate(`/shop?search=${encodeURIComponent(tag)}`);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-[200] flex flex-col justify-start">
+      {/* Backdrop */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="fixed inset-0 bg-black/80 backdrop-blur-md"
+      />
+
+      {/* Main Search Panel */}
+      <motion.div
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -40 }}
+        transition={{ type: "spring", damping: 25, stiffness: 280 }}
+        className="relative z-10 w-full bg-white shadow-2xl border-b border-gray-100"
+      >
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+          {/* Header & Input Form */}
+          <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+            <Search size={22} className="absolute left-4 text-[#2e0e43]" />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Search jewellery, bangles, necklaces, Kundan..."
+              value={queryStr}
+              onChange={(e) => setQueryStr(e.target.value)}
+              className="w-full pl-12 pr-12 py-3.5 sm:py-4 bg-gray-50 border border-gray-200 rounded-2xl text-base sm:text-lg text-gray-900 outline-none focus:border-[#2e0e43] focus:bg-white transition-all shadow-inner"
+            />
+            {queryStr ? (
+              <button
+                type="button"
+                onClick={() => setQueryStr('')}
+                className="absolute right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onClose}
+                className="absolute right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            )}
+          </form>
+
+          {/* Trending Tags */}
+          <div className="flex items-center flex-wrap gap-2 pt-1">
+            <span className="text-xs uppercase font-bold tracking-widest text-gray-400 flex items-center gap-1 mr-1">
+              <Sparkles size={13} className="text-[#C8A97A]" /> Popular:
+            </span>
+            {trendingTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => handleTagClick(tag)}
+                className="px-3 py-1 bg-gray-100 hover:bg-[#2e0e43] hover:text-white rounded-full text-xs font-semibold text-gray-700 transition-all cursor-pointer"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+
+          {/* Live Search Results Preview */}
+          {queryStr.trim() !== '' && (
+            <div className="space-y-4 pt-2 border-t border-gray-100 max-h-[60vh] overflow-y-auto">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase font-bold tracking-widest text-gray-500">
+                  Matching Products ({searchResults.length})
+                </span>
+                <button
+                  onClick={handleSearchSubmit}
+                  className="text-xs font-bold text-[#2e0e43] hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  View all in Shop <ArrowRight size={12} />
+                </button>
+              </div>
+
+              {loading ? (
+                <div className="py-8 text-center text-gray-400 flex items-center justify-center gap-2">
+                  <Loader2 className="animate-spin text-[#2e0e43]" size={20} /> Searching catalogue...
+                </div>
+              ) : searchResults.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                  {searchResults.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={`/product/${item.id}`}
+                      onClick={onClose}
+                      className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#2e0e43]/30 hover:bg-gray-50/80 transition-all group"
+                    >
+                      <img
+                        src={item.image || 'img/jewellery/j.png'}
+                        alt={item.name}
+                        className="w-14 h-14 object-cover rounded-lg bg-gray-100 shrink-0 group-hover:scale-105 transition-transform"
+                      />
+                      <div className="overflow-hidden">
+                        <p className="text-xs font-bold text-gray-900 truncate leading-snug group-hover:text-[#2e0e43]">
+                          {item.name}
+                        </p>
+                        <p className="text-[11px] text-gray-500 mt-0.5">{item.category}</p>
+                        <p className="text-xs font-bold text-[#2e0e43] mt-1">
+                          ₹{Number(item.price || 0).toLocaleString()}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-8 text-center bg-gray-50 rounded-xl">
+                  <p className="text-sm text-gray-500 font-medium">No direct matches found for "{queryStr}"</p>
+                  <button
+                    onClick={handleSearchSubmit}
+                    className="mt-2 text-xs font-bold text-[#2e0e43] underline cursor-pointer"
+                  >
+                    Search full catalogue in Shop
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 const countryRegions = [
   {
@@ -303,7 +591,7 @@ const WorldEditDropdownPanel = ({ countries, onClose }) => {
 
         {/* ── Left & Middle: 3 Regional Editorial Columns ─── */}
         <div style={{ flex: 1, padding: '36px 56px', overflowY: 'auto' }}>
-          <div style={{ marginBottom: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(200,169,122,0.15)', pb: 16, paddingBottom: 16 }}>
+          <div style={{ marginBottom: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(200,169,122,0.15)', paddingBottom: 16 }}>
             <div>
               <span style={{ fontSize: 10, letterSpacing: '0.35em', textTransform: 'uppercase', color: GOLD, fontWeight: 700 }}>
                 ✦ THE WORLD EDIT
@@ -370,7 +658,7 @@ const WorldEditDropdownPanel = ({ countries, onClose }) => {
                           style={{
                             display: 'flex',
                             alignItems: 'center',
-                            justify: 'space-between',
+                            justifyContent: 'space-between',
                             padding: '6px 10px',
                             borderRadius: 8,
                             textDecoration: 'none',
@@ -475,3 +763,4 @@ const WorldEditDropdownPanel = ({ countries, onClose }) => {
 };
 
 export default LuxuryHeader;
+

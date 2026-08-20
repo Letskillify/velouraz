@@ -115,7 +115,7 @@ export const generateInvoicePDF = (order) => {
         </div>
 
         <div class="footer">
-          <p>Thank you for choosing Velouraz. For customer assistance, visit velouraz.in or contact support@velouraz.in</p>
+          <p>Thank you for choosing Velouraz. For customer assistance, visit velouraz.in or contact contact@velouraz.in</p>
           <p>© 2026 VELOURAZ. Artisans of Luxury.</p>
         </div>
 

@@ -41,8 +41,8 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex selection:bg-[#2e0e43] selection:text-white">
-      
-      {/* Left Panel — Brand Visual */}
+
+      {/* Left Panel   Brand Visual */}
       <div className="hidden lg:flex lg:w-[48%] relative overflow-hidden items-end" style={{ background: '#0A0705' }}>
         <img
           src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=1200"
@@ -50,8 +50,8 @@ const Signup = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-45"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,7,5,0.95) 0%, rgba(10,7,5,0.3) 50%, rgba(10,7,5,0.6) 100%)' }} />
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
@@ -60,15 +60,15 @@ const Signup = () => {
           <Link to="/" className="inline-block mb-12">
             <img src="/img/logo.png" alt="Velouraz" className="h-10" style={{ filter: 'invert(1)' }} />
           </Link>
-          
-          <h2 
+
+          <h2
             className="text-5xl xl:text-6xl font-light text-white mb-6 leading-[1.1]"
             style={{ fontFamily: SERIF }}
           >
             Create Your<br />
             <em className="not-italic font-semibold" style={{ color: GOLD }}>Luxury Profile</em>
           </h2>
-          
+
           <p className="text-white/45 text-[16px] max-w-md leading-relaxed mb-10" style={{ fontFamily: SERIF }}>
             Join our exclusive inner circle to access curated collections, priority previews, and bespoke styling advice.
           </p>
@@ -84,17 +84,17 @@ const Signup = () => {
         </motion.div>
       </div>
 
-      {/* Right Panel — Signup Form */}
+      {/* Right Panel   Signup Form */}
       <div className="flex-1 flex flex-col justify-center items-center bg-[#FDFAF5] px-6 sm:px-12 py-12 relative">
         {/* Subtle decorative element */}
         <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-[#2e0e43]/[0.03] rounded-full blur-[100px] pointer-events-none" />
-        
+
         {/* Mobile logo */}
         <Link to="/" className="lg:hidden mb-10">
           <img src="/img/logo.png" alt="Velouraz" className="h-9" style={{ filter: 'brightness(0)' }} />
         </Link>
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
@@ -106,7 +106,7 @@ const Signup = () => {
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
               <span className="text-[16px] tracking-[0.35em] font-bold uppercase" style={{ color: '#7B6D63' }}>Join the Legacy</span>
             </div>
-            <h1 
+            <h1
               className="text-4xl md:text-5xl font-light text-[#2A2623] mb-3"
               style={{ fontFamily: SERIF }}
             >
@@ -119,7 +119,7 @@ const Signup = () => {
 
           {/* Error */}
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-600 text-[16px]"

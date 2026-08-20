@@ -257,22 +257,22 @@ const PrivacyPolicy = () => {
               <div className="grid md:grid-cols-2 gap-6 pt-2">
                 {/* Official Contact Box */}
                 <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4">
-                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">VelourAZ</h3>
+                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Velouraz</h3>
                   <div className="space-y-3 text-sm sm:text-base">
                     <p className="flex items-center gap-3"><Globe size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Website:</strong> velouraz.in</p>
-                    <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> [INSERT OFFICIAL EMAIL ADDRESS]</p>
-                    <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone:</strong> 8349440045</p>
-                    <p className="flex items-start gap-3"><MapPin size={16} className="text-[#2e0e43] shrink-0 mt-1" /><strong className="text-[#2A2623] shrink-0">Address:</strong> 783,Khatiwala tank, Raj Gold Residency</p>
+                    <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
+                    <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone:</strong> +91 83494 40045</p>
+                    <p className="flex items-start gap-3"><MapPin size={16} className="text-[#2e0e43] shrink-0 mt-1" /><strong className="text-[#2A2623] shrink-0">Address:</strong> 783 Khatiwala tank, Indore 452014</p>
                   </div>
                 </div>
 
                 {/* Grievance Contact Box */}
                 <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4">
-                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Privacy/Data Grievance Contact</h3>
+                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Privacy / Data Grievance Contact</h3>
                   <div className="space-y-3 text-sm sm:text-base">
-                    <p className="flex items-center gap-3"><UserCheck size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Name:</strong> [INSERT NAME]</p>
-                    <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> [INSERT EMAIL ADDRESS]</p>
-                    <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone:</strong> [INSERT PHONE NUMBER]</p>
+                    <p className="flex items-center gap-3"><UserCheck size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Name:</strong> Grievance Officer, Velouraz</p>
+                    <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
+                    <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone:</strong> +91 83494 40045</p>
                   </div>
                 </div>
               </div>

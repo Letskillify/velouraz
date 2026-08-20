@@ -133,7 +133,7 @@ const PremiumPreloader = ({ onComplete }) => {
           <div className="absolute top-20 left-1/2 -translate-x-1/2 flex items-center gap-20">
             <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">London</span>
             <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Paris</span>
-            <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Mumbai</span>
+            <span className="text-[16px] tracking-[0.5em] uppercase text-[#2A2623]/30 font-bold">Indore</span>
           </div>
 
           {/* Background Noise for texture */}
