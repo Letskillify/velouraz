@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const SERIF = "'Cormorant Garamond', Georgia, serif";
+const SANS = "'Montserrat', sans-serif";
 
 const AboutBreadcrumb = ({
   title = "About Us",
@@ -34,7 +34,7 @@ const AboutBreadcrumb = ({
       </motion.div>
 
       {/* Content wrapper aligned to LEFT side */}
-      <div className="relative z-10 max-w-[1360px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-[90px] sm:pt-[110px] lg:pt-[130px]" style={{ fontFamily: SERIF }}>
+      <div className="relative z-10 max-w-[1360px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-[90px] sm:pt-[110px] lg:pt-[130px]" style={{ fontFamily: SANS }}>
         <div className="max-w-xl text-left text-white space-y-4">
 
           {/* Glass Card on Left Side */}
@@ -47,7 +47,7 @@ const AboutBreadcrumb = ({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15, duration: 0.6 }}
                 className="flex items-center gap-2 text-xs sm:text-sm tracking-[0.25em] font-semibold uppercase text-white/90"
-                style={{ fontFamily: SERIF }}
+                style={{ fontFamily: SANS }}
               >
                 {links.map((link, index) => (
                   <React.Fragment key={index}>
@@ -71,7 +71,7 @@ const AboutBreadcrumb = ({
                 animate={{ y: 0 }}
                 transition={{ delay: 0.25, duration: 0.8 }}
                 className="text-4xl sm:text-5xl lg:text-6xl font-light text-[#FFFDF9] leading-tight tracking-wide drop-shadow-md"
-                style={{ fontFamily: SERIF }}
+                style={{ fontFamily: SANS }}
               >
                 {title}
               </motion.h1>
@@ -84,7 +84,7 @@ const AboutBreadcrumb = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
                 className="text-base sm:text-lg lg:text-xl italic text-white/95 font-light leading-relaxed drop-shadow"
-                style={{ fontFamily: SERIF }}
+                style={{ fontFamily: SANS }}
               >
                 {subtitle}
               </motion.p>

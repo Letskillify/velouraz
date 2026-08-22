@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Instagram, ArrowRight, Play, ExternalLink, X } from 'lucide-react';
+import { Instagram, ArrowRight, ExternalLink, X } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode } from 'swiper/modules';
 
@@ -11,7 +11,7 @@ const reelPosts = [
   {
     id: 'DcLBf4Tghoy',
     title: "Elegance That Speaks Without Words",
-    image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",
+    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410921/1_pcpxcj.mp4",
     url: "https://www.instagram.com/reel/DcLBf4Tghoy/?igsh=bW92cHBjZHM3d2Fx",
     tag: "Luxury Edit",
     duration: "0:30"
@@ -19,28 +19,32 @@ const reelPosts = [
   {
     id: 'DaxMdOLNzLv',
     title: "Timeless Royal Kundan Craft",
- image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DaxMdOLNzLv/?igsh=MWVlYThqbTYyNHYxYg==",
+    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410967/2_l2cima.mp4",
+    url: "https://www.instagram.com/reel/DaxMdOLNzLv/?igsh=MWVlYThqbTYyNHYxYg==",
     tag: "Artisanal Craft",
     duration: "0:45"
   },
   {
     id: 'DbAbQzstTso',
     title: "Precision Setting & Polishing",
- image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DbAbQzstTso/?igsh=N2V0MHh0MW40Nmdy",
+    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410930/3_nc7otj.mp4",
+    url: "https://www.instagram.com/reel/DbAbQzstTso/?igsh=N2V0MHh0MW40Nmdy",
     tag: "Atelier Reel",
     duration: "0:25"
   },
   {
     id: 'Db2X8BsDdOg',
     title: "Handcrafted 925 Sterling Silver",
- image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/Db2X8BsDdOg/?igsh=MWNkaWM3emRubjQwaw==",
+    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410991/4_tb8cdk.mp4",
+    url: "https://www.instagram.com/reel/Db2X8BsDdOg/?igsh=MWNkaWM3emRubjQwaw==",
     tag: "Sterling Silver",
     duration: "0:35"
   },
   {
     id: 'DbN2BortfR_',
     title: "Velouraz Signature Statement Edit",
- image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DbN2BortfR_/?igsh=MXNxbTAxbDM3N3I5aw==",
+    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410934/5_asgame.mp4",
+    url: "https://www.instagram.com/reel/DbN2BortfR_/?igsh=MXNxbTAxbDM3N3I5aw==",
     tag: "Signature Edit",
     duration: "0:40"
   }
@@ -101,10 +105,13 @@ const TheJournal = () => {
                   onClick={() => window.open(post.url, '_blank')}
                   className="group relative aspect-[9/16] overflow-hidden cursor-pointer rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-700 bg-[#170624]"
                 >
-                  {/* Thumbnail Cover Image */}
-                  <img
-                    src={post.image}
-                    alt={post.title}
+                  {/* Video Reel Preview */}
+                  <video
+                    src={post.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
 
@@ -120,13 +127,6 @@ const TheJournal = () => {
                     <span className="text-[10px] font-bold text-white/80 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
                       REEL
                     </span>
-                  </div>
-
-                  {/* Center Play Icon Indicator */}
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white group-hover:scale-110 group-hover:bg-[#C8A97A] group-hover:text-[#14061F] group-hover:border-[#C8A97A] transition-all duration-500 shadow-xl">
-                      <Play size={22} className="ml-1 fill-current" />
-                    </div>
                   </div>
 
                   {/* Bottom Information */}
