@@ -11,7 +11,7 @@ const reelPosts = [
   {
     id: 'DcLBf4Tghoy',
     title: "Elegance That Speaks Without Words",
-    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=800",
+    image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",
     url: "https://www.instagram.com/reel/DcLBf4Tghoy/?igsh=bW92cHBjZHM3d2Fx",
     tag: "Luxury Edit",
     duration: "0:30"
@@ -19,32 +19,28 @@ const reelPosts = [
   {
     id: 'DaxMdOLNzLv',
     title: "Timeless Royal Kundan Craft",
-    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800",
-    url: "https://www.instagram.com/reel/DaxMdOLNzLv/?igsh=MWVlYThqbTYyNHYxYg==",
+ image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DaxMdOLNzLv/?igsh=MWVlYThqbTYyNHYxYg==",
     tag: "Artisanal Craft",
     duration: "0:45"
   },
   {
     id: 'DbAbQzstTso',
     title: "Precision Setting & Polishing",
-    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800",
-    url: "https://www.instagram.com/reel/DbAbQzstTso/?igsh=N2V0MHh0MW40Nmdy",
+ image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DbAbQzstTso/?igsh=N2V0MHh0MW40Nmdy",
     tag: "Atelier Reel",
     duration: "0:25"
   },
   {
     id: 'Db2X8BsDdOg',
     title: "Handcrafted 925 Sterling Silver",
-    image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800",
-    url: "https://www.instagram.com/reel/Db2X8BsDdOg/?igsh=MWNkaWM3emRubjQwaw==",
+ image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/Db2X8BsDdOg/?igsh=MWNkaWM3emRubjQwaw==",
     tag: "Sterling Silver",
     duration: "0:35"
   },
   {
     id: 'DbN2BortfR_',
     title: "Velouraz Signature Statement Edit",
-    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800",
-    url: "https://www.instagram.com/reel/DbN2BortfR_/?igsh=MXNxbTAxbDM3N3I5aw==",
+ image: "https://res.cloudinary.com/dcjn4y284/image/upload/v1787401002/779001231_18069511097550717_7467049498270339002_n_iyousp.jpg",    url: "https://www.instagram.com/reel/DbN2BortfR_/?igsh=MXNxbTAxbDM3N3I5aw==",
     tag: "Signature Edit",
     duration: "0:40"
   }
@@ -181,4 +177,4 @@ const TheJournal = () => {
   );
 };
 
-export default TheJournal;
+export default TheJournal;

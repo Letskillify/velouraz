@@ -90,7 +90,6 @@ const LuxuryHeader = () => {
     location.pathname === '/shop' ||
     location.pathname === '/cart' ||
     location.pathname === '/wishlist' ||
-    location.pathname === '/about' ||
     location.pathname.startsWith('/product/');
 
   const [scrolled, setScrolled] = useState(!isTransparentRoute || window.scrollY > 20);
