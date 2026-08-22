@@ -12,40 +12,54 @@ import 'swiper/css/navigation';
 
 const staticCollections = [
   {
-    id: 'turkey',
-    country: 'TURKEY',
-    collection: 'EVIL EYE COLLECTION',
+    id: 'china',
+    country: 'CHINA',
+    collection: 'EASTERN ELEGANCE',
     badge: 'ORGANIC',
-    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908844/t1_m0x6yw.png',
-    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908840/t2_kkdwuf.png',
-    link: '/shop?country=Turkey'
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419482/WhatsApp_Video_2026-08-22_at_15.23.20_mhdrfs.mp4',
+    defaultImage: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800',
+    link: '/shop?country=China'
+  },
+  {
+    id: 'france',
+    country: 'FRANCE',
+    collection: 'PARISIAN EDIT',
+    badge: 'ORGANIC',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419482/Necklace_on_ivory_pedestal_202608222147_orsi2m.mp4',
+    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908842/sk1_hy65t6.png',
+    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908837/sk2_sl2cal.png',
+    link: '/shop?country=France'
+  },
+  {
+    id: 'india-1',
+    country: 'INDIA',
+    collection: 'HERITAGE COLLECTION',
+    badge: 'ORGANIC',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419483/Diamond_ring_on_crystal_display_202608222147_kscwkr.mp4',
+    defaultImage: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
+    link: '/shop?country=India'
+  },
+  {
+    id: 'india-2',
+    country: 'INDIA',
+    collection: 'ROYAL COLLECTION',
+    badge: 'ORGANIC',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419484/WhatsApp_Video_2026-08-19_at_14.34.17_rpda01.mp4',
+    defaultImage: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
+    hoverImage: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
+    link: '/shop?country=India'
   },
   {
     id: 'south-korea',
     country: 'SOUTH KOREA',
     collection: 'PEARLS & SILVER',
     badge: 'ORGANIC',
-    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908842/sk1_hy65t6.png',
-    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908837/sk2_sl2cal.png',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419491/Jewellery_commercial_on_ceramic___202608222147_evmtuf.mp4',
+    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908844/t1_m0x6yw.png',
+    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908840/t2_kkdwuf.png',
     link: '/shop?country=South%20Korea'
-  },
-  {
-    id: 'india',
-    country: 'INDIA',
-    collection: 'HERITAGE COLLECTION',
-    badge: 'ORGANIC',
-    defaultImage: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
-    link: '/shop?country=India'
-  },
-  {
-    id: 'europe',
-    country: 'EUROPE',
-    collection: 'CHARMS COLLECTION',
-    badge: 'ORGANIC',
-    defaultImage: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
-    link: '/shop?country=Europe'
   }
 ];
 
@@ -56,11 +70,14 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 const CardItem = ({ item }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const videoRef = useRef(null);
+
+  const videoSrc = item.video || item.videoUrl;
 
   useEffect(() => {
     let interval;
-    if (isHovered) {
-      // Switch immediately to 2nd image on hover
+    if (!videoSrc && isHovered) {
+      // Switch immediately to 2nd image on hover when video is absent
       setCurrentImageIndex(1);
 
       // Cycle every 2 seconds between 1st (0) and 2nd (1) image continuously
@@ -74,63 +91,72 @@ const CardItem = ({ item }) => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isHovered]);
+  }, [isHovered, videoSrc]);
 
   const defaultImg = item.defaultImage || item.image;
   const hoverImg = item.hoverImage || item.defaultImage || item.image;
 
   return (
     <Link
-      to={item.link}
+      to={item.link || '#'}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative block aspect-[3/4] w-full overflow-hidden bg-gray-100 rounded-none shadow-sm"
+      className="group relative block aspect-[3/4] w-full overflow-hidden bg-gray-900 rounded-none shadow-md"
     >
       {/* Organic Ribbon Badge */}
-      <div className="absolute top-0 left-0 w-24 h-24 overflow-hidden z-20 pointer-events-none">
-        <div className="bg-[#487316] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-widest py-1 px-8 -rotate-45 -translate-x-7 translate-y-3.5 shadow-sm text-center">
-          {item.badge || 'ORGANIC'}
-        </div>
-      </div>
-
-      {/* Image Container with direct instant switch (no zoom, no scale animation) */}
+      
+      {/* Container for Video or Images */}
       <div className="relative w-full h-full overflow-hidden">
-        {/* 1st Image */}
-        <img
-          src={defaultImg}
-          alt={item.country}
-          className={`absolute inset-0 w-full h-full object-cover ${
-            currentImageIndex === 0 ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+        {videoSrc ? (
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        ) : (
+          <>
+            {/* 1st Image */}
+            <img
+              src={defaultImg}
+              alt={item.country}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
+                currentImageIndex === 0 ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
 
-        {/* 2nd Image */}
-        <img
-          src={hoverImg}
-          alt={`${item.country} alternative`}
-          className={`absolute inset-0 w-full h-full object-cover ${
-            currentImageIndex === 1 ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+            {/* 2nd Image */}
+            <img
+              src={hoverImg}
+              alt={`${item.country} alternative`}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
+                currentImageIndex === 1 ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </>
+        )}
       </div>
 
       {/* Bottom Vignette Gradient */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/35 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none z-10" />
 
       {/* Card Overlay Text */}
-      <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 text-center z-10 flex flex-col items-center justify-end">
-        <h3 className="text-white text-lg sm:text-xl md:text-2xl font-extrabold uppercase tracking-wider drop-shadow-md">
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 text-center z-15 flex flex-col items-center justify-end">
+        <h3 className="text-white text-sm sm:text-base md:text-lg font-extrabold uppercase tracking-wider drop-shadow-md">
           {item.country}
         </h3>
         {item.collection && (
-          <p className="text-white/80 text-[11px] sm:text-xs tracking-[0.2em] uppercase mt-1 font-medium opacity-90">
+          <p className="text-white/85 text-[9px] sm:text-[10px] md:text-[11px] tracking-[0.18em] uppercase mt-1 font-medium opacity-90">
             {item.collection}
           </p>
         )}
       </div>
 
       {/* Inner Border */}
-      <div className="absolute inset-0 border border-black/5 pointer-events-none" />
+      <div className="absolute inset-0 border border-white/10 pointer-events-none z-20" />
     </Link>
   );
 };
@@ -151,13 +177,15 @@ const PromoSlider = () => {
   useEffect(() => {
     return onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
       if (!snap.empty) {
-        const fetched = snap.docs.map((d) => {
+        const fetched = snap.docs.map((d, index) => {
           const data = d.data();
           const countryName = data.country || '';
+          const fallbackVideo = staticCollections[index] ? staticCollections[index].video : null;
           return {
             id: d.id,
             badge: 'ORGANIC',
             ...data,
+            video: data.video || data.videoUrl || fallbackVideo,
             defaultImage: data.defaultImage || data.image || 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
             hoverImage: data.hoverImage || data.image || 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
             link: `/shop?country=${encodeURIComponent(countryName)}`
@@ -172,7 +200,7 @@ const PromoSlider = () => {
 
   return (
     <section className="w-full relative py-6 md:py-8 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-6 md:mb-8 flex items-center justify-between">
+      <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-6 md:mb-8 flex items-center justify-between">
         <div className="w-10 opacity-0 hidden sm:block" /> {/* Spacer for centering */}
         
         <div className="max-w-2xl mx-auto text-center">
@@ -207,10 +235,10 @@ const PromoSlider = () => {
         </div>
       </div>
 
-      {/* Grid on Desktop (4 columns) & Swiper Slider on Mobile/Tablet */}
+      {/* Grid on Desktop (5 columns) & Swiper Slider on Mobile/Tablet */}
       {isDesktop ? (
-        <div className="w-full mx-auto px-4">
-          <div className="mx-auto grid grid-cols-4 gap-6">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-[1650px]">
+          <div className="mx-auto grid grid-cols-5 gap-3 sm:gap-4 md:gap-5">
             {collections.map((item) => (
               <CardItem key={item.id} item={item} />
             ))}
@@ -232,10 +260,11 @@ const PromoSlider = () => {
               swiper.params.navigation.nextEl = nextRef.current;
             }}
             breakpoints={{
+              320: { slidesPerView: 1.2, spaceBetween: 12 },
               480: { slidesPerView: 1.8, spaceBetween: 16 },
-              640: { slidesPerView: 2.2, spaceBetween: 20 },
-              768: { slidesPerView: 3, spaceBetween: 20 },
-              1024: { slidesPerView: 4, spaceBetween: 24 },
+              640: { slidesPerView: 2.5, spaceBetween: 16 },
+              768: { slidesPerView: 3.5, spaceBetween: 20 },
+              1024: { slidesPerView: 5, spaceBetween: 24 },
             }}
             className="w-full"
           >
@@ -252,4 +281,5 @@ const PromoSlider = () => {
 };
 
 export default PromoSlider;
+
 
