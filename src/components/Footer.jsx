@@ -49,35 +49,7 @@ const Footer = () => {
       
 
       {/* Newsletter Section */}
-      <div className="bg-gradient-to-r from-[#240A35] via-[#14061F] to-[#240A35] py-14 border-b border-[#2D1244]">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-5 text-center lg:text-left">
-            <div className="w-14 h-14 rounded-full bg-[#290F3E] border border-[#B58E58]/40 flex items-center justify-center text-[#E5C794] shrink-0 hidden sm:flex shadow-md">
-              <Mail size={24} strokeWidth={1.5} />
-            </div>
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-serif font-light tracking-wide text-[#F5EFE6] mb-1">
-                Join Velouraz <span className="italic font-normal text-[#E5C794]">Privé</span>
-              </h3>
-              <p className="text-xs sm:text-sm font-serif font-light text-[#C5B39A]/90">
-                Receive private invitations to new world collections, limited releases & VIP previews.
-              </p>
-            </div>
-          </div>
-
-          <form onSubmit={(e) => { e.preventDefault(); alert("Thank you for subscribing to Velouraz Privé!"); }} className="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
-            <input 
-              type="email" 
-              required
-              placeholder="Enter your email address" 
-              className="bg-white/5 border border-[#B58E58]/40 px-6 py-3.5 text-white text-xs sm:text-sm w-full lg:w-[360px] placeholder:text-[#C5B39A]/60 focus:outline-none focus:border-[#E5C794] rounded-full transition-all"
-            />
-            <button type="submit" className="bg-gradient-to-r from-[#B58E58] to-[#D4A359] text-[#14061F] px-8 py-3.5 text-xs tracking-[0.25em] font-bold uppercase hover:from-white hover:to-white hover:text-[#14061F] transition-all duration-300 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-lg">
-              SUBSCRIBE <ArrowRight size={14} />
-            </button>
-          </form>
-        </div>
-      </div>
+      
 
       {/* Main Footer Section */}
       <div className="pt-16 pb-12 px-6 lg:px-12 bg-[#14061F]">

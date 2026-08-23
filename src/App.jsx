@@ -36,6 +36,7 @@ const WorldEdit = lazy(() => import("./pages/WorldEdit"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 import WhatsAppButton from "./components/WhatsAppButton";
+import InstagramButton from "./components/InstagramButton";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -77,6 +78,7 @@ const AppRoutes = () => {
         </Routes>
       </Suspense>
       {!hideChrome && <Footer />}
+      {!hideChrome && <InstagramButton />}
       {!hideChrome && <WhatsAppButton />}
     </>
   );

@@ -63,12 +63,14 @@ import CatalogManager from "./components/CatalogManager";
 import AdminProfile from "./components/AdminProfile";
 import SiteSettingsManager from "./components/SiteSettingsManager";
 import BlogManager from "./components/BlogManager";
+import ProductImageManager from "./components/ProductImageManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
 const sidebarItems = [
   { name: "Dashboard", icon: LayoutDashboard, desc: "Overview" },
   { name: "Products", icon: Package, desc: "Catalog" },
+  { name: "Product Images", icon: Images, desc: "Manage product photos & gallery" },
   { name: "Orders", icon: ShoppingBag, desc: "Transactions" },
   { name: "Categories", icon: List, desc: "Structure" },
   { name: "Blogs", icon: FileText, desc: "Journal & News" },
@@ -346,6 +348,9 @@ const Admin = () => {
         );
       case "Media":
         return <MediaLibrary />;
+      case "Product Images":
+      case "ProductImages":
+        return <ProductImageManager products={products} isDarkMode={isDarkMode} />;
       case "Blogs":
         return <BlogManager />;
       case "Banners":
@@ -421,7 +426,7 @@ const Admin = () => {
         </button>
         {productsMenuOpen && !collapsed && (
           <div className="ml-3 border-l border-white/15 py-1 pl-2.5 space-y-0.5">
-            {[["All Products", Grid2X2, "Products"]].map(([label, Icon, target]) => (
+            {[["All Products", Grid2X2, "Products"], ["Product Images", Images, "Product Images"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 onClick={() => setActiveItem(target)}
@@ -433,8 +438,9 @@ const Admin = () => {
           </div>
         )}
 
-        {/* Catalog entries: Categories, Sub Categories, Collections, Countries, Attributes, Media */}
+        {/* Catalog entries: Product Image Manager, Categories, Sub Categories, Collections, Countries, Attributes, Media */}
         {[
+          ["Product Images", Images, "Product Images"],
           ["Categories", Layers3, "Categories"],
           ["Sub Categories", Layers3, "SubCategories"],
           ["Collections", Layers3, "Collections"],

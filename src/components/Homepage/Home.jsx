@@ -8,6 +8,7 @@ import QualitySection from './WhyChoose'
 import CategorySection from './CategorySection'
 import Stories from './Stories'
 import Marquee from './Marquee'
+import Newsletter from '../Newsletter'
 
 function Home() {
   return (
@@ -22,6 +23,7 @@ function Home() {
      <TestimonialSection />
      {/* <Stories/> */}
      <TheJournal />
+     <Newsletter />
     </>
   )
 }

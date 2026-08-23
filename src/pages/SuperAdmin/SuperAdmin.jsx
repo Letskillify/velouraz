@@ -67,6 +67,7 @@ import MediaLibrary from "../Admin/components/MediaLibrary";
 import ProductEditor from "../Admin/components/ProductEditor";
 import CatalogManager from "../Admin/components/CatalogManager";
 import SiteSettingsManager from "../Admin/components/SiteSettingsManager";
+import ProductImageManager from "../Admin/components/ProductImageManager";
 import { uploadToCloudinary } from "../../config/cloudinary";
 
 // Chart.js imports
@@ -78,6 +79,7 @@ ChartJS.register(ArcElement, CategoryScale, Filler, Legend, LineElement, LinearS
 const sidebarItems = [
   { name: "Dashboard", icon: LayoutDashboard, desc: "Overview" },
   { name: "Products", icon: Package, desc: "Catalog" },
+  { name: "Product Images", icon: Images, desc: "Manage Product Photos & Gallery" },
   { name: "Orders", icon: ShoppingBag, desc: "Transactions" },
   { name: "Inventory", icon: Database, desc: "Stock" },
   { name: "Billing", icon: CreditCard, desc: "Revenue & Invoices" },
@@ -786,6 +788,10 @@ const SuperAdmin = () => {
 
       case "Media":
         return <MediaLibrary />;
+
+      case "Product Images":
+      case "ProductImageManager":
+        return <ProductImageManager products={products} isDarkMode={isDarkMode} />;
 
       case "Banners":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
