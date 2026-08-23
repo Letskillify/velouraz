@@ -230,7 +230,7 @@ const BlogDetail = () => {
             className="lg:col-span-5 lg:sticky lg:top-28"
           >
             <div className="relative rounded-3xl border border-[#E7DEC8] overflow-hidden bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)] group">
-              <div className="aspect-[4/5] w-full overflow-hidden bg-[#F3ECE1]">
+              <div className="aspect-[16/10] max-h-[380px] sm:max-h-[420px] w-full overflow-hidden bg-[#F3ECE1]">
                 <img
                   src={blog.image}
                   alt={blog.title}
