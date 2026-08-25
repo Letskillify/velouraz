@@ -348,7 +348,7 @@ const LuxuryHeader = () => {
                             onClick={() => setMobileOpen(false)}
                             className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A97A] hover:text-white transition-colors py-1 text-decoration-none"
                           >
-                            <span>Explore All 15+ Countries</span>
+                            <span>Explore All Countries</span>
                             <ArrowRight size={12} />
                           </Link>
                         </div>
@@ -620,7 +620,7 @@ const WorldEditDropdownPanel = ({ onClose }) => {
           onClick={onClose}
           className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
         >
-          <span>Explore All 15+ Countries</span>
+          <span>Explore All Countries</span>
           <ArrowRight size={12} />
         </Link>
       </div>

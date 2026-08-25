@@ -203,140 +203,7 @@ const About = () => {
 
         </div>
       </section>
-
-      {/* ── PARALLAX TEXT RIBBON ───────────────────────────────── */}
-      <div
-        className="w-full py-3.5 border-t border-b border-[#D8CBBE]/30 overflow-hidden"
-        style={{ background: '#2A2623' }}
-      >
-        <motion.div
-          className="flex whitespace-nowrap"
-          animate={{ x: ['0%', '-50%'] }}
-          transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
-        >
-          {[...Array(8)].map((_, i) => (
-            <span
-              key={i}
-              className="text-xs sm:text-sm tracking-[0.2em] uppercase font-light px-12 text-[#C8A97A]"
-              style={{ fontFamily: SANS }}
-            >
-              ✦ Inspired by Travels, Curated for Your Story ✦
-            </span>
-          ))}
-        </motion.div>
-      </div>
-
-      {/* ── SECTION 2: FROM OUR HANDS, INTO YOUR STORY ────────────── */}
-      <section className="px-6 py-14 lg:py-24 border-t border-[#D8CBBE]/30" style={{ backgroundColor: '#FDFCF7' }}>
-        <div className="max-w-[1320px] mx-auto">
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-
-            {/* Left Column: Story Text Part 2 */}
-            <div className="lg:col-span-7 space-y-6" style={{ fontFamily: SANS }}>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-                  <span className="text-xs sm:text-sm tracking-[0.25em] font-semibold text-black uppercase" style={{ fontFamily: SANS }}>
-                    From Our Hands, Into Your Story
-                  </span>
-                </div>
-
-                <h2
-                  className="font-normal leading-[1.15] tracking-tight"
-                  style={{
-                    fontFamily: SANS,
-                    fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)',
-                    color: DARK
-                  }}
-                >
-                  Jewellery that becomes <br />
-                  <span className="italic font-semibold" style={{ color: CRIMSON, fontFamily: SANS }}>part of your journey.</span>
-                </h2>
-              </div>
-
-              <div className="text-sm sm:text-base text-black leading-relaxed font-normal space-y-5" style={{ fontFamily: SANS }}>
-
-                <motion.p
-                  className="text-base sm:text-lg text-black font-normal"
-                  style={{ fontFamily: SANS }}
-                  {...fadeUp}
-                >
-                  We created VELOURAZ for women who believe jewellery is more than something you wear it is something you feel, remember, and make your own.
-                </motion.p>
-
-                <motion.ul className="space-y-1.5 pt-1 border-l-2 border-[#C8A97A]/40 pl-5" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.05 }}>
-                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who dresses for herself.</li>
-                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who finds beauty in the everyday.</li>
-                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who carries memories from places she has been and dreams of places yet to discover.</li>
-                </motion.ul>
-
-                <motion.p style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.1 }}>
-                  It can be the necklace you reach for every morning, the bracelet that travels with you, the earrings you wear on a night worth remembering, or a carefully chosen piece gifted to someone you love.
-                </motion.p>
-
-                <motion.p
-                  className="text-base sm:text-lg font-semibold text-black"
-                  style={{ fontFamily: SANS }}
-                  {...fadeUp}
-                  transition={{ delay: 0.15 }}
-                >
-                  Every VELOURAZ piece begins with a story from somewhere in the world and finds its meaning with you.
-                </motion.p>
-
-                <motion.p style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.2 }}>
-                  When you choose VELOURAZ, you aren’t simply choosing jewellery. You are choosing a little piece of the world a colour, a craft, a tradition, a feeling and making it entirely your own.
-                </motion.p>
-
-                <motion.p style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.25 }}>
-                  And as founders, perhaps the most beautiful part of our journey is seeing where those pieces go next.
-                </motion.p>
-
-                <motion.div className="space-y-1.5 pt-3 border-t border-[#D8CBBE]/30" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.3 }}>
-                  <p className="text-base sm:text-lg lg:text-xl font-semibold text-black" style={{ fontFamily: SANS }}>
-                    From our hands, into your story.
-                  </p>
-                  <p className="text-base sm:text-lg italic text-black font-medium" style={{ fontFamily: SANS }}>
-                    Our journey inspired VELOURAZ.
-                  </p>
-                  <p className="text-base sm:text-lg italic text-black font-medium" style={{ fontFamily: SANS }}>
-                    Now, we can’t wait to see where yours takes it.
-                  </p>
-                </motion.div>
-
-              </div>
-            </div>
-
-            {/* Right Column: Fine Art Image */}
-            <motion.div
-              className="lg:col-span-5 relative group"
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-            >
-              <div className="absolute -inset-3 border border-[#D8CBBE]/30 translate-x-3 translate-y-3 pointer-events-none rounded-[4px] transition-transform duration-500 group-hover:translate-x-1.5 group-hover:translate-y-1.5" />
-
-              <div className="relative overflow-hidden aspect-[4/5] rounded-[4px] border border-[#D8CBBE]/25 bg-[#F6F2EB] shadow-[0_15px_40px_rgba(42,38,35,0.03)] z-10">
-                <img
-                  src="https://images.unsplash.com/photo-1453733190148-c44698c26578?auto=format&fit=crop&q=80&w=1200"
-                  alt="Travel and discovery moments"
-                  className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                />
-              </div>
-            </motion.div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── NEWSLETTER SECTION ───────────────────────────────── */}
-      
-
-      {/* ── SECTION 3: SIGN-OFF ───────────────────────────────── */}
-      <section className="border-t border-[#D8CBBE]/30" style={{ background: CREAM }}>
-        <div className="max-w-[1320px] mx-auto px-6 py-10 lg:py-16">
+       <div className="max-w-[1320px] mx-auto px-6 py-10 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
 
             {/* Founders Closing Column */}
@@ -380,6 +247,38 @@ const About = () => {
 
           </div>
         </div>
+
+      {/* ── PARALLAX TEXT RIBBON ───────────────────────────────── */}
+      <div
+        className="w-full py-3.5 border-t border-b border-[#D8CBBE]/30 overflow-hidden"
+        style={{ background: '#2A2623' }}
+      >
+        <motion.div
+          className="flex whitespace-nowrap"
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ duration: 25, ease: 'linear', repeat: Infinity }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <span
+              key={i}
+              className="text-xs sm:text-sm tracking-[0.2em] uppercase font-light px-12 text-[#C8A97A]"
+              style={{ fontFamily: SANS }}
+            >
+              ✦ Inspired by Travels, Curated for Your Story ✦
+            </span>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* ── SECTION 2: FROM OUR HANDS, INTO YOUR STORY ────────────── */}
+      
+
+      {/* ── NEWSLETTER SECTION ───────────────────────────────── */}
+      
+
+      {/* ── SECTION 3: SIGN-OFF ───────────────────────────────── */}
+      <section className="border-t border-[#D8CBBE]/30" style={{ background: CREAM }}>
+       
       </section>
       <Newsletter />
 

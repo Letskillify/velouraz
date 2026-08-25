@@ -156,7 +156,7 @@ const Blog = () => {
                 className="group bg-white rounded-2xl border border-[#E7DEC8] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(46,14,67,0.08)] hover:border-[#C8A97A] transition-all duration-500 flex flex-col h-full"
               >
                 {/* Card Image */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#F3ECE1]">
+                <div className="relative aspect-[16/12] w-full overflow-hidden bg-[#F3ECE1]">
                   <img
                     src={blog.image}
                     alt={blog.title}

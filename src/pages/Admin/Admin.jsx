@@ -49,6 +49,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import AdminAuth from "./AdminAuth";
 import MetricCards from "./components/MetricCards";
 import ProductsTable from "./components/ProductsTable";
@@ -94,10 +95,29 @@ const sortNewest = (rows) => [...rows].sort((a, b) => {
 
 // ─── Main Admin Component ────────────────────────────────────────────────────
 const Admin = () => {
-  const [activeItem, setActiveItem] = useState("Dashboard");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || searchParams.get("section");
+  const defaultTab = sidebarItems.find(i => i.name.toLowerCase() === initialTab?.toLowerCase())?.name || "Dashboard";
+
+  const [activeItem, setActiveItem] = useState(defaultTab);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const tabParam = searchParams.get("tab") || searchParams.get("section");
+    if (tabParam) {
+      const match = sidebarItems.find(i => i.name.toLowerCase() === tabParam.toLowerCase());
+      if (match) setActiveItem(match.name);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (name) => {
+    setActiveItem(name);
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("tab", name);
+    setSearchParams(newParams, { replace: true });
+  };
   const [editingProduct, setEditingProduct] = useState(null);
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);

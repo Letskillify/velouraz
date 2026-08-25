@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Edit2, Trash2, Package, Plus, Minus, RefreshCw, Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+import { Edit2, Trash2, Package, Plus, Minus, RefreshCw, Search, SlidersHorizontal, ChevronLeft, ChevronRight, Globe2 } from "lucide-react";
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
 import { quickUpdateStock } from "../../../services/productService";
@@ -66,21 +67,47 @@ const QuickStockEditor = ({ productId, currentStock }) => {
 };
 
 const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct, onRefresh }) => {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All Categories");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get("search") || searchParams.get("q") || "");
+  const [category, setCategory] = useState(searchParams.get("category") || "All Categories");
+  const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "All Countries");
 
   // Pagination & Selection States
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedIds, setSelectedIds] = useState([]);
 
+  useEffect(() => {
+    const sQuery = searchParams.get("search") || searchParams.get("q") || "";
+    const cQuery = searchParams.get("category") || "All Categories";
+    const coQuery = searchParams.get("country") || "All Countries";
+
+    setSearch(sQuery);
+    setCategory(cQuery);
+    setSelectedCountry(coQuery);
+  }, [searchParams]);
+
+  const updateParam = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (!value || value === "All Categories" || value === "All Countries") {
+      newParams.delete(key);
+    } else {
+      newParams.set(key, value);
+    }
+    setSearchParams(newParams, { replace: true });
+  };
+
   // Filter & Search
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      const matchesSearch = `${product.name || ""} ${product.sku || ""} ${product.country || ""}`.toLowerCase().includes(search.toLowerCase());
-      return matchesSearch && (category === "All Categories" || product.category === category);
+      const queryStr = search.toLowerCase().trim();
+      const matchesSearch = !queryStr || `${product.name || ""} ${product.sku || ""} ${product.country || ""}`.toLowerCase().includes(queryStr);
+      const matchesCategory = category === "All Categories" || (product.category && product.category.toLowerCase() === category.toLowerCase());
+      const matchesCountry = selectedCountry === "All Countries" || (product.country && product.country.toLowerCase() === selectedCountry.toLowerCase());
+
+      return matchesSearch && matchesCategory && matchesCountry;
     });
-  }, [products, search, category]);
+  }, [products, search, category, selectedCountry]);
 
   // Derived Pagination
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
@@ -90,11 +117,12 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
   }, [filteredProducts, currentPage, pageSize]);
 
   // Reset page when filters change
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentPage(1);
-  }, [search, category, pageSize]);
+  }, [search, category, selectedCountry, pageSize]);
 
   const categories = [...new Set(products.map((product) => product.category).filter(Boolean))];
+  const countries = [...new Set(products.map((product) => product.country).filter(Boolean))];
 
   // Selection Handlers
   const handleSelectAll = (e) => {
@@ -118,15 +146,12 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
   const isAllPageSelected = paginatedProducts.length > 0 && paginatedProducts.every((p) => selectedIds.includes(p.id));
 
   const handleBatchDelete = async () => {
-    if (!window.confirm(`Delete ${selectedIds.length} selected products?`)) return;
-    try {
+    if (window.confirm(`Delete ${selectedIds.length} selected products?`)) {
       for (const id of selectedIds) {
         await onDeleteProduct(id);
       }
       setSelectedIds([]);
       if (onRefresh) onRefresh();
-    } catch (err) {
-      console.error("Batch delete failed:", err);
     }
   };
 
@@ -181,19 +206,43 @@ const ProductsTable = ({ products, onAddProduct, onEditProduct, onDeleteProduct,
           <Search size={15} />
           <input
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => {
+              const val = event.target.value;
+              setSearch(val);
+              updateParam("search", val);
+            }}
             className="w-full bg-transparent text-base text-slate-700 outline-none"
             placeholder="Search products..."
           />
         </label>
+        {/* Category Select */}
         <select
           value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          onChange={(event) => {
+            const val = event.target.value;
+            setCategory(val);
+            updateParam("category", val);
+          }}
           className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-600 outline-none"
         >
-          <option>All Categories</option>
+          <option value="All Categories">All Categories</option>
           {categories.map((item) => (
-            <option key={item}>{item}</option>
+            <option key={item} value={item}>{item}</option>
+          ))}
+        </select>
+        {/* Country Select */}
+        <select
+          value={selectedCountry}
+          onChange={(event) => {
+            const val = event.target.value;
+            setSelectedCountry(val);
+            updateParam("country", val);
+          }}
+          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-600 outline-none"
+        >
+          <option value="All Countries">All Countries</option>
+          {countries.map((c) => (
+            <option key={c} value={c}>🌍 {c}</option>
           ))}
         </select>
         <button className="flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2 text-base font-semibold text-slate-700">

@@ -131,16 +131,35 @@ const Shop = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Helper to sync query parameters with URL
+  const updateFilterParam = (key, value) => {
+    const newParams = new URLSearchParams(searchParams);
+    if (!value || value === 'All' || value === 'all' || (Array.isArray(value) && value.length === 0)) {
+      newParams.delete(key);
+    } else if (Array.isArray(value)) {
+      newParams.set(key, value.join(','));
+    } else {
+      newParams.set(key, value);
+    }
+    setSearchParams(newParams, { replace: true });
+  };
+
   useEffect(() => {
     const searchVal = searchParams.get('search') || searchParams.get('q');
     const categoryQuery = searchParams.get('category');
     const countryQuery = searchParams.get('country');
     const itemQuery = searchParams.get('item');
+    const filterQuery = searchParams.get('filter');
+    const materialQuery = searchParams.get('material');
+    const sortQuery = searchParams.get('sort');
+    const maxPriceQuery = searchParams.get('maxPrice');
 
     if (searchVal) {
       setSearchTerm(searchVal);
     } else if (itemQuery) {
       setSearchTerm(itemQuery.replace(/-/g, ' '));
+    } else {
+      setSearchTerm('');
     }
 
     if (categoryQuery) {
@@ -153,6 +172,24 @@ const Shop = () => {
       setSelectedCountry(countryQuery);
     } else {
       setSelectedCountry('All');
+    }
+
+    if (materialQuery) {
+      setSelectedMaterials(materialQuery.split(',').filter(Boolean));
+    } else {
+      setSelectedMaterials([]);
+    }
+
+    if (sortQuery) {
+      setSortBy(sortQuery);
+    } else if (filterQuery === 'new') {
+      setSortBy('newest');
+    } else if (filterQuery === 'bestsellers') {
+      setSortBy('bestsellers');
+    }
+
+    if (maxPriceQuery && !isNaN(Number(maxPriceQuery))) {
+      setPriceLimit(Number(maxPriceQuery));
     }
   }, [searchParams]);
 
@@ -185,13 +222,21 @@ const Shop = () => {
   }, [products]);
 
   useEffect(() => {
-    if (products.length > 0) {
+    if (products.length > 0 && !searchParams.get('maxPrice')) {
       setPriceLimit(maxProductPrice);
     }
-  }, [maxProductPrice, products.length]);
+  }, [maxProductPrice, products.length, searchParams]);
 
   const categories = ['All', 'Necklace', 'Earrings', 'Rings', 'Bracelet', 'Bangles', 'Bridal Wear'];
   const materialsList = ['Kundan', 'Polki', 'Gold Plated', 'Silver', 'Pearl', 'Crystal'];
+
+  // Country options dynamically extracted or curated
+  const featuredCountries = ['All', 'Paris', 'Thailand', 'India', 'Japan', 'South Korea'];
+  const countryList = useMemo(() => {
+    const fromProducts = Array.from(new Set(products.map(p => p.country).filter(Boolean)));
+    const combined = Array.from(new Set([...featuredCountries, ...fromProducts]));
+    return combined;
+  }, [products]);
 
   const categoryCounts = useMemo(() => {
     const counts = { All: products.length };
@@ -201,6 +246,15 @@ const Shop = () => {
     });
     return counts;
   }, [products, categories]);
+
+  const countryCounts = useMemo(() => {
+    const counts = { All: products.length };
+    countryList.forEach(c => {
+      if (c === 'All') return;
+      counts[c] = products.filter(p => p.country?.toLowerCase() === c.toLowerCase()).length;
+    });
+    return counts;
+  }, [products, countryList]);
 
   const handleAddToCart = async (e, product) => {
     e.stopPropagation();
@@ -223,9 +277,11 @@ const Shop = () => {
   };
 
   const toggleMaterial = (mat) => {
-    setSelectedMaterials(prev =>
-      prev.includes(mat) ? prev.filter(m => m !== mat) : [...prev, mat]
-    );
+    const nextMaterials = selectedMaterials.includes(mat)
+      ? selectedMaterials.filter(m => m !== mat)
+      : [...selectedMaterials, mat];
+    setSelectedMaterials(nextMaterials);
+    updateFilterParam('material', nextMaterials);
   };
 
   const clearAllFilters = () => {
@@ -259,7 +315,7 @@ const Shop = () => {
       (p.category && p.category.toLowerCase().includes(queryStr)) ||
       (p.brand && p.brand.toLowerCase().includes(queryStr)) ||
       (p.description && p.description.toLowerCase().includes(queryStr)) ||
-      (Array.isArray(p.tags) && p.tags.some(t => t.toLowerCase().includes(queryStr)));
+      (Array.isArray(p.tags) && p.tags.some(t => String(t).toLowerCase().includes(queryStr)));
 
     const matchesCategory = selectedCategory === 'All' ||
       (p.category && p.category.toLowerCase() === selectedCategory.toLowerCase());
@@ -274,7 +330,7 @@ const Shop = () => {
       return (p.name && p.name.toLowerCase().includes(mat)) ||
              (p.description && p.description.toLowerCase().includes(mat)) ||
              (p.material && p.material.toLowerCase().includes(mat)) ||
-             (Array.isArray(p.tags) && p.tags.some(t => t.toLowerCase().includes(mat)));
+             (Array.isArray(p.tags) && p.tags.some(t => String(t).toLowerCase().includes(mat)));
     });
 
     let matchesAvailability = true;
@@ -290,6 +346,7 @@ const Shop = () => {
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === 'price-low') return a.price - b.price;
     if (sortBy === 'price-high') return b.price - a.price;
+    if (sortBy === 'bestsellers') return (b.salesCount || b.stock || 0) - (a.salesCount || a.stock || 0);
     return 0;
   });
 
@@ -329,12 +386,47 @@ const Shop = () => {
           max={maxProductPrice}
           step={250}
           value={priceLimit}
-          onChange={(e) => setPriceLimit(Number(e.target.value))}
+          onChange={(e) => {
+            const val = Number(e.target.value);
+            setPriceLimit(val);
+            updateFilterParam('maxPrice', val);
+          }}
           className="w-full accent-[#2e0e43] cursor-pointer h-1.5 bg-[#EFE8DC] rounded-lg border-none"
         />
         <div className="flex justify-between text-[11px] text-[#7B6D63] font-medium font-sans">
           <span>₹0</span>
           <span>₹{Number(maxProductPrice).toLocaleString()}</span>
+        </div>
+      </div>
+
+      {/* Country & Origin Filter */}
+      <div className="space-y-3">
+        <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B58E58] font-sans border-b border-[#EFE8DC]/60 pb-1.5">
+          WORLD EDITS & DESTINATIONS
+        </h4>
+        <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
+          {countryList.map((c) => {
+            const isSelected = selectedCountry.toLowerCase() === c.toLowerCase();
+            return (
+              <button
+                key={c}
+                onClick={() => {
+                  setSelectedCountry(c);
+                  updateFilterParam('country', c);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#2e0e43] text-white shadow-sm font-semibold'
+                    : 'text-[#2A2623]/80 hover:bg-[#F5EFE6] hover:text-[#2e0e43]'
+                }`}
+              >
+                <span>{c}</span>
+                <span className={`text-[10px] px-2 py-0.5 rounded-full ${isSelected ? 'bg-white/20 text-white' : 'bg-[#EFE8DC] text-[#7B6D63]'}`}>
+                  {countryCounts[c] ?? 0}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -349,7 +441,10 @@ const Shop = () => {
             return (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  updateFilterParam('category', cat);
+                }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs md:text-sm font-medium transition-all cursor-pointer ${
                   isSelected
                     ? 'bg-[#2e0e43] text-white shadow-sm font-semibold'
