@@ -312,23 +312,44 @@ const LuxuryHeader = () => {
                       {link.hasDropdown && <ChevronDown size={18} style={{ color: GOLD, transform: mobileExpanded === link.name ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />}
                     </div>
                     {link.hasDropdown && mobileExpanded === link.name && (
-                      <div className="mb-5 rounded-xl p-4 bg-[#C8A97A]/10 space-y-4">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs uppercase font-bold tracking-[0.2em] text-[#C8A97A]">Explore Countries</span>
-                          <Link to="/world-edit" onClick={() => setMobileOpen(false)} className="text-[11px] font-bold uppercase tracking-wider text-[#C8A97A] underline flex items-center gap-1">
-                            Explore More <ArrowRight size={10} />
+                      <div className="mb-5 rounded-2xl p-4 bg-[#140D1C] border border-[#C8A97A]/25 space-y-3.5 shadow-lg">
+                        <div className="flex items-center justify-between border-b border-[#C8A97A]/20 pb-2.5">
+                          <span className="text-[11px] uppercase font-bold tracking-[0.2em] text-[#C8A97A]">Featured World Edits</span>
+                          <Link to="/world-edit" onClick={() => setMobileOpen(false)} className="text-[10px] font-bold uppercase tracking-wider text-[#F0D5A8] hover:text-white flex items-center gap-1">
+                            View All <ArrowRight size={10} />
                           </Link>
                         </div>
-                        <div className="grid grid-cols-2 gap-2">
-                          {dropdownCountries.map((c) => (
-                            <Link key={c} to={`/shop?country=${encodeURIComponent(c)}`} onClick={() => setMobileOpen(false)} className="flex items-center gap-2 text-xs text-white/80 hover:text-[#C8A97A]">
-                              <span>{getCountryFlag(c)}</span> <span className="truncate">{c}</span>
+                        
+                        <div className="flex flex-col gap-2">
+                          {worldEditMegaItems.map((item, idx) => (
+                            <Link
+                              key={`${item.country}-${idx}`}
+                              to={item.href}
+                              onClick={() => setMobileOpen(false)}
+                              className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#C8A97A]/40 hover:bg-[#C8A97A]/10 transition-all group text-decoration-none"
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="text-lg filter drop-shadow-xs">{item.flag}</span>
+                                <div>
+                                  <p className="text-sm font-medium text-white group-hover:text-[#F0D5A8] transition-colors leading-tight" style={{ fontFamily: NAV_SERIF }}>
+                                    {item.country}
+                                  </p>
+                                  <p className="text-[10px] italic text-white/60 mt-0.5" style={{ fontFamily: NAV_SERIF }}>{item.subtitle}</p>
+                                </div>
+                              </div>
+                              <ArrowRight size={12} className="text-[#C8A97A] group-hover:translate-x-1 transition-transform shrink-0" />
                             </Link>
                           ))}
                         </div>
-                        <div className="pt-2 border-t border-white/10 text-center">
-                          <Link to="/world-edit" onClick={() => setMobileOpen(false)} className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.18em] text-white hover:text-[#C8A97A]">
-                            Explore More Countries <ArrowRight size={12} />
+
+                        <div className="pt-2 border-t border-[#C8A97A]/20 text-center">
+                          <Link
+                            to="/world-edit"
+                            onClick={() => setMobileOpen(false)}
+                            className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A97A] hover:text-white transition-colors py-1 text-decoration-none"
+                          >
+                            <span>Explore All 15+ Countries</span>
+                            <ArrowRight size={12} />
                           </Link>
                         </div>
                       </div>
@@ -530,232 +551,133 @@ const SearchOverlayModal = ({ onClose }) => {
   );
 };
 
-const countryRegions = [
+const worldEditMegaItems = [
   {
-    region: 'ASIAN ARTISANSHIP',
-    icon: '⛩',
-    items: [
-      { name: 'Japan', desc: 'Miyuki Glass & Pearls', flag: '🇯🇵' },
-      { name: 'India', desc: 'Kundan & Silver Heritage', flag: '🇮🇳' },
-      { name: 'South Korea', desc: 'Minimal Luxe & Crystals', flag: '🇰🇷' },
-      { name: 'Thailand', desc: 'Handcrafted Silver', flag: '🇹🇭' },
-      { name: 'China', desc: 'Carved Jade & Cloisonné', flag: '🇨🇳' },
-    ]
+    country: 'Paris',
+    flag: '🇫🇷',
+    subtitle: 'Inspired by Paris',
+    collection: 'THE MAISON PARIS',
+    cta: 'DISCOVER PARIS',
+    href: '/shop?country=Paris',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
   },
   {
-    region: 'EUROPE & MEDITERRANEAN',
-    icon: '⚜',
-    items: [
-      { name: 'Paris', desc: 'Atelier Haute Couture', flag: '⚜️' },
-      { name: 'Italy', desc: 'Venetian Fine Gold', flag: '🇮🇹' },
-      { name: 'Turkey', desc: 'Filigree & Evil Eye', flag: '🇹🇷' },
-      { name: 'Spain', desc: 'Traditional Pearl & Lace', flag: '🇪🇸' },
-      { name: 'United Kingdom', desc: 'Heritage Royal Jewels', flag: '🇬🇧' },
-    ]
+    country: 'Thailand',
+    flag: '🇹🇭',
+    subtitle: 'Inspired by Thailand',
+    collection: 'THE THAI GEMSTONE EDIT',
+    cta: 'DISCOVER THAILAND',
+    href: '/shop?country=Thailand',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
   },
   {
-    region: 'MIDDLE EAST & GLOBAL',
-    icon: '☽',
-    items: [
-      { name: 'United Arab Emirates', desc: 'Arabian Statement Luxe', flag: '🇦🇪' },
-      { name: 'Sri Lanka', desc: 'Natural Sapphire & Gems', flag: '🇱🇰' },
-      { name: 'Brazil', desc: 'Raw Crystal & Quartz', flag: '🇧🇷' },
-      { name: 'Germany', desc: 'Precision Craft & Metal', flag: '🇩🇪' },
-      { name: 'Explore All Countries', desc: 'View Full 15+ World Edit', flag: '🌍', isLinkToWorldEdit: true },
-    ]
-  }
+    country: 'India',
+    flag: '🇮🇳',
+    subtitle: 'Inspired by India',
+    collection: 'THE SIGNATURE COLLECTION',
+    cta: 'DISCOVER INDIA',
+    href: '/shop?country=India',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
+  },
+  {
+    country: 'Japan',
+    flag: '🇯🇵',
+    subtitle: 'Inspired by Japan',
+    collection: 'THE MIYUKI ATELIER',
+    cta: 'DISCOVER JAPAN',
+    href: '/shop?country=Japan',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
+  },
+  {
+    country: 'South Korea',
+    flag: '🇰🇷',
+    subtitle: 'Inspired by South Korea',
+    collection: 'THE PEARL EDIT',
+    cta: 'DISCOVER SOUTH KOREA',
+    href: '/shop?country=South%20Korea',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
+  },
 ];
 
-const WorldEditDropdownPanel = ({ countries, onClose }) => {
+const WorldEditDropdownPanel = ({ onClose }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: -6 }}
+      initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
-      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        position: 'fixed',
-        top: 'var(--header-height, 148px)',
-        left: 0,
-        right: 0,
-        zIndex: 200,
-        background: '#0F0A14',
-        borderTop: '1px solid #C8A97A',
-        borderBottom: '1px solid rgba(200, 169, 122, 0.2)',
-        boxShadow: '0 36px 90px rgba(0, 0, 0, 0.85)',
-        backdropFilter: 'blur(24px)',
-      }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed left-0 right-0 z-[200] bg-[#0A070D] border-t border-[#C8A97A] border-b border-[#C8A97A]/20 shadow-[0_35px_90px_rgba(0,0,0,0.95)] overflow-hidden"
+      style={{ top: 'var(--header-height, 148px)' }}
     >
-      <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', minHeight: 420 }}>
+      {/* Top Banner Bar */}
+      <div className="border-b border-[#C8A97A]/20 bg-[#0F0B14] px-8 py-2.5 flex items-center justify-between z-20 relative">
+        <div className="flex items-center gap-2 text-[11px] tracking-[0.25em] font-semibold text-[#C8A97A] uppercase">
+          <Globe2 size={13} className="text-[#C8A97A]" />
+          <span>The World Edit • Globally Curated Jewellery Collections</span>
+        </div>
+        <Link
+          to="/world-edit"
+          onClick={onClose}
+          className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
+        >
+          <span>Explore All 15+ Countries</span>
+          <ArrowRight size={12} />
+        </Link>
+      </div>
 
-        {/* ── Left & Middle: 3 Regional Editorial Columns ─── */}
-        <div style={{ flex: 1, padding: '36px 56px', overflowY: 'auto' }}>
-          <div style={{ marginBottom: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(200,169,122,0.15)', paddingBottom: 16 }}>
-            <div>
-              <span style={{ fontSize: 10, letterSpacing: '0.35em', textTransform: 'uppercase', color: GOLD, fontWeight: 700 }}>
-                ✦ THE WORLD EDIT
-              </span>
-              <h3 style={{ fontFamily: NAV_SERIF, fontSize: 24, color: '#ffffff', fontWeight: 400, marginTop: 2 }}>
-                Global Jewellery Traditions & Cultural Ateliers
-              </h3>
+      {/* 5 Vertical Columns Grid */}
+      <div className="w-full max-w-[1600px] mx-auto grid grid-cols-5 divide-x divide-[#C8A97A]/20 min-h-[480px]">
+        {worldEditMegaItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.href}
+            onClick={onClose}
+            className="group relative p-7 flex flex-col justify-between overflow-hidden text-decoration-none min-h-[480px]"
+          >
+            {/* Full Background Image without color overlays */}
+            <div className="absolute inset-0 z-0 overflow-hidden">
+              <img
+                src={item.bgImage}
+                alt={item.country}
+                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              {/* Soft transparent gradient only for text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/75 pointer-events-none" />
             </div>
-            <Link
-              to="/world-edit"
-              onClick={onClose}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                padding: '9px 22px',
-                borderRadius: 9999,
-                background: '#2e0e43',
-                color: '#ffffff',
-                border: '1px solid rgba(200, 169, 122, 0.4)',
-                textDecoration: 'none',
-                transition: 'all 0.3s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = GOLD;
-                e.currentTarget.style.color = '#0F0A14';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = '#2e0e43';
-                e.currentTarget.style.color = '#ffffff';
-              }}
-            >
-              <span>Explore More Countries</span>
-              <ArrowRight size={13} />
-            </Link>
-          </div>
 
-          {/* 3 Regional Columns Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 40 }}>
-            {countryRegions.map((col, idx) => (
-              <div key={idx} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontSize: 14, color: GOLD }}>{col.icon}</span>
-                  <h4 style={{ fontSize: 11, letterSpacing: '0.25em', fontWeight: 700, textTransform: 'uppercase', color: GOLD }}>
-                    {col.region}
-                  </h4>
-                </div>
-
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {col.items.map((item, i) => {
-                    const targetLink = item.isLinkToWorldEdit 
-                      ? '/world-edit' 
-                      : `/shop?country=${encodeURIComponent(item.name)}`;
-
-                    return (
-                      <li key={i}>
-                        <Link
-                          to={targetLink}
-                          onClick={onClose}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '6px 10px',
-                            borderRadius: 8,
-                            textDecoration: 'none',
-                            transition: 'all 0.2s ease',
-                          }}
-                          onMouseEnter={e => {
-                            e.currentTarget.style.background = 'rgba(200, 169, 122, 0.1)';
-                          }}
-                          onMouseLeave={e => {
-                            e.currentTarget.style.background = 'transparent';
-                          }}
-                        >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            <span style={{ fontSize: 18 }}>{item.flag}</span>
-                            <div>
-                              <p style={{
-                                fontFamily: NAV_SERIF,
-                                fontSize: 16,
-                                color: item.isLinkToWorldEdit ? GOLD : '#ffffff',
-                                fontWeight: item.isLinkToWorldEdit ? 700 : 500,
-                                margin: 0,
-                                lineHeight: 1.2
-                              }}>
-                                {item.name}
-                              </p>
-                              <span style={{ fontSize: 11, color: 'rgba(255, 255, 255, 0.45)', display: 'block', marginTop: 2 }}>
-                                {item.desc}
-                              </span>
-                            </div>
-                          </div>
-                          <ArrowRight size={12} style={{ color: GOLD, opacity: 0.7 }} />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+            {/* Top Text Content */}
+            <div className="relative z-10 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-xl filter drop-shadow-md">{item.flag}</span>
               </div>
-            ))}
-          </div>
 
-          {/* Footer Banner */}
-          <div style={{ marginTop: 28, paddingTop: 16, borderTop: '1px solid rgba(200, 169, 122, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>
-              ✦ Discover rare artisanal jewellery techniques from over 15 countries worldwide.
-            </p>
-            <Link
-              to="/world-edit"
-              onClick={onClose}
-              style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: GOLD, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6 }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = GOLD}
-            >
-              Explore More Countries <ArrowRight size={12} />
-            </Link>
-          </div>
-        </div>
+              <div>
+                <h3
+                  className="text-3xl lg:text-4xl text-white font-normal tracking-tight group-hover:text-[#F0D5A8] transition-colors drop-shadow-md"
+                  style={{ fontFamily: NAV_SERIF }}
+                >
+                  {item.country}
+                </h3>
+                <p className="text-xs lg:text-sm italic text-white/90 font-light mt-0.5 drop-shadow" style={{ fontFamily: NAV_SERIF }}>
+                  {item.subtitle}
+                </p>
+              </div>
 
-        {/* ── Right Column: Editorial Visual Card ─── */}
-        <div style={{ width: 350, position: 'relative', overflow: 'hidden', borderLeft: '1px solid rgba(200, 169, 122, 0.15)', flexShrink: 0 }}>
-          <img
-            src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800"
-            alt="World Edit Editorial"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.75)', transition: 'transform 1.2s ease' }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-          />
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(to top, rgba(15, 10, 20, 0.95) 0%, rgba(15, 10, 20, 0.35) 60%, transparent 100%)',
-            display: 'flex', flexDirection: 'column', justify: 'flex-end', padding: '36px 32px',
-          }}>
-            <span style={{ fontSize: 10, letterSpacing: '0.45em', fontWeight: 700, textTransform: 'uppercase', color: GOLD, marginBottom: 8 }}>
-              CURATED GLOBAL HERITAGE
-            </span>
-            <h3 style={{ fontFamily: NAV_SERIF, fontSize: 24, fontStyle: 'italic', fontWeight: 300, color: '#ffffff', marginBottom: 10, lineHeight: 1.2 }}>
-              Craftsmanship Across 15+ Countries
-            </h3>
-            <p style={{ fontSize: 12, color: 'rgba(255, 255, 255, 0.65)', marginBottom: 22, lineHeight: 1.6 }}>
-              From Turkish filigree to Japanese Miyuki beads and Indian silver. Experience timeless cultural beauty.
-            </p>
-            <Link
-              to="/world-edit"
-              onClick={onClose}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 10,
-                fontSize: 11, fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase',
-                padding: '13px 26px', background: '#2e0e43', color: '#ffffff', textDecoration: 'none',
-                border: '1px solid rgba(200, 169, 122, 0.4)',
-                transition: 'all 0.3s', width: 'fit-content',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = GOLD; e.currentTarget.style.color = '#0F0A14'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#2e0e43'; e.currentTarget.style.color = '#ffffff'; }}
-            >
-              Explore World Edit <ArrowRight size={12} strokeWidth={2} />
-            </Link>
-          </div>
-        </div>
+              {/* Accent Line */}
+              <div className="w-8 group-hover:w-16 h-[1px] bg-[#C8A97A] transition-all duration-300 my-3.5 shadow-sm" />
 
+              <div className="text-[11px] lg:text-[12px] font-bold tracking-[0.22em] uppercase text-[#F0D5A8] leading-tight drop-shadow">
+                {item.collection}
+              </div>
+            </div>
+
+            {/* Bottom Discover CTA */}
+            <div className="relative z-10 pt-4 flex items-center justify-between text-[11px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
+              <span>{item.cta}</span>
+              <ArrowRight size={14} className="text-[#C8A97A] group-hover:translate-x-2 transition-transform duration-300" />
+            </div>
+          </Link>
+        ))}
       </div>
     </motion.div>
   );

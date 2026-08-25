@@ -15,7 +15,7 @@ const AboutBreadcrumb = ({
   ]
 }) => {
   return (
-    <div className="relative w-full h-[480px] sm:h-[560px] lg:h-[640px] overflow-hidden flex items-center justify-start border-b border-[#C8A97A]/30 shadow-md bg-[#1A1613]">
+    <div className="relative w-full h-[380px] sm:h-[440px] lg:h-[500px] overflow-hidden flex items-center justify-start border-b border-[#C8A97A]/30 shadow-md bg-[#1A1613]">
       {/* Background Image without heavy center dark overlays */}
       <motion.div
         initial={{ scale: 1.05 }}
@@ -34,11 +34,11 @@ const AboutBreadcrumb = ({
       </motion.div>
 
       {/* Content wrapper aligned to LEFT side */}
-      <div className="relative z-10 max-w-[1360px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-[90px] sm:pt-[110px] lg:pt-[130px]" style={{ fontFamily: SANS }}>
+      <div className="relative z-10 max-w-[1360px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-[60px] sm:pt-[80px] lg:pt-[90px]" style={{ fontFamily: SANS }}>
         <div className="max-w-xl text-left text-white space-y-4">
 
           {/* Glass Card on Left Side */}
-          <div className="p-6 sm:p-8 lg:p-10 rounded-2xl bg-[#14081c]/60 backdrop-blur-md border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35)] space-y-4">
+          <div className="p-5 sm:p-7 lg:p-8 rounded-2xl bg-[#14081c]/60 backdrop-blur-md border border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.35)] space-y-3">
 
             {/* Breadcrumb Navigation Links */}
             {links && links.length > 0 && (
@@ -46,7 +46,7 @@ const AboutBreadcrumb = ({
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15, duration: 0.6 }}
-                className="flex items-center gap-2 text-xs sm:text-sm tracking-[0.25em] font-semibold uppercase text-white/90"
+                className="flex items-center gap-2 text-xs sm:text-xs tracking-[0.2em] font-semibold uppercase text-white/90"
                 style={{ fontFamily: SANS }}
               >
                 {links.map((link, index) => (
@@ -70,7 +70,7 @@ const AboutBreadcrumb = ({
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.25, duration: 0.8 }}
-                className="text-4xl sm:text-5xl lg:text-6xl font-light text-[#FFFDF9] leading-tight tracking-wide drop-shadow-md"
+                className="text-2xl sm:text-3xl lg:text-4xl font-light text-[#FFFDF9] leading-tight tracking-wide drop-shadow-md"
                 style={{ fontFamily: SANS }}
               >
                 {title}
@@ -83,7 +83,7 @@ const AboutBreadcrumb = ({
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.8 }}
-                className="text-base sm:text-lg lg:text-xl italic text-white/95 font-light leading-relaxed drop-shadow"
+                className="text-xs sm:text-sm lg:text-base italic text-white/95 font-light leading-relaxed drop-shadow"
                 style={{ fontFamily: SANS }}
               >
                 {subtitle}

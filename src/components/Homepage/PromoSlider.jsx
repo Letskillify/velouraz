@@ -12,44 +12,44 @@ import 'swiper/css/navigation';
 
 const staticCollections = [
   {
-    id: 'china',
-    country: 'CHINA',
-    collection: 'EASTERN ELEGANCE',
+    id: 'paris',
+    country: 'PARIS',
+    collection: 'THE MAISON PARIS',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419482/WhatsApp_Video_2026-08-22_at_15.23.20_mhdrfs.mp4',
-    defaultImage: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800',
-    link: '/shop?country=China'
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673523/paris_ufrhvg.mp4',
+    defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
+    hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
+    link: '/shop?country=Paris'
   },
   {
-    id: 'france',
-    country: 'FRANCE',
-    collection: 'PARISIAN EDIT',
+    id: 'thailand',
+    country: 'THAILAND',
+    collection: 'THE THAI GEMSTONE EDIT',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419482/Necklace_on_ivory_pedestal_202608222147_orsi2m.mp4',
-    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908842/sk1_hy65t6.png',
-    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908837/sk2_sl2cal.png',
-    link: '/shop?country=France'
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673905/Luxury_jewellery_commercial_vide__202608252134_tmc8h9.mp4',
+    defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
+    hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
+    link: '/shop?country=Thailand'
   },
   {
-    id: 'india-1',
+    id: 'india',
     country: 'INDIA',
     collection: 'HERITAGE COLLECTION',
     badge: 'ORGANIC',
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419483/Diamond_ring_on_crystal_display_202608222147_kscwkr.mp4',
-    defaultImage: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
+    defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
+    hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
     link: '/shop?country=India'
   },
   {
-    id: 'india-2',
-    country: 'INDIA',
-    collection: 'ROYAL COLLECTION',
+    id: 'japan',
+    country: 'JAPAN',
+    collection: 'MIYUKI ATELIER',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419484/WhatsApp_Video_2026-08-19_at_14.34.17_rpda01.mp4',
-    defaultImage: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=800',
-    hoverImage: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800',
-    link: '/shop?country=India'
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673506/japan_zgoqxh.mp4',
+    defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
+    hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
+    link: '/shop?country=Japan'
   },
   {
     id: 'south-korea',
@@ -57,8 +57,8 @@ const staticCollections = [
     collection: 'PEARLS & SILVER',
     badge: 'ORGANIC',
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419491/Jewellery_commercial_on_ceramic___202608222147_evmtuf.mp4',
-    defaultImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908844/t1_m0x6yw.png',
-    hoverImage: 'https://res.cloudinary.com/duzwys877/image/upload/v1784908840/t2_kkdwuf.png',
+    defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
+    hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
     link: '/shop?country=South%20Korea'
   }
 ];

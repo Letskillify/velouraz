@@ -34,23 +34,23 @@ const About = () => {
       />
 
       {/* ── SECTION 1: ABOUT THE BRAND AND OUR STORY ────────────── */}
-      <section className="relative px-6 py-20 lg:py-32">
+      <section className="relative px-6 py-14 lg:py-24">
         <div className="max-w-[1320px] mx-auto">
 
           {/* Eyebrow and Section Header */}
-          <div className="max-w-3xl mb-14 lg:mb-20 space-y-4">
+          <div className="max-w-3xl mb-10 lg:mb-14 space-y-3">
             <div className="flex items-center gap-3">
               <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-              <span className="text-base lg:text-[18px] tracking-[0.3em] font-semibold text-black uppercase" style={{ fontFamily: SANS }}>
+              <span className="text-xs sm:text-sm tracking-[0.25em] font-semibold text-black uppercase" style={{ fontFamily: SANS }}>
                 About the Brand & Our Story
               </span>
             </div>
 
             <h1
-              className="font-normal leading-[1.1] tracking-tight"
+              className="font-normal leading-[1.15] tracking-tight"
               style={{
                 fontFamily: SANS,
-                fontSize: 'clamp(2.4rem, 5.5vw, 4.5rem)',
+                fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)',
                 color: DARK
               }}
             >
@@ -60,11 +60,11 @@ const About = () => {
           </div>
 
           {/* 2-Column Editorial Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
             {/* Left: Editorial Imagery */}
             <motion.div
-              className="lg:col-span-5 flex flex-col justify-between space-y-8 lg:sticky lg:top-28"
+              className="lg:col-span-5 flex flex-col justify-between space-y-6 lg:sticky lg:top-28"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -79,19 +79,19 @@ const About = () => {
                 <div className="absolute inset-0 bg-[#2e0e43]/[0.03] pointer-events-none" />
               </div>
 
-              <div className="border-l border-[#D8CBBE] pl-6 space-y-3 hidden lg:block">
-                <span className="text-[17px] tracking-widest font-semibold uppercase text-black" style={{ fontFamily: SANS }}>Our Essence</span>
-                <p className="text-[19px] font-normal leading-relaxed italic text-black" style={{ fontFamily: SANS }}>
+              <div className="border-l border-[#D8CBBE] pl-5 space-y-2 hidden lg:block">
+                <span className="text-xs sm:text-sm tracking-widest font-semibold uppercase text-black" style={{ fontFamily: SANS }}>Our Essence</span>
+                <p className="text-sm sm:text-base font-normal leading-relaxed italic text-black" style={{ fontFamily: SANS }}>
                   "Inspired by our travels, curated for your story VELOURAZ brings the world a little closer to home."
                 </p>
               </div>
             </motion.div>
 
             {/* Right: Narrative Text Part 1 */}
-            <div className="lg:col-span-7 flex flex-col space-y-8 text-black text-[18px] lg:text-[20px] leading-relaxed font-normal" style={{ fontFamily: SANS }}>
+            <div className="lg:col-span-7 flex flex-col space-y-6 text-black text-sm sm:text-base leading-relaxed font-normal" style={{ fontFamily: SANS }}>
 
               <motion.p
-                className="text-[21px] lg:text-[23px] text-black leading-relaxed font-normal"
+                className="text-base sm:text-lg text-black leading-relaxed font-normal"
                 style={{ fontFamily: SANS }}
                 {...fadeUp}
               >
@@ -115,7 +115,7 @@ const About = () => {
               </motion.p>
 
               <motion.div
-                className="py-6 border-t border-b border-[#D8CBBE]/30 italic text-[20px] lg:text-[24px] text-black font-normal text-center"
+                className="py-5 border-t border-b border-[#D8CBBE]/30 italic text-base sm:text-lg lg:text-xl text-black font-normal text-center"
                 style={{ fontFamily: SANS }}
                 {...fadeUp}
                 transition={{ delay: 0.25 }}
@@ -124,9 +124,9 @@ const About = () => {
               </motion.div>
 
               {/* AND SO, VELOURAZ WAS BORN */}
-              <div className="pt-6 space-y-6">
+              <div className="pt-4 space-y-5">
                 <motion.h2
-                  className="text-2xl lg:text-3xl font-bold text-black uppercase tracking-wider"
+                  className="text-lg sm:text-xl lg:text-2xl font-bold text-black uppercase tracking-wider"
                   style={{ fontFamily: SANS }}
                   {...fadeUp}
                 >
@@ -142,7 +142,7 @@ const About = () => {
                 </motion.p>
 
                 <motion.p
-                  className="text-[19px] lg:text-[21px] font-semibold text-black"
+                  className="text-base sm:text-lg font-semibold text-black"
                   style={{ fontFamily: SANS }}
                   {...fadeUp}
                   transition={{ delay: 0.2 }}
@@ -163,32 +163,32 @@ const About = () => {
                 </motion.p>
 
                 <motion.div
-                  className="p-8 rounded-[4px] border-l-2 bg-[#FBF9F4] space-y-3"
+                  className="p-6 rounded-[4px] border-l-2 bg-[#FBF9F4] space-y-2"
                   style={{ borderColor: CRIMSON, fontFamily: SANS }}
                   {...fadeUp}
                   transition={{ delay: 0.4 }}
                 >
-                  <p className="text-[19px] lg:text-[21px] font-semibold text-black" style={{ fontFamily: SANS }}>
+                  <p className="text-base sm:text-lg font-semibold text-black" style={{ fontFamily: SANS }}>
                     For Zahabiya and Alifiya , VELOURAZ is more than a brand.
                   </p>
-                  <ul className="space-y-2 text-lg text-black font-normal" style={{ fontFamily: SANS }}>
+                  <ul className="space-y-1 text-sm sm:text-base text-black font-normal" style={{ fontFamily: SANS }}>
                     <li style={{ fontFamily: SANS }}>It is a friendship transformed into a journey.</li>
                     <li style={{ fontFamily: SANS }}>A curiosity transformed into a collection.</li>
                     <li style={{ fontFamily: SANS }}>And a dream transformed into something you can wear.</li>
                   </ul>
                 </motion.div>
 
-                <motion.div className="space-y-2 pt-2" {...fadeUp} transition={{ delay: 0.45 }}>
-                  <p className="italic text-[19px] lg:text-[21px] text-black font-medium" style={{ fontFamily: SANS }}>
+                <motion.div className="space-y-1 pt-2" {...fadeUp} transition={{ delay: 0.45 }}>
+                  <p className="italic text-base sm:text-lg text-black font-medium" style={{ fontFamily: SANS }}>
                     Because every journey leaves a trace.
                   </p>
-                  <p className="italic text-[19px] lg:text-[21px] text-black font-medium" style={{ fontFamily: SANS }}>
+                  <p className="italic text-base sm:text-lg text-black font-medium" style={{ fontFamily: SANS }}>
                     Ours just happens to be jewellery.
                   </p>
                 </motion.div>
 
                 <motion.p
-                  className="text-[20px] lg:text-[22px] font-semibold text-black pt-4"
+                  className="text-base sm:text-lg font-semibold text-black pt-3"
                   style={{ fontFamily: SANS }}
                   {...fadeUp}
                   transition={{ delay: 0.5 }}
@@ -206,7 +206,7 @@ const About = () => {
 
       {/* ── PARALLAX TEXT RIBBON ───────────────────────────────── */}
       <div
-        className="w-full py-4 border-t border-b border-[#D8CBBE]/30 overflow-hidden"
+        className="w-full py-3.5 border-t border-b border-[#D8CBBE]/30 overflow-hidden"
         style={{ background: '#2A2623' }}
       >
         <motion.div
@@ -217,7 +217,7 @@ const About = () => {
           {[...Array(8)].map((_, i) => (
             <span
               key={i}
-              className="text-[17px] lg:text-[18px] tracking-[0.25em] uppercase font-light px-16 text-[#C8A97A]"
+              className="text-xs sm:text-sm tracking-[0.2em] uppercase font-light px-12 text-[#C8A97A]"
               style={{ fontFamily: SANS }}
             >
               ✦ Inspired by Travels, Curated for Your Story ✦
@@ -227,26 +227,26 @@ const About = () => {
       </div>
 
       {/* ── SECTION 2: FROM OUR HANDS, INTO YOUR STORY ────────────── */}
-      <section className="px-6 py-20 lg:py-32 border-t border-[#D8CBBE]/30" style={{ backgroundColor: '#FDFCF7' }}>
+      <section className="px-6 py-14 lg:py-24 border-t border-[#D8CBBE]/30" style={{ backgroundColor: '#FDFCF7' }}>
         <div className="max-w-[1320px] mx-auto">
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
             {/* Left Column: Story Text Part 2 */}
-            <div className="lg:col-span-7 space-y-8" style={{ fontFamily: SANS }}>
-              <div className="space-y-4">
+            <div className="lg:col-span-7 space-y-6" style={{ fontFamily: SANS }}>
+              <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <span className="w-8 h-[1px]" style={{ background: CRIMSON }} />
-                  <span className="text-base lg:text-[18px] tracking-[0.3em] font-semibold text-black uppercase" style={{ fontFamily: SANS }}>
+                  <span className="text-xs sm:text-sm tracking-[0.25em] font-semibold text-black uppercase" style={{ fontFamily: SANS }}>
                     From Our Hands, Into Your Story
                   </span>
                 </div>
 
                 <h2
-                  className="font-normal leading-[1.1] tracking-tight"
+                  className="font-normal leading-[1.15] tracking-tight"
                   style={{
                     fontFamily: SANS,
-                    fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
+                    fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)',
                     color: DARK
                   }}
                 >
@@ -255,20 +255,20 @@ const About = () => {
                 </h2>
               </div>
 
-              <div className="text-[18px] lg:text-[19px] text-black leading-relaxed font-normal space-y-6" style={{ fontFamily: SANS }}>
+              <div className="text-sm sm:text-base text-black leading-relaxed font-normal space-y-5" style={{ fontFamily: SANS }}>
 
                 <motion.p
-                  className="text-[20px] lg:text-[22px] text-black font-normal"
+                  className="text-base sm:text-lg text-black font-normal"
                   style={{ fontFamily: SANS }}
                   {...fadeUp}
                 >
                   We created VELOURAZ for women who believe jewellery is more than something you wear it is something you feel, remember, and make your own.
                 </motion.p>
 
-                <motion.ul className="space-y-2 pt-1 border-l-2 border-[#C8A97A]/40 pl-6" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.05 }}>
-                  <li className="text-[18px] sm:text-[19px] text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who dresses for herself.</li>
-                  <li className="text-[18px] sm:text-[19px] text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who finds beauty in the everyday.</li>
-                  <li className="text-[18px] sm:text-[19px] text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who carries memories from places she has been and dreams of places yet to discover.</li>
+                <motion.ul className="space-y-1.5 pt-1 border-l-2 border-[#C8A97A]/40 pl-5" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.05 }}>
+                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who dresses for herself.</li>
+                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who finds beauty in the everyday.</li>
+                  <li className="text-sm sm:text-base text-black italic font-normal" style={{ fontFamily: SANS }}>For the woman who carries memories from places she has been and dreams of places yet to discover.</li>
                 </motion.ul>
 
                 <motion.p style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.1 }}>
@@ -276,7 +276,7 @@ const About = () => {
                 </motion.p>
 
                 <motion.p
-                  className="text-[19px] lg:text-[21px] font-semibold text-black"
+                  className="text-base sm:text-lg font-semibold text-black"
                   style={{ fontFamily: SANS }}
                   {...fadeUp}
                   transition={{ delay: 0.15 }}
@@ -292,14 +292,14 @@ const About = () => {
                   And as founders, perhaps the most beautiful part of our journey is seeing where those pieces go next.
                 </motion.p>
 
-                <motion.div className="space-y-2 pt-4 border-t border-[#D8CBBE]/30" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.3 }}>
-                  <p className="text-[21px] lg:text-[23px] font-semibold text-black" style={{ fontFamily: SANS }}>
+                <motion.div className="space-y-1.5 pt-3 border-t border-[#D8CBBE]/30" style={{ fontFamily: SANS }} {...fadeUp} transition={{ delay: 0.3 }}>
+                  <p className="text-base sm:text-lg lg:text-xl font-semibold text-black" style={{ fontFamily: SANS }}>
                     From our hands, into your story.
                   </p>
-                  <p className="text-[19px] lg:text-[21px] italic text-black font-medium" style={{ fontFamily: SANS }}>
+                  <p className="text-base sm:text-lg italic text-black font-medium" style={{ fontFamily: SANS }}>
                     Our journey inspired VELOURAZ.
                   </p>
-                  <p className="text-[19px] lg:text-[21px] italic text-black font-medium" style={{ fontFamily: SANS }}>
+                  <p className="text-base sm:text-lg italic text-black font-medium" style={{ fontFamily: SANS }}>
                     Now, we can’t wait to see where yours takes it.
                   </p>
                 </motion.div>
@@ -336,19 +336,19 @@ const About = () => {
 
       {/* ── SECTION 3: SIGN-OFF ───────────────────────────────── */}
       <section className="border-t border-[#D8CBBE]/30" style={{ background: CREAM }}>
-        <div className="max-w-[1320px] mx-auto px-6 py-14 lg:py-20">
+        <div className="max-w-[1320px] mx-auto px-6 py-10 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
 
             {/* Founders Closing Column */}
-            <motion.div className="lg:col-span-8 space-y-4" {...fadeUp}>
-              <span className="text-[17px] tracking-[0.25em] uppercase font-semibold text-black" style={{ fontFamily: SANS }}>
+            <motion.div className="lg:col-span-8 space-y-3" {...fadeUp}>
+              <span className="text-xs sm:text-sm tracking-[0.2em] uppercase font-semibold text-black" style={{ fontFamily: SANS }}>
                 With Love,
               </span>
               <p
                 className="italic font-normal leading-none"
                 style={{
                   fontFamily: SANS,
-                  fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.75rem)',
                   color: CRIMSON
                 }}
               >
@@ -356,7 +356,7 @@ const About = () => {
               </p>
               <div className="flex items-center gap-3">
                 <span className="w-6 h-[1px]" style={{ background: GOLD }} />
-                <span className="text-[17px] tracking-[0.2em] uppercase font-semibold text-black" style={{ fontFamily: SANS }}>
+                <span className="text-xs sm:text-sm tracking-[0.2em] uppercase font-semibold text-black" style={{ fontFamily: SANS }}>
                   Founders, VELOURAZ
                 </span>
               </div>
@@ -371,7 +371,7 @@ const About = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <div
-                className="text-[42px] lg:text-[50px] font-light tracking-[0.1em]"
+                className="text-2xl lg:text-3xl font-light tracking-[0.1em]"
                 style={{ fontFamily: SANS, color: '#000000', opacity: 0.25 }}
               >
                 VELOURAZ
