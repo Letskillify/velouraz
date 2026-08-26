@@ -46,7 +46,6 @@ const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -69,13 +68,11 @@ const Blog = () => {
     fetchBlogs();
   }, []);
 
-  const categories = ['All', 'Jewellery Care', 'Trends', 'Craftsmanship', 'Style Guide'];
-
   const filteredBlogs = blogs.filter(blog => {
-    const matchesSearch = blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = activeCategory === 'All' || blog.category === activeCategory;
-    return matchesSearch && matchesCategory;
+    const term = searchTerm.toLowerCase();
+    return blog.title?.toLowerCase().includes(term) || 
+           blog.excerpt?.toLowerCase().includes(term) ||
+           blog.category?.toLowerCase().includes(term);
   });
 
   const formatDate = (timestamp) => {
@@ -97,29 +94,11 @@ const Blog = () => {
         ]}
       />
 
-      {/* Filter Options & Search Bar */}
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 my-10 md:my-12">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#E7DEC8] pb-6">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap gap-2.5 justify-center md:justify-start">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.18em] transition-all duration-300 cursor-pointer ${
-                  activeCategory === cat
-                    ? 'bg-[#2e0e43] text-white shadow-md border border-[#2e0e43]'
-                    : 'bg-white/80 text-[#5C5248] border border-[#E7DEC8] hover:border-[#C8A97A] hover:text-[#2e0e43]'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Search Input */}
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C8A97A]" size={15} />
+      {/* Search Bar - Left Aligned */}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 my-8 md:my-10">
+        <div className="flex items-center justify-start border-b border-[#E7DEC8] pb-6">
+          <div className="relative w-full sm:w-80 md:w-96">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#C8A97A]" size={16} />
             <input
               type="text"
               placeholder="Search articles..."
@@ -219,12 +198,12 @@ const Blog = () => {
           <div className="text-center py-20 bg-white rounded-2xl border border-[#E7DEC8] p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)]">
             <BookOpen size={38} className="mx-auto text-[#C8A97A] mb-3" />
             <h3 className="text-2xl text-[#2A2623] mb-2 font-normal" style={{ fontFamily: SERIF }}>No journal entries found</h3>
-            <p className="text-xs md:text-sm text-[#6C6055] max-w-md mx-auto mb-6">Try broadening your search or selecting another category.</p>
+            <p className="text-xs md:text-sm text-[#6C6055] max-w-md mx-auto mb-6">Try broadening your search term.</p>
             <button
-              onClick={() => { setSearchTerm(''); setActiveCategory('All'); }}
+              onClick={() => setSearchTerm('')}
               className="px-8 py-3 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-full hover:bg-[#C8A97A] hover:text-[#2e0e43] transition-all cursor-pointer shadow-md"
             >
-              Reset Filters
+              Clear Search
             </button>
           </div>
         )}

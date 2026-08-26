@@ -2,60 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation, Autoplay } from 'swiper/modules';
 import { db } from '../Firebase';
-import { collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
-
-const initialUserReviews = [
-  {
-    id: 'review-mariya-vakil',
-    name: "Mariya Vakil",
-    customerName: "Mariya Vakil",
-    title: "Verified Buyer",
-    quote: "Thnk u velouraz for beautiful bracelet..Got so many compliments...love to buy from you again",
-    review: "Thnk u velouraz for beautiful bracelet..Got so many compliments...love to buy from you again",
-    rating: 5
-  },
-  {
-    id: 'review-rashida-bombaywala',
-    name: "Rashida Bombaywala",
-    customerName: "Rashida Bombaywala",
-    title: "Verified Buyer",
-    quote: "Thank u so much velouraz for this beautiful bracelet...really loved by everyone 💖 ❤️ 💗 quality is realy ultimate 👌",
-    review: "Thank u so much velouraz for this beautiful bracelet...really loved by everyone 💖 ❤️ 💗 quality is realy ultimate 👌",
-    rating: 5
-  },
-  {
-    id: 'review-arwa-kagdi',
-    name: "Arwa Kagdi",
-    customerName: "Arwa Kagdi",
-    title: "Verified Buyer",
-    quote: "Thankyou VELOURAZ for such pretty hoops that not only matched my outfit but looked soo aesthetic yet subtle n can go with any outfit of mine....in love with this hoop earring ❤️🫶",
-    review: "Thankyou VELOURAZ for such pretty hoops that not only matched my outfit but looked soo aesthetic yet subtle n can go with any outfit of mine....in love with this hoop earring ❤️🫶",
-    rating: 5
-  }
-];
-
-const fallbackReviews = [
-  ...initialUserReviews,
-  {
-    id: 'review-priya-s',
-    name: "Priya S.",
-    title: "Collector, Mumbai",
-    quote: "The quality is exceptional and designs are so unique. VelourAZ is my go-to for every occasion. Every piece I've received has exceeded my expectations.",
-    rating: 5
-  },
-  {
-    id: 'review-ananya-r',
-    name: "Ananya R.",
-    title: "Bride, Delhi",
-    quote: "Stunning pieces and super fast delivery. I felt the luxury in the packaging too it felt like opening a gift from a couture house.",
-    rating: 5
-  }
-];
+import 'swiper/css/autoplay';
 
 const CRIMSON = '#2e0e43';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
@@ -63,26 +16,11 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 const TestimonialSection = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const [reviewsList, setReviewsList] = useState(fallbackReviews);
+  const [reviewsList, setReviewsList] = useState([]);
 
   useEffect(() => {
-    const uploadAndFetchReviews = async () => {
+    const fetchReviewsFromFirestore = async () => {
       try {
-        // Upload provided customer reviews to Firebase Firestore "reviews" collection
-        for (const rev of initialUserReviews) {
-          const docRef = doc(db, "reviews", rev.id);
-          await setDoc(docRef, {
-            customerName: rev.customerName,
-            name: rev.name,
-            review: rev.review,
-            quote: rev.quote,
-            title: rev.title,
-            rating: rev.rating,
-            createdAt: new Date().toISOString()
-          }, { merge: true });
-        }
-
-        // Fetch all reviews live from Firebase Firestore
         const querySnapshot = await getDocs(collection(db, "reviews"));
         const fetched = [];
         querySnapshot.forEach((docSnap) => {
@@ -91,26 +29,21 @@ const TestimonialSection = () => {
             id: docSnap.id,
             name: data.customerName || data.name || "Happy Customer",
             title: data.title || "Verified Buyer",
+            date: data.date || "",
             quote: data.review || data.quote || "",
             rating: data.rating || 5
           });
         });
 
-        // Merge initial reviews with any fetched from Firestore so all 3 are guaranteed to display
-        const mergedMap = new Map();
-        initialUserReviews.forEach(r => mergedMap.set(r.id, r));
-        fetched.forEach(r => mergedMap.set(r.id, r));
-
-        const combinedList = Array.from(mergedMap.values());
-        if (combinedList.length > 0) {
-          setReviewsList(combinedList);
+        if (fetched.length > 0) {
+          setReviewsList(fetched);
         }
       } catch (error) {
-        console.error("Firebase reviews sync error:", error);
+        console.error("Firebase reviews fetch error:", error);
       }
     };
 
-    uploadAndFetchReviews();
+    fetchReviewsFromFirestore();
   }, []);
 
   return (
@@ -162,9 +95,14 @@ const TestimonialSection = () => {
         {/* Testimonials Carousel */}
         <div className="relative overflow-hidden">
           <Swiper
-            modules={[Navigation]}
+            modules={[Navigation, Autoplay]}
             spaceBetween={24}
             slidesPerView={1}
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
             navigation={{
               prevEl: prevRef.current,
               nextEl: nextRef.current,
@@ -179,45 +117,45 @@ const TestimonialSection = () => {
               1024: { slidesPerView: 3 },
               1280: { slidesPerView: 3 },
             }}
-            className="!overflow-visible"
+            className="!overflow-visible [&_.swiper-slide]:!h-auto"
           >
             {reviewsList.map((review, index) => (
-              <SwiperSlide key={review.id || index}>
+              <SwiperSlide key={review.id || index} className="!h-auto">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.09 }}
-                  className="p-8 lg:p-10 h-full flex flex-col justify-between border border-white/10 rounded-2xl hover:border-white/30 transition-all duration-300 shadow-lg"
-                  style={{ background: 'rgba(255,255,255,0.06)', minHeight: '260px' }}
+                  className="p-8 lg:p-10 h-full flex flex-col justify-between border border-white/20 bg-white rounded-2xl hover:border-[#E5C794] hover:shadow-2xl transition-all duration-300 shadow-md"
+                  style={{ minHeight: '260px' }}
                 >
                   {/* Stars */}
                   <div className="flex gap-1 mb-5">
                     {[...Array(review.rating || 5)].map((_, i) => (
-                      <Star key={i} size={13} className="fill-[#E5C794] text-[#E5C794]" />
+                      <Star key={i} size={13} className="fill-[#C5A059] text-[#C5A059]" />
                     ))}
                   </div>
 
                   <p
-                    className="text-white/90 text-[16px] lg:text-[17px] leading-relaxed italic font-light flex-grow"
+                    className="text-[#222222] text-[16px] lg:text-[17px] leading-relaxed italic font-light flex-grow"
                     style={{ fontFamily: SERIF }}
                   >
                     "{review.quote}"
                   </p>
 
-                  <div className="mt-7 pt-5 border-t border-white/10 flex items-center gap-3">
+                  <div className="mt-7 pt-5 border-t border-[#EAE3D8] flex items-center gap-3">
                     <div
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-[#2e0e43] shadow-md shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #E5C794, #FFF)', fontFamily: SERIF }}
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-sm shrink-0"
+                      style={{ background: 'linear-gradient(135deg, #2e0e43, #4a186a)', fontFamily: SERIF }}
                     >
-                      {review.name ? review.name.charAt(0) : 'V'}
+                      {review.name ? review.name.trim().charAt(0) : 'V'}
                     </div>
                     <div>
-                      <p className="text-[15px] tracking-wider font-semibold text-white uppercase">
-                        {review.name}
+                      <p className="text-[15px] tracking-wider font-normal text-[#2e0e43] uppercase">
+                        {review.name ? review.name.trim() : ''}
                       </p>
-                      <p className="text-[13px] text-white/50" style={{ fontFamily: SERIF }}>
-                        {review.title || 'Verified Buyer'}
+                      <p className="text-[13px] text-black" style={{ fontFamily: SERIF }}>
+                        {review.title || 'Verified Buyer'}{review.date ? ` • ${review.date}` : ''}
                       </p>
                     </div>
                   </div>

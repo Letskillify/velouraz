@@ -19,7 +19,7 @@ const fadeUp = {
 const About = () => {
   const breadcrumbLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About Us', href: '/about', active: true }
+    { name: 'Our Story', href: '/about', active: true }
   ];
 
   return (
@@ -27,7 +27,7 @@ const About = () => {
 
       {/* ── BREADCRUMB HERO ────────────────────────────────────── */}
       <AboutBreadcrumb
-        title="About Us"
+        title="Our Story"
         subtitle="About the Brand and our Story • The journey of Zahabiya & Alifiya."
         bgImage="https://res.cloudinary.com/dcjn4y284/image/upload/v1787401054/ABout_Us_Image_vrb2xe.png"
         links={breadcrumbLinks}
