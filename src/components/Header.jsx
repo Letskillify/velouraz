@@ -171,7 +171,7 @@ const LuxuryHeader = () => {
         {/* Compact Header Top Bar */}
         <div 
           className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between" 
-          style={{ height: scrolled ? '56px' : '64px', transition: 'height 0.3s ease' }}
+          style={{ height: scrolled ? '60px' : '72px', transition: 'height 0.3s ease' }}
         >
           {/* Left: Mobile Menu & Icon-only Search */}
           <div className="flex items-center gap-1 sm:gap-3 flex-1">
@@ -196,16 +196,16 @@ const LuxuryHeader = () => {
             </button>
           </div>
 
-          {/* Center: Larger Prominent Logo */}
-          <div className="flex-1 flex justify-center items-center">
-            <Link to="/" className="inline-block transition-transform hover:scale-102 active:scale-98">
+          {/* Center: Larger Prominent Luxury Logo */}
+          <div className="flex-1 flex justify-center items-center py-1">
+            <Link to="/" className="relative group inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]">
               <img 
                 src="/img/logo.png" 
                 alt="Velouraz" 
-                className="transition-all duration-300 object-contain drop-shadow-xs" 
+                className="transition-all duration-300 object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.08)]" 
                 style={{ 
-                  height: scrolled ? '38px' : '48px',
-                  maxHeight: '56px'
+                  height: scrolled ? '46px' : '58px',
+                  maxHeight: '68px'
                 }}
               />
             </Link>
@@ -301,7 +301,7 @@ const LuxuryHeader = () => {
               className="fixed left-0 top-0 bottom-0 z-[100] w-[88vw] max-w-sm flex flex-col bg-[#0E0B09] shadow-2xl"
             >
               <div className="flex items-center justify-between px-6 py-5 border-b border-[#C8A97A]/20">
-                <img src="/img/logo.png" alt="Velouraz" className="h-10 object-contain" />
+                <img src="/img/logo.png" alt="Velouraz" className="h-12 object-contain drop-shadow-xs" />
                 <button onClick={() => setMobileOpen(false)} className="p-2 text-white/60 hover:text-white rounded-full"><X size={20} /></button>
               </div>
               <div className="flex-1 overflow-y-auto px-6 py-4">

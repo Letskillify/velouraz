@@ -52,13 +52,7 @@ const Newsletter = () => {
 
             {/* Card Header */}
             <div className="space-y-3 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5C794]/20 border border-[#E5C794]/50 backdrop-blur-md shadow-sm">
-                <Sparkles size={14} className="text-[#F3E5AB]" />
-                <span className="text-[11px] font-bold tracking-[0.25em] uppercase text-[#F3E5AB]">
-                  VELOURAZ PRIVÉ
-                </span>
-              </div>
-
+              
               <h3 className="text-2xl sm:text-3xl font-light tracking-wide text-white drop-shadow-md">
                 Join the <span className="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#FFF8E7] to-[#E5C794]">Inner Circle</span>
               </h3>
