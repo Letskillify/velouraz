@@ -11,6 +11,7 @@ import { useStore } from '../hooks/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuickView from '../components/QuickView';
 import Breadcrumb from '../components/Breadcrumb';
+import AddToCartModal from '../components/AddToCartModal';
 
 const fallbackProducts = [
   {
@@ -122,6 +123,8 @@ const Shop = () => {
   const [cartLoadings, setCartLoadings] = useState({});
   const [wishlistLoadings, setWishlistLoadings] = useState({});
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [addModalProduct, setAddModalProduct] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Filter States
   const [priceLimit, setPriceLimit] = useState(100000);
@@ -260,7 +263,11 @@ const Shop = () => {
     e.stopPropagation();
     setCartLoadings(prev => ({ ...prev, [product.id]: true }));
     try {
-      await addToCart(product);
+      const success = await addToCart(product);
+      if (success) {
+        setAddModalProduct(product);
+        setIsAddModalOpen(true);
+      }
     } finally {
       setCartLoadings(prev => ({ ...prev, [product.id]: false }));
     }
@@ -837,6 +844,13 @@ const Shop = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Add To Cart Confirmation & Quantity Modal */}
+      <AddToCartModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        product={addModalProduct}
+      />
 
     </div>
   );

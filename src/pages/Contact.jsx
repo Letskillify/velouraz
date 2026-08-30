@@ -65,7 +65,7 @@ const Contact = () => {
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EAE3D8] shadow-[0_4px_25px_rgba(0,0,0,0.03)] space-y-6 flex-1">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C8A97A] block mb-1">
-                  ✦ VELOURAZ ATELIER
+                  ✦ VELOURAZ 
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#2e0e43] font-normal leading-tight">
                   Get in Touch
@@ -113,7 +113,7 @@ const Contact = () => {
                     <MapPin size={18} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Atelier Location</p>
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Our Location</p>
                     <p className="text-sm font-semibold text-[#2A2623]">783 Khatiwala tank, Indore 452014</p>
                     <p className="text-[11px] text-[#8C7B6C] mt-0.5">Handcrafted in the heart of artisanal heritage</p>
                   </div>
@@ -199,7 +199,7 @@ const Contact = () => {
                       Send a Message
                     </h3>
                     <p className="text-xs text-[#7B6D63] mt-0.5">
-                      Fill out the form below and our atelier team will respond promptly.
+                      Fill out the form below and our team will respond promptly.
                     </p>
                   </div>
                   <Sparkles size={20} className="text-[#C8A97A] hidden sm:block shrink-0" />

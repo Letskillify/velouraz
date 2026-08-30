@@ -89,7 +89,7 @@ const Orders = () => {
     return (
       <div className="min-h-screen bg-[#FDFAF5] flex flex-col items-center justify-center gap-3">
         <div className="w-10 h-10 border-2 border-[#2e0e43] border-t-transparent rounded-full animate-spin" />
-        <p className="text-base uppercase tracking-[0.3em] font-bold text-[#2e0e43]">Fetching Your Atelier Orders</p>
+        <p className="text-base uppercase tracking-[0.3em] font-bold text-[#2e0e43]">Fetching Your  Orders</p>
       </div>
     );
   }

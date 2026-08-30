@@ -12,7 +12,8 @@ import {
   User, Package, Heart, LogOut, ChevronRight, Settings,
   ShoppingBag, CreditCard, MapPin, Bell, Award, Crown,
   ArrowRight, ArrowLeft, FileText, Truck, Search, Plus, Edit2, Trash2,
-  CheckCircle2, Clock, Printer, X, ShieldCheck, Sparkles, Phone, Mail, Map, RefreshCw, Download
+  CheckCircle2, Clock, Printer, X, ShieldCheck, Sparkles, Phone, Mail, Map, RefreshCw, Download,
+  Home, Building2, Check
 } from "lucide-react";
 import { generateInvoicePDF } from "../utils/invoice";
 
@@ -1043,7 +1044,7 @@ const Account = () => {
         )}
       </AnimatePresence>
 
-      {/* MODAL 3: ADD/EDIT ADDRESS MODAL */}
+      {/* MODAL 3: COMPACT LUXURY ADD/EDIT ADDRESS MODAL */}
       <AnimatePresence>
         {showAddressModal && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
@@ -1055,164 +1056,192 @@ const Account = () => {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm"
             />
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full relative z-10 border border-[#D8CBBE]/40 shadow-2xl space-y-6"
+              exit={{ scale: 0.96, opacity: 0 }}
+              className="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full relative z-10 border border-[#D8CBBE]/50 shadow-2xl space-y-4"
             >
-              <div className="flex justify-between items-center border-b border-[#D8CBBE]/30 pb-4">
-                <h3 className="font-serif text-xl font-bold text-[#2A2623]">
-                  {editingAddrIndex !== null ? "Edit Delivery Address" : "Add New Delivery Address"}
-                </h3>
-                <button onClick={() => setShowAddressModal(false)} className="p-2 text-gray-400 hover:text-black">
-                  <X size={20} />
+              {/* Header */}
+              <div className="flex justify-between items-center border-b border-[#D8CBBE]/30 pb-3">
+                <div className="flex items-center gap-2">
+                  <MapPin size={18} className="text-[#C8A46A]" />
+                  <h3 className="font-serif text-lg font-bold text-[#2e0e43]">
+                    {editingAddrIndex !== null ? "Edit Delivery Address" : "Add Delivery Address"}
+                  </h3>
+                </div>
+                <button 
+                  onClick={() => setShowAddressModal(false)} 
+                  className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-black transition-colors"
+                >
+                  <X size={18} />
                 </button>
               </div>
 
-              <form onSubmit={handleSaveAddress} className="space-y-4">
-                <div className="flex gap-2">
-                  {["Home", "Work", "Other"].map((t) => (
-                    <button
-                      key={t}
-                      type="button"
-                      onClick={() => setAddrForm({ ...addrForm, type: t })}
-                      className={`flex-1 py-2 text-base font-bold rounded-lg border uppercase tracking-wider ${
-                        addrForm.type === t ? "bg-[#2e0e43] text-white border-[#2e0e43]" : "border-[#D8CBBE]/50 text-[#7B6D63]"
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
+              <form onSubmit={handleSaveAddress} className="space-y-3.5">
+                
+                {/* Row 1: Type Selection + Default Checkbox */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
+                  <div className="flex items-center gap-1.5">
+                    {["Home", "Work", "Other"].map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setAddrForm({ ...addrForm, type: t })}
+                        className={`px-3 py-1.5 rounded-lg border text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-1 ${
+                          addrForm.type === t 
+                            ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs" 
+                            : "border-[#D8CBBE] text-[#7B6D63] bg-[#FDFAF5] hover:border-[#2e0e43]"
+                        }`}
+                      >
+                        {t === "Home" && <Home size={12} />}
+                        {t === "Work" && <Building2 size={12} />}
+                        {t === "Other" && <MapPin size={12} />}
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+
+                  <label className="flex items-center gap-1.5 cursor-pointer text-sm font-medium text-[#7B6D63] hover:text-[#2e0e43]">
+                    <input
+                      type="checkbox"
+                      checked={addrForm.isDefault}
+                      onChange={(e) => setAddrForm({ ...addrForm, isDefault: e.target.checked })}
+                      className="accent-[#2e0e43] w-3.5 h-3.5 rounded"
+                    />
+                    <span>Set Default</span>
+                  </label>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Recipient Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={addrForm.name}
-                    onChange={(e) => setAddrForm({ ...addrForm, name: e.target.value })}
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
-                  />
-                </div>
+                {/* Row 2: Name & Primary Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-sans">
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      Recipient Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={addrForm.name}
+                      onChange={(e) => setAddrForm({ ...addrForm, name: e.target.value })}
+                      placeholder="Full Name"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3.5 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
+                    />
+                  </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Primary Phone *</label>
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      Primary Phone *
+                    </label>
                     <input
                       type="tel"
                       required
                       value={addrForm.phone}
                       onChange={(e) => setAddrForm({ ...addrForm, phone: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Alt Phone (Optional)</label>
-                    <input
-                      type="tel"
-                      value={addrForm.altPhone || ""}
-                      onChange={(e) => setAddrForm({ ...addrForm, altPhone: e.target.value })}
-                      placeholder="+91 98765 00000"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
+                      placeholder="10-digit number"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3.5 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Street Address *</label>
-                  <input
-                    type="text"
-                    required
-                    value={addrForm.address}
-                    onChange={(e) => setAddrForm({ ...addrForm, address: e.target.value })}
-                    placeholder="Street Name, Area, Locality"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-2.5 text-base font-medium outline-none focus:border-[#2e0e43]"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Flat / Building (Optional)</label>
+                {/* Row 3: Flat/House No & Landmark */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm font-sans">
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      Flat / House / Suite
+                    </label>
                     <input
                       type="text"
-                      value={addrForm.apartment || ""}
-                      onChange={(e) => setAddrForm({ ...addrForm, apartment: e.target.value })}
+                      value={addrForm.flat || addrForm.apartment || ""}
+                      onChange={(e) => setAddrForm({ ...addrForm, flat: e.target.value, apartment: e.target.value })}
                       placeholder="Flat 402, Building A"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3.5 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Landmark (Optional)</label>
+
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      Landmark (Optional)
+                    </label>
                     <input
                       type="text"
                       value={addrForm.landmark || ""}
                       onChange={(e) => setAddrForm({ ...addrForm, landmark: e.target.value })}
                       placeholder="Near City Mall"
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3.5 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">City *</label>
+                {/* Row 4: Street Address / Area */}
+                <div className="text-sm font-sans">
+                  <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                    Street Address / Area *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={addrForm.address}
+                    onChange={(e) => setAddrForm({ ...addrForm, address: e.target.value })}
+                    placeholder="Street name, colony or locality"
+                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3.5 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
+                  />
+                </div>
+
+                {/* Row 5: City, State, & Pincode */}
+                <div className="grid grid-cols-3 gap-2.5 text-sm font-sans">
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      City *
+                    </label>
                     <input
                       type="text"
                       required
                       value={addrForm.city}
                       onChange={(e) => setAddrForm({ ...addrForm, city: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
+                      placeholder="Mumbai"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">State</label>
-                    <input
-                      type="text"
-                      value={addrForm.state}
-                      onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Pincode *</label>
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      State *
+                    </label>
                     <input
                       type="text"
                       required
+                      value={addrForm.state}
+                      onChange={(e) => setAddrForm({ ...addrForm, state: e.target.value })}
+                      placeholder="Maharashtra"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold uppercase tracking-wider text-[#7B6D63] mb-1">
+                      Pincode *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      maxLength={6}
                       value={addrForm.pincode}
                       onChange={(e) => setAddrForm({ ...addrForm, pincode: e.target.value })}
-                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
+                      placeholder="400001"
+                      className="w-full bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl px-3 py-2 text-sm font-medium outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-[#2A2623] font-mono"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-[16px] font-bold text-[#7B6D63] uppercase">Delivery Instructions (Optional)</label>
-                  <input
-                    type="text"
-                    value={addrForm.deliveryNotes || ""}
-                    onChange={(e) => setAddrForm({ ...addrForm, deliveryNotes: e.target.value })}
-                    placeholder="e.g. Ring doorbell, leave at gate security"
-                    className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-3 py-2 text-base font-medium outline-none focus:border-[#2e0e43]"
-                  />
+                {/* Submit Action */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full py-3 bg-[#2e0e43] text-white text-sm font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#1A0829] transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer font-sans"
+                  >
+                    <Check size={16} />
+                    <span>Save Address</span>
+                  </button>
                 </div>
 
-                <label className="flex items-center gap-2 pt-1 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={addrForm.isDefault}
-                    onChange={(e) => setAddrForm({ ...addrForm, isDefault: e.target.checked })}
-                    className="accent-[#2e0e43]"
-                  />
-                  <span className="text-base text-[#7B6D63] font-semibold">Make this my default shipping address</span>
-                </label>
-
-                <button
-                  type="submit"
-                  className="w-full py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all mt-4"
-                >
-                  Save Address
-                </button>
               </form>
             </motion.div>
           </div>

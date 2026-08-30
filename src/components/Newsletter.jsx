@@ -101,7 +101,7 @@ const Newsletter = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4A96A] via-[#F8E7C4] to-[#C8A97A] text-black font-extrabold text-xs sm:text-sm tracking-[0.22em] uppercase hover:brightness-110 active:scale-[0.99] transition-all duration-300 shadow-[0_4px_25px_rgba(229,199,148,0.45)] hover:shadow-[0_6px_30px_rgba(243,229,171,0.65)] flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4A96A] via-[#F8E7C4] to-[#C8A97A] text-black font-extrabold text-sm sm:text-base tracking-[0.22em] uppercase hover:brightness-110 active:scale-[0.99] transition-all duration-300 shadow-[0_4px_25px_rgba(229,199,148,0.45)] hover:shadow-[0_6px_30px_rgba(243,229,171,0.65)] flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
@@ -113,7 +113,7 @@ const Newsletter = () => {
                     )}
                   </button>
 
-                  <p className="text-xs text-[#D4C5B0] text-center font-normal tracking-wide drop-shadow-sm">
+                  <p className="text-sm text-[#D4C5B0] text-center font-normal tracking-wide drop-shadow-sm">
                     By subscribing, you agree to our Terms & Privacy Policy.
                   </p>
                 </motion.form>

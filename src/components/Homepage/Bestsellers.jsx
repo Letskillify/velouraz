@@ -162,7 +162,7 @@ const BestSellers = () => {
             <h2
               className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"
             >
-              The Atelier <span className="italic font-normal text-[#2e0e43]">Bestsellers</span>
+              The  <span className="italic font-normal text-[#2e0e43]">Bestsellers</span>
             </h2>
             <div className="flex items-center justify-center gap-3 mt-3">
               <span className="w-8 h-[1px] bg-[#B58E58]/40" />

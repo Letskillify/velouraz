@@ -382,6 +382,14 @@ const SearchOverlayModal = ({ onClose }) => {
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
 
+    // Keydown listener for ESC key to dismiss search modal
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
     // Fetch initial products for search lookup
     setLoading(true);
     getDocs(collection(db, "products"))
@@ -392,7 +400,9 @@ const SearchOverlayModal = ({ onClose }) => {
       })
       .catch((err) => console.error("Search fetch error:", err))
       .finally(() => setLoading(false));
-  }, []);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   const searchResults = useMemo(() => {
     if (!queryStr.trim()) return [];
@@ -401,9 +411,10 @@ const SearchOverlayModal = ({ onClose }) => {
       const nameMatch = p.name?.toLowerCase().includes(q);
       const catMatch = p.category?.toLowerCase().includes(q);
       const matMatch = p.material?.toLowerCase().includes(q);
+      const countryMatch = p.country?.toLowerCase().includes(q) || p.origin?.toLowerCase().includes(q);
       const tagMatch = Array.isArray(p.tags) && p.tags.some(t => String(t).toLowerCase().includes(q));
-      return nameMatch || catMatch || matMatch || tagMatch;
-    }).slice(0, 6);
+      return nameMatch || catMatch || matMatch || countryMatch || tagMatch;
+    }).slice(0, 8);
   }, [queryStr, products]);
 
   const handleSearchSubmit = (e) => {
@@ -415,117 +426,198 @@ const SearchOverlayModal = ({ onClose }) => {
   };
 
   const handleTagClick = (tag) => {
-    setQueryStr(tag);
-    navigate(`/shop?search=${encodeURIComponent(tag)}`);
+    const cleanTag = tag.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+    setQueryStr(cleanTag);
+    navigate(`/shop?search=${encodeURIComponent(cleanTag)}`);
     onClose();
   };
 
+  const handleCountryClick = (country) => {
+    setQueryStr(country);
+    navigate(`/shop?country=${encodeURIComponent(country)}`);
+    onClose();
+  };
+
+  const luxuryTrendingChips = [
+    { label: "💎 Kundan Chokers", query: "Kundan" },
+    { label: "✨ Diamond Rings", query: "Rings" },
+    { label: "👑 Royal Bangles", query: "Bangles" },
+    { label: "🌊 Pearl Edit", query: "Pearls" },
+    { label: "🥇 Gold Plated", query: "Gold Plated" },
+    { label: "💍 Solitaires", query: "Solitaire font" },
+  ];
+
+  const countrySuggestions = [
+    { name: "India", flag: "🇮🇳" },
+    { name: "Japan", flag: "🇯🇵" },
+    { name: "Turkey", flag: "🇹🇷" },
+    { name: "South Korea", flag: "🇰🇷" },
+    { name: "France", flag: "🇫🇷" },
+    { name: "Thailand", flag: "🇹🇭" },
+    { name: "United Arab Emirates", flag: "🇦🇪" },
+    { name: "Italy", flag: "🇮🇹" },
+    { name: "United Kingdom", flag: "🇬🇧" },
+    { name: "Spain", flag: "🇪🇸" },
+  ];
+
   return (
     <div className="fixed inset-0 z-[200] flex flex-col justify-start">
-      {/* Backdrop */}
+      {/* Dark Obsidian Glass Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black/80 backdrop-blur-md"
+        className="fixed inset-0 bg-[#0B0711]/90 backdrop-blur-2xl"
       />
 
       {/* Main Search Panel */}
       <motion.div
-        initial={{ opacity: 0, y: -40 }}
+        initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -40 }}
-        transition={{ type: "spring", damping: 25, stiffness: 280 }}
-        className="relative z-10 w-full bg-white shadow-2xl border-b border-gray-100"
+        exit={{ opacity: 0, y: -30 }}
+        transition={{ type: "spring", damping: 26, stiffness: 300 }}
+        className="relative z-10 w-full bg-gradient-to-b from-[#14061F] via-[#100419] to-[#0B0212] border-b border-[#C8A46A]/30 text-[#F3ECE1] shadow-[0_30px_90px_rgba(0,0,0,0.9)] overflow-hidden"
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-          {/* Header & Input Form */}
-          <form onSubmit={handleSearchSubmit} className="relative flex items-center">
-            <Search size={22} className="absolute left-4 text-[#2e0e43]" />
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Search jewellery, bangles, necklaces, Kundan..."
-              value={queryStr}
-              onChange={(e) => setQueryStr(e.target.value)}
-              className="w-full pl-12 pr-12 py-3.5 sm:py-4 bg-gray-50 border border-gray-200 rounded-2xl text-base sm:text-lg text-gray-900 outline-none focus:border-[#2e0e43] focus:bg-white transition-all shadow-inner"
-            />
-            {queryStr ? (
-              <button
-                type="button"
-                onClick={() => setQueryStr('')}
-                className="absolute right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full cursor-pointer"
-              >
-                <X size={18} />
-              </button>
-            ) : (
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6">
+          
+          {/* Top Utility Header */}
+          <div className="flex items-center justify-between border-b border-[#3A1B54]/60 pb-2.5 sm:pb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-[#C8A46A] animate-pulse" />
+              <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[#C8A46A]">
+                Velouraz Search 
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-block text-xs font-mono uppercase tracking-wider text-[#C5B39A]/60 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full">
+                Press ESC to exit
+              </span>
               <button
                 type="button"
                 onClick={onClose}
-                className="absolute right-4 p-1.5 text-gray-400 hover:text-gray-700 rounded-full cursor-pointer"
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/5 border border-[#C8A46A]/30 hover:border-[#C8A46A] hover:bg-[#C8A46A] hover:text-[#14061F] transition-all flex items-center justify-center text-[#E5C794] shadow-xs cursor-pointer"
+                aria-label="Close search"
               >
-                <X size={20} />
+                <X size={16} className="sm:w-[18px] sm:h-[18px]" />
+              </button>
+            </div>
+          </div>
+
+          {/* Luxury Input Form */}
+          <form onSubmit={handleSearchSubmit} className="relative flex items-center group">
+            <Search className="absolute left-3.5 sm:left-5 w-4 h-4 sm:w-6 sm:h-6 text-[#C8A46A] group-focus-within:text-[#E5C794] transition-colors" />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Search by collection, country, gemstone, metal, or style..."
+              value={queryStr}
+              onChange={(e) => setQueryStr(e.target.value)}
+              className="w-full pl-10 sm:pl-14 pr-10 sm:pr-14 py-3 sm:py-5 bg-white/[0.05] border border-[#C8A46A]/40 rounded-xl sm:rounded-2xl text-sm sm:text-xl font-serif text-white placeholder:text-[#C5B39A]/50 outline-none focus:border-[#E5C794] focus:bg-white/[0.08] focus:ring-2 focus:ring-[#C8A46A]/30 transition-all font-light shadow-inner"
+            />
+            {queryStr && (
+              <button
+                type="button"
+                onClick={() => setQueryStr('')}
+                className="absolute right-3 sm:right-4 p-1.5 text-[#C5B39A] hover:text-white rounded-full transition-colors cursor-pointer"
+              >
+                <X size={18} />
               </button>
             )}
           </form>
 
-          {/* Trending Tags */}
-          <div className="flex items-center flex-wrap gap-2 pt-1">
-            <span className="text-xs uppercase font-bold tracking-widest text-gray-400 flex items-center gap-1 mr-1">
-              <Sparkles size={13} className="text-[#C8A97A]" /> Popular:
-            </span>
-            {trendingTags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => handleTagClick(tag)}
-                className="px-3 py-1 bg-gray-100 hover:bg-[#2e0e43] hover:text-white rounded-full text-xs font-semibold text-gray-700 transition-all cursor-pointer"
-              >
-                {tag}
-              </button>
-            ))}
+          {/* Curated Trending Chips & Country Collections */}
+          <div className="space-y-3">
+            
+            {/* World Edit Country Suggestions */}
+            <div className="space-y-1.5">
+              <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#C8A46A] flex items-center gap-1.5">
+                <Globe2 size={13} className="text-[#C8A46A]" /> Explore Country Collections (World Edit):
+              </span>
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
+                {countrySuggestions.map((c) => (
+                  <button
+                    key={c.name}
+                    type="button"
+                    onClick={() => handleCountryClick(c.name)}
+                    className="shrink-0 px-3 py-1 sm:px-3.5 sm:py-1.5 bg-[#2e0e43]/40 hover:bg-[#C8A46A] hover:text-[#14061F] border border-[#C8A46A]/40 rounded-full text-xs sm:text-sm font-sans font-medium text-[#F0D5A8] transition-all duration-300 cursor-pointer shadow-xs flex items-center gap-1.5 whitespace-nowrap"
+                  >
+                    <span>{c.flag}</span>
+                    <span>{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Popular Product Searches */}
+            <div className="space-y-1.5">
+              <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#C5B39A]/80 block">
+                Popular Styles:
+              </span>
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
+                {luxuryTrendingChips.map((chip) => (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    onClick={() => handleTagClick(chip.query)}
+                    className="shrink-0 px-3 py-1 sm:px-3.5 sm:py-1.5 bg-white/5 hover:bg-[#C8A46A] hover:text-[#14061F] border border-[#C8A46A]/20 rounded-full text-xs sm:text-sm font-sans font-medium text-[#E5C794] transition-all duration-300 cursor-pointer shadow-xs whitespace-nowrap"
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
           </div>
 
           {/* Live Search Results Preview */}
           {queryStr.trim() !== '' && (
-            <div className="space-y-4 pt-2 border-t border-gray-100 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-[#3A1B54]/70 max-h-[60vh] sm:max-h-[55vh] overflow-y-auto pr-1">
+              
               <div className="flex items-center justify-between">
-                <span className="text-xs uppercase font-bold tracking-widest text-gray-500">
-                  Matching Products ({searchResults.length})
+                <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#E5C794]">
+                  Matching Creations ({searchResults.length})
                 </span>
                 <button
                   onClick={handleSearchSubmit}
-                  className="text-xs font-bold text-[#2e0e43] hover:underline flex items-center gap-1 cursor-pointer"
+                  className="text-xs sm:text-sm font-bold text-[#E5C794] hover:text-white transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer font-sans"
                 >
-                  View all in Shop <ArrowRight size={12} />
+                  <span>View All in Boutique</span>
+                  <ArrowRight size={13} className="sm:w-3.5 sm:h-3.5" />
                 </button>
               </div>
 
               {loading ? (
-                <div className="py-8 text-center text-gray-400 flex items-center justify-center gap-2">
-                  <Loader2 className="animate-spin text-[#2e0e43]" size={20} /> Searching catalogue...
+                <div className="py-8 text-center text-[#C5B39A] flex items-center justify-center gap-2 font-serif text-sm sm:text-base">
+                  <Loader2 className="animate-spin text-[#C8A46A]" size={20} />
+                  <span>Searching catalogue...</span>
                 </div>
               ) : searchResults.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
                   {searchResults.map((item) => (
                     <Link
                       key={item.id}
                       to={`/product/${item.id}`}
                       onClick={onClose}
-                      className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#2e0e43]/30 hover:bg-gray-50/80 transition-all group"
+                      className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/[0.04] border border-[#C8A46A]/20 hover:border-[#C8A46A] hover:bg-white/[0.08] transition-all duration-300 flex items-center gap-3 group"
                     >
-                      <img
-                        src={item.image || 'img/jewellery/j.png'}
-                        alt={item.name}
-                        className="w-14 h-14 object-cover rounded-lg bg-gray-100 shrink-0 group-hover:scale-105 transition-transform"
-                      />
-                      <div className="overflow-hidden">
-                        <p className="text-xs font-bold text-gray-900 truncate leading-snug group-hover:text-[#2e0e43]">
+                      <div className="w-14 h-16 sm:w-16 sm:h-18 rounded-lg sm:rounded-xl overflow-hidden bg-[#1A0829] border border-[#C8A46A]/30 shrink-0">
+                        <img
+                          src={item.image || '/img/jewellery/j.png'}
+                          alt={item.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+
+                      <div className="overflow-hidden space-y-1 min-w-0">
+                        <span className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-[#C8A46A] block truncate">
+                          {item.category || "Velouraz"}
+                        </span>
+                        <h4 className="text-sm font-serif text-white group-hover:text-[#E5C794] transition-colors truncate font-medium">
                           {item.name}
-                        </p>
-                        <p className="text-[11px] text-gray-500 mt-0.5">{item.category}</p>
-                        <p className="text-xs font-bold text-[#2e0e43] mt-1">
+                        </h4>
+                        <p className="text-sm font-sans font-bold text-[#E5C794]">
                           ₹{Number(item.price || 0).toLocaleString()}
                         </p>
                       </div>
@@ -533,18 +625,22 @@ const SearchOverlayModal = ({ onClose }) => {
                   ))}
                 </div>
               ) : (
-                <div className="py-8 text-center bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 font-medium">No direct matches found for "{queryStr}"</p>
+                <div className="py-10 text-center bg-white/[0.03] border border-[#3A1B54] rounded-2xl space-y-2">
+                  <p className="text-base text-[#C5B39A] font-serif">
+                    No direct creation matches found for "{queryStr}"
+                  </p>
                   <button
                     onClick={handleSearchSubmit}
-                    className="mt-2 text-xs font-bold text-[#2e0e43] underline cursor-pointer"
+                    className="text-sm font-bold text-[#E5C794] hover:underline uppercase tracking-wider font-sans cursor-pointer"
                   >
-                    Search full catalogue in Shop
+                    Search Full Catalogue in Boutique →
                   </button>
                 </div>
               )}
+
             </div>
           )}
+
         </div>
       </motion.div>
     </div>
