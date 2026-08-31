@@ -18,7 +18,7 @@ import {
 import { generateInvoicePDF } from "../utils/invoice";
 
 const Account = () => {
-  const { user, logout, deleteAccount } = useAuth();
+  const { user, logout, deleteAccount, changePassword } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("dashboard"); // 'dashboard' | 'orders' | 'track' | 'addresses' | 'profile' | 'invoices'
@@ -57,7 +57,41 @@ const Account = () => {
   const [profileUpdating, setProfileUpdating] = useState(false);
   const [profileMessage, setProfileMessage] = useState("");
 
+  // Change Password State
+  const [passForm, setPassForm] = useState({
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [passLoading, setPassLoading] = useState(false);
+  const [passMessage, setPassMessage] = useState("");
+  const [passError, setPassError] = useState("");
+
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setPassError("");
+    setPassMessage("");
+    if (passForm.newPassword !== passForm.confirmPassword) {
+      setPassError("New passwords do not match.");
+      return;
+    }
+    if (passForm.newPassword.length < 6) {
+      setPassError("Password must be at least 6 characters long.");
+      return;
+    }
+    setPassLoading(true);
+    try {
+      await changePassword(passForm.newPassword);
+      setPassMessage("Password updated successfully!");
+      setPassForm({ newPassword: "", confirmPassword: "" });
+    } catch (err) {
+      console.error("Change password error:", err);
+      setPassError(err.message || "Failed to update password.");
+    } finally {
+      setPassLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!user) {
@@ -845,11 +879,67 @@ const Account = () => {
                     <button
                       type="submit"
                       disabled={profileUpdating}
-                      className="px-6 py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all"
+                      className="px-6 py-3 bg-[#2e0e43] text-white text-base font-bold uppercase tracking-widest rounded-xl hover:bg-[#2A2623] transition-all cursor-pointer"
                     >
                       {profileUpdating ? "Saving Changes..." : "Save Profile Details"}
                     </button>
                   </form>
+
+                  {/* Change Password Section */}
+                  <div className="pt-6 border-t border-[#D8CBBE]/30 space-y-4 max-w-lg">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck size={20} className="text-[#2e0e43]" />
+                      <h4 className="font-serif text-lg font-bold text-[#2A2623]">Security & Password Reset</h4>
+                    </div>
+
+                    {passMessage && (
+                      <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm font-semibold flex items-center gap-2">
+                        <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                        <span>{passMessage}</span>
+                      </div>
+                    )}
+
+                    {passError && (
+                      <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-sm font-semibold flex items-center gap-2">
+                        <X size={16} className="text-rose-600 shrink-0" />
+                        <span>{passError}</span>
+                      </div>
+                    )}
+
+                    <form onSubmit={handleChangePassword} className="space-y-4">
+                      <div className="space-y-1.5">
+                        <label className="text-[14px] font-bold uppercase tracking-wider text-[#7B6D63]">New Password</label>
+                        <input
+                          type="password"
+                          required
+                          value={passForm.newPassword}
+                          onChange={(e) => setPassForm({ ...passForm, newPassword: e.target.value })}
+                          placeholder="••••••••"
+                          className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#2e0e43] transition-all font-medium text-[#2A2623]"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label className="text-[14px] font-bold uppercase tracking-wider text-[#7B6D63]">Confirm New Password</label>
+                        <input
+                          type="password"
+                          required
+                          value={passForm.confirmPassword}
+                          onChange={(e) => setPassForm({ ...passForm, confirmPassword: e.target.value })}
+                          placeholder="••••••••"
+                          className="w-full bg-[#FDFAF5] border border-[#D8CBBE]/60 rounded-xl px-4 py-3 text-base outline-none focus:border-[#2e0e43] transition-all font-medium text-[#2A2623]"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={passLoading}
+                        className="px-6 py-3 bg-[#2A2623] text-white text-sm font-bold uppercase tracking-widest rounded-xl hover:bg-[#2e0e43] transition-all cursor-pointer shadow-sm disabled:opacity-50"
+                      >
+                        {passLoading ? "Updating Password..." : "Update Security Password"}
+                      </button>
+                    </form>
+                  </div>
 
                   {/* Danger Zone */}
                   <div className="pt-6 border-t border-[#D8CBBE]/30">

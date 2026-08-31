@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from '../components/useAuth';
 import { db } from '../components/Firebase';
-import { doc, setDoc, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, collection, onSnapshot, getDocs, writeBatch } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
 const StoreContext = createContext(null);
@@ -179,6 +179,28 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+  const clearCart = async () => {
+    if (user) {
+      try {
+        const snap = await getDocs(collection(db, "users", user.uid, "cart"));
+        const batch = writeBatch(db);
+        snap.docs.forEach((docSnap) => {
+          batch.delete(docSnap.ref);
+        });
+        await batch.commit();
+        setCartItems([]);
+        return true;
+      } catch (error) {
+        console.error("Error clearing cart in Firestore:", error);
+        return false;
+      }
+    } else {
+      localStorage.removeItem('cart');
+      setCartItems([]);
+      return true;
+    }
+  };
+
   const isInCart = (productId) => cartItems.some(i => i.id === productId);
   const isInWishlist = (productId) => wishlistItems.some(i => i.id === productId);
 
@@ -191,6 +213,7 @@ export const StoreProvider = ({ children }) => {
       addToCart, 
       updateCartQuantity,
       removeFromCart,
+      clearCart,
       addToWishlist, 
       isInCart, 
       isInWishlist 

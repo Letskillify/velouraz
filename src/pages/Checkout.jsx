@@ -28,12 +28,17 @@ import {
   Home,
   Building2,
   Tag,
-  ArrowRight
+  ArrowRight,
+  TicketPercent,
+  X
 } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
+import { sendOrderEmails } from "../services/emailService";
+import { createShiprocketOrder } from "../services/shiprocketService";
+import { validateCoupon } from "../services/couponService";
 
 const Checkout = () => {
-  const { cartItems } = useStore();
+  const { cartItems, clearCart } = useStore();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -47,10 +52,16 @@ const Checkout = () => {
   const [selectedSavedIndex, setSelectedSavedIndex] = useState(null);
   const [isNewAddress, setIsNewAddress] = useState(false);
 
-  // Buy Now context
-  const buyNowItem = location.state?.buyNowItem;
+  // Buy Now context state
+  const [buyNowItem, setBuyNowItem] = useState(location.state?.buyNowItem || null);
   const isBuyNow = Boolean(buyNowItem);
   const checkoutItems = isBuyNow ? [buyNowItem] : cartItems;
+
+  useEffect(() => {
+    if (location.state?.buyNowItem) {
+      setBuyNowItem(location.state.buyNowItem);
+    }
+  }, [location.state]);
 
   // Comprehensive Form State
   const [formData, setFormData] = useState({
@@ -127,13 +138,54 @@ const Checkout = () => {
 
   const [stockStatus, setStockStatus] = useState({});
 
+  // Coupon State
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState("");
+  const [couponSuccess, setCouponSuccess] = useState("");
+
   // Calculate totals
   const subtotal = checkoutItems.reduce(
     (sum, item) => sum + Number(item.price || 0) * (item.quantity || 1),
     0
   );
   const shippingFee = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
-  const total = subtotal + shippingFee;
+  const discountAmount = appliedCoupon ? Number(appliedCoupon.discountAmount || 0) : 0;
+  const total = Math.max(0, subtotal + shippingFee - discountAmount);
+
+  const handleApplyCoupon = async (e) => {
+    if (e) e.preventDefault();
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponError("");
+    setCouponSuccess("");
+    try {
+      const res = await validateCoupon(couponCode, subtotal);
+      if (res.valid) {
+        setAppliedCoupon({
+          code: res.coupon.code,
+          discountAmount: res.discountAmount,
+          coupon: res.coupon,
+        });
+        setCouponSuccess(res.message);
+      } else {
+        setCouponError(res.message);
+      }
+    } catch (err) {
+      console.error("Coupon error:", err);
+      setCouponError("Failed to apply coupon.");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponSuccess("");
+    setCouponError("");
+  };
 
   useEffect(() => {
     const checkStock = async () => {
@@ -252,6 +304,17 @@ const Checkout = () => {
         type: formData.type,
       };
 
+      // 2. Register Order with Shiprocket Logistics
+      const shiprocketResult = await createShiprocketOrder({
+        customerName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        shippingAddress: fullShippingAddress,
+        items: checkoutItems,
+        totalAmount: total,
+        paymentMethod,
+      });
+
       const orderData = {
         userId: user?.uid || "guest",
         customerName: formData.name,
@@ -267,18 +330,39 @@ const Checkout = () => {
         })),
         subtotal,
         shippingFee,
+        discountAmount,
+        couponDetails: appliedCoupon ? {
+          code: appliedCoupon.code,
+          discountAmount: appliedCoupon.discountAmount,
+        } : null,
         totalAmount: total,
         paymentMethod,
         paymentStatus: paymentMethod === "razorpay" ? "Paid" : "Pending",
         paymentDetails,
         orderStatus: "Processing",
+        shiprocketOrderId: shiprocketResult.shiprocketOrderId,
+        trackingNumber: shiprocketResult.awbNumber,
+        courierName: shiprocketResult.courierName,
         createdAt: serverTimestamp(),
         orderDate: new Date().toISOString()
       };
 
       const docRef = await addDoc(collection(db, "orders"), orderData);
+      const finalCreatedOrder = { id: docRef.id, ...orderData };
 
-      // 2. Save user address if saveToAccount is checked or new address added
+      // 3. Clear Shopping Cart & Buy Now State
+      setBuyNowItem(null);
+      if (typeof window !== 'undefined' && window.history?.replaceState) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+      if (clearCart) {
+        await clearCart();
+      }
+
+      // 4. Send Automated EmailJS Notifications (User Confirmation & Admin Alert)
+      sendOrderEmails(finalCreatedOrder).catch(err => console.error("EmailJS dispatch error:", err));
+
+      // 5. Save user address if saveToAccount is checked or new address added
       if (user?.uid) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
@@ -302,7 +386,6 @@ const Checkout = () => {
         };
 
         if (formData.saveToAccount && isNewAddress) {
-          // Add to saved addresses if not duplicate
           const exists = currentSaved.some(a => a.address === newAddrObj.address && a.pincode === newAddrObj.pincode);
           if (!exists) {
             currentSaved.push(newAddrObj);
@@ -316,7 +399,7 @@ const Checkout = () => {
         }, { merge: true });
       }
 
-      setOrderSuccess({ id: docRef.id, ...orderData });
+      setOrderSuccess(finalCreatedOrder);
     } catch (err) {
       console.error("Order creation error:", err);
       alert("Failed to place order. Please try again.");
@@ -344,12 +427,14 @@ const Checkout = () => {
         return;
       }
 
+      const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey";
+
       const options = {
-        key: "rzp_test_VelourazDummyKey",
+        key: razorpayKey,
         amount: total * 100, // in paise
         currency: "INR",
         name: "Velouraz Jewellery",
-        description: "High Jewellery Order Payment",
+        description: "Haute Joaillerie Order Payment",
         image: "/img/logo.png",
         handler: function (response) {
           executeOrderCreation({
@@ -364,7 +449,7 @@ const Checkout = () => {
           contact: formData.phone,
         },
         theme: {
-          color: "#2e0e43",
+          color: "#14111E",
         },
       };
 
@@ -383,61 +468,81 @@ const Checkout = () => {
   // Order Success Screen
   if (orderSuccess) {
     return (
-      <div className="min-h-screen bg-[#F8F4EF] font-sans text-[#2A2623] pt-32 pb-24 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] pt-32 pb-24 flex items-center justify-center p-4">
         <motion.div 
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-2xl w-full bg-white rounded-3xl border border-[#D8CBBE]/60 p-8 sm:p-12 text-center shadow-xl space-y-6 relative overflow-hidden"
+          className="max-w-2xl w-full bg-white rounded-3xl border border-[#E5D7C5] p-8 sm:p-12 text-center shadow-xl space-y-6 relative overflow-hidden"
         >
-          <div className="w-20 h-20 rounded-full bg-[#2e0e43]/10 text-[#2e0e43] border border-[#2e0e43]/30 flex items-center justify-center mx-auto shadow-inner">
-            <CheckCircle2 size={44} />
+          <div className="w-20 h-20 rounded-full bg-[#14111E]/10 text-[#14111E] border border-[#14111E]/30 flex items-center justify-center mx-auto shadow-inner">
+            <CheckCircle2 size={44} className="text-[#C8A46A]" />
           </div>
 
           <div className="space-y-2">
-            <span className="text-sm uppercase font-bold tracking-[0.25em] text-[#C8A46A] block">
-              Order Successfully Confirmed
+            <span className="text-xs uppercase font-bold tracking-[0.25em] text-[#C8A46A] block">
+              Order Confirmed & Email Receipt Sent
             </span>
-            <h1 className="font-serif text-3xl sm:text-4xl text-[#2e0e43] font-normal">
+            <h1 className="font-serif text-3xl sm:text-4xl text-[#14111E] font-normal">
               Thank You for Your Order
             </h1>
-            <p className="text-sm text-[#7B6D63] font-serif leading-relaxed max-w-md mx-auto">
-              Order Reference <span className="font-bold text-[#2A2623] font-mono">#{orderSuccess.id.slice(0, 10).toUpperCase()}</span> has been assigned to our master ateliers.
+            <p className="text-xs sm:text-sm text-[#786C60] font-serif leading-relaxed max-w-md mx-auto">
+              Order Reference <span className="font-bold text-[#14111E] font-mono">#{orderSuccess.id.slice(0, 10).toUpperCase()}</span> has been assigned to our master ateliers.
             </p>
           </div>
 
           {/* Detailed Summary Box */}
-          <div className="bg-[#FDFAF5] rounded-2xl p-6 border border-[#D8CBBE]/40 text-left space-y-3 text-sm">
-            <div className="flex justify-between border-b border-[#D8CBBE]/30 pb-2.5">
-              <span className="text-[#7B6D63] uppercase font-bold tracking-wider">Recipient Name</span>
-              <span className="font-semibold text-[#2A2623]">{orderSuccess.customerName}</span>
+          <div className="bg-[#F6F2EC] rounded-2xl p-6 border border-[#E5D7C5] text-left space-y-3 text-xs sm:text-sm">
+            <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Recipient Name</span>
+              <span className="font-semibold text-[#14111E]">{orderSuccess.customerName}</span>
             </div>
-            <div className="flex justify-between border-b border-[#D8CBBE]/30 pb-2.5">
-              <span className="text-[#7B6D63] uppercase font-bold tracking-wider">Delivery Destination</span>
-              <span className="font-medium text-[#2A2623] text-right max-w-xs">{orderSuccess.shippingAddress.fullAddress}</span>
+            <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Shiprocket AWB</span>
+              <span className="font-mono font-bold text-[#14111E]">{orderSuccess.trackingNumber}</span>
             </div>
-            <div className="flex justify-between border-b border-[#D8CBBE]/30 pb-2.5">
-              <span className="text-[#7B6D63] uppercase font-bold tracking-wider">Payment Method</span>
-              <span className="font-bold text-[#2e0e43] uppercase tracking-wider">{orderSuccess.paymentMethod}</span>
+            <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Delivery Destination</span>
+              <span className="font-medium text-[#14111E] text-right max-w-xs">{orderSuccess.shippingAddress.fullAddress}</span>
+            </div>
+            <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Payment Method</span>
+              <span className="font-bold text-[#14111E] uppercase tracking-wider">{orderSuccess.paymentMethod} ({orderSuccess.paymentStatus})</span>
             </div>
             <div className="flex justify-between items-baseline pt-1">
-              <span className="text-[#7B6D63] uppercase font-bold tracking-wider">Total Paid</span>
-              <span className="font-bold text-[#2e0e43] font-sans text-xl">₹{Number(orderSuccess.totalAmount).toLocaleString()}</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Total Paid</span>
+              <span className="font-bold text-[#14111E] font-sans text-xl">₹{Number(orderSuccess.totalAmount).toLocaleString()}</span>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3.5 pt-2">
             <button
-              onClick={() => navigate('/orders')}
-              className="flex-1 py-4 bg-[#2e0e43] text-white text-sm font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#1A0829] transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
+              onClick={() => {
+                const targetId = orderSuccess.id;
+                setOrderSuccess(null);
+                setBuyNowItem(null);
+                if (typeof window !== 'undefined' && window.history?.replaceState) {
+                  window.history.replaceState(null, "", window.location.pathname);
+                }
+                navigate(`/track-order?id=${targetId}`, { replace: true, state: {} });
+              }}
+              className="flex-1 py-4 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#251D33] transition-all cursor-pointer shadow-md flex items-center justify-center gap-2 border border-[#C8A46A]/30 font-sans"
             >
-              Track Order History
-              <ArrowRight size={16} />
+              <Truck size={16} className="text-[#C8A46A]" />
+              Track Shipment with Shiprocket
             </button>
             <button
-              onClick={() => navigate('/shop')}
-              className="flex-1 py-4 border border-[#D8CBBE] text-[#2A2623] text-sm font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#F4EEE8] transition-colors cursor-pointer font-sans"
+              onClick={() => {
+                setOrderSuccess(null);
+                setBuyNowItem(null);
+                if (typeof window !== 'undefined' && window.history?.replaceState) {
+                  window.history.replaceState(null, "", window.location.pathname);
+                }
+                navigate('/orders', { replace: true, state: {} });
+              }}
+              className="flex-1 py-4 border border-[#E5D7C5] text-[#14111E] text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#F6F2EC] transition-colors cursor-pointer font-sans"
             >
-              Continue Shopping
+              View Order History
             </button>
           </div>
         </motion.div>
@@ -447,15 +552,21 @@ const Checkout = () => {
 
   if (checkoutItems.length === 0) {
     return (
-      <div className="min-h-screen bg-[#F8F4EF] flex flex-col items-center justify-center p-6 text-center pt-32">
+      <div className="min-h-screen bg-[#FBF9F5] flex flex-col items-center justify-center p-6 text-center pt-32 font-sans text-[#14111E]">
         <Gem size={48} className="text-[#C8A46A] mb-4" />
-        <h2 className="font-serif text-3xl text-[#2e0e43]">Your shopping bag is empty.</h2>
-        <p className="text-sm text-[#7B6D63] mt-2 mb-8 max-w-sm">Please add pieces to your collection before proceeding to express checkout.</p>
+        <h2 className="font-serif text-3xl sm:text-4xl text-[#14111E] font-normal">Your shopping bag is empty.</h2>
+        <p className="text-xs sm:text-sm text-[#786C60] font-serif italic mt-2 mb-8 max-w-sm">Please add pieces to your collection before proceeding to express checkout.</p>
         <button
-          onClick={() => navigate('/shop')}
-          className="px-8 py-4 bg-[#2e0e43] text-white text-sm font-bold uppercase tracking-[0.22em] rounded-xl hover:bg-[#1A0829] transition-colors shadow-md"
+          onClick={() => {
+            setBuyNowItem(null);
+            if (typeof window !== 'undefined' && window.history?.replaceState) {
+              window.history.replaceState(null, "", window.location.pathname);
+            }
+            navigate('/shop', { replace: true, state: {} });
+          }}
+          className="px-8 py-4 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-[0.22em] rounded-xl hover:bg-[#251D33] transition-all shadow-md cursor-pointer border border-[#C8A46A]/30 font-sans"
         >
-          Explore Collections
+          Explore Boutique Catalogue
         </button>
       </div>
     );
@@ -894,6 +1005,55 @@ const Checkout = () => {
                 ))}
               </div>
 
+              {/* Coupon Code Section */}
+              <div className="space-y-2 pt-3 border-t border-[#D8CBBE]/30 font-sans">
+                <label className="text-xs font-bold uppercase tracking-wider text-[#2e0e43] flex items-center gap-1.5">
+                  <TicketPercent size={15} className="text-[#C8A46A]" />
+                  Privilege Coupon / Promo Code
+                </label>
+
+                {!appliedCoupon ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Enter Code (e.g. VELOURAZ10)"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      className="flex-1 px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl text-xs font-mono font-bold uppercase outline-none focus:border-[#2e0e43]"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={couponLoading || !couponCode.trim()}
+                      className="px-4 py-2.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#1A0829] transition-all disabled:opacity-50 cursor-pointer shrink-0"
+                    >
+                      {couponLoading ? "..." : "Apply"}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                      <div>
+                        <p className="font-bold font-mono text-sm">{appliedCoupon.code} APPLIED</p>
+                        <p className="text-[11px] text-emerald-700">Saved ₹{appliedCoupon.discountAmount.toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-emerald-700 hover:text-rose-600 p-1 font-bold cursor-pointer"
+                      title="Remove coupon"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                )}
+
+                {couponError && <p className="text-xs text-rose-600 font-semibold">{couponError}</p>}
+                {couponSuccess && !appliedCoupon && <p className="text-xs text-emerald-600 font-semibold">{couponSuccess}</p>}
+              </div>
+
               {/* Cost Calculations */}
               <div className="space-y-3.5 pt-4 border-t border-[#D8CBBE]/30 text-sm font-sans">
                 <div className="flex justify-between text-[#7B6D63]">
@@ -907,6 +1067,13 @@ const Checkout = () => {
                     {shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}
                   </span>
                 </div>
+
+                {appliedCoupon && (
+                  <div className="flex justify-between text-emerald-700 font-bold bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                    <span>Coupon Discount ({appliedCoupon.code})</span>
+                    <span>-₹{discountAmount.toLocaleString()}</span>
+                  </div>
+                )}
 
                 <div className="flex justify-between items-baseline text-base font-bold text-[#2A2623] pt-4 border-t border-[#D8CBBE]/40 font-sans">
                   <span>Total Amount</span>
@@ -931,11 +1098,7 @@ const Checkout = () => {
                 )}
                 <span className="text-center flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 leading-snug font-sans">
                   <span>{loading ? 'Processing Order...' : 'Complete Purchase'}</span>
-                  {!loading && (
-                    <span className="font-bold text-[#E5C794] text-sm">
-                      (₹{total.toLocaleString()})
-                    </span>
-                  )}
+                  
                 </span>
               </button>
 

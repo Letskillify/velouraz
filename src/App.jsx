@@ -23,6 +23,7 @@ const ProductDetail = lazy(() => import("./layouts/ProductDetail"));
 const QuickView = lazy(() => import("./components/QuickView"));
 const Account = lazy(() => import("./pages/Account"));
 const Orders = lazy(() => import("./pages/Orders"));
+const OrderTracking = lazy(() => import("./pages/OrderTracking"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Shop = lazy(() => import("./pages/Shop"));
@@ -62,6 +63,8 @@ const AppRoutes = () => {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/account" element={<Account />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/track-order" element={<Orders />} />
+          <Route path="/track-order/:id" element={<Orders />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/shop" element={<Shop />} />

@@ -3,7 +3,7 @@ import { db } from '../components/Firebase';
 import { collection, getDocs, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { 
   Search, Heart, ShoppingBag, Eye, ChevronRight, 
-  Loader2, SlidersHorizontal, X, RotateCcw, Check, Sparkles, Filter
+  Loader2, SlidersHorizontal, X, RotateCcw, Check, Sparkles, Filter, Tag
 } from 'lucide-react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '../components/useAuth';
@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import QuickView from '../components/QuickView';
 import Breadcrumb from '../components/Breadcrumb';
 import AddToCartModal from '../components/AddToCartModal';
+import { listenToTags } from '../services/tagsService';
 
 const fallbackProducts = [
   {
@@ -129,10 +130,17 @@ const Shop = () => {
   // Filter States
   const [priceLimit, setPriceLimit] = useState(100000);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [availableTags, setAvailableTags] = useState([]);
   const [availability, setAvailability] = useState('all');
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const unsub = listenToTags((tagsList) => setAvailableTags(tagsList));
+    return () => unsub();
+  }, []);
 
   // Helper to sync query parameters with URL
   const updateFilterParam = (key, value) => {
@@ -154,6 +162,7 @@ const Shop = () => {
     const itemQuery = searchParams.get('item');
     const filterQuery = searchParams.get('filter');
     const materialQuery = searchParams.get('material');
+    const tagQuery = searchParams.get('tag');
     const sortQuery = searchParams.get('sort');
     const maxPriceQuery = searchParams.get('maxPrice');
 
@@ -183,12 +192,20 @@ const Shop = () => {
       setSelectedMaterials([]);
     }
 
+    if (tagQuery) {
+      setSelectedTags(tagQuery.split(',').filter(Boolean));
+    } else if (filterQuery === 'new' || filterQuery === 'new-arrivals') {
+      setSelectedTags(['New Arrivals']);
+    } else if (filterQuery === 'bestsellers') {
+      setSelectedTags(['Bestsellers']);
+    } else {
+      setSelectedTags([]);
+    }
+
     if (sortQuery) {
       setSortBy(sortQuery);
     } else if (filterQuery === 'new') {
       setSortBy('newest');
-    } else if (filterQuery === 'bestsellers') {
-      setSortBy('bestsellers');
     }
 
     if (maxPriceQuery && !isNaN(Number(maxPriceQuery))) {
@@ -291,12 +308,21 @@ const Shop = () => {
     updateFilterParam('material', nextMaterials);
   };
 
+  const toggleTag = (tagName) => {
+    const nextTags = selectedTags.includes(tagName)
+      ? selectedTags.filter(t => t !== tagName)
+      : [...selectedTags, tagName];
+    setSelectedTags(nextTags);
+    updateFilterParam('tag', nextTags);
+  };
+
   const clearAllFilters = () => {
     setSearchTerm('');
     setSelectedCategory('All');
     setSelectedCountry('All');
     setPriceLimit(maxProductPrice);
     setSelectedMaterials([]);
+    setSelectedTags([]);
     setAvailability('all');
     setSortBy('newest');
     setSearchParams({});
@@ -309,9 +335,10 @@ const Shop = () => {
     if (selectedCountry !== 'All') count++;
     if (priceLimit < maxProductPrice) count++;
     if (selectedMaterials.length > 0) count += selectedMaterials.length;
+    if (selectedTags.length > 0) count += selectedTags.length;
     if (availability !== 'all') count++;
     return count;
-  }, [searchTerm, selectedCategory, selectedCountry, priceLimit, maxProductPrice, selectedMaterials, availability]);
+  }, [searchTerm, selectedCategory, selectedCountry, priceLimit, maxProductPrice, selectedMaterials, selectedTags, availability]);
 
   const filteredProducts = products.filter(p => {
     const price = Number(p.price) || 0;
@@ -340,6 +367,33 @@ const Shop = () => {
              (Array.isArray(p.tags) && p.tags.some(t => String(t).toLowerCase().includes(mat)));
     });
 
+    const matchesTags = selectedTags.length === 0 || selectedTags.some(t => {
+      const tagStr = t.toLowerCase().trim();
+
+      // Special logic for "New Arrivals": products uploaded within the last 30 days OR explicitly tagged
+      if (tagStr === 'new arrivals' || tagStr === 'new arrival') {
+        const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+        const now = Date.now();
+        let prodTime = 0;
+
+        if (p.createdAt?.toMillis) {
+          prodTime = p.createdAt.toMillis();
+        } else if (p.createdAt?.seconds) {
+          prodTime = p.createdAt.seconds * 1000;
+        } else if (p.createdAt) {
+          prodTime = new Date(p.createdAt).getTime();
+        } else {
+          prodTime = now; // Fallback to current time if no date string
+        }
+
+        const isUploadedInLast30Days = (now - prodTime) <= thirtyDaysInMillis && prodTime <= now;
+        const hasExplicitTag = Array.isArray(p.tags) && p.tags.some(pt => String(pt).toLowerCase() === tagStr);
+        return isUploadedInLast30Days || hasExplicitTag;
+      }
+
+      return Array.isArray(p.tags) && p.tags.some(pt => String(pt).toLowerCase() === tagStr);
+    });
+
     let matchesAvailability = true;
     if (availability === 'inStock') {
       matchesAvailability = Number(p.stock) > 0;
@@ -347,7 +401,7 @@ const Shop = () => {
       matchesAvailability = Number(p.original_price) > Number(p.price);
     }
 
-    return matchesSearch && matchesCategory && matchesCountry && matchesPrice && matchesMaterial && matchesAvailability;
+    return matchesSearch && matchesCategory && matchesCountry && matchesPrice && matchesMaterial && matchesTags && matchesAvailability;
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -379,6 +433,34 @@ const Shop = () => {
             <RotateCcw size={11} /> Reset
           </button>
         )}
+      </div>
+
+      {/* Promotional & Catalog Tags Filter */}
+      <div className="space-y-3">
+        <h4 className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B58E58] font-sans border-b border-[#EFE8DC]/60 pb-1.5 flex items-center gap-1.5">
+          <Tag size={13} className="text-[#B58E58]" /> TAGS & EDITIONS
+        </h4>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {availableTags.map((tagObj) => {
+            const checked = selectedTags.some(t => t.toLowerCase() === tagObj.name.toLowerCase());
+            return (
+              <button
+                key={tagObj.id}
+                onClick={() => toggleTag(tagObj.name)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer border ${
+                  checked
+                    ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs"
+                    : "bg-[#FAF7F2] text-[#2A2623]/80 border-[#EFE8DC] hover:border-[#2e0e43]"
+                }`}
+              >
+                <div className={`w-3.5 h-3.5 rounded flex items-center justify-center transition-all ${checked ? "bg-white text-[#2e0e43]" : "border border-[#D5C6B1] bg-white"}`}>
+                  {checked && <Check size={10} strokeWidth={3} />}
+                </div>
+                <span>{tagObj.name}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Price Slider */}
@@ -643,6 +725,13 @@ const Shop = () => {
                     </span>
                   ))}
 
+                  {selectedTags.map(tag => (
+                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43] text-white rounded-full text-xs font-medium">
+                      Tag: {tag}
+                      <X size={12} className="cursor-pointer hover:scale-110" onClick={() => toggleTag(tag)} />
+                    </span>
+                  ))}
+
                   {availability !== 'all' && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] rounded-full text-xs font-medium">
                       {availability === 'inStock' ? 'In Stock' : 'On Sale'}
@@ -716,7 +805,7 @@ const Shop = () => {
                           )}
                         </div>
 
-                        {/* Top Floating Action Buttons: Wishlist & QuickView */}
+                        {/* Top Floating Action Button: Wishlist */}
                         <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <button 
                             onClick={(e) => handleAddToWishlist(e, product)} 
@@ -729,14 +818,6 @@ const Shop = () => {
                             ) : (
                               <Heart size={14} fill={inWishlist ? '#2e0e43' : 'none'} stroke={inWishlist ? '#2e0e43' : 'currentColor'} strokeWidth={inWishlist ? 0 : 1.5} />
                             )}
-                          </button>
-
-                          <button 
-                            onClick={(e) => { e.stopPropagation(); setSelectedProduct(product); }} 
-                            aria-label="Quick View"
-                            className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-[#2A2623] hover:text-[#2e0e43] transition-all duration-300 border border-black/5 hover:scale-105 cursor-pointer"
-                          >
-                            <Eye size={14} />
                           </button>
                         </div>
 

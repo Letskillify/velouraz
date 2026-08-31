@@ -11,6 +11,8 @@ import {
 
 import { uploadToCloudinary } from "../../../config/cloudinary";
 import CloudinaryImageLibrary from "./CloudinaryImageLibrary";
+import { listenToTags } from "../../../services/tagsService";
+import { Check } from "lucide-react";
 
 export const ProductForm = ({ onSuccess }) => {
   const { register, handleSubmit, reset, formState } = useForm({
@@ -34,8 +36,21 @@ export const ProductForm = ({ onSuccess }) => {
   const [error, setError] = useState("");
   const [showLibrary, setShowLibrary] = useState(false);
   const [selectedCloudinaryImages, setSelectedCloudinaryImages] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(["Bestsellers"]);
 
   const categories = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
+
+  useEffect(() => {
+    const unsub = listenToTags((tags) => setAllTags(tags));
+    return () => unsub();
+  }, []);
+
+  const toggleTag = (tagName) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagName) ? prev.filter((t) => t !== tagName) : [...prev, tagName]
+    );
+  };
 
   const onSubmit = async (values) => {
     setError("");
@@ -64,11 +79,13 @@ export const ProductForm = ({ onSuccess }) => {
         stock_status: values.stock <= 0 ? "Out of Stock" : values.stock_status,
         stock: Number(values.stock) || 0,
         material: values.material,
+        tags: selectedTags,
         createdAt: serverTimestamp(),
       };
       await addDoc(collection(db, "products"), docData);
       reset();
       setSelectedCloudinaryImages([]);
+      setSelectedTags(["Bestsellers"]);
       if (onSuccess) {
         onSuccess();
       }
@@ -181,6 +198,40 @@ export const ProductForm = ({ onSuccess }) => {
         />
       </div>
 
+      {/* Checkmark Product Tags Selection (Multiple) */}
+      <div className="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+        <div className="flex justify-between items-center">
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">
+            Product Tags (Select One or Multiple)
+          </label>
+          <span className="text-xs text-slate-500 font-medium">
+            {selectedTags.length} tag(s) selected
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {allTags.map((tag) => {
+            const checked = selectedTags.includes(tag.name);
+            return (
+              <button
+                type="button"
+                key={tag.id}
+                onClick={() => toggleTag(tag.name)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer border ${
+                  checked
+                    ? "bg-[#811331] text-white border-[#811331] shadow-xs"
+                    : "bg-white text-slate-700 border-slate-200 hover:border-[#811331]"
+                }`}
+              >
+                <div className={`w-4 h-4 rounded flex items-center justify-center transition-all ${checked ? "bg-white text-[#811331]" : "border border-slate-300 bg-slate-50"}`}>
+                  {checked && <Check size={12} strokeWidth={3} />}
+                </div>
+                <span>{tag.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="space-y-2">
         <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">Product Images</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -283,8 +334,15 @@ export const EditProductForm = ({ product, onSuccess }) => {
   const [error, setError] = useState("");
   const [showLibrary, setShowLibrary] = useState(false);
   const [selectedCloudinaryImages, setSelectedCloudinaryImages] = useState(product?.images || []);
+  const [allTags, setAllTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(product?.tags || ["Bestsellers"]);
 
   const categories = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
+
+  useEffect(() => {
+    const unsub = listenToTags((tags) => setAllTags(tags));
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     if (product) {
@@ -297,8 +355,15 @@ export const EditProductForm = ({ product, onSuccess }) => {
         stock: product.stock || 0,
         material: product.material || "",
       });
+      setSelectedTags(product.tags || ["Bestsellers"]);
     }
   }, [product, reset]);
+
+  const toggleTag = (tagName) => {
+    setSelectedTags((prev) =>
+      prev.includes(tagName) ? prev.filter((t) => t !== tagName) : [...prev, tagName]
+    );
+  };
 
   const onSubmit = async (values) => {
     if (!product?.id) return;
@@ -323,6 +388,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
         stock: Number(values.stock) || 0,
         stock_status: values.stock <= 0 ? "Out of Stock" : "In Stock",
         material: values.material,
+        tags: selectedTags,
         images: uploadUrls,
         image: uploadUrls[0] || product.image || "",
       };
@@ -409,6 +475,40 @@ export const EditProductForm = ({ product, onSuccess }) => {
           />
         </div>
       </div>
+      </div>
+
+      {/* Checkmark Product Tags Selection (Multiple) */}
+      <div className="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+        <div className="flex justify-between items-center">
+          <label className="text-base font-semibold text-slate-700 uppercase tracking-wider">
+            Product Tags (Select One or Multiple)
+          </label>
+          <span className="text-xs text-slate-500 font-medium">
+            {selectedTags.length} tag(s) selected
+          </span>
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
+          {allTags.map((tag) => {
+            const checked = selectedTags.includes(tag.name);
+            return (
+              <button
+                type="button"
+                key={tag.id}
+                onClick={() => toggleTag(tag.name)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer border ${
+                  checked
+                    ? "bg-[#811331] text-white border-[#811331] shadow-xs"
+                    : "bg-white text-slate-700 border-slate-200 hover:border-[#811331]"
+                }`}
+              >
+                <div className={`w-4 h-4 rounded flex items-center justify-center transition-all ${checked ? "bg-white text-[#811331]" : "border border-slate-300 bg-slate-50"}`}>
+                  {checked && <Check size={12} strokeWidth={3} />}
+                </div>
+                <span>{tag.name}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="space-y-2">

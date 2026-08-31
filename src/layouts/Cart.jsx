@@ -33,13 +33,6 @@ const Cart = () => {
   const [loading, setLoading] = useState(true);
   const [liveStocks, setLiveStocks] = useState({});
   
-  // Coupon state
-  const [couponCode, setCouponCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [appliedCoupon, setAppliedCoupon] = useState("");
-  const [couponError, setCouponError] = useState("");
-  const [showCoupon, setShowCoupon] = useState(false);
-
   // Gift note state
   const [showGiftNote, setShowGiftNote] = useState(false);
   const [giftNoteText, setGiftNoteText] = useState("");
@@ -90,32 +83,6 @@ const Cart = () => {
   const productSavings = originalTotal - subtotal;
   const itemCount = items.reduce((sum, i) => sum + (i.quantity || 1), 0);
 
-  const handleApplyCoupon = () => {
-    setCouponError("");
-    const code = couponCode.toUpperCase().trim();
-    
-    if (code === "VELOURAZ10") {
-      setDiscount(subtotal * 0.1);
-      setAppliedCoupon(code);
-    } else if (code === "WELCOME20") {
-      setDiscount(subtotal * 0.2);
-      setAppliedCoupon(code);
-    } else if (code === "GIFT500") {
-      setDiscount(Math.min(500, subtotal));
-      setAppliedCoupon(code);
-    } else {
-      setCouponError("Invalid coupon code");
-      setDiscount(0);
-      setAppliedCoupon("");
-    }
-  };
-
-  const removeCoupon = () => {
-    setAppliedCoupon("");
-    setDiscount(0);
-    setCouponCode("");
-  };
-
   const handleSaveGiftNote = () => {
     setSavedGiftNote(giftNoteText);
     setShowGiftNote(false);
@@ -129,7 +96,7 @@ const Cart = () => {
     );
   }
 
-  const total = Math.max(0, subtotal - discount);
+  const total = subtotal;
 
   return (
     <div className="min-h-screen bg-[#F8F4EF] font-sans text-[#2A2623]">
@@ -413,16 +380,6 @@ const Cart = () => {
                       <span className="font-bold text-[#2A2623] font-sans text-base">₹0</span>
                     </div>
 
-                    {/* Coupon Discount */}
-                    {discount > 0 && (
-                      <div className="flex justify-between items-center text-emerald-700 pt-1">
-                        <span className="flex items-center gap-1 font-medium">
-                          Coupon ({appliedCoupon})
-                        </span>
-                        <span className="font-bold font-sans text-base">−₹{discount.toLocaleString()}</span>
-                      </div>
-                    )}
-
                   </div>
 
                   {/* Divider */}
@@ -433,61 +390,6 @@ const Cart = () => {
                         ₹{total.toLocaleString()}
                       </span>
                     </div>
-                  </div>
-
-                  {/* Coupon Code Section */}
-                  <div className="pt-2 border-t border-[#F4EEE8]">
-                    {!showCoupon && !appliedCoupon ? (
-                      <button 
-                        onClick={() => setShowCoupon(true)}
-                        className="w-full flex items-center justify-between p-3 rounded-xl border border-dashed border-[#C8A46A]/60 bg-[#FDFAF5] hover:bg-[#F4EEE8] transition-colors text-sm font-bold text-[#2e0e43] font-sans"
-                      >
-                        <span className="flex items-center gap-2">
-                          <Tag size={16} className="text-[#C8A46A]" />
-                          Apply Coupon Code
-                        </span>
-                        <ChevronRight size={16} className="text-[#7B6D63]" />
-                      </button>
-                    ) : !appliedCoupon ? (
-                      <div className="space-y-2 bg-[#FDFAF5] p-3 rounded-xl border border-[#D8CBBE]">
-                        <div className="flex gap-2">
-                          <input 
-                            type="text" 
-                            placeholder="Enter code (e.g. VELOURAZ10)" 
-                            className="flex-1 border border-[#D8CBBE] rounded-lg px-3 py-2 text-sm font-bold tracking-wider text-[#2A2623] outline-none focus:border-[#2e0e43] uppercase placeholder:normal-case placeholder:font-normal placeholder:text-[#7B6D63]/50 bg-white"
-                            value={couponCode}
-                            onChange={(e) => setCouponCode(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
-                          />
-                          <button 
-                            onClick={handleApplyCoupon}
-                            className="bg-[#2e0e43] text-white px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-[#1A0829] transition-colors shrink-0"
-                          >
-                            Apply
-                          </button>
-                        </div>
-                        {couponError && (
-                          <p className="text-sm text-red-600 flex items-center gap-1">
-                            <AlertCircle size={14} /> {couponError}
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 size={16} className="text-emerald-700" />
-                          <span className="text-sm font-bold text-emerald-800 uppercase tracking-wider">
-                            {appliedCoupon}
-                          </span>
-                        </div>
-                        <button 
-                          onClick={removeCoupon} 
-                          className="text-sm font-bold text-red-600 hover:text-red-800 transition-colors"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    )}
                   </div>
 
                   {/* Gift Note Section (Reference Feature: "Add a Gift Note") */}

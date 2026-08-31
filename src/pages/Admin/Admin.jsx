@@ -65,6 +65,8 @@ import AdminProfile from "./components/AdminProfile";
 import SiteSettingsManager from "./components/SiteSettingsManager";
 import BlogManager from "./components/BlogManager";
 import ProductImageManager from "./components/ProductImageManager";
+import TagsManager from "./components/TagsManager";
+import CouponManager from "./components/CouponManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -355,10 +357,16 @@ const Admin = () => {
         return <CatalogManager type="SubCategories" />;
       case "Collections":
         return <CatalogManager type="Collections" />;
-      case "Countries":                          // ← was "Brands"
+      case "Countries":
         return <CatalogManager type="Countries" />;
       case "Attributes":
         return <CatalogManager type="Attributes" />;
+      case "Tags Manager":
+      case "TagsManager":
+        return <TagsManager />;
+      case "Coupon Manager":
+      case "CouponManager":
+        return <CouponManager />;
       case "Users":
         return (
           <>
@@ -460,6 +468,8 @@ const Admin = () => {
 
         {/* Catalog entries: Product Image Manager, Categories, Sub Categories, Collections, Countries, Attributes, Media */}
         {[
+          ["Coupon Manager", TicketPercent, "Coupon Manager"],
+          ["Tags Manager", Tags, "Tags Manager"],
           ["Product Images", Images, "Product Images"],
           ["Categories", Layers3, "Categories"],
           ["Sub Categories", Layers3, "SubCategories"],
