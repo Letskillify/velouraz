@@ -12,12 +12,36 @@ export const StoreProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
 
+  // Merge local guest cart to user account upon authentication
+  const mergeGuestCartToUser = async (targetUid) => {
+    const uid = targetUid || user?.uid;
+    if (!uid) return;
+
+    try {
+      const localCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (localCart.length > 0) {
+        const batch = writeBatch(db);
+        localCart.forEach((item) => {
+          const itemRef = doc(db, "users", uid, "cart", item.id);
+          batch.set(itemRef, item, { merge: true });
+        });
+        await batch.commit();
+        localStorage.removeItem('cart');
+      }
+    } catch (err) {
+      console.error("Error merging guest cart to user account:", err);
+    }
+  };
+
   // Sync with Firestore or LocalStorage
   useEffect(() => {
     let unsubscribeCart = () => {};
     let unsubscribeWishlist = () => {};
 
     if (user) {
+      // Auto merge guest cart if items exist
+      mergeGuestCartToUser(user.uid);
+
       // Real-time sync for logged-in user
       const cartRef = collection(db, "users", user.uid, "cart");
       unsubscribeCart = onSnapshot(cartRef, (snap) => {
@@ -214,6 +238,7 @@ export const StoreProvider = ({ children }) => {
       updateCartQuantity,
       removeFromCart,
       clearCart,
+      mergeGuestCartToUser,
       addToWishlist, 
       isInCart, 
       isInWishlist 

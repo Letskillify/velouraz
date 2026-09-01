@@ -36,16 +36,23 @@ import Breadcrumb from "../components/Breadcrumb";
 import { sendOrderEmails } from "../services/emailService";
 import { createShiprocketOrder } from "../services/shiprocketService";
 import { validateCoupon } from "../services/couponService";
+import OtpModal from "../components/OtpModal";
+import { createRazorpayOrder, verifyPaymentAndCreateOrder } from "../services/otpService";
 
 const Checkout = () => {
   const { cartItems, clearCart } = useStore();
-  const { user } = useAuth();
+  const { user, verifyEmailOtp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("razorpay"); // 'razorpay' | 'cod'
   const [orderSuccess, setOrderSuccess] = useState(null);
+
+  // OTP Modal State for Guest Checkout
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [pendingOrderId, setPendingOrderId] = useState(null);
+  const [guestEmail, setGuestEmail] = useState("");
 
   // Saved Addresses State
   const [savedAddresses, setSavedAddresses] = useState([]);
@@ -79,11 +86,7 @@ const Checkout = () => {
     saveToAccount: true,
   });
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login", { state: { from: "/checkout", buyNowItem: location.state?.buyNowItem } });
-    }
-  }, [user, navigate, location.state]);
+
 
   // Load Saved Addresses from User Firestore Doc
   useEffect(() => {
@@ -408,10 +411,33 @@ const Checkout = () => {
     }
   };
 
+  const handlePaymentSuccess = async (serverResult) => {
+    setBuyNowItem(null);
+    if (typeof window !== 'undefined' && window.history?.replaceState) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+    if (clearCart) {
+      await clearCart();
+    }
+
+    if (user?.uid) {
+      navigate(`/order-success/${serverResult.orderId}`, { state: { isNewUser: false } });
+    } else {
+      setPendingOrderId(serverResult.orderId);
+      setGuestEmail(formData.email);
+      setShowOtpModal(true);
+    }
+  };
+
+  const handleOtpSuccess = async (verificationResult) => {
+    setShowOtpModal(false);
+    navigate(`/order-success/${pendingOrderId}`, { state: { isNewUser: verificationResult.isNewUser } });
+  };
+
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.pincode || !formData.state) {
-      alert("Please fill in all required shipping fields.");
+    if (!formData.name || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.pincode || !formData.state) {
+      alert("Please fill in all required contact & shipping fields.");
       return;
     }
 
@@ -420,48 +446,84 @@ const Checkout = () => {
       return;
     }
 
-    if (paymentMethod === "razorpay") {
-      const res = await loadRazorpayScript();
-      if (!res) {
-        alert("Razorpay SDK failed to load. Please check your internet connection.");
-        return;
-      }
+    setLoading(true);
 
-      const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey";
+    try {
+      if (paymentMethod === "razorpay") {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          alert("Razorpay SDK failed to load. Please check your internet connection.");
+          setLoading(false);
+          return;
+        }
 
-      const options = {
-        key: razorpayKey,
-        amount: total * 100, // in paise
-        currency: "INR",
-        name: "Velouraz Jewellery",
-        description: "Haute Joaillerie Order Payment",
-        image: "/img/logo.png",
-        handler: function (response) {
-          executeOrderCreation({
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature,
+        const rzpOrder = await createRazorpayOrder(checkoutItems, discountAmount);
+
+        const options = {
+          key: rzpOrder.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey",
+          amount: rzpOrder.amount,
+          currency: rzpOrder.currency || "INR",
+          name: "Velouraz High Jewellery",
+          description: "Haute Joaillerie Order Payment",
+          image: "/img/logo.png",
+          order_id: (rzpOrder.id && !rzpOrder.id.startsWith("order_sim_")) ? rzpOrder.id : undefined,
+          handler: async function (response) {
+            try {
+              setLoading(true);
+              const serverResult = await verifyPaymentAndCreateOrder({
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id || rzpOrder.id,
+                razorpaySignature: response.razorpay_signature,
+                customerDetails: { ...formData, userId: user?.uid },
+                items: checkoutItems,
+                appliedCoupon,
+                paymentMethod: "razorpay",
+              });
+              await handlePaymentSuccess(serverResult);
+            } catch (err) {
+              console.error("Payment verification error:", err);
+              alert(err.message || "Payment verification failed.");
+            } finally {
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: formData.name,
+            email: formData.email,
+            contact: formData.phone,
+          },
+          theme: {
+            color: "#2e0e43",
+          },
+        };
+
+        try {
+          const paymentObject = new window.Razorpay(options);
+          paymentObject.open();
+          setLoading(false);
+        } catch (err) {
+          console.warn("Razorpay simulated mode, completing order directly:", err);
+          const serverResult = await verifyPaymentAndCreateOrder({
+            customerDetails: { ...formData, userId: user?.uid },
+            items: checkoutItems,
+            appliedCoupon,
+            paymentMethod: "razorpay",
           });
-        },
-        prefill: {
-          name: formData.name,
-          email: formData.email,
-          contact: formData.phone,
-        },
-        theme: {
-          color: "#14111E",
-        },
-      };
-
-      try {
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
-      } catch (err) {
-        console.warn("Razorpay simulated mode, completing order directly:", err);
-        executeOrderCreation({ mode: "simulated_razorpay" });
+          await handlePaymentSuccess(serverResult);
+        }
+      } else {
+        const serverResult = await verifyPaymentAndCreateOrder({
+          customerDetails: { ...formData, userId: user?.uid },
+          items: checkoutItems,
+          appliedCoupon,
+          paymentMethod: "cod",
+        });
+        await handlePaymentSuccess(serverResult);
       }
-    } else {
-      executeOrderCreation({ mode: "cod" });
+    } catch (err) {
+      console.error("Order submission error:", err);
+      alert(err.message || "Failed to place order.");
+      setLoading(false);
     }
   };
 
@@ -1074,10 +1136,10 @@ const Checkout = () => {
                     <span>-₹{discountAmount.toLocaleString()}</span>
                   </div>
                 )}
-
-                <div className="flex justify-between items-baseline text-base font-bold text-[#2A2623] pt-4 border-t border-[#D8CBBE]/40 font-sans">
+                
+                <div className="flex justify-between items-baseline text-base font-normal text-[#2A2623] pt-4 border-t border-[#D8CBBE]/40 font-sans">
                   <span>Total Amount</span>
-                  <span className="text-[#2e0e43] text-2xl font-bold font-sans">₹{total.toLocaleString()}</span>
+                  <span className="text-[#2e0e43] text-2xl font-normal font-sans tracking-tight">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 
@@ -1085,7 +1147,7 @@ const Checkout = () => {
               <button
                 type="submit"
                 disabled={loading || isAnyOutOfStock}
-                className={`w-full min-h-[56px] py-3.5 px-6 text-sm font-bold uppercase tracking-[0.18em] rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md hover:shadow-xl ${
+                className={`w-full min-h-[56px] py-3.5 px-6 text-sm font-semibold uppercase tracking-[0.18em] rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md hover:shadow-xl ${
                   loading || isAnyOutOfStock
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     : 'bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99]'
@@ -1098,7 +1160,6 @@ const Checkout = () => {
                 )}
                 <span className="text-center flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 leading-snug font-sans">
                   <span>{loading ? 'Processing Order...' : 'Complete Purchase'}</span>
-                  
                 </span>
               </button>
 
@@ -1113,6 +1174,16 @@ const Checkout = () => {
         </form>
 
       </div>
+
+      {/* Guest Checkout OTP Modal */}
+      <OtpModal
+        isOpen={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        email={guestEmail}
+        orderId={pendingOrderId}
+        displayName={formData.name}
+        onSuccess={handleOtpSuccess}
+      />
     </div>
   );
 };

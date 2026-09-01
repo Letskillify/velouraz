@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "./useAuth";
-import { Mail, Lock, ArrowRight, ArrowLeft, Home, Eye, EyeOff, AlertCircle, Gem, X, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, ArrowRight, ArrowLeft, Home, Eye, EyeOff, AlertCircle, Gem, X, CheckCircle2, KeyRound, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import OtpModal from "./OtpModal";
 
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 const GOLD = '#C8A97A';
 const CRIMSON = '#2e0e43';
 
 const Login = () => {
-  const { login, googleSignIn, resetPassword } = useAuth();
+  const { login, googleSignIn, sendEmailOtp, verifyEmailOtp, resetPassword } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
@@ -17,6 +18,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Auth Mode: "otp" (Passwordless Default) or "password" (Fallback)
+  const [authMode, setAuthMode] = useState("otp");
+  const [showOtpModal, setShowOtpModal] = useState(false);
 
   // Google Login State
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -38,7 +43,31 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+    try {
+      await sendEmailOtp(email);
+      setShowOtpModal(true);
+    } catch (err) {
+      setError(err.message || "Failed to send verification code.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtpVerified = async (result) => {
+    setShowOtpModal(false);
+    handleSuccessfulAuth();
+  };
+
+  const handleSubmitPasswordLogin = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -128,13 +157,13 @@ const Login = () => {
 
       {/* Right Panel   Login Form */}
       <div className="flex-1 flex flex-col justify-center items-center bg-[#FDFAF5] px-6 sm:px-12 py-12 relative">
-        {/* Top Back to Home Button */}
+        {/* Top Back to Shop Button */}
         <Link
-          to="/"
+          to="/shop"
           className="absolute top-6 left-6 sm:top-8 sm:left-8 inline-flex items-center gap-2 text-xs font-bold text-[#7B6D63] hover:text-[#2e0e43] uppercase tracking-widest transition-all group z-20"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Home</span>
+          <span>Back to Shop</span>
         </Link>
 
         {/* Subtle decorative element */}
@@ -214,75 +243,136 @@ const Login = () => {
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-[0.18em] text-[#2A2623] ml-0.5">Email Address</label>
-              <div className="relative group">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 group-focus-within:text-[#2e0e43] transition-colors" size={15} />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-3 bg-white border border-[#D8CBBE]/60 rounded-xl focus:border-[#2e0e43] focus:ring-1 focus:ring-[#2e0e43]/20 outline-none transition-all text-sm font-medium text-[#2A2623] placeholder:text-[#7B6D63]/40"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex justify-between items-center px-0.5">
-                <label className="text-xs font-bold uppercase tracking-[0.18em] text-[#2A2623]">Password</label>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setResetEmail(email);
-                    setShowForgotModal(true);
-                  }}
-                  className="text-xs font-bold text-[#2e0e43]/80 hover:text-[#2e0e43] transition-colors uppercase tracking-wider cursor-pointer underline"
-                >
-                  Forgot?
-                </button>
-              </div>
-              <div className="relative group">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 group-focus-within:text-[#2e0e43] transition-colors" size={15} />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-3 bg-white border border-[#D8CBBE]/60 rounded-xl focus:border-[#2e0e43] focus:ring-1 focus:ring-[#2e0e43]/20 outline-none transition-all text-sm font-medium text-[#2A2623] placeholder:text-[#7B6D63]/40"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 hover:text-[#2e0e43] transition-colors cursor-pointer"
-                >
-                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
-                </button>
-              </div>
-            </div>
-
+          {/* Method Switcher Tabs: Email OTP (Default) vs Password */}
+          <div className="flex bg-[#FAF6F0] p-1 rounded-xl mb-5 text-xs font-sans border border-[#E8DFD5]">
             <button
-              type="submit"
-              disabled={loading}
-              className="group w-full py-3.5 rounded-xl text-white font-bold text-xs tracking-[0.25em] uppercase transition-all transform active:scale-[0.99] flex items-center justify-center gap-2.5 mt-2 shadow-md cursor-pointer"
-              style={{ background: '#2A2623' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = CRIMSON}
-              onMouseLeave={(e) => e.currentTarget.style.background = '#2A2623'}
+              type="button"
+              onClick={() => { setAuthMode("otp"); setError(""); }}
+              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${
+                authMode === "otp"
+                  ? "bg-white text-[#2e0e43] shadow-xs"
+                  : "text-[#7B6D63] hover:text-[#2e0e43]"
+              }`}
             >
-              {loading ? (
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  Sign In
-                  <ArrowRight size={15} strokeWidth={2} className="group-hover:translate-x-1 transition-transform duration-300" />
-                </>
-              )}
+              Email OTP
             </button>
-          </form>
+            <button
+              type="button"
+              onClick={() => { setAuthMode("password"); setError(""); }}
+              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${
+                authMode === "password"
+                  ? "bg-white text-[#2e0e43] shadow-xs"
+                  : "text-[#7B6D63] hover:text-[#2e0e43]"
+              }`}
+            >
+              Password
+            </button>
+          </div>
+
+          {authMode === "otp" ? (
+            /* Email OTP Passwordless Form */
+            <form onSubmit={handleSendOtp} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-[0.18em] text-[#2A2623] ml-0.5">Email Address</label>
+                <div className="relative group">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 group-focus-within:text-[#2e0e43] transition-colors" size={15} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-[#D8CBBE]/60 rounded-xl focus:border-[#2e0e43] focus:ring-1 focus:ring-[#2e0e43]/20 outline-none transition-all text-sm font-medium text-[#2A2623] placeholder:text-[#7B6D63]/40"
+                    required
+                  />
+                </div>
+                <p className="text-[11px] text-[#7B6D63] font-serif mt-1">
+                  We'll send a 6-digit verification code to your email. Passwordless & instant access.
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="group w-full py-3.5 rounded-xl text-white font-bold text-xs tracking-[0.22em] uppercase transition-all transform active:scale-[0.99] flex items-center justify-center gap-2.5 mt-2 shadow-md cursor-pointer bg-[#2e0e43] hover:bg-[#1A0829] disabled:opacity-50"
+              >
+                {loading ? (
+                  <Loader2 size={16} className="animate-spin text-[#C8A46A]" />
+                ) : (
+                  <>
+                    <span>Send Verification Code</span>
+                    <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300 text-[#C8A46A]" />
+                  </>
+                )}
+              </button>
+            </form>
+          ) : (
+            /* Password Login Form */
+            <form onSubmit={handleSubmitPasswordLogin} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-[0.18em] text-[#2A2623] ml-0.5">Email Address</label>
+                <div className="relative group">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 group-focus-within:text-[#2e0e43] transition-colors" size={15} />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-[#D8CBBE]/60 rounded-xl focus:border-[#2e0e43] focus:ring-1 focus:ring-[#2e0e43]/20 outline-none transition-all text-sm font-medium text-[#2A2623] placeholder:text-[#7B6D63]/40"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center px-0.5">
+                  <label className="text-xs font-bold uppercase tracking-[0.18em] text-[#2A2623]">Password</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setResetEmail(email);
+                      setShowForgotModal(true);
+                    }}
+                    className="text-xs font-bold text-[#2e0e43]/80 hover:text-[#2e0e43] transition-colors uppercase tracking-wider cursor-pointer underline"
+                  >
+                    Forgot?
+                  </button>
+                </div>
+                <div className="relative group">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 group-focus-within:text-[#2e0e43] transition-colors" size={15} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-10 pr-10 py-3 bg-white border border-[#D8CBBE]/60 rounded-xl focus:border-[#2e0e43] focus:ring-1 focus:ring-[#2e0e43]/20 outline-none transition-all text-sm font-medium text-[#2A2623] placeholder:text-[#7B6D63]/40"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#7B6D63]/40 hover:text-[#2e0e43] transition-colors cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="group w-full py-3.5 rounded-xl text-white font-bold text-xs tracking-[0.25em] uppercase transition-all transform active:scale-[0.99] flex items-center justify-center gap-2.5 mt-2 shadow-md cursor-pointer bg-[#2A2623] hover:bg-[#2e0e43]"
+              >
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    Sign In
+                    <ArrowRight size={15} strokeWidth={2} className="group-hover:translate-x-1 transition-transform duration-300" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
 
           {/* Sign Up Link */}
           <p className="text-center text-sm text-[#7B6D63] mt-6" style={{ fontFamily: SERIF }}>
@@ -363,6 +453,13 @@ const Login = () => {
         )}
       </AnimatePresence>
 
+      {/* OTP Verification Modal */}
+      <OtpModal
+        isOpen={showOtpModal}
+        onClose={() => setShowOtpModal(false)}
+        email={email}
+        onSuccess={handleOtpVerified}
+      />
     </div>
   );
 };

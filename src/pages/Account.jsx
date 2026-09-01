@@ -18,7 +18,7 @@ import {
 import { generateInvoicePDF } from "../utils/invoice";
 
 const Account = () => {
-  const { user, logout, deleteAccount, changePassword } = useAuth();
+  const { user, loading: authLoading, logout, deleteAccount, changePassword } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("dashboard"); // 'dashboard' | 'orders' | 'track' | 'addresses' | 'profile' | 'invoices'
@@ -94,6 +94,7 @@ const Account = () => {
   };
 
   useEffect(() => {
+    if (authLoading) return; // wait for auth to resolve before redirecting
     if (!user) {
       navigate("/login");
       return;
@@ -163,7 +164,7 @@ const Account = () => {
     };
 
     loadAccountData();
-  }, [user, navigate]);
+  }, [user, authLoading, navigate]);
 
   const handleLogout = async () => {
     try {
