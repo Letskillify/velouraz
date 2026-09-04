@@ -362,8 +362,8 @@ const Checkout = () => {
         await clearCart();
       }
 
-      // 4. Send Automated EmailJS Notifications (User Confirmation & Admin Alert)
-      sendOrderEmails(finalCreatedOrder).catch(err => console.error("EmailJS dispatch error:", err));
+      // 4. Send Automated Nodemailer Notifications (User Confirmation & Admin Alert)
+      sendOrderEmails(finalCreatedOrder).catch(err => console.error("Nodemailer dispatch error:", err));
 
       // 5. Save user address if saveToAccount is checked or new address added
       if (user?.uid) {

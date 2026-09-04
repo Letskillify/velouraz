@@ -1,7 +1,6 @@
 import { app, auth, db } from "../components/Firebase";
 import { getFunctions, httpsCallable } from "firebase/functions";
-import { collection, doc, setDoc, getDoc, getDocs, query, where, addDoc, serverTimestamp } from "firebase/firestore";
-import { sendOtpViaEmailJS } from "./emailService";
+import { sendOtpViaNodemailer } from "./emailService";
 
 // Initialize Firebase Functions instance
 const functions = getFunctions(app, "us-central1");
@@ -123,8 +122,8 @@ const fallbackSendOtp = async (email) => {
     devPlainOtp: generatedOtp // stored only in local dev fallback mode for developer testing
   });
 
-  // Dispatch live email using EmailJS
-  await sendOtpViaEmailJS(cleanEmail, generatedOtp);
+  // Dispatch live email using Nodemailer API
+  await sendOtpViaNodemailer(cleanEmail, generatedOtp);
 
   return { success: true, message: `Verification code sent to ${cleanEmail}` };
 };

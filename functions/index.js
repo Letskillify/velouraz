@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const crypto = require("crypto");
 const axios = require("axios");
 const Razorpay = require("razorpay");
+const nodemailer = require("nodemailer");
 
 if (!admin.apps.length) {
   admin.initializeApp();
@@ -21,34 +22,59 @@ const hashOtp = (email, otp) => {
   return crypto.createHmac("sha256", secret).update(`${email}:${otp}`).digest("hex");
 };
 
-// Helper: Send EmailJS Transactional OTP Email
-const sendEmailJsOtp = async (toEmail, otp) => {
-  const serviceId = process.env.EMAILJS_SERVICE_ID || functions.config().emailjs?.service_id;
-  const templateId = process.env.EMAILJS_OTP_TEMPLATE_ID || functions.config().emailjs?.otp_template_id;
-  const publicKey = process.env.EMAILJS_PUBLIC_KEY || functions.config().emailjs?.public_key;
+// Helper: Create Nodemailer Transporter
+const createSmtpTransporter = () => {
+  const host = process.env.SMTP_HOST || functions.config().smtp?.host || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT || functions.config().smtp?.port) || 465;
+  const user = process.env.SMTP_USER || functions.config().smtp?.user;
+  const pass = process.env.SMTP_PASS || functions.config().smtp?.pass;
 
-  if (!serviceId || !templateId || !publicKey) {
-    console.warn(`[DEV MODE] EmailJS keys not configured in backend env. Generated OTP for ${toEmail}: ${otp}`);
+  if (!user || !pass) {
+    return null;
+  }
+
+  return nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+};
+
+// Helper: Send Transactional OTP Email via Nodemailer
+const sendNodemailerOtp = async (toEmail, otp) => {
+  const transporter = createSmtpTransporter();
+
+  if (!transporter) {
+    console.warn(`[DEV MODE] SMTP keys not configured in backend env. Generated OTP for ${toEmail}: ${otp}`);
     return { success: true, simulated: true };
   }
 
+  const fromAddress = process.env.SMTP_FROM || functions.config().smtp?.from || `"Velouraz High Jewellery" <${process.env.SMTP_USER || functions.config().smtp?.user}>`;
+
   try {
-    await axios.post("https://api.emailjs.com/api/v1.0/email/send", {
-      service_id: serviceId,
-      template_id: templateId,
-      user_id: publicKey,
-      template_params: {
-        to_email: toEmail,
-        email: toEmail,
-        otp_code: otp,
-        passcode: otp,
-        app_name: "Velouraz High Jewellery",
-        expiry_minutes: "10",
-      },
+    await transporter.sendMail({
+      from: fromAddress,
+      to: toEmail,
+      subject: `${otp} is your Velouraz Verification Code`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+          <h2 style="color: #111; text-align: center; font-family: Georgia, serif;">VELOURAZ</h2>
+          <hr style="border: none; border-top: 1px solid #eee;" />
+          <p style="color: #333; font-size: 16px;">Hello,</p>
+          <p style="color: #555; font-size: 14px;">Your 6-digit verification code is:</p>
+          <div style="text-align: center; margin: 25px 0;">
+            <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #b8860b; background: #faf8f5; padding: 10px 24px; border-radius: 6px; border: 1px dashed #b8860b;">
+              ${otp}
+            </span>
+          </div>
+          <p style="color: #777; font-size: 13px;">This code expires in 10 minutes. If you did not request this code, please ignore this email.</p>
+        </div>
+      `,
     });
     return { success: true };
   } catch (error) {
-    console.error("EmailJS OTP Error:", error.response?.data || error.message);
+    console.error("Nodemailer OTP Error:", error.message);
     throw new Error("Failed to send verification email. Please try again.");
   }
 };
@@ -87,7 +113,7 @@ const generateAndSendOtpInternal = async (email) => {
     lastSentAt: now,
   });
 
-  await sendEmailJsOtp(cleanEmail, otpNumber);
+  await sendNodemailerOtp(cleanEmail, otpNumber);
   return { success: true, message: "Verification code sent successfully." };
 };
 

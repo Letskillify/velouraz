@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight, Quote, MapPin } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { db } from '../Firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -16,6 +16,7 @@ const defaultReviews = [
   {
     id: 'rev-1',
     name: "Ananya Sharma",
+    location: "Mumbai, India",
     title: "Verified Buyer",
     date: "14 Feb 2026",
     quote: "The Kundan Choker exceeded all my expectations. The craftsmanship is divine and the atelier packaging felt like receiving a royal gift.",
@@ -24,6 +25,7 @@ const defaultReviews = [
   {
     id: 'rev-2',
     name: "Rohan Kapoor",
+    location: "New Delhi, India",
     title: "Verified Collector",
     date: "02 Feb 2026",
     quote: "Acquired the Solitaire Ring for our 10th anniversary. Exceptional brilliance and unmatched anti-tarnish durability.",
@@ -32,6 +34,7 @@ const defaultReviews = [
   {
     id: 'rev-3',
     name: "Meera Oberoi",
+    location: "London, UK",
     title: "Verified Buyer",
     date: "28 Jan 2026",
     quote: "Velouraz high jewellery pieces have become my signature style for celebrations. The weight, luster, and finish are extraordinary.",
@@ -40,6 +43,7 @@ const defaultReviews = [
   {
     id: 'rev-4',
     name: "Kavita Singhania",
+    location: "Dubai, UAE",
     title: "Verified Buyer",
     date: "19 Jan 2026",
     quote: "The attention to detail and gemstone clarity is remarkable. Truly heirloom-quality creations.",
@@ -53,31 +57,33 @@ const TestimonialSection = () => {
   const [reviewsList, setReviewsList] = useState(defaultReviews);
 
   useEffect(() => {
-    const fetchReviewsFromFirestore = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "reviews"));
+    const unsubscribe = onSnapshot(collection(db, "reviews"), (snapshot) => {
+      if (!snapshot.empty) {
         const fetched = [];
-        querySnapshot.forEach((docSnap) => {
+        snapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          fetched.push({
-            id: docSnap.id,
-            name: data.customerName || data.name || "Happy Collector",
-            title: data.title || "Verified Buyer",
-            date: data.date || "",
-            quote: data.review || data.quote || "",
-            rating: data.rating || 5
-          });
+          if (data.visible !== false) {
+            fetched.push({
+              id: docSnap.id,
+              name: data.customerName || data.name || "Happy Collector",
+              location: data.place || data.location || "",
+              title: data.title || "Verified Buyer",
+              date: data.date || "",
+              quote: data.review || data.quote || "",
+              rating: Number(data.rating) || 5
+            });
+          }
         });
 
         if (fetched.length > 0) {
           setReviewsList(fetched);
         }
-      } catch (error) {
-        console.error("Firebase reviews fetch error:", error);
       }
-    };
+    }, (error) => {
+      console.error("Firebase reviews fetch error:", error);
+    });
 
-    fetchReviewsFromFirestore();
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -95,7 +101,6 @@ const TestimonialSection = () => {
         <div className="flex flex-col sm:flex-row items-center justify-between mb-10 md:mb-12 gap-6">
           
           <div className="text-center sm:text-left space-y-2">
-            
             <h2 className="font-serif font-normal leading-tight text-3xl sm:text-4xl md:text-5xl text-[#2e0e43]">
               Real Stories. <span className="italic font-serif">Real Love.</span>
             </h2>
@@ -155,35 +160,43 @@ const TestimonialSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
-                  className="p-8 lg:p-9 h-full flex flex-col justify-between border border-[#D8CBBE]/50 bg-white rounded-3xl hover:border-[#C8A46A] hover:shadow-xl transition-all duration-500 shadow-sm relative group"
-                  style={{ minHeight: '270px' }}
+                  className="p-7 lg:p-8 h-[285px] flex flex-col justify-between border border-[#E5D7C5] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F0] to-[#F7F0E6] rounded-3xl hover:border-[#C8A46A] hover:shadow-[0_15px_40px_rgba(200,164,106,0.18)] transition-all duration-500 shadow-sm relative group overflow-hidden"
                 >
                   
                   {/* Top Quote Watermark Icon */}
-                  <Quote size={32} className="absolute top-6 right-6 text-[#C8A46A]/15 group-hover:text-[#C8A46A]/25 transition-colors pointer-events-none" />
+                  <Quote size={36} className="absolute top-5 right-5 text-[#C8A46A]/15 group-hover:text-[#C8A46A]/30 transition-colors pointer-events-none" />
 
-                  {/* Stars */}
-                  <div className="flex items-center gap-1.5 mb-5">
-                    {[...Array(review.rating || 5)].map((_, i) => (
-                      <Star key={i} size={15} className="fill-[#C8A46A] text-[#C8A46A]" />
-                    ))}
+                  {/* Top Bar: Rating Stars & Location Badge */}
+                  <div className="flex items-center justify-between gap-3 mb-3 shrink-0">
+                    <div className="flex items-center gap-1.5">
+                      {[...Array(review.rating || 5)].map((_, i) => (
+                        <Star key={i} size={15} className="fill-[#B89355] text-[#B89355]" />
+                      ))}
+                    </div>
+
+                    {review.location && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF3E8] border border-[#C8A46A]/30 text-[#8B6B38] text-[11px] font-sans font-semibold tracking-wider uppercase">
+                        <MapPin size={11} className="text-[#B89355]" />
+                        {review.location}
+                      </span>
+                    )}
                   </div>
 
-                  {/* Quote Content */}
-                  <p className="text-[#2A2623] text-base sm:text-lg leading-relaxed italic font-serif font-normal flex-grow">
+                  {/* Quote Content with line-clamp truncation */}
+                  <p className="text-[#2A2623] text-base sm:text-lg leading-relaxed italic font-serif font-light flex-grow line-clamp-3">
                     "{review.quote}"
                   </p>
 
-                  {/* Reviewer Details */}
-                  <div className="mt-7 pt-5 border-t border-[#F4EEE8] flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-xs shrink-0 bg-gradient-to-br from-[#2e0e43] to-[#4a186a] font-serif">
+                  {/* Reviewer Details Footer */}
+                  <div className="mt-4 pt-4 border-t border-[#E8DFC8] flex items-center gap-3.5 shrink-0">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-[#E5C794] shadow-sm shrink-0 bg-gradient-to-br from-[#2e0e43] to-[#4a186a] border border-[#C8A46A]/40 font-serif">
                       {review.name ? review.name.trim().charAt(0) : 'V'}
                     </div>
-                    <div>
-                      <p className="text-sm font-bold tracking-[0.2em] font-sans text-[#2e0e43] uppercase">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold tracking-[0.2em] font-sans text-[#2A2623] uppercase truncate">
                         {review.name ? review.name.trim() : 'Verified Collector'}
                       </p>
-                      <p className="text-sm font-serif text-[#7B6D63]">
+                      <p className="text-xs sm:text-sm font-serif text-[#7B6D63] truncate">
                         {review.title || 'Verified Buyer'}{review.date ? ` • ${review.date}` : ''}
                       </p>
                     </div>

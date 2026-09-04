@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight } from 'lucide-react';
+import { Instagram, Facebook, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight, Mail, CheckCircle2, Sparkles } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) return;
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubscribed(true);
+      setEmail('');
+    }, 600);
+  };
 
   const sections = [
     {
@@ -44,51 +58,53 @@ const Footer = () => {
 
   const valueProps = [
     {
-      icon: <Gem className="w-5 h-5 text-[#E5C794]" />,
+      icon: <Gem className="w-5 h-5 text-[#B89355]" />,
       title: "100% Certified Authentic",
       subtitle: "Curated High Jewellery"
     },
     {
-      icon: <Truck className="w-5 h-5 text-[#E5C794]" />,
+      icon: <Truck className="w-5 h-5 text-[#B89355]" />,
       title: "Insured Global Shipping",
       subtitle: "Complimentary Express Delivery"
     },
     {
-      icon: <RefreshCw className="w-5 h-5 text-[#E5C794]" />,
+      icon: <RefreshCw className="w-5 h-5 text-[#B89355]" />,
       title: "30-Day Atelier Guarantee",
       subtitle: "Seamless Exchanges & Returns"
     },
     {
-      icon: <ShieldCheck className="w-5 h-5 text-[#E5C794]" />,
+      icon: <ShieldCheck className="w-5 h-5 text-[#B89355]" />,
       title: "Lifetime Heritage Warranty",
       subtitle: "Guaranteed Artistry & Quality"
     }
   ];
 
   return (
-    <footer className="w-full bg-[#14061F] text-[#F3ECE1] font-sans border-t border-[#3A1B54]/80 relative overflow-hidden">
+    <footer className="w-full bg-[#FAF6F0] text-[#2A2623] font-sans border-t border-[#E8DFC8] relative overflow-hidden">
       
-      {/* Subtle Background Glow Accents */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#3A1B54]/30 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#C8A46A]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Soft Ambient Cream & Gold Glow Accents */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#C8A46A]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#EFE6DC]/50 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Value Proposition Strip */}
-      {/* <div className="relative border-b border-[#3A1B54]/70 bg-[#160723]/90 backdrop-blur-md">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-8">
+      <div className="relative border-b border-[#E8DFC8]/80 bg-[#F5ECE0]/60 backdrop-blur-md">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-8 sm:py-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {valueProps.map((prop, index) => (
               <div 
                 key={index}
-                className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.03] border border-[#C8A46A]/20 hover:border-[#C8A46A]/50 hover:bg-white/[0.06] transition-all duration-300 group shadow-sm"
+                className="flex items-center gap-4 p-5 rounded-2xl bg-white/70 border border-[#E8DFC8] hover:border-[#C8A46A]/60 hover:bg-white/90 hover:shadow-[0_8px_25px_rgba(200,164,106,0.12)] transition-all duration-300 group"
               >
-                <div className="w-12 h-12 rounded-full bg-[#1A0829] border border-[#C8A46A]/40 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-[#E5C794] transition-all duration-300 shadow-[0_0_15px_rgba(200,164,106,0.15)]">
-                  {prop.icon}
+                <div className="w-13 h-13 rounded-full bg-[#FAF3E8] border border-[#C8A46A]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#C8A46A] group-hover:text-white transition-all duration-300 shadow-sm">
+                  <span className="group-hover:brightness-200 transition-all duration-300">
+                    {prop.icon}
+                  </span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-[#F3ECE1] font-sans tracking-wide">
+                  <h4 className="text-base font-bold text-[#2A2623] font-sans tracking-wide">
                     {prop.title}
                   </h4>
-                  <p className="text-sm text-[#C5B39A] font-serif font-light">
+                  <p className="text-sm sm:text-base text-[#7B6D63] font-serif font-light">
                     {prop.subtitle}
                   </p>
                 </div>
@@ -96,10 +112,12 @@ const Footer = () => {
             ))}
           </div>
         </div>
-      </div> */}
+      </div>
 
-      {/* Main Footer Section */}
-      <div className="relative pt-16 pb-12 px-6 lg:px-12 bg-gradient-to-b from-[#14061F] via-[#100419] to-[#0B0212]">
+      {/* VIP Atelier Newsletter Subscription Section */}
+      
+      {/* Main Footer Links & Brand Section */}
+      <div className="relative pt-16 pb-14 px-6 lg:px-12 bg-gradient-to-b from-[#FAF6F0] via-[#F5ECE0] to-[#EFE6DC]">
         <div className="max-w-[1440px] mx-auto">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 mb-16">
@@ -110,30 +128,30 @@ const Footer = () => {
                 <img 
                   src="/img/logo.png" 
                   alt="Velouraz Jewellery" 
-                  className="h-12 lg:h-14 object-contain brightness-0 invert group-hover:opacity-90 transition-opacity" 
+                  className="h-14 lg:h-16 object-contain group-hover:opacity-85 transition-opacity" 
                 />
               </Link>
 
-              <p className="text-[#C5B39A] font-serif text-sm sm:text-base leading-relaxed max-w-sm font-light">
+              <p className="text-[#6B5E52] font-serif text-base sm:text-lg leading-relaxed max-w-sm font-light">
                 Curated high jewellery inspired by global heritage, crafted for the modern aesthetic with uncompromised artistry.
               </p>
 
               {/* Concierge Highlight */}
-              <div className="pt-1">
-                <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#E5C794] mb-1 font-semibold">
+              <div className="pt-2">
+                <p className="text-sm font-sans uppercase tracking-[0.2em] text-[#B89355] mb-1 font-bold">
                   Atelier Concierge
                 </p>
                 <a 
-                  href="mailto:concierge@velouraz.com" 
-                  className="text-sm text-[#C5B39A] hover:text-[#E5C794] transition-colors duration-300 font-serif flex items-center gap-1 inline-flex"
+                  href="mailto:contact@velouraz.in" 
+                  className="text-base text-[#2A2623] hover:text-[#B89355] transition-colors duration-300 font-serif flex items-center gap-1.5 inline-flex font-semibold"
                 >
-                  concierge@velouraz.com <ArrowUpRight className="w-4 h-4" />
+                  contact@velouraz.in <ArrowUpRight className="w-4 h-4 text-[#B89355]" />
                 </a>
               </div>
               
               {/* Social Icons */}
-              <div className="space-y-2 pt-2">
-                <p className="text-sm font-sans uppercase tracking-[0.18em] text-[#E5C794] font-medium">
+              <div className="space-y-3 pt-3">
+                <p className="text-sm font-sans uppercase tracking-[0.18em] text-[#B89355] font-bold">
                   Follow Our Journey
                 </p>
                 <div className="flex items-center gap-3">
@@ -142,36 +160,36 @@ const Footer = () => {
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Instagram" 
-                    className="w-11 h-11 rounded-full bg-white/5 border border-[#C8A46A]/30 flex items-center justify-center text-[#E5C794] hover:text-[#14061F] hover:bg-[#C8A46A] hover:border-[#C8A46A] hover:shadow-[0_0_20px_rgba(200,164,106,0.5)] transition-all duration-300"
+                    className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
                   >
-                    <Instagram size={19} />
+                    <Instagram size={20} />
                   </a>
                   <a 
                     href="https://www.facebook.com/share/1Bg4DRSKhd/?mibextid=wwXIfr" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Facebook" 
-                    className="w-11 h-11 rounded-full bg-white/5 border border-[#C8A46A]/30 flex items-center justify-center text-[#E5C794] hover:text-[#14061F] hover:bg-[#C8A46A] hover:border-[#C8A46A] hover:shadow-[0_0_20px_rgba(200,164,106,0.5)] transition-all duration-300"
+                    className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
                   >
-                    <Facebook size={19} />
+                    <Facebook size={20} />
                   </a>
                   <a 
                     href="https://pin.it/1J19Fel5b" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Pinterest" 
-                    className="w-11 h-11 rounded-full bg-white/5 border border-[#C8A46A]/30 flex items-center justify-center text-[#E5C794] hover:text-[#14061F] hover:bg-[#C8A46A] hover:border-[#C8A46A] hover:shadow-[0_0_20px_rgba(200,164,106,0.5)] transition-all duration-300"
+                    className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
                   >
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.367 18.606 0 12.017 0z"/></svg>
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.367 18.606 0 12.017 0z"/></svg>
                   </a>
                   <a 
                     href="https://www.threads.com/@_velouraz_?invite=0" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     aria-label="Threads" 
-                    className="w-11 h-11 rounded-full bg-white/5 border border-[#C8A46A]/30 flex items-center justify-center text-[#E5C794] hover:text-[#14061F] hover:bg-[#C8A46A] hover:border-[#C8A46A] hover:shadow-[0_0_20px_rgba(200,164,106,0.5)] transition-all duration-300"
+                    className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
                   >
-                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.026-6.377-1.222-8.31-3.554C2.008 18.2 1 15.176 1 11.45 1 4.887 5.864.07 12.277 0c3.554 0 6.643 1.404 8.696 3.953l-2.073 1.748c-1.636-2.033-4.088-3.155-6.914-3.155-5.26 0-9.25 3.92-9.25 9.404 0 3.208.825 5.703 2.385 7.217 1.482 1.439 3.655 2.18 6.46 2.204 4.092.035 7.152-1.282 8.358-3.606.666-1.284.88-2.879.636-4.743-.377-2.875-2.613-4.748-5.69-4.748-2.64 0-4.526 1.464-4.834 3.737-.024.183.05.352.193.456.14.103.328.125.487.054 1.344-.593 2.76-.328 3.633.303.654.472.981 1.2.923 2.05-.084 1.233-1.077 2.116-2.358 2.1-1.042-.013-1.898-.755-1.996-1.728l.006-.062c.162-1.666 1.49-2.906 3.253-3.045 1.547-.122 3.018.423 3.864 1.428.618.734.922 1.667.857 2.628-.152 2.23-1.83 3.99-4.073 4.275-2.793.355-5.234-.582-6.527-2.506C5.034 14.88 5 13.06 5 11.45c0-4.143 3.003-7.5 7.234-7.5 2.327 0 4.412.982 5.72 2.696l1.96-1.872C20.198 2.532 17.518 1.25 12.234 1.25 6.786 1.25 2.25 5.567 2.25 11.45c0 3.44.912 6.19 2.637 8.168 1.68 1.928 4.094 2.926 7.292 2.95h.007c3.923 0 7.261-1.686 9.076-4.595.632-1.013.974-2.191 1.018-3.5.093-2.774-.78-5.112-2.525-6.761-1.583-1.496-3.774-2.278-6.335-2.26-4.168.03-7.218 2.873-7.53 7.025-.262 3.493 2.117 6.47 5.58 6.993 2.05.31 4.143-.162 5.741-1.294l1.32 1.76c-2.072 1.47-4.78 2.083-7.442 1.681-4.526-.684-7.636-4.577-7.294-9.15.408-5.43 4.383-9.15 9.876-9.19 3.298-.023 6.128.986 8.19 2.93 2.247 2.12 3.371 5.12 3.25 8.68-.057 1.68-.498 3.193-1.31 4.494C20.521 21.84 16.545 24 12.186 24z"/></svg>
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.186 24h-.007c-3.581-.026-6.377-1.222-8.31-3.554C2.008 18.2 1 15.176 1 11.45 1 4.887 5.864.07 12.277 0c3.554 0 6.643 1.404 8.696 3.953l-2.073 1.748c-1.636-2.033-4.088-3.155-6.914-3.155-5.26 0-9.25 3.92-9.25 9.404 0 3.208.825 5.703 2.385 7.217 1.482 1.439 3.655 2.18 6.46 2.204 4.092.035 7.152-1.282 8.358-3.606.666-1.284.88-2.879.636-4.743-.377-2.875-2.613-4.748-5.69-4.748-2.64 0-4.526 1.464-4.834 3.737-.024.183.05.352.193.456.14.103.328.125.487.054 1.344-.593 2.76-.328 3.633.303.654.472.981 1.2.923 2.05-.084 1.233-1.077 2.116-2.358 2.1-1.042-.013-1.898-.755-1.996-1.728l.006-.062c.162-1.666 1.49-2.906 3.253-3.045 1.547-.122 3.018.423 3.864 1.428.618.734.922 1.667.857 2.628-.152 2.23-1.83 3.99-4.073 4.275-2.793.355-5.234-.582-6.527-2.506C5.034 14.88 5 13.06 5 11.45c0-4.143 3.003-7.5 7.234-7.5 2.327 0 4.412.982 5.72 2.696l1.96-1.872C20.198 2.532 17.518 1.25 12.234 1.25 6.786 1.25 2.25 5.567 2.25 11.45c0 3.44.912 6.19 2.637 8.168 1.68 1.928 4.094 2.926 7.292 2.95h.007c3.923 0 7.261-1.686 9.076-4.595.632-1.013.974-2.191 1.018-3.5.093-2.774-.78-5.112-2.525-6.761-1.583-1.496-3.774-2.278-6.335-2.26-4.168.03-7.218 2.873-7.53 7.025-.262 3.493 2.117 6.47 5.58 6.993 2.05.31 4.143-.162 5.741-1.294l1.32 1.76c-2.072 1.47-4.78 2.083-7.442 1.681-4.526-.684-7.636-4.577-7.294-9.15.408-5.43 4.383-9.15 9.876-9.19 3.298-.023 6.128.986 8.19 2.93 2.247 2.12 3.371 5.12 3.25 8.68-.057 1.68-.498 3.193-1.31 4.494C20.521 21.84 16.545 24 12.186 24z"/></svg>
                   </a>
                 </div>
               </div>
@@ -181,7 +199,7 @@ const Footer = () => {
             <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
               {sections.map((section) => (
                 <div key={section.title} className="space-y-4">
-                  <h4 className="text-sm font-semibold tracking-[0.2em] text-[#E5C794] uppercase font-sans mb-4 border-b border-[#3A1B54]/60 pb-2">
+                  <h4 className="text-sm sm:text-base font-bold tracking-[0.2em] text-[#B89355] uppercase font-sans mb-4 border-b border-[#E8DFC8] pb-2.5">
                     {section.title}
                   </h4>
                   <ul className="space-y-3.5">
@@ -189,9 +207,9 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link 
                           to={link.href} 
-                          className="text-sm sm:text-[15px] text-[#C5B39A] hover:text-[#E5C794] transition-all duration-300 font-serif tracking-wide flex items-center gap-1.5 group"
+                          className="text-base sm:text-[17px] text-[#6B5E52] hover:text-[#B89355] transition-all duration-300 font-serif tracking-wide flex items-center gap-2 group"
                         >
-                          <span className="opacity-0 group-hover:opacity-100 text-[#E5C794] text-xs transition-opacity duration-300">✦</span>
+                          <span className="opacity-0 group-hover:opacity-100 text-[#B89355] text-xs transition-opacity duration-300">✦</span>
                           <span className="group-hover:translate-x-1 transition-transform duration-300">
                             {link.name}
                           </span>
@@ -206,28 +224,28 @@ const Footer = () => {
           </div>
 
           {/* Bottom Bar & Copyright */}
-          <div className="relative pt-8 border-t border-[#3A1B54] flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div className="relative pt-8 border-t border-[#E8DFC8] flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             
             {/* Center Decorative Diamond Flourish */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#0B0212] px-3 text-[#C8A46A] text-sm">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#F5ECE0] px-3 text-[#B89355] text-sm">
               ✦
             </div>
 
-            <div className="space-y-1.5">
-              <p className="text-sm text-[#C5B39A]/90 font-sans">
+            <div className="space-y-1">
+              <p className="text-sm sm:text-base text-[#7B6D63] font-sans">
                 © {currentYear} Velouraz Jewellery. All Rights Reserved.
               </p>
-              <p className="text-sm text-[#C5B39A]/90 font-sans">
-                Design by <a href="https://letskillify.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[#E5C794] hover:underline">Letskillify</a>
+              <p className="text-sm sm:text-base text-[#7B6D63] font-sans">
+                Design by <a href="https://letskillify.com" target="_blank" rel="noopener noreferrer" className="font-bold text-[#B89355] hover:underline">Letskillify</a>
               </p>
             </div>
 
             {/* Payment & Security Badges */}
-            <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
-              <span className="bg-[#1A0829] border border-[#C8A46A]/40 px-4 py-2 rounded-full text-sm font-serif text-[#E5C794] flex items-center gap-2 shadow-sm">
-                <Lock size={15} className="text-[#E5C794]" /> 256-Bit SSL Encryption
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm sm:text-base">
+              <span className="bg-white/80 border border-[#E0D5C1] px-4.5 py-2 rounded-full text-sm sm:text-base font-serif text-[#6B5E52] flex items-center gap-2 shadow-xs">
+                <Lock size={16} className="text-[#B89355]" /> 256-Bit SSL Encryption
               </span>
-              <span className="bg-[#1A0829] border border-[#C8A46A]/40 px-4 py-2 rounded-full text-sm font-serif text-[#E5C794]">
+              <span className="bg-white/80 border border-[#E0D5C1] px-4.5 py-2 rounded-full text-sm sm:text-base font-serif text-[#6B5E52]">
                 💳 Razorpay Secured
               </span>
             </div>
@@ -242,3 +260,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

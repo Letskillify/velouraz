@@ -433,8 +433,12 @@ const SearchOverlayModal = ({ onClose }) => {
   };
 
   const handleCountryClick = (country) => {
-    setQueryStr(country);
-    navigate(`/shop?country=${encodeURIComponent(country)}`);
+    if (country && country.toLowerCase() === 'india') {
+      navigate('/world-edit/india');
+    } else {
+      setQueryStr(country);
+      navigate(`/shop?country=${encodeURIComponent(country)}`);
+    }
     onClose();
   };
 
@@ -672,7 +676,7 @@ const worldEditMegaItems = [
     subtitle: 'Inspired by India',
     collection: 'THE SIGNATURE COLLECTION',
     cta: 'DISCOVER INDIA',
-    href: '/shop?country=India',
+    href: '/world-edit/india',
     bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
   },
   {

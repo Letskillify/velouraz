@@ -67,6 +67,7 @@ import BlogManager from "./components/BlogManager";
 import ProductImageManager from "./components/ProductImageManager";
 import TagsManager from "./components/TagsManager";
 import CouponManager from "./components/CouponManager";
+import ReviewsManager from "./components/ReviewsManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -381,6 +382,8 @@ const Admin = () => {
         return <ProductImageManager products={products} isDarkMode={isDarkMode} />;
       case "Blogs":
         return <BlogManager />;
+      case "Reviews":
+        return <ReviewsManager isDarkMode={isDarkMode} />;
       case "Banners":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
       case "Profile":
@@ -494,7 +497,7 @@ const Admin = () => {
         {!collapsed && (
           <>
             <p className="mb-2 mt-4 px-3 text-[16px] font-medium tracking-wide text-white/50">CONTENT</p>
-            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 onClick={() => setActiveItem(target)}
@@ -508,7 +511,7 @@ const Admin = () => {
         {collapsed && (
           <>
             <div className="my-2 border-t border-white/10" />
-            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 title={label}

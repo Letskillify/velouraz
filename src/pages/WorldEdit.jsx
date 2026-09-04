@@ -255,7 +255,13 @@ const WorldEdit = () => {
               {/* Action Button Footer */}
               <div className="p-6 pt-0 mt-auto">
                 <button
-                  onClick={() => navigate(`/shop?country=${encodeURIComponent(c.name)}`)}
+                  onClick={() => {
+                    if (c.name.toLowerCase() === 'india') {
+                      navigate('/world-edit/india');
+                    } else {
+                      navigate(`/shop?country=${encodeURIComponent(c.name)}`);
+                    }
+                  }}
                   className="w-full h-12 bg-[#2A2623] text-white text-xs font-bold uppercase tracking-[0.2em] rounded-xl flex items-center justify-center gap-2 group-hover:bg-[#2e0e43] transition-all duration-300 cursor-pointer shadow-sm"
                 >
                   Explore {c.name} Collection <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
