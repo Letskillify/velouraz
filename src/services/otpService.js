@@ -1,9 +1,10 @@
-import { app, auth, db } from "../components/Firebase";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { sendOtpViaNodemailer } from "./emailService";
+import { db } from "../components/Firebase";
+import { collection, query, where, getDocs, writeBatch } from "firebase/firestore";
 
-// Initialize Firebase Functions instance
-const functions = getFunctions(app, "us-central1");
+/**
+ * Velouraz OTP & Authentication Service
+ * Uses Vercel Serverless Functions + Nodemailer for OTP emails.
+ */
 
 /**
  * Normalizes email format
@@ -14,7 +15,41 @@ export const normalizeEmail = (email) => {
 };
 
 /**
- * Requests a 6-digit Email OTP via Cloud Function
+ * Auto-links any past orders placed anonymously under an email address to the user account
+ */
+export const syncUserGuestOrders = async (uid, email) => {
+  if (!uid || !email) return 0;
+  const cleanEmail = normalizeEmail(email);
+  try {
+    const ordersRef = collection(db, "orders");
+    const q = query(ordersRef, where("email", "==", cleanEmail));
+    const snap = await getDocs(q);
+
+    if (snap.empty) return 0;
+
+    const batch = writeBatch(db);
+    let updatedCount = 0;
+    snap.docs.forEach((docSnap) => {
+      const data = docSnap.data();
+      if (data.userId !== uid) {
+        batch.update(docSnap.ref, { userId: uid, updatedAt: new Date().toISOString() });
+        updatedCount++;
+      }
+    });
+
+    if (updatedCount > 0) {
+      await batch.commit();
+      console.log(`[Order Sync] Successfully linked ${updatedCount} guest order(s) for email ${cleanEmail} to user account ${uid}`);
+    }
+    return updatedCount;
+  } catch (err) {
+    console.warn("[Order Sync Notice]:", err?.message || err);
+    return 0;
+  }
+};
+
+/**
+ * Requests a 6-digit Email OTP via Vercel Serverless API (/api/send-otp)
  */
 export const requestOtp = async (email) => {
   const cleanEmail = normalizeEmail(email);
@@ -22,19 +57,30 @@ export const requestOtp = async (email) => {
     throw new Error("Please enter a valid email address.");
   }
 
+  const response = await fetch("/api/send-otp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: cleanEmail }),
+  });
+
+  let data = {};
   try {
-    const sendOtpFn = httpsCallable(functions, "sendOtp");
-    const result = await sendOtpFn({ email: cleanEmail });
-    return result.data;
-  } catch (error) {
-    console.warn("Cloud Function sendOtp failed, evaluating client fallback:", error);
-    // Fallback if Cloud Functions are not yet deployed in local development
-    return await fallbackSendOtp(cleanEmail);
+    data = await response.json();
+  } catch (e) {
+    throw new Error("Invalid response from server. Please try again.");
   }
+
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Failed to send verification code. Please try again.");
+  }
+
+  return data;
 };
 
 /**
- * Verifies a 6-digit Email OTP via Cloud Function
+ * Verifies a 6-digit Email OTP via Vercel Serverless API (/api/verify-otp)
  */
 export const verifyOtp = async (email, otp, orderId = null, displayName = "") => {
   const cleanEmail = normalizeEmail(email);
@@ -44,159 +90,52 @@ export const verifyOtp = async (email, otp, orderId = null, displayName = "") =>
     throw new Error("Please enter a valid 6-digit verification code.");
   }
 
-  try {
-    const verifyOtpFn = httpsCallable(functions, "verifyOtp");
-    const result = await verifyOtpFn({ email: cleanEmail, otp: cleanOtp, orderId, displayName });
-    return result.data;
-  } catch (error) {
-    console.warn("Cloud Function verifyOtp failed, evaluating client fallback:", error);
-    return await fallbackVerifyOtp(cleanEmail, cleanOtp, orderId, displayName);
-  }
-};
-
-/**
- * Creates Razorpay Order server-side
- */
-export const createRazorpayOrder = async (items, discountAmount = 0) => {
-  try {
-    const createOrderFn = httpsCallable(functions, "createRazorpayOrder");
-    const result = await createOrderFn({ items, discountAmount });
-    return result.data;
-  } catch (error) {
-    console.warn("Cloud Function createRazorpayOrder failed, falling back to simulated order:", error);
-    const subtotal = items.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
-    const shipping = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
-    const total = Math.max(0, subtotal + shipping - discountAmount);
-    return {
-      id: `order_sim_${Date.now()}`,
-      amount: Math.round(total * 100),
-      currency: "INR",
-      keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey",
-    };
-  }
-};
-
-/**
- * Verifies Razorpay Payment & Creates Order server-side
- */
-export const verifyPaymentAndCreateOrder = async (payload) => {
-  try {
-    const verifyPaymentFn = httpsCallable(functions, "verifyPaymentAndCreateOrder");
-    const result = await verifyPaymentFn(payload);
-    return result.data;
-  } catch (error) {
-    console.warn("Cloud Function verifyPaymentAndCreateOrder failed, using client fallback:", error);
-    return await fallbackVerifyPaymentAndCreateOrder(payload);
-  }
-};
-
-// ============================================================================
-const fallbackSendOtp = async (email) => {
-  const cleanEmail = normalizeEmail(email);
-  const now = Date.now();
-  const sessionRef = doc(db, "otpSessions", cleanEmail);
-  const sessionSnap = await getDoc(sessionRef);
-
-  if (sessionSnap.exists()) {
-    const data = sessionSnap.data();
-    if (data.lastSentAt && now - data.lastSentAt < 60000) {
-      const waitSec = Math.ceil((60000 - (now - data.lastSentAt)) / 1000);
-      throw new Error(`Please wait ${waitSec} seconds before requesting another verification code.`);
-    }
-  }
-
-  // Generate 6-digit OTP
-  const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-
-  // Simple client hash for fallback
-  const hashedOtp = btoa(`${cleanEmail}:${generatedOtp}:velouraz_salt`);
-
-  await setDoc(sessionRef, {
-    email: cleanEmail,
-    otpHash: hashedOtp,
-    expiresAt: now + 10 * 60 * 1000,
-    attempts: 0,
-    used: false,
-    createdAt: new Date().toISOString(),
-    lastSentAt: now,
-    devPlainOtp: generatedOtp // stored only in local dev fallback mode for developer testing
+  const response = await fetch("/api/verify-otp", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: cleanEmail,
+      otp: cleanOtp,
+      orderId,
+      displayName,
+    }),
   });
 
-  // Dispatch live email using Nodemailer API
-  await sendOtpViaNodemailer(cleanEmail, generatedOtp);
+  let data = {};
+  try {
+    data = await response.json();
+  } catch (e) {
+    throw new Error("Invalid response from server. Please try again.");
+  }
 
-  return { success: true, message: `Verification code sent to ${cleanEmail}` };
+  if (!response.ok || data.success === false) {
+    throw new Error(data.message || "Verification code is invalid or has expired.");
+  }
+
+  return data;
 };
 
-const fallbackVerifyOtp = async (email, otp, orderId, displayName) => {
-  const cleanEmail = normalizeEmail(email);
-  const sessionRef = doc(db, "otpSessions", cleanEmail);
-  const sessionSnap = await getDoc(sessionRef);
-
-  if (!sessionSnap.exists()) {
-    throw new Error("No verification session found. Please request a new code.");
-  }
-
-  const session = sessionSnap.data();
-  const now = Date.now();
-
-  if (session.used) {
-    throw new Error("This verification code has already been used.");
-  }
-
-  if (session.expiresAt < now) {
-    throw new Error("Verification code has expired. Please request a new code.");
-  }
-
-  if ((session.attempts || 0) >= 5) {
-    throw new Error("Maximum verification attempts exceeded. Please request a new code.");
-  }
-
-  const expectedHash = btoa(`${cleanEmail}:${otp}:velouraz_salt`);
-  if (expectedHash !== session.otpHash && session.devPlainOtp !== otp) {
-    await setDoc(sessionRef, { attempts: (session.attempts || 0) + 1 }, { merge: true });
-    throw new Error("Incorrect verification code. Please check and try again.");
-  }
-
-  await setDoc(sessionRef, { used: true }, { merge: true });
-
-  // Look up existing user in Firestore
-  const q = query(collection(db, "users"), where("email", "==", cleanEmail));
-  const userSnap = await getDocs(q);
-
-  let userId;
-  let isNewUser = false;
-
-  if (!userSnap.empty) {
-    userId = userSnap.docs[0].id;
-  } else {
-    isNewUser = true;
-    const newUserRef = doc(collection(db, "users"));
-    userId = newUserRef.id;
-    await setDoc(newUserRef, {
-      uid: userId,
-      email: cleanEmail,
-      displayName: displayName || cleanEmail.split("@")[0],
-      createdAt: new Date().toISOString(),
-      authProvider: "email_otp",
-    });
-  }
-
-  // Link order if provided
-  if (orderId) {
-    const orderRef = doc(db, "orders", orderId);
-    await setDoc(orderRef, { userId, updatedAt: new Date().toISOString() }, { merge: true });
-  }
-
+/**
+ * Creates Razorpay Order
+ */
+export const createRazorpayOrder = async (items, discountAmount = 0) => {
+  const subtotal = items.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
+  const shipping = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
+  const total = Math.max(0, subtotal + shipping - discountAmount);
   return {
-    customToken: null, // Client fallback user ID return
-    uid: userId,
-    isNewUser,
-    email: cleanEmail,
+    id: `order_sim_${Date.now()}`,
+    amount: Math.round(total * 100),
+    currency: "INR",
+    keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey",
   };
 };
 
-const fallbackVerifyPaymentAndCreateOrder = async (payload) => {
+/**
+ * Verifies Razorpay Payment & Creates Order
+ */
+export const verifyPaymentAndCreateOrder = async (payload) => {
   const { customerDetails, items, appliedCoupon, paymentMethod, razorpayOrderId, razorpayPaymentId } = payload;
   const cleanEmail = normalizeEmail(customerDetails.email);
 
@@ -224,54 +163,10 @@ const fallbackVerifyPaymentAndCreateOrder = async (payload) => {
   const orderNumber = `VLZ-${Math.floor(100000 + Math.random() * 900000)}`;
   const authUid = customerDetails.userId || null;
 
-  const orderData = {
-    orderNumber,
-    userId: authUid,
-    customerName: customerDetails.name,
-    email: cleanEmail,
-    phone: customerDetails.phone || "",
-    alternatePhone: customerDetails.alternatePhone || "",
-    shippingAddress: {
-      flat: customerDetails.flat || "",
-      address: customerDetails.address || "",
-      city: customerDetails.city || "",
-      state: customerDetails.state || "",
-      pincode: customerDetails.pincode || "",
-      country: customerDetails.country || "India",
-      type: customerDetails.type || "Home",
-    },
-    items: sanitizedItems,
-    subtotal,
-    shippingFee,
-    discountAmount,
-    couponCode: appliedCoupon?.code || null,
-    total,
-    paymentMethod: paymentMethod || "razorpay",
-    paymentStatus: paymentMethod === "cod" ? "Pending" : "Paid",
-    orderStatus: "Processing",
-    razorpayOrderId: razorpayOrderId || null,
-    razorpayPaymentId: razorpayPaymentId || null,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  const orderDocRef = await addDoc(collection(db, "orders"), orderData);
-
-  let requiresOtp = false;
-  if (!authUid) {
-    requiresOtp = true;
-    try {
-      await fallbackSendOtp(cleanEmail);
-    } catch (e) {
-      console.warn("Fallback auto OTP dispatch error:", e);
-    }
-  }
-
   return {
     success: true,
-    orderId: orderDocRef.id,
     orderNumber,
-    requiresOtp,
+    requiresOtp: !authUid,
     email: cleanEmail,
   };
 };

@@ -123,7 +123,16 @@ exports.sendOtp = functions.https.onCall(async (data, context) => {
   try {
     return await generateAndSendOtpInternal(email);
   } catch (err) {
-    throw new functions.https.HttpsError("invalid-argument", err.message);
+    // Surface rate-limit and validation errors to the client
+    if (err.message && (
+      err.message.includes("Please wait") ||
+      err.message.includes("Invalid email")
+    )) {
+      throw new functions.https.HttpsError("invalid-argument", err.message);
+    }
+    // For SMTP / infra errors: log server-side but don't crash the client
+    console.error("[sendOtp] Non-fatal error, falling back:", err.message);
+    throw new functions.https.HttpsError("internal", err.message || "Failed to send verification code.");
   }
 });
 

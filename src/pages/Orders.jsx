@@ -13,6 +13,7 @@ import {
 import Breadcrumb from "../components/Breadcrumb";
 import { generateInvoicePDF } from "../utils/invoice";
 import { trackShiprocketOrder } from "../services/shiprocketService";
+import { syncUserGuestOrders } from "../services/otpService";
 
 const Orders = () => {
   const { user } = useAuth();
@@ -50,23 +51,55 @@ const Orders = () => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const ordersRef = collection(db, "orders");
-        try {
-          const q = query(
-            ordersRef,
-            where("userId", "==", user.uid),
-            orderBy("createdAt", "desc")
-          );
-          const snap = await getDocs(q);
-          const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-          setOrders(list);
-        } catch (e) {
-          const q = query(ordersRef, where("userId", "==", user.uid));
-          const snap = await getDocs(q);
-          const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-          list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-          setOrders(list);
+        const cleanEmail = (user?.email || "").trim().toLowerCase();
+        if (user?.uid && cleanEmail) {
+          try {
+            await syncUserGuestOrders(user.uid, cleanEmail);
+          } catch (syncErr) {
+            console.warn("Guest order sync notice:", syncErr);
+          }
         }
+
+        const ordersRef = collection(db, "orders");
+        const orderMap = new Map();
+
+        // Query 1: by userId
+        if (user?.uid) {
+          try {
+            const q1 = query(ordersRef, where("userId", "==", user.uid));
+            const snap1 = await getDocs(q1);
+            snap1.docs.forEach((docSnap) => {
+              orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+            });
+          } catch (e1) {
+            console.warn("Orders page query by userId notice:", e1?.message);
+          }
+        }
+
+        // Query 2: by email
+        if (cleanEmail) {
+          try {
+            const q2 = query(ordersRef, where("email", "==", cleanEmail));
+            const snap2 = await getDocs(q2);
+            snap2.docs.forEach((docSnap) => {
+              orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+            });
+          } catch (e2) {
+            console.warn("Orders page query by email notice:", e2?.message);
+          }
+        }
+
+        const list = Array.from(orderMap.values());
+
+        const parseOrderDate = (val) => {
+          if (!val) return 0;
+          if (typeof val === 'number') return val;
+          if (val?.seconds) return val.seconds * 1000;
+          const parsed = new Date(val).getTime();
+          return isNaN(parsed) ? 0 : parsed;
+        };
+        list.sort((a, b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
+        setOrders(list);
       } catch (err) {
         console.error("Error fetching orders:", err);
       } finally {

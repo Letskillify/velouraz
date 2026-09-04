@@ -277,59 +277,91 @@ const Checkout = () => {
   const executeOrderCreation = async (paymentDetails = {}) => {
     setLoading(true);
     try {
-      // 1. Update product stocks
+      const cleanEmail = (formData.email || "").trim().toLowerCase();
+
+      // 1. Update product stocks in Firestore
       const batch = writeBatch(db);
       for (const item of checkoutItems) {
         if (item.id && !item.id.startsWith("bs-")) {
-          const pRef = doc(db, "products", item.id);
-          const pSnap = await getDoc(pRef);
-          if (pSnap.exists()) {
-            const currentStock = Number(pSnap.data().stock || 0);
-            const newStock = Math.max(0, currentStock - (item.quantity || 1));
-            batch.update(pRef, { stock: newStock });
+          try {
+            const pRef = doc(db, "products", item.id);
+            const pSnap = await getDoc(pRef);
+            if (pSnap.exists()) {
+              const currentStock = Number(pSnap.data().stock || 0);
+              const newStock = Math.max(0, currentStock - Number(item.quantity || 1));
+              batch.update(pRef, { stock: newStock });
+            }
+          } catch (stkErr) {
+            console.warn("Stock update warning for item:", item.id, stkErr);
           }
         }
       }
-      await batch.commit();
+      await batch.commit().catch(e => console.warn("Batch stock commit warning:", e));
+
+      // 2. Associate with logged in user or existing user by email
+      let orderUserId = user?.uid || "guest";
+      if (!user?.uid && cleanEmail) {
+        try {
+          const userQuery = query(collection(db, "users"), where("email", "==", cleanEmail));
+          const userSnap = await getDocs(userQuery);
+          if (!userSnap.empty) {
+            orderUserId = userSnap.docs[0].id;
+          }
+        } catch (uErr) {
+          console.warn("User lookup error:", uErr);
+        }
+      }
 
       const fullShippingAddress = {
         name: formData.name,
-        email: formData.email,
+        email: cleanEmail,
         phone: formData.phone,
-        alternatePhone: formData.alternatePhone,
-        flat: formData.flat,
-        address: formData.address,
+        alternatePhone: formData.alternatePhone || "",
+        flat: formData.flat || "",
+        address: formData.address || "",
         fullAddress: `${formData.flat ? formData.flat + ', ' : ''}${formData.address}, ${formData.city}, ${formData.state} - ${formData.pincode}`,
-        city: formData.city,
-        state: formData.state,
-        pincode: formData.pincode,
-        country: formData.country,
-        type: formData.type,
+        city: formData.city || "",
+        state: formData.state || "",
+        pincode: formData.pincode || "",
+        country: formData.country || "India",
+        type: formData.type || "Home",
       };
 
-      // 2. Register Order with Shiprocket Logistics
-      const shiprocketResult = await createShiprocketOrder({
-        customerName: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        shippingAddress: fullShippingAddress,
-        items: checkoutItems,
-        totalAmount: total,
-        paymentMethod,
-      });
+      // 3. Register Order with Shiprocket Logistics (Optional)
+      let shiprocketResult = { shiprocketOrderId: null, awbNumber: null, courierName: null };
+      try {
+        shiprocketResult = await createShiprocketOrder({
+          customerName: formData.name,
+          email: cleanEmail,
+          phone: formData.phone,
+          shippingAddress: fullShippingAddress,
+          items: checkoutItems,
+          totalAmount: total,
+          paymentMethod,
+        });
+      } catch (srErr) {
+        console.warn("Shiprocket integration notice:", srErr?.message);
+      }
+
+      const generatedOrderNum = `VLZ-${Math.floor(100000 + Math.random() * 900000)}`;
 
       const orderData = {
-        userId: user?.uid || "guest",
+        orderNumber: generatedOrderNum,
+        userId: orderUserId,
         customerName: formData.name,
-        email: formData.email,
+        email: cleanEmail,
         phone: formData.phone,
+        alternatePhone: formData.alternatePhone || "",
         shippingAddress: fullShippingAddress,
         items: checkoutItems.map(i => ({
           id: i.id,
-          name: i.name,
-          price: i.price,
-          quantity: i.quantity || 1,
-          image: i.image || i.primaryImage || ''
+          name: i.name || "Jewellery Item",
+          price: Number(i.price || 0),
+          original_price: Number(i.original_price || i.price || 0),
+          quantity: Number(i.quantity || 1),
+          image: i.image || i.primaryImage || '',
+          size: i.size || null,
+          metal: i.metal || null,
         })),
         subtotal,
         shippingFee,
@@ -339,21 +371,67 @@ const Checkout = () => {
           discountAmount: appliedCoupon.discountAmount,
         } : null,
         totalAmount: total,
-        paymentMethod,
+        total: total,
+        paymentMethod: paymentMethod || "cod",
         paymentStatus: paymentMethod === "razorpay" ? "Paid" : "Pending",
         paymentDetails,
         orderStatus: "Processing",
-        shiprocketOrderId: shiprocketResult.shiprocketOrderId,
-        trackingNumber: shiprocketResult.awbNumber,
-        courierName: shiprocketResult.courierName,
+        shiprocketOrderId: shiprocketResult?.shiprocketOrderId || null,
+        trackingNumber: shiprocketResult?.awbNumber || null,
+        courierName: shiprocketResult?.courierName || null,
         createdAt: serverTimestamp(),
         orderDate: new Date().toISOString()
       };
 
+      // 4. Save Order to Firestore orders collection
       const docRef = await addDoc(collection(db, "orders"), orderData);
-      const finalCreatedOrder = { id: docRef.id, ...orderData };
+      const finalCreatedOrder = { id: docRef.id, orderId: docRef.id, ...orderData };
 
-      // 3. Clear Shopping Cart & Buy Now State
+      // 5. Send Email Confirmation to Customer & Admin Notification
+      sendOrderEmails(finalCreatedOrder).catch(err => console.error("Order email dispatch error:", err));
+
+      // 6. Save address to account if user logged in
+      if (user?.uid) {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          let currentSaved = [];
+          if (userSnap.exists() && userSnap.data().savedAddresses) {
+            currentSaved = userSnap.data().savedAddresses;
+          }
+
+          const newAddrObj = {
+            name: formData.name,
+            phone: formData.phone,
+            alternatePhone: formData.alternatePhone || "",
+            flat: formData.flat || "",
+            address: formData.address || "",
+            city: formData.city || "",
+            state: formData.state || "",
+            pincode: formData.pincode || "",
+            country: formData.country || "India",
+            type: formData.type || "Home",
+            isDefault: currentSaved.length === 0
+          };
+
+          if (formData.saveToAccount && isNewAddress) {
+            const exists = currentSaved.some(a => a.address === newAddrObj.address && a.pincode === newAddrObj.pincode);
+            if (!exists) {
+              currentSaved.push(newAddrObj);
+            }
+          }
+
+          await setDoc(userRef, {
+            defaultAddress: newAddrObj,
+            savedAddresses: currentSaved,
+            phone: formData.phone
+          }, { merge: true });
+        } catch (addrErr) {
+          console.warn("Address save error:", addrErr);
+        }
+      }
+
+      // 7. Clear Shopping Cart & Buy Now State
       setBuyNowItem(null);
       if (typeof window !== 'undefined' && window.history?.replaceState) {
         window.history.replaceState(null, "", window.location.pathname);
@@ -362,56 +440,16 @@ const Checkout = () => {
         await clearCart();
       }
 
-      // 4. Send Automated Nodemailer Notifications (User Confirmation & Admin Alert)
-      sendOrderEmails(finalCreatedOrder).catch(err => console.error("Nodemailer dispatch error:", err));
-
-      // 5. Save user address if saveToAccount is checked or new address added
-      if (user?.uid) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        let currentSaved = [];
-        if (userSnap.exists() && userSnap.data().savedAddresses) {
-          currentSaved = userSnap.data().savedAddresses;
-        }
-
-        const newAddrObj = {
-          name: formData.name,
-          phone: formData.phone,
-          alternatePhone: formData.alternatePhone,
-          flat: formData.flat,
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          pincode: formData.pincode,
-          country: formData.country,
-          type: formData.type,
-          isDefault: currentSaved.length === 0
-        };
-
-        if (formData.saveToAccount && isNewAddress) {
-          const exists = currentSaved.some(a => a.address === newAddrObj.address && a.pincode === newAddrObj.pincode);
-          if (!exists) {
-            currentSaved.push(newAddrObj);
-          }
-        }
-
-        await setDoc(userRef, {
-          defaultAddress: newAddrObj,
-          savedAddresses: currentSaved,
-          phone: formData.phone
-        }, { merge: true });
-      }
-
-      setOrderSuccess(finalCreatedOrder);
+      return finalCreatedOrder;
     } catch (err) {
       console.error("Order creation error:", err);
-      alert("Failed to place order. Please try again.");
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  const handlePaymentSuccess = async (serverResult) => {
+  const handlePaymentSuccess = async (createdOrder) => {
     setBuyNowItem(null);
     if (typeof window !== 'undefined' && window.history?.replaceState) {
       window.history.replaceState(null, "", window.location.pathname);
@@ -420,12 +458,11 @@ const Checkout = () => {
       await clearCart();
     }
 
-    if (user?.uid) {
-      navigate(`/order-success/${serverResult.orderId}`, { state: { isNewUser: false } });
+    const orderId = createdOrder?.id || createdOrder?.orderId;
+    if (orderId) {
+      navigate(`/order-success/${orderId}`, { state: { isNewUser: false } });
     } else {
-      setPendingOrderId(serverResult.orderId);
-      setGuestEmail(formData.email);
-      setShowOtpModal(true);
+      setOrderSuccess(createdOrder);
     }
   };
 
@@ -470,16 +507,12 @@ const Checkout = () => {
           handler: async function (response) {
             try {
               setLoading(true);
-              const serverResult = await verifyPaymentAndCreateOrder({
+              const createdOrder = await executeOrderCreation({
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpayOrderId: response.razorpay_order_id || rzpOrder.id,
                 razorpaySignature: response.razorpay_signature,
-                customerDetails: { ...formData, userId: user?.uid },
-                items: checkoutItems,
-                appliedCoupon,
-                paymentMethod: "razorpay",
               });
-              await handlePaymentSuccess(serverResult);
+              await handlePaymentSuccess(createdOrder);
             } catch (err) {
               console.error("Payment verification error:", err);
               alert(err.message || "Payment verification failed.");
@@ -503,26 +536,16 @@ const Checkout = () => {
           setLoading(false);
         } catch (err) {
           console.warn("Razorpay simulated mode, completing order directly:", err);
-          const serverResult = await verifyPaymentAndCreateOrder({
-            customerDetails: { ...formData, userId: user?.uid },
-            items: checkoutItems,
-            appliedCoupon,
-            paymentMethod: "razorpay",
-          });
-          await handlePaymentSuccess(serverResult);
+          const createdOrder = await executeOrderCreation({ paymentMethod: "razorpay" });
+          await handlePaymentSuccess(createdOrder);
         }
       } else {
-        const serverResult = await verifyPaymentAndCreateOrder({
-          customerDetails: { ...formData, userId: user?.uid },
-          items: checkoutItems,
-          appliedCoupon,
-          paymentMethod: "cod",
-        });
-        await handlePaymentSuccess(serverResult);
+        const createdOrder = await executeOrderCreation({ paymentMethod: "cod" });
+        await handlePaymentSuccess(createdOrder);
       }
     } catch (err) {
       console.error("Order submission error:", err);
-      alert(err.message || "Failed to place order.");
+      alert(err.message || "Failed to place order. Please try again.");
       setLoading(false);
     }
   };

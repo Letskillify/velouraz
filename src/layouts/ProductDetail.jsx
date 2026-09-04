@@ -142,11 +142,7 @@ const ProductDetail = () => {
       stock: product.stock,
       giftWrap: giftWrap
     };
-    if (!user) {
-      navigate('/login', { state: { from: '/checkout', buyNowItem } });
-    } else {
-      navigate('/checkout', { state: { buyNowItem } });
-    }
+    navigate('/checkout', { state: { buyNowItem } });
   };
 
   const handleShare = () => {

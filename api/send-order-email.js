@@ -1,4 +1,4 @@
-import { transporter } from "./utils/mailer.js";
+import { sendMailWithFallback } from "./utils/mailer.js";
 
 const formatItemsHtml = (items = []) => {
   if (!items || items.length === 0) {
@@ -178,8 +178,8 @@ export default async function handler(req, res) {
 
   try {
     await Promise.all([
-      transporter.sendMail(customerMailOptions),
-      transporter.sendMail(adminMailOptions),
+      sendMailWithFallback(customerMailOptions),
+      sendMailWithFallback(adminMailOptions),
     ]);
     console.log(`[Nodemailer] Order confirmation emails sent for Order #${orderId}`);
     return res.status(200).json({ success: true, message: "Order emails sent successfully." });

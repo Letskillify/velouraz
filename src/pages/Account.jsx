@@ -12,10 +12,24 @@ import {
   User, Package, Heart, LogOut, ChevronRight, Settings,
   ShoppingBag, CreditCard, MapPin, Bell, Award, Crown,
   ArrowRight, ArrowLeft, FileText, Truck, Search, Plus, Edit2, Trash2,
-  CheckCircle2, Clock, Printer, X, ShieldCheck, Sparkles, Phone, Mail, Map, RefreshCw, Download,
+  CheckCircle2, Clock, Printer, X, ShieldCheck, Sparkles, Phone, Mail, Map as MapIcon, RefreshCw, Download,
   Home, Building2, Check
 } from "lucide-react";
+
 import { generateInvoicePDF } from "../utils/invoice";
+import { syncUserGuestOrders } from "../services/otpService";
+
+const formatOrderDate = (order) => {
+  if (!order) return new Date().toLocaleDateString("en-IN");
+  const val = order.createdAt || order.orderDate;
+  if (!val) return new Date().toLocaleDateString("en-IN");
+  if (val?.seconds) return new Date(val.seconds * 1000).toLocaleDateString("en-IN");
+  if (typeof val === "string" || typeof val === "number") {
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? new Date().toLocaleDateString("en-IN") : d.toLocaleDateString("en-IN");
+  }
+  return new Date().toLocaleDateString("en-IN");
+};
 
 const Account = () => {
   const { user, loading: authLoading, logout, deleteAccount, changePassword } = useAuth();
@@ -93,30 +107,27 @@ const Account = () => {
     }
   };
 
+  // ── Profile / address / cart / wishlist loader ────────────────────────────
   useEffect(() => {
-    if (authLoading) return; // wait for auth to resolve before redirecting
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    if (authLoading) return;
+    if (!user) { navigate("/login"); return; }
 
-    const loadAccountData = async () => {
+    const loadProfileData = async () => {
       setLoading(true);
       try {
-        // 1. Fetch User Doc
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
-          const data = userSnap.data();
-          setUserData(data);
+          const d = userSnap.data();
+          setUserData(d);
           setProfileForm({
-            displayName: data.displayName || user.displayName || "",
-            phone: data.phone || data.phoneNumber || "",
-            email: data.email || user.email || ""
+            displayName: d.displayName || user.displayName || "",
+            phone: d.phone || d.phoneNumber || "",
+            email: d.email || user.email || ""
           });
-          const savedAddrs = data.savedAddresses || [];
-          if (savedAddrs.length === 0 && data.defaultAddress) {
-            savedAddrs.push({ ...data.defaultAddress, isDefault: true, type: "Home" });
+          const savedAddrs = d.savedAddresses || [];
+          if (savedAddrs.length === 0 && d.defaultAddress) {
+            savedAddrs.push({ ...d.defaultAddress, isDefault: true, type: "Home" });
           }
           setAddresses(savedAddrs);
         } else {
@@ -126,45 +137,94 @@ const Account = () => {
             email: user.email || ""
           });
         }
+      } catch (err) {
+        console.error("Error loading profile data:", err);
+      } finally {
+        setLoading(false);
+      }
 
-        // 2. Fetch User Orders from orders collection where userId == user.uid
-        try {
-          const ordersRef = collection(db, "orders");
-          const q = query(ordersRef, where("userId", "==", user.uid), orderBy("createdAt", "desc"));
-          const ordersSnap = await getDocs(q);
-          const userOrdersList = ordersSnap.docs.map(docSnap => ({
-            id: docSnap.id,
-            ...docSnap.data()
-          }));
-          setOrders(userOrdersList);
-        } catch (e) {
-          console.warn("Ordered index fallback:", e);
-          const ordersRef = collection(db, "orders");
-          const q = query(ordersRef, where("userId", "==", user.uid));
-          const ordersSnap = await getDocs(q);
-          const userOrdersList = ordersSnap.docs.map(docSnap => ({
-            id: docSnap.id,
-            ...docSnap.data()
-          }));
-          userOrdersList.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-          setOrders(userOrdersList);
-        }
-
-        // 3. Stats: Cart & Wishlist Count
+      // Cart & Wishlist counts (independent of orders)
+      try {
         const cartSnap = await getDocs(collection(db, "users", user.uid, "cart"));
         const wishlistSnap = await getDocs(collection(db, "users", user.uid, "wishlist"));
         setCartCount(cartSnap.size);
         setWishlistCount(wishlistSnap.size);
-
-      } catch (err) {
-        console.error("Error loading account data:", err);
-      } finally {
-        setLoading(false);
+      } catch (e) {
+        console.warn("Cart/wishlist count notice:", e?.message);
       }
     };
 
-    loadAccountData();
+    loadProfileData();
   }, [user, authLoading, navigate]);
+
+  // ── Orders loader (identical strategy to Orders.jsx) ──────────────────────
+  useEffect(() => {
+    if (authLoading || !user) return;
+
+    const fetchOrders = async () => {
+      try {
+        const cleanEmail = (user.email || "").trim().toLowerCase();
+        console.log("[Account DEBUG] fetchOrders start | uid:", user.uid, "| email:", cleanEmail);
+
+        // Step 1: sync guest orders
+        if (user.uid && cleanEmail) {
+          try {
+            const synced = await syncUserGuestOrders(user.uid, cleanEmail);
+            console.log("[Account DEBUG] syncUserGuestOrders linked:", synced, "orders");
+          } catch (syncErr) {
+            console.warn("[Account] Guest order sync notice:", syncErr?.message);
+          }
+        }
+
+        const ordersRef = collection(db, "orders");
+        const orderMap = new Map();
+
+        // Query A: by userId
+        try {
+          const q1 = query(ordersRef, where("userId", "==", user.uid));
+          const snap1 = await getDocs(q1);
+          console.log("[Account DEBUG] Query by userId returned:", snap1.size, "docs");
+          snap1.docs.forEach((docSnap) => {
+            orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+          });
+        } catch (e1) {
+          console.error("[Account] Order query by userId FAILED:", e1?.message, e1);
+        }
+
+        // Query B: by email
+        if (cleanEmail) {
+          try {
+            const q2 = query(ordersRef, where("email", "==", cleanEmail));
+            const snap2 = await getDocs(q2);
+            console.log("[Account DEBUG] Query by email returned:", snap2.size, "docs");
+            snap2.docs.forEach((docSnap) => {
+              orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+            });
+          } catch (e2) {
+            console.error("[Account] Order query by email FAILED:", e2?.message, e2);
+          }
+        }
+
+        const list = Array.from(orderMap.values());
+        console.log("[Account DEBUG] Total unique orders to display:", list.length);
+
+        const parseDate = (val) => {
+          if (!val) return 0;
+          if (typeof val === "number") return val;
+          if (val?.seconds) return val.seconds * 1000;
+          const p = new Date(val).getTime();
+          return isNaN(p) ? 0 : p;
+        };
+        list.sort((a, b) => parseDate(b.createdAt || b.orderDate) - parseDate(a.createdAt || a.orderDate));
+        setOrders(list);
+        console.log("[Account DEBUG] setOrders called with", list.length, "orders");
+      } catch (err) {
+        console.error("[Account] Error fetching orders:", err);
+      }
+    };
+
+    fetchOrders();
+  }, [user, authLoading]);
 
   const handleLogout = async () => {
     try {
@@ -503,14 +563,14 @@ const Account = () => {
                                 <Package size={20} />
                               </div>
                               <div>
-                                <p className="text-base font-bold text-[#2A2623] font-mono">#{order.id.slice(0, 8).toUpperCase()}</p>
+                                <p className="text-base font-bold text-[#2A2623] font-mono">#{order.orderNumber || order.id?.slice(0, 10).toUpperCase()}</p>
                                 <p className="text-[16px] text-[#7B6D63]">
-                                  {order.items?.length || 1} item(s) • {new Date(order.createdAt?.seconds * 1000 || Date.now()).toLocaleDateString("en-IN")}
+                                  {order.items?.length || 1} item(s) • {formatOrderDate(order)}
                                 </p>
                               </div>
                             </div>
                             <div className="flex items-center justify-between sm:justify-end gap-4">
-                              <span className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || 0).toLocaleString()}</span>
+                              <span className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || order.totalAmount || 0).toLocaleString("en-IN")}</span>
                               <button
                                 onClick={() => { setSelectedOrder(order); setShowOrderModal(true); }}
                                 className="px-3 py-1.5 border border-[#2e0e43] text-[#2e0e43] text-[16px] font-bold uppercase rounded-lg hover:bg-[#2e0e43] hover:text-white transition-all"
@@ -563,14 +623,14 @@ const Account = () => {
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#D8CBBE]/30 pb-3">
                             <div>
                               <span className="text-[16px] font-bold uppercase tracking-widest text-[#7B6D63]">Order Reference</span>
-                              <p className="text-base font-bold text-[#2A2623] font-mono">#{order.id}</p>
+                              <p className="text-base font-bold text-[#2A2623] font-mono">#{order.orderNumber || order.id}</p>
                             </div>
                             <div className="flex items-center gap-2">
                               <span className="px-3 py-1 bg-[#2e0e43]/10 text-[#2e0e43] text-[16px] font-bold uppercase tracking-wider rounded-full">
-                                {order.status || "Paid"}
+                                {order.orderStatus || order.status || "Processing"}
                               </span>
                               <span className="text-base text-[#7B6D63]">
-                                {new Date(order.createdAt?.seconds * 1000 || Date.now()).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+                                {formatOrderDate(order)}
                               </span>
                             </div>
                           </div>
@@ -594,7 +654,7 @@ const Account = () => {
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-[#D8CBBE]/20">
                             <div>
                               <span className="text-[16px] text-[#7B6D63] uppercase font-bold">Total Amount</span>
-                              <p className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || 0).toLocaleString()}</p>
+                              <p className="text-sm font-bold text-[#2e0e43]">₹{Number(order.total || order.totalAmount || 0).toLocaleString("en-IN")}</p>
                             </div>
 
                             <div className="flex items-center gap-2">

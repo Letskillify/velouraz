@@ -1,32 +1,20 @@
 /**
- * Velouraz Email Notification Service (Nodemailer Edition)
- * Replaces EmailJS with server-side Nodemailer for high delivery reliability.
+ * Velouraz Email Notification Service
+ * Calls server-side Vercel API endpoints (/api/send-otp and /api/send-order-email).
+ * No Nodemailer library is imported in client code.
  */
+
+import { requestOtp } from "./otpService";
 
 /**
- * Send 6-Digit Email OTP via Nodemailer API
+ * Send 6-Digit Email OTP via Vercel Serverless API
  */
-export const sendOtpViaNodemailer = async (toEmail, otp) => {
+export const sendOtpViaNodemailer = async (toEmail) => {
   try {
-    const response = await fetch("/api/send-otp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: toEmail, otp }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log(`[Nodemailer] OTP email dispatched successfully to ${toEmail}`);
-      return { success: true, message: data.message, simulated: data.simulated };
-    } else {
-      console.error("[Nodemailer] OTP Email error response:", data.error);
-      return { success: false, error: data.error || "Failed to send OTP email" };
-    }
+    const result = await requestOtp(toEmail);
+    return { success: true, message: result.message || "OTP sent successfully" };
   } catch (error) {
-    console.error("[Nodemailer] Exception sending OTP email:", error);
+    console.error("[EmailService] Exception sending OTP email:", error);
     return { success: false, error: error.message };
   }
 };
@@ -35,10 +23,10 @@ export const sendOtpViaNodemailer = async (toEmail, otp) => {
 export const sendOtpViaEmailJS = sendOtpViaNodemailer;
 
 /**
- * Send Order Confirmation & Admin Notification Emails via Nodemailer API
+ * Send Order Confirmation & Admin Notification Emails via Vercel Serverless API
  */
 export const sendOrderEmails = async (orderData) => {
-  console.log("[Nodemailer] Initiating order email dispatches for Order #" + (orderData.id || orderData.orderId));
+  console.log("[EmailService] Initiating order email dispatches for Order #" + (orderData.id || orderData.orderId));
   try {
     const response = await fetch("/api/send-order-email", {
       method: "POST",
@@ -48,17 +36,25 @@ export const sendOrderEmails = async (orderData) => {
       body: JSON.stringify(orderData),
     });
 
-    const data = await response.json();
+    let data = {};
+    const text = await response.text();
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.warn("[EmailService] API returned non-JSON response:", text.slice(0, 150));
+      }
+    }
 
-    if (response.ok) {
-      console.log("[Nodemailer] Order emails dispatched successfully.");
+    if (response.ok && data.success !== false) {
+      console.log("[EmailService] Order emails dispatched successfully.");
       return [{ status: "fulfilled", value: { success: true } }];
     } else {
-      console.error("[Nodemailer] Order email error response:", data.error);
-      return [{ status: "rejected", reason: data.error }];
+      console.error("[EmailService] Order email error response:", data.error || response.statusText);
+      return [{ status: "rejected", reason: data.error || `HTTP ${response.status}: Failed to send order email` }];
     }
   } catch (error) {
-    console.error("[Nodemailer] Exception sending order emails:", error);
+    console.error("[EmailService] Exception sending order emails:", error);
     return [{ status: "rejected", reason: error.message }];
   }
 };

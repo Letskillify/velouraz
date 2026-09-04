@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db, auth } from "./Firebase";
 import { 
-  collection, query, where, getDocs, addDoc, doc, getDoc, setDoc, updateDoc, deleteDoc 
+  collection, query, where, getDocs, addDoc, doc, getDoc, setDoc, updateDoc, deleteDoc, writeBatch 
 } from "firebase/firestore";
 import { 
   signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail, updatePassword as firebaseUpdatePassword,
   signInWithCustomToken, onAuthStateChanged
 } from "firebase/auth";
 import { AuthContext } from "./useAuth";
-import { requestOtp, verifyOtp } from "../services/otpService";
+import { requestOtp, verifyOtp, syncUserGuestOrders } from "../services/otpService";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -62,6 +62,7 @@ const AuthProvider = ({ children }) => {
           }
           setUser(userData);
           localStorage.setItem("velouraz_user", JSON.stringify(userData));
+          syncUserGuestOrders(userData.uid, userData.email);
         } catch (err) {
           console.error("Error fetching user on Auth change:", err);
         }
@@ -95,6 +96,7 @@ const AuthProvider = ({ children }) => {
       const userData = { uid: snap.docs[0].id, ...snap.docs[0].data() };
       setUser(userData);
       localStorage.setItem("velouraz_user", JSON.stringify(userData));
+      syncUserGuestOrders(userData.uid, userData.email);
       return userData;
     } else {
       throw new Error("Invalid email or password.");
@@ -127,6 +129,7 @@ const AuthProvider = ({ children }) => {
 
     setUser(userData);
     localStorage.setItem("velouraz_user", JSON.stringify(userData));
+    syncUserGuestOrders(userData.uid, userData.email);
     return userData;
   };
 
@@ -162,6 +165,7 @@ const AuthProvider = ({ children }) => {
 
     setUser(userData);
     localStorage.setItem("velouraz_user", JSON.stringify(userData));
+    syncUserGuestOrders(userData.uid, userData.email);
     return { ...userData, isNewUser: result.isNewUser };
   };
 
@@ -229,7 +233,8 @@ const AuthProvider = ({ children }) => {
     const docRef = await addDoc(collection(db, "users"), userData);
     const finalUser = { uid: docRef.id, ...userData };
     setUser(finalUser);
-    localStorage.setItem("velouraz_user", JSON.stringify(userData));
+    localStorage.setItem("velouraz_user", JSON.stringify(finalUser));
+    syncUserGuestOrders(finalUser.uid, finalUser.email);
     return finalUser;
   };
 
