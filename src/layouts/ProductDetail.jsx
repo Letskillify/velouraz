@@ -29,6 +29,8 @@ const ProductDetail = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isAddToCartModalOpen, setIsAddToCartModalOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [sameCountryProducts, setSameCountryProducts] = useState([]);
+  const [relatedLoading, setRelatedLoading] = useState(true);
   const [copiedLink, setCopiedLink] = useState(false);
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState(null);
@@ -62,22 +64,38 @@ const ProductDetail = () => {
     return () => unsubscribe();
   }, [id]);
 
-  // Fetch Related Products
+  // Fetch Related Products (same category) & Same Country Products
   useEffect(() => {
     const fetchRelated = async () => {
+      setRelatedLoading(true);
       try {
         const snap = await getDocs(collection(db, "products"));
-        const list = snap.docs
-          .map(d => ({ id: d.id, ...d.data() }))
-          .filter(p => p.id !== id)
-          .slice(0, 4);
-        setRelatedProducts(list);
+        const all = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.id !== id);
+
+        // Same category
+        const currentCategory = product?.category;
+        const byCat = currentCategory
+          ? all.filter(p => p.category && p.category.toLowerCase() === currentCategory.toLowerCase())
+          : [];
+        setRelatedProducts(byCat.slice(0, 5));
+
+        // Same country
+        const currentCountry = (product?.inspired_country || product?.country || '').toLowerCase().trim();
+        const byCountry = currentCountry
+          ? all.filter(p => {
+              const pCountry = (p.inspired_country || p.country || '').toLowerCase().trim();
+              return pCountry && pCountry === currentCountry;
+            })
+          : [];
+        setSameCountryProducts(byCountry.slice(0, 5));
       } catch (err) {
         console.error("Error loading related products:", err);
+      } finally {
+        setRelatedLoading(false);
       }
     };
-    fetchRelated();
-  }, [id]);
+    if (product) fetchRelated();
+  }, [id, product]);
 
   const imageUrls = useMemo(() => {
     if (!product) return [];
@@ -661,46 +679,178 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* You May Also Like Showcase */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-28 pt-16 border-t border-[#E5D7C5]">
-            <div className="text-center mb-12 space-y-2">
-              <span className="text-xs uppercase tracking-[0.3em] text-[#C8A46A] font-semibold flex items-center justify-center gap-2 font-sans">
-                <Sparkles size={13} /> Curated Complements
-              </span>
-              <h3 className="font-serif text-3xl sm:text-4xl font-normal text-[#14111E]">Complete The Look</h3>
-              <p className="text-xs text-[#786C60] font-serif italic max-w-md mx-auto">Handpicked creations designed to seamlessly pair with your selected masterpiece.</p>
-            </div>
+        {/* ── Smart Recommendations ── */}
+        {(relatedLoading || relatedProducts.length > 0 || sameCountryProducts.length > 0) && (
+          <div className="mt-24 pt-14 border-t border-[#E5D7C5] space-y-20">
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6">
-              {relatedProducts.map((rel) => (
-                <div 
-                  key={rel.id}
-                  onClick={() => navigate(`/product/${rel.id}`)}
-                  className="group bg-white rounded-2xl border border-[#E5D7C5] overflow-hidden cursor-pointer shadow-xs hover:shadow-md hover:border-[#C8A46A] transition-all duration-500 flex flex-col justify-between"
-                >
-                  <div className="aspect-[4/5] bg-[#F6F2EC] overflow-hidden relative">
-                    <img 
-                      src={rel.image || rel.images?.[0]} 
-                      alt={rel.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-                    />
-                    {rel.original_price > rel.price && (
-                      <span className="absolute top-3 left-3 bg-[#14111E] text-[#FBF9F5] text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full font-sans">
-                        -{Math.round(((rel.original_price - rel.price) / rel.original_price) * 100)}%
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-4 space-y-1 text-center">
-                    <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] block font-sans">
-                      {rel.category || "Velouraz"}
+            {/* ── Similar Pieces (Same Category) ── */}
+            {(relatedLoading || relatedProducts.length > 0) && (
+              <div>
+                <div className="mb-8 flex items-end justify-between">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
+                      <Sparkles size={11} /> Similar Pieces
                     </span>
-                    <h4 className="font-serif text-base font-normal text-[#14111E] truncate group-hover:text-[#C8A46A] transition-colors">{rel.name}</h4>
-                    <p className="text-xs font-semibold text-[#14111E] font-sans pt-0.5">₹{Number(rel.price).toLocaleString()}</p>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#14111E] mt-1">
+                      You May Also Like
+                    </h3>
                   </div>
+                  <Link
+                    to={`/shop${product?.category ? `?category=${encodeURIComponent(product.category)}` : ''}`}
+                    className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
+                  >
+                    View All <ArrowRight size={13} />
+                  </Link>
                 </div>
-              ))}
-            </div>
+
+                {/* Skeleton */}
+                {relatedLoading && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} className="rounded-xl border border-[#E5D7C5] bg-white overflow-hidden animate-pulse">
+                        <div className="aspect-square bg-[#F0E9E0]" />
+                        <div className="p-3 space-y-2">
+                          <div className="h-2 w-3/4 bg-[#EBE3D8] rounded-full" />
+                          <div className="h-2.5 w-1/2 bg-[#E5D7C5] rounded-full" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Cards */}
+                {!relatedLoading && relatedProducts.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    {relatedProducts.map((rel) => (
+                      <div
+                        key={rel.id}
+                        onClick={() => navigate(`/product/${rel.id}`)}
+                        className="group bg-white rounded-xl border border-[#E5D7C5] overflow-hidden cursor-pointer shadow-xs hover:shadow-lg hover:border-[#C8A46A] transition-all duration-400 flex flex-col"
+                      >
+                        <div className="aspect-square bg-[#F6F2EC] overflow-hidden relative">
+                          <img
+                            src={rel.image || rel.images?.[0] || '/img/jewellery/j.png'}
+                            alt={rel.name}
+                            className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-600"
+                          />
+                          {rel.original_price > rel.price && (
+                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                              -{Math.round(((rel.original_price - rel.price) / rel.original_price) * 100)}%
+                            </span>
+                          )}
+                          {rel.badge && (
+                            <span className="absolute bottom-2 left-2 bg-[#2E0E43]/90 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                              {rel.badge}
+                            </span>
+                          )}
+                        </div>
+                        <div className="p-2.5 sm:p-3 flex flex-col gap-0.5">
+                          <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
+                            {rel.category || 'Velouraz'}
+                          </span>
+                          <h4 className="font-serif text-[13px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
+                            {rel.name}
+                          </h4>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-[12px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
+                            {rel.original_price > rel.price && (
+                              <span className="text-[10px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {!relatedLoading && relatedProducts.length === 0 && (
+                  <p className="text-xs text-[#786C60] font-serif italic">No similar pieces found.</p>
+                )}
+              </div>
+            )}
+
+            {/* ── Same Country ── */}
+            {(relatedLoading || sameCountryProducts.length > 0) && (
+              <div>
+                <div className="mb-8 flex items-end justify-between">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
+                      <Compass size={11} /> Same Origin
+                    </span>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#14111E] mt-1">
+                      More from {product?.inspired_country || product?.country || 'This Region'}
+                    </h3>
+                  </div>
+                  <Link
+                    to={`/shop${product?.inspired_country || product?.country ? `?country=${encodeURIComponent(product.inspired_country || product.country)}` : ''}`}
+                    className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
+                  >
+                    View All <ArrowRight size={13} />
+                  </Link>
+                </div>
+
+                {/* Skeleton */}
+                {relatedLoading && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} className="rounded-xl border border-[#E5D7C5] bg-white overflow-hidden animate-pulse">
+                        <div className="aspect-square bg-[#F0E9E0]" />
+                        <div className="p-3 space-y-2">
+                          <div className="h-2 w-3/4 bg-[#EBE3D8] rounded-full" />
+                          <div className="h-2.5 w-1/2 bg-[#E5D7C5] rounded-full" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Cards */}
+                {!relatedLoading && sameCountryProducts.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+                    {sameCountryProducts.map((rel) => (
+                      <div
+                        key={rel.id}
+                        onClick={() => navigate(`/product/${rel.id}`)}
+                        className="group bg-white rounded-xl border border-[#E5D7C5] overflow-hidden cursor-pointer shadow-xs hover:shadow-lg hover:border-[#C8A46A] transition-all duration-400 flex flex-col"
+                      >
+                        <div className="aspect-square bg-[#F6F2EC] overflow-hidden relative">
+                          <img
+                            src={rel.image || rel.images?.[0] || '/img/jewellery/j.png'}
+                            alt={rel.name}
+                            className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-600"
+                          />
+                          {rel.original_price > rel.price && (
+                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                              -{Math.round(((rel.original_price - rel.price) / rel.original_price) * 100)}%
+                            </span>
+                          )}
+                          <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/90 backdrop-blur-sm border border-[#E5DBCC] px-2 py-0.5 rounded-full">
+                            <span className="text-[9px] font-bold text-[#8C6D37] uppercase tracking-wider">
+                              {getFlag(rel.inspired_country || rel.country)} {(rel.inspired_country || rel.country || '').split(' ')[0]}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="p-2.5 sm:p-3 flex flex-col gap-0.5">
+                          <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
+                            {rel.category || 'Velouraz'}
+                          </span>
+                          <h4 className="font-serif text-[13px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
+                            {rel.name}
+                          </h4>
+                          <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <span className="text-[12px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
+                            {rel.original_price > rel.price && (
+                              <span className="text-[10px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
           </div>
         )}
 

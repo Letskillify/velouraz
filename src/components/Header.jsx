@@ -695,7 +695,7 @@ const worldEditMegaItems = [
     collection: 'THE PEARL EDIT',
     cta: 'DISCOVER SOUTH KOREA',
     href: '/shop?country=South%20Korea',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1788798991/ChatGPT_Image_Sep_7_2026_10_04_26_PM_ogtaqk.png',
   },
 ];
 

@@ -16,7 +16,7 @@ const staticCollections = [
     country: 'PARIS',
     collection: 'THE MAISON PARIS',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673523/paris_ufrhvg.mp4',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795174/paris44_tisl79.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
     link: '/shop?country=Paris'
@@ -26,7 +26,7 @@ const staticCollections = [
     country: 'THAILAND',
     collection: 'THE THAI GEMSTONE EDIT',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673905/Luxury_jewellery_commercial_vide__202608252134_tmc8h9.mp4',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795261/80622904_1788526626895108_iruogb.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
     link: '/shop?country=Thailand'
@@ -46,7 +46,7 @@ const staticCollections = [
     country: 'JAPAN',
     collection: 'MIYUKI ATELIER',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787673506/japan_zgoqxh.mp4',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795166/51181631_1788526616621934_a6gfv6.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
     link: '/shop?country=Japan'

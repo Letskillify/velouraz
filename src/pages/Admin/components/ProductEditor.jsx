@@ -20,7 +20,7 @@ const COUNTRIES = [
   "Indonesia", "Malaysia", "Vietnam", "Sri Lanka", "Nepal",
 ];
 const TAG_SUGGESTIONS = [
-  "New Arrivals", "Best Sellers", "Trending", "Limited Edition", "Exclusive",
+  "New Arrivals", "Bestsellers", "Trending", "Limited Edition", "Exclusive",
   "Premium Pick", "Editor's Choice", "Hot Selling", "Featured", "Sale",
   "Lightweight", "Anti Tarnish", "Hypoallergenic", "Handcrafted",
   "Bridal", "Daily Wear", "Wedding", "Festival", "Gift",
