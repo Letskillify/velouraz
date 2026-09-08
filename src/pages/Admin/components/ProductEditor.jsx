@@ -15,9 +15,7 @@ import { collection, getDocs } from "firebase/firestore";
 // ─── Config ──────────────────────────────────────────────────────────────────
 const CATEGORIES = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
 const COUNTRIES = [
-  "India", "South Korea", "Japan", "France", "Italy", "Turkey", "Dubai",
-  "UAE", "USA", "Thailand", "China", "Singapore", "UK", "Germany", "Spain",
-  "Indonesia", "Malaysia", "Vietnam", "Sri Lanka", "Nepal",
+  "India", "Thailand", "Paris", "Japan", "South Korea", "China"
 ];
 const TAG_SUGGESTIONS = [
   "New Arrivals", "Bestsellers", "Trending", "Limited Edition", "Exclusive",
@@ -280,7 +278,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
       setDbBrands(snap.docs.map((d) => d.data().name).filter(Boolean));
     });
     getDocs(collection(db, "countries")).then((snap) => {
-      setDbCountries(snap.docs.map((d) => d.data().name).filter(Boolean));
+      setDbCountries([...new Set(snap.docs.map((d) => d.data().name).filter(Boolean))]);
     });
   }, []);
 

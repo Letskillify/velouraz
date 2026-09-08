@@ -36,10 +36,10 @@ const staticCollections = [
     country: 'INDIA',
     collection: 'HERITAGE COLLECTION',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419483/Diamond_ring_on_crystal_display_202608222147_kscwkr.mp4',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884537/507503123_1788884097045152_tpzo3m.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
-    link: '/shop?country=India'
+    link: '/world-edit/india'
   },
   {
     id: 'japan',
@@ -56,7 +56,7 @@ const staticCollections = [
     country: 'SOUTH KOREA',
     collection: 'PEARLS & SILVER',
     badge: 'ORGANIC',
-    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1787419491/Jewellery_commercial_on_ceramic___202608222147_evmtuf.mp4',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884546/634109263_1788884070021943_pf5oas.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
     link: '/shop?country=South%20Korea'

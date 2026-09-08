@@ -268,6 +268,37 @@ const CatalogManager = ({ type }) => {
     }
   };
 
+  const handleDeleteAll = async () => {
+    const itemsToDelete = filter === "All" ? items : filtered;
+    if (!itemsToDelete.length) return;
+    if (!window.confirm(`Are you sure you want to delete ALL ${itemsToDelete.length} ${type}? This action may take a moment.`)) return;
+    try {
+      setSaving(true);
+      // Process in chunks of 100 to stay well within Firestore's 500 op limit per batch
+      for (let i = 0; i < itemsToDelete.length; i += 100) {
+        const batch = writeBatch(db);
+        const chunk = itemsToDelete.slice(i, i + 100);
+        for (const item of chunk) {
+          if (item.trashId) {
+            batch.delete(doc(db, "trash", item.trashId));
+          } else {
+            const { id: sourceId, trashId: tId, ...data } = item;
+            const ref = doc(collection(db, "trash"));
+            batch.set(ref, { sourceCollection: collectionName, sourceId, data, deletedAt: serverTimestamp() });
+            batch.delete(doc(db, collectionName, sourceId));
+          }
+        }
+        await batch.commit();
+      }
+      setSelectedIds([]);
+      refresh();
+    } catch (err) {
+      setError(err.message || "Delete all failed.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="space-y-5">
       <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -299,6 +330,15 @@ const CatalogManager = ({ type }) => {
               >
                 <Trash2 size={13} />
                 Delete Selected ({selectedIds.length})
+              </button>
+            )}
+            {type === "Countries" && items.length > 0 && (
+              <button
+                onClick={handleDeleteAll}
+                className="flex items-center gap-1.5 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-100 rounded-lg text-base font-bold transition-all"
+              >
+                <Trash2 size={13} />
+                Delete All
               </button>
             )}
             <input ref={csvInput} type="file" accept=".csv" className="hidden" onChange={(event) => importCsv(event.target.files?.[0])} />

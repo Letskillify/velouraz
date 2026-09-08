@@ -75,9 +75,9 @@ export default async function handler(req, res) {
 
   // 1. Customer Receipt Email
   const customerMailOptions = {
-    from: process.env.SMTP_FROM || `"Velouraz High Jewellery" <${smtpUser}>`,
+    from: process.env.SMTP_FROM || `"Velouraz" <${smtpUser}>`,
     to: customerEmail,
-    subject: `Order Confirmation #${orderId} - Velouraz High Jewellery`,
+    subject: `Order Confirmation #${orderId} - Velouraz`,
     html: `
       <!DOCTYPE html>
       <html>
