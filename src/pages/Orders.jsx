@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../components/useAuth";
 import { db } from "../components/Firebase";
-import { collection, query, where, getDocs, orderBy, doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, doc, getDoc, addDoc, serverTimestamp } from "firebase/firestore";
 import { useNavigate, useSearchParams, useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Package, Truck, CheckCircle2, Clock, FileText, Download,
   Search, ArrowLeft, ChevronRight, X, Printer, ShoppingBag,
   CreditCard, ShieldCheck, MapPin, Eye, ExternalLink, Sparkles,
-  RefreshCw, Calendar, Building
+  RefreshCw, Calendar, Building, Star, MessageSquare, Send, Check
 } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
 import { generateInvoicePDF } from "../utils/invoice";
@@ -33,6 +33,21 @@ const Orders = () => {
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+
+  // Review Modal State
+  const [selectedOrderForReview, setSelectedOrderForReview] = useState(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [selectedItemForReview, setSelectedItemForReview] = useState(null);
+  const [reviewForm, setReviewForm] = useState({
+    rating: 5,
+    headline: "Verified Buyer",
+    quote: "",
+    customerName: "",
+    location: "",
+  });
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewSuccess, setReviewSuccess] = useState(false);
+  const [reviewedItemMap, setReviewedItemMap] = useState({});
 
   // Live Shiprocket Tracking State
   const [trackingInput, setTrackingInput] = useState(queryId);
@@ -145,6 +160,69 @@ const Orders = () => {
       setTrackingError("Failed to fetch live tracking. Please try again.");
     } finally {
       setTrackingLoading(false);
+    }
+  };
+
+  // Handle Review Modal
+  const handleOpenReviewModal = (order, item = null) => {
+    setSelectedOrderForReview(order);
+    setSelectedItemForReview(item || (order.items && order.items.length > 0 ? order.items[0] : null));
+    setReviewForm({
+      rating: 5,
+      headline: "Verified Buyer",
+      quote: "",
+      customerName: order.customerName || order.shippingAddress?.name || user?.displayName || "",
+      location: order.shippingAddress?.city ? `${order.shippingAddress.city}, India` : "India",
+    });
+    setReviewSuccess(false);
+    setShowReviewModal(true);
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!reviewForm.quote.trim()) return;
+
+    setSubmittingReview(true);
+    try {
+      const reviewData = {
+        customerName: reviewForm.customerName.trim() || user?.displayName || selectedOrderForReview?.customerName || "Verified Collector",
+        name: reviewForm.customerName.trim() || user?.displayName || selectedOrderForReview?.customerName || "Verified Collector",
+        location: reviewForm.location.trim() || (selectedOrderForReview?.shippingAddress?.city ? `${selectedOrderForReview.shippingAddress.city}, India` : "India"),
+        place: reviewForm.location.trim() || (selectedOrderForReview?.shippingAddress?.city ? `${selectedOrderForReview.shippingAddress.city}, India` : "India"),
+        title: reviewForm.headline.trim() || "Verified Buyer",
+        date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+        quote: reviewForm.quote.trim(),
+        review: reviewForm.quote.trim(),
+        rating: Number(reviewForm.rating) || 5,
+        orderId: selectedOrderForReview?.id || "",
+        productId: selectedItemForReview?.id || selectedItemForReview?.productId || "",
+        productName: selectedItemForReview?.name || "",
+        productImage: selectedItemForReview?.image || "",
+        userId: user?.uid || "",
+        userEmail: user?.email || "",
+        createdAt: serverTimestamp(),
+        visible: true
+      };
+
+      await addDoc(collection(db, "reviews"), reviewData);
+      
+      if (selectedOrderForReview?.id) {
+        setReviewedItemMap(prev => ({
+          ...prev,
+          [`${selectedOrderForReview.id}_${selectedItemForReview?.name || 'all'}`]: true
+        }));
+      }
+
+      setReviewSuccess(true);
+      setTimeout(() => {
+        setShowReviewModal(false);
+        setReviewSuccess(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Error submitting review:", err);
+      alert("Failed to submit review. Please try again.");
+    } finally {
+      setSubmittingReview(false);
     }
   };
 
@@ -350,9 +428,16 @@ const Orders = () => {
                           <p className="text-xs text-[#786C60] font-sans pt-0.5">Quantity: {item.quantity || 1}</p>
                         </div>
                         <div className="text-right">
-                          <span className="text-xs font-semibold font-sans text-[#14111E]">
+                          <span className="text-xs font-semibold font-sans text-[#14111E] block">
                             ₹{(Number(item.price || 0) * (item.quantity || 1)).toLocaleString()}
                           </span>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenReviewModal(order, item)}
+                            className="text-[11px] font-sans font-semibold text-[#B89355] hover:text-[#2A2623] hover:underline inline-flex items-center gap-1 mt-1 justify-end cursor-pointer"
+                          >
+                            <Star size={11} className="fill-[#B89355]" /> Review Item
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -368,6 +453,13 @@ const Orders = () => {
                     </div>
 
                     <div className="flex flex-wrap items-center gap-2.5">
+                      <button
+                        onClick={() => handleOpenReviewModal(order)}
+                        className="px-4 py-2.5 bg-[#FAF3E8] border border-[#C8A46A]/50 text-[#8B6B38] text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#14111E] hover:text-[#FAF6F0] hover:border-[#14111E] transition-all flex items-center gap-1.5 font-sans cursor-pointer shadow-xs"
+                      >
+                        <Star size={14} className="text-[#B89355] fill-[#B89355]" /> Write Review
+                      </button>
+
                       <button
                         onClick={() => {
                           setActiveTabMode("tracking");
@@ -649,6 +741,194 @@ const Orders = () => {
                   <p className="text-lg font-serif font-bold text-[#14111E]">₹{Number(selectedOrder.totalAmount || selectedOrder.total || 0).toLocaleString()}</p>
                 </div>
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* REVIEW MODAL */}
+      <AnimatePresence>
+        {showReviewModal && selectedOrderForReview && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowReviewModal(false)}
+              className="fixed inset-0 bg-[#0B0711]/80 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full max-h-[90vh] overflow-y-auto relative z-10 border border-[#E5D7C5] shadow-2xl space-y-6"
+            >
+              {/* Modal Header */}
+              <div className="flex justify-between items-start border-b border-[#E5D7C5] pb-4">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] font-sans flex items-center gap-1.5">
+                    <Sparkles size={12} /> Share Your Experience
+                  </span>
+                  <h3 className="font-serif text-2xl font-normal text-[#14111E]">Product & Order Review</h3>
+                  <p className="text-xs text-[#786C60] font-serif italic mt-0.5">
+                    Your review will be featured on our homepage story section.
+                  </p>
+                </div>
+                <button onClick={() => setShowReviewModal(false)} className="p-2 text-gray-400 hover:text-black">
+                  <X size={18} />
+                </button>
+              </div>
+
+              {reviewSuccess ? (
+                <div className="py-12 text-center space-y-3">
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
+                    <Check size={28} />
+                  </div>
+                  <h4 className="font-serif text-2xl text-[#14111E]">Thank You for Your Review!</h4>
+                  <p className="text-xs text-[#786C60] font-serif italic max-w-xs mx-auto">
+                    Your luxury feedback has been recorded and will appear live on our homepage.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmitReview} className="space-y-5">
+                  {/* Select Item (if order has items) */}
+                  {selectedOrderForReview.items?.length > 0 && (
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block">
+                        Select Item to Review
+                      </label>
+                      <div className="grid grid-cols-1 gap-2 max-h-36 overflow-y-auto pr-1">
+                        {selectedOrderForReview.items.map((item, idx) => (
+                          <div
+                            key={idx}
+                            onClick={() => setSelectedItemForReview(item)}
+                            className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${
+                              selectedItemForReview?.name === item.name
+                                ? "bg-[#FAF3E8] border-[#C8A46A] shadow-xs"
+                                : "bg-[#F6F2EC] border-[#E5D7C5] hover:border-[#C8A46A]/50"
+                            }`}
+                          >
+                            <img src={item.image || '/img/jewellery/j.png'} alt={item.name} className="w-10 h-12 rounded-lg object-cover border border-[#E5D7C5]" />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-serif text-sm text-[#14111E] truncate">{item.name}</p>
+                              <p className="text-[11px] text-[#786C60] font-sans">₹{(Number(item.price || 0)).toLocaleString()}</p>
+                            </div>
+                            {selectedItemForReview?.name === item.name && (
+                              <Check size={16} className="text-[#C8A46A] shrink-0" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Rating Stars */}
+                  <div className="space-y-1.5 text-center bg-[#FAF6F0] p-4 rounded-2xl border border-[#E8DFC8]">
+                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#8B6B38] font-sans block">
+                      Your Rating
+                    </label>
+                    <div className="flex justify-center gap-2 pt-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setReviewForm({ ...reviewForm, rating: star })}
+                          className="p-1 hover:scale-110 transition-transform cursor-pointer"
+                        >
+                          <Star
+                            size={26}
+                            className={`${
+                              star <= reviewForm.rating
+                                ? "fill-[#B89355] text-[#B89355]"
+                                : "text-gray-300"
+                            } transition-colors`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-[11px] font-sans font-semibold text-[#8B6B38] pt-1">
+                      {reviewForm.rating === 5 && "✦ Royal Excellence (5/5)"}
+                      {reviewForm.rating === 4 && "✦ Very Satisfied (4/5)"}
+                      {reviewForm.rating === 3 && "✦ Satisfied (3/5)"}
+                      {reviewForm.rating === 2 && "✦ Fair (2/5)"}
+                      {reviewForm.rating === 1 && "✦ Poor (1/5)"}
+                    </p>
+                  </div>
+
+                  {/* Name & Location */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                        Your Name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Ananya Sharma"
+                        value={reviewForm.customerName}
+                        onChange={(e) => setReviewForm({ ...reviewForm, customerName: e.target.value })}
+                        className="w-full bg-[#F6F2EC] border border-[#E5D7C5] rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-[#14111E] text-[#14111E] font-sans"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                        Location / City
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Mumbai, India"
+                        value={reviewForm.location}
+                        onChange={(e) => setReviewForm({ ...reviewForm, location: e.target.value })}
+                        className="w-full bg-[#F6F2EC] border border-[#E5D7C5] rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-[#14111E] text-[#14111E] font-sans"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Review Title */}
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                      Review Title / Badge
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Verified Buyer, Stunning Kundan Choker!"
+                      value={reviewForm.headline}
+                      onChange={(e) => setReviewForm({ ...reviewForm, headline: e.target.value })}
+                      className="w-full bg-[#F6F2EC] border border-[#E5D7C5] rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-[#14111E] text-[#14111E] font-sans"
+                    />
+                  </div>
+
+                  {/* Review Quote Text */}
+                  <div>
+                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                      Your Review / Story
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      placeholder="Share details about the quality, anti-tarnish finish, weight, and packaging of your acquisition..."
+                      value={reviewForm.quote}
+                      onChange={(e) => setReviewForm({ ...reviewForm, quote: e.target.value })}
+                      className="w-full bg-[#F6F2EC] border border-[#E5D7C5] rounded-xl p-3.5 text-xs outline-none focus:border-[#14111E] text-[#14111E] font-sans resize-none"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={submittingReview}
+                    className="w-full py-3.5 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-[0.2em] rounded-xl hover:bg-[#251D33] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md border border-[#C8A46A]/30 font-sans"
+                  >
+                    {submittingReview ? (
+                      <RefreshCw size={14} className="animate-spin text-[#C8A46A]" />
+                    ) : (
+                      <Send size={14} className="text-[#C8A46A]" />
+                    )}
+                    <span>{submittingReview ? "Submitting..." : "Publish Review to Homepage"}</span>
+                  </button>
+                </form>
+              )}
             </motion.div>
           </div>
         )}

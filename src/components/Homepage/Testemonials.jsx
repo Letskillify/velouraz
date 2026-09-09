@@ -70,13 +70,15 @@ const TestimonialSection = () => {
               title: data.title || "Verified Buyer",
               date: data.date || "",
               quote: data.review || data.quote || "",
-              rating: Number(data.rating) || 5
+              rating: Number(data.rating) || 5,
+              productName: data.productName || "",
+              productImage: data.productImage || ""
             });
           }
         });
 
         if (fetched.length > 0) {
-          setReviewsList(fetched);
+          setReviewsList([...fetched, ...defaultReviews]);
         }
       }
     }, (error) => {
@@ -160,14 +162,14 @@ const TestimonialSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
-                  className="p-7 lg:p-8 h-[285px] flex flex-col justify-between border border-[#E5D7C5] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F0] to-[#F7F0E6] rounded-3xl hover:border-[#C8A46A] hover:shadow-[0_15px_40px_rgba(200,164,106,0.18)] transition-all duration-500 shadow-sm relative group overflow-hidden"
+                  className="p-7 lg:p-8 h-[310px] flex flex-col justify-between border border-[#E5D7C5] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F0] to-[#F7F0E6] rounded-3xl hover:border-[#C8A46A] hover:shadow-[0_15px_40px_rgba(200,164,106,0.18)] transition-all duration-500 shadow-sm relative group overflow-hidden"
                 >
                   
                   {/* Top Quote Watermark Icon */}
                   <Quote size={36} className="absolute top-5 right-5 text-[#C8A46A]/15 group-hover:text-[#C8A46A]/30 transition-colors pointer-events-none" />
 
                   {/* Top Bar: Rating Stars & Location Badge */}
-                  <div className="flex items-center justify-between gap-3 mb-3 shrink-0">
+                  <div className="flex items-center justify-between gap-3 mb-2 shrink-0">
                     <div className="flex items-center gap-1.5">
                       {[...Array(review.rating || 5)].map((_, i) => (
                         <Star key={i} size={15} className="fill-[#B89355] text-[#B89355]" />
@@ -181,6 +183,16 @@ const TestimonialSection = () => {
                       </span>
                     )}
                   </div>
+
+                  {/* Reviewed Product Tag if present */}
+                  {review.productName && (
+                    <div className="mb-2 flex items-center gap-2 text-[11px] text-[#8B6B38] font-sans font-semibold bg-[#FAF3E8]/80 px-2.5 py-1 rounded-lg border border-[#C8A46A]/30 w-fit shrink-0">
+                      {review.productImage && (
+                        <img src={review.productImage} alt={review.productName} className="w-5 h-5 rounded-md object-cover border border-[#D8CBBE]" />
+                      )}
+                      <span className="truncate max-w-[180px]">Item: {review.productName}</span>
+                    </div>
+                  )}
 
                   {/* Quote Content with line-clamp truncation */}
                   <p className="text-[#2A2623] text-base sm:text-lg leading-relaxed italic font-serif font-light flex-grow line-clamp-3">
