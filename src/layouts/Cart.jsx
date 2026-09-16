@@ -113,27 +113,27 @@ const Cart = () => {
         ]}
       />
 
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-10 pb-24">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-10 pb-32 lg:pb-24">
         
         {/* Top Header Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-[#E8DFD5]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#E8DFD5]">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif text-[#2e0e43] font-normal tracking-tight flex items-center gap-3">
+            <h1 className="text-xl sm:text-3xl font-serif text-[#2e0e43] font-normal tracking-tight flex items-center gap-2.5">
               Your Selection 
-              <span className="text-xs sm:text-sm font-sans font-normal text-[#C8A46A] bg-[#FAF6F0] border border-[#C8A46A]/30 px-3 py-1 rounded-full tracking-wider uppercase">
+              <span className="text-[11px] sm:text-xs font-sans font-normal text-[#C8A46A] bg-[#FAF6F0] border border-[#C8A46A]/30 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                 {itemCount} {itemCount === 1 ? 'Item' : 'Items'}
               </span>
             </h1>
-            <p className="text-sm text-[#7B6D63] mt-1 font-serif">
-              Handcrafted elegance, tailored for your collection
+            <p className="text-xs sm:text-sm text-[#7B6D63] mt-0.5 font-serif">
+              Handcrafted elegance, curated for your private collection
             </p>
           </div>
 
           <Link 
             to="/shop" 
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors duration-300 group"
+            className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors duration-300 group self-start sm:self-auto"
           >
-            <ArrowLeft size={15} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
             Continue Shopping
           </Link>
         </div>
@@ -143,32 +143,32 @@ const Cart = () => {
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="py-20 px-6 rounded-3xl bg-white border border-[#E8DFD5] shadow-sm text-center max-w-xl mx-auto"
+            className="py-16 sm:py-20 px-6 rounded-3xl bg-white border border-[#E8DFD5] shadow-sm text-center max-w-lg mx-auto"
           >
-            <div className="w-20 h-20 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/40 flex items-center justify-center mx-auto mb-6 shadow-inner">
-              <ShoppingBag size={32} className="text-[#C8A46A]" strokeWidth={1.5} />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/40 flex items-center justify-center mx-auto mb-5 shadow-inner">
+              <ShoppingBag size={28} className="text-[#C8A46A]" strokeWidth={1.5} />
             </div>
-            <h2 className="font-serif text-2xl sm:text-3xl text-[#2e0e43] mb-3 font-normal">Your cart is empty</h2>
-            <p className="text-sm sm:text-base text-[#7B6D63] mb-8 leading-relaxed max-w-md mx-auto font-serif">
+            <h2 className="font-serif text-2xl sm:text-3xl text-[#2e0e43] mb-2 font-normal">Your cart is empty</h2>
+            <p className="text-xs sm:text-sm text-[#7B6D63] mb-6 leading-relaxed max-w-md mx-auto font-serif">
               Your personal high-jewellery bag is waiting. Discover our bespoke collections and curate your style.
             </p>
             <Link 
               to="/shop" 
-              className="inline-flex items-center justify-center gap-2 bg-[#2e0e43] text-white px-8 py-4 rounded-xl text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#C8A46A] transition-all duration-300 shadow-md hover:shadow-lg"
+              className="inline-flex items-center justify-center gap-2 bg-[#2e0e43] text-white px-7 py-3.5 rounded-xl text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#C8A46A] transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Explore Collection
-              <ArrowRight size={15} />
+              <ArrowRight size={14} />
             </Link>
           </motion.div>
         ) : (
           /* Main 2-Column Cart Layout */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
             
             {/* Left Column: Cart Items + Trust Bar + Assurance Banner */}
-            <div className="lg:col-span-7 xl:col-span-8 space-y-6">
+            <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6">
               
               {/* Item Cards List */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <AnimatePresence mode="popLayout">
                   {items.map((item) => {
                     const unitPrice = Number(item.price);
@@ -182,97 +182,100 @@ const Cart = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -30 }}
                         key={item.id}
-                        className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E8DFD5] shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:border-[#C8A46A]/50 transition-all duration-300 relative overflow-hidden"
+                        className="p-3.5 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-[#C8A46A]/40 transition-all duration-300 relative overflow-hidden group"
                       >
-                        {/* Top subtle golden gradient line on item hover */}
-                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C8A46A]/40 to-transparent opacity-0 hover:opacity-100 transition-opacity" />
+                        {/* Top subtle golden gradient hairline */}
+                        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C8A46A]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                        <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                        <div className="flex gap-3.5 sm:gap-5 items-center">
                           
                           {/* Product Image */}
                           <Link 
                             to={`/product/${item.id}`}
-                            className="w-24 h-28 sm:w-28 sm:h-32 rounded-xl overflow-hidden bg-[#FAF6F0] flex-shrink-0 border border-[#E8DFD5] group relative"
+                            className="w-20 h-24 sm:w-28 sm:h-32 rounded-xl overflow-hidden bg-[#FAF6F0] flex-shrink-0 border border-[#E8DFD5] group/img relative"
                           >
                             <img 
                               src={item.image} 
                               alt={item.name} 
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                              className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
                             />
                           </Link>
 
                           {/* Product Details */}
-                          <div className="flex-1 min-w-0 space-y-2">
-                            <div>
-                              <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.25em] text-[#C8A46A] block mb-1">
-                                Velouraz High Jewellery
-                              </span>
-                              <Link 
-                                to={`/product/${item.id}`} 
-                                className="text-base sm:text-lg font-serif text-[#2e0e43] hover:text-[#C8A46A] transition-colors leading-snug font-normal line-clamp-2 block"
+                          <div className="flex-1 min-w-0 space-y-1 sm:space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="min-w-0">
+                                <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-[#C8A46A] block">
+                                  Velouraz High Jewellery
+                                </span>
+                                <Link 
+                                  to={`/product/${item.id}`} 
+                                  className="text-sm sm:text-base font-serif text-[#2e0e43] hover:text-[#C8A46A] transition-colors leading-tight font-normal truncate block mt-0.5"
+                                >
+                                  {item.name}
+                                </Link>
+                              </div>
+
+                              {/* Remove Button for Desktop & Mobile */}
+                              <button 
+                                onClick={() => removeItem(item.id)}
+                                className="text-[#7B6D63]/60 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors shrink-0"
+                                title="Remove item"
+                                aria-label="Remove item"
                               >
-                                {item.name}
-                              </Link>
+                                <Trash2 size={16} />
+                              </button>
                             </div>
 
                             {/* Variant / Size info if present */}
                             {(item.size || item.metal || item.color) && (
-                              <p className="text-xs text-[#7B6D63] font-sans flex items-center gap-3">
+                              <p className="text-[11px] sm:text-xs text-[#7B6D63] font-sans flex items-center gap-2">
                                 {item.size && <span>Size: <strong className="text-[#2A2623] font-normal">{item.size}</strong></span>}
                                 {item.metal && <span>Metal: <strong className="text-[#2A2623] font-normal">{item.metal}</strong></span>}
                               </p>
                             )}
 
-                            {/* Price Tag - ALL PRICES FONT NORMAL */}
-                            <div className="flex items-baseline gap-3 pt-1">
-                              <span className="text-lg font-normal text-[#2e0e43] font-sans tracking-tight">
-                                ₹{unitPrice.toLocaleString()}
-                              </span>
-                              {originalPrice > unitPrice && (
-                                <span className="text-xs font-normal text-[#7B6D63]/60 line-through font-sans">
-                                  ₹{originalPrice.toLocaleString()}
-                                </span>
-                              )}
-                              {itemSavings > 0 && (
-                                <span className="text-[11px] font-normal px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/50 font-sans">
-                                  Save ₹{itemSavings.toLocaleString()}
-                                </span>
-                              )}
-                            </div>
-
-                            {/* Controls Row: Quantity Selector & Remove Button */}
-                            <div className="flex items-center justify-between pt-3 border-t border-[#F5EFE8]">
+                            {/* Price Tag & Quantity Row */}
+                            <div className="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[#F5EFE8]">
                               
+                              {/* Price display */}
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-base sm:text-lg font-normal text-[#2e0e43] font-sans tracking-tight">
+                                  ₹{unitPrice.toLocaleString()}
+                                </span>
+                                {originalPrice > unitPrice && (
+                                  <span className="text-xs font-normal text-[#7B6D63]/50 line-through font-sans">
+                                    ₹{originalPrice.toLocaleString()}
+                                  </span>
+                                )}
+                                {itemSavings > 0 && (
+                                  <span className="text-[10px] font-normal px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200/50 font-sans hidden sm:inline-block">
+                                    Save ₹{itemSavings.toLocaleString()}
+                                  </span>
+                                )}
+                              </div>
+
                               {/* Quantity Selector */}
-                              <div className="flex items-center border border-[#E8DFD5] rounded-xl overflow-hidden bg-[#FAF6F0]/60">
+                              <div className="flex items-center border border-[#E8DFD5] rounded-lg overflow-hidden bg-[#FAF6F0]/80 shadow-xs">
                                 <button
                                   onClick={() => updateCartQuantity(item.id, (item.quantity || 1) - 1)}
-                                  className="w-9 h-9 flex items-center justify-center text-[#2A2623] hover:bg-[#E8DFD5] active:bg-[#D8CBBE] transition-colors"
+                                  className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-[#2A2623] hover:bg-[#E8DFD5] active:bg-[#D8CBBE] transition-colors"
                                   aria-label="Decrease quantity"
                                 >
-                                  <Minus size={13} />
+                                  <Minus size={12} />
                                 </button>
-                                <span className="w-9 text-center font-normal text-[#2A2623] text-sm font-sans">
+                                <span className="w-7 sm:w-8 text-center font-normal text-[#2A2623] text-xs sm:text-sm font-sans">
                                   {item.quantity || 1}
                                 </span>
                                 <button 
                                   onClick={() => updateCartQuantity(item.id, (item.quantity || 1) + 1)}
                                   disabled={(item.quantity || 1) >= Math.min(10, liveStocks[item.id] ?? item.stock ?? 1)}
-                                  className="w-9 h-9 flex items-center justify-center text-[#2A2623] hover:bg-[#E8DFD5] active:bg-[#D8CBBE] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                  className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-[#2A2623] hover:bg-[#E8DFD5] active:bg-[#D8CBBE] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                                   aria-label="Increase quantity"
                                 >
-                                  <Plus size={13} />
+                                  <Plus size={12} />
                                 </button>
                               </div>
-
-                              {/* Remove Button */}
-                              <button 
-                                onClick={() => removeItem(item.id)}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs text-[#7B6D63] hover:text-red-700 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all duration-300 font-sans font-normal"
-                              >
-                                <Trash2 size={15} />
-                                <span>Remove</span>
-                              </button>
 
                             </div>
 
@@ -286,62 +289,62 @@ const Cart = () => {
               </div>
 
               {/* Trust Highlights Suite Card */}
-              <div className="p-6 rounded-2xl bg-white border border-[#E8DFD5] shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
+              <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
                   
                   {/* Secure Checkout */}
-                  <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
-                      <ShieldCheck size={20} />
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
+                      <ShieldCheck size={18} />
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">100% Certified</h4>
-                      <p className="text-xs text-[#7B6D63] font-serif">Hallmarked & Authenticated</p>
+                      <p className="text-[11px] text-[#7B6D63] font-serif">Hallmarked & Authenticated</p>
                     </div>
                   </div>
 
                   {/* Free Shipping */}
-                  <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
-                      <Truck size={20} />
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
+                      <Truck size={18} />
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Insured Shipping</h4>
-                      <p className="text-xs text-[#7B6D63] font-serif">Complimentary door delivery</p>
+                      <p className="text-[11px] text-[#7B6D63] font-serif">Complimentary door delivery</p>
                     </div>
                   </div>
 
                   {/* Easy Returns */}
-                  <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
-                      <RefreshCw size={20} />
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
+                      <RefreshCw size={18} />
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">7–10 Day Returns</h4>
-                      <p className="text-xs text-[#7B6D63] font-serif">Hassle-free return policy</p>
+                      <p className="text-[11px] text-[#7B6D63] font-serif">Hassle-free return policy</p>
                     </div>
                   </div>
 
                 </div>
               </div>
 
-              {/* Assurance Banner Card ("Love it or return it") */}
-              <div className="p-5 rounded-2xl bg-gradient-to-r from-[#FAF6F0] to-[#F5EFE8] border border-[#C8A46A]/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#2e0e43]/5 border border-[#2e0e43]/15 flex items-center justify-center text-[#2e0e43] shrink-0">
-                    <Tag size={18} />
+              {/* Assurance Banner Card */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-[#FAF6F0] to-[#F5EFE8] border border-[#C8A46A]/30 flex items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-[#2e0e43]/10 border border-[#2e0e43]/15 flex items-center justify-center text-[#2e0e43] shrink-0">
+                    <Tag size={16} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-[#2e0e43] font-serif">Love it or return it</h4>
-                    <p className="text-xs text-[#7B6D63] font-serif">Easy 7–10 day returns. Refund processed upon inspection.</p>
+                    <h4 className="text-xs sm:text-sm font-medium text-[#2e0e43] font-serif">Love it or return it</h4>
+                    <p className="text-[11px] text-[#7B6D63] font-serif hidden sm:block">Easy 7–10 day returns. Full refund upon quality inspection.</p>
                   </div>
                 </div>
 
                 <Link 
                   to="/return-policy" 
-                  className="inline-flex items-center gap-1 text-xs uppercase tracking-wider font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors shrink-0 font-sans"
+                  className="inline-flex items-center gap-1 text-[11px] uppercase tracking-wider font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors shrink-0 font-sans"
                 >
-                  Policy details <ArrowRight size={14} />
+                  Policy <ArrowRight size={13} />
                 </Link>
               </div>
 
@@ -349,11 +352,11 @@ const Cart = () => {
 
             {/* Right Column: Price Details & Order Summary Card */}
             <div className="lg:col-span-5 xl:col-span-4">
-              <div className="lg:sticky lg:top-24 bg-white rounded-2xl border border-[#E8DFD5] border-t-2 border-t-[#C8A46A] shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden">
+              <div className="lg:sticky lg:top-24 bg-white rounded-2xl border border-[#E8DFD5] border-t-2 border-t-[#C8A46A] shadow-[0_4px_25px_rgba(0,0,0,0.03)] overflow-hidden">
                 
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-[#E8DFD5] bg-[#FAF6F0]/80 backdrop-blur-sm flex items-center justify-between">
-                  <h2 className="text-xs font-semibold text-[#2e0e43] uppercase tracking-[0.25em] font-sans flex items-center gap-2">
+                <div className="px-5 py-3.5 border-b border-[#E8DFD5] bg-[#FAF6F0]/80 backdrop-blur-sm flex items-center justify-between">
+                  <h2 className="text-xs font-semibold text-[#2e0e43] uppercase tracking-[0.2em] font-sans flex items-center gap-2">
                     <Sparkles size={14} className="text-[#C8A46A]" />
                     ORDER SUMMARY
                   </h2>
@@ -362,61 +365,61 @@ const Cart = () => {
                   </span>
                 </div>
 
-                <div className="p-6 space-y-5">
+                <div className="p-5 space-y-4">
                   
-                  {/* Line Items - ALL PRICES FONT NORMAL */}
-                  <div className="space-y-3.5 text-sm font-sans">
+                  {/* Line Items */}
+                  <div className="space-y-3 text-xs sm:text-sm font-sans">
                     
                     {/* Price Subtotal */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
-                      <span className="font-sans">Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                      <span className="font-normal text-[#2A2623] font-sans text-base">₹{originalTotal.toLocaleString()}</span>
+                      <span>Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
+                      <span className="font-normal text-[#2A2623] text-sm sm:text-base">₹{originalTotal.toLocaleString()}</span>
                     </div>
 
                     {/* Product Savings / Discount */}
                     {productSavings > 0 ? (
                       <div className="flex justify-between items-center text-emerald-700">
-                        <span className="font-sans">Bespoke Discount</span>
-                        <span className="font-normal font-sans text-base">−₹{productSavings.toLocaleString()}</span>
+                        <span>Bespoke Discount</span>
+                        <span className="font-normal text-sm sm:text-base">−₹{productSavings.toLocaleString()}</span>
                       </div>
                     ) : (
                       <div className="flex justify-between items-center text-[#7B6D63]">
-                        <span className="font-sans">Discount</span>
-                        <span className="font-normal font-sans text-base">—</span>
+                        <span>Discount</span>
+                        <span className="font-normal text-sm sm:text-base">—</span>
                       </div>
                     )}
 
                     {/* Delivery Charges */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
-                      <span className="font-sans">Insured Delivery</span>
-                      <span className="font-semibold text-emerald-700 text-xs uppercase tracking-wider">COMPLIMENTARY</span>
+                      <span>Insured Express Delivery</span>
+                      <span className="font-semibold text-emerald-700 text-[11px] uppercase tracking-wider">COMPLIMENTARY</span>
                     </div>
 
                     {/* GST Included */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
-                      <span className="font-sans">Estimated GST (Included)</span>
-                      <span className="font-normal text-[#2A2623] font-sans text-base">₹0</span>
+                      <span>Estimated GST</span>
+                      <span className="text-emerald-700 font-medium text-xs">Included</span>
                     </div>
 
                   </div>
 
                   {/* Savings Banner Highlight if saving money */}
                   {productSavings > 0 && (
-                    <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/60 text-emerald-800 text-xs font-sans flex items-center justify-between">
-                      <span className="font-medium">Total Savings on this order</span>
-                      <span className="font-normal font-sans text-sm">₹{productSavings.toLocaleString()}</span>
+                    <div className="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200/60 text-emerald-800 text-xs font-sans flex items-center justify-between">
+                      <span className="font-medium">Total Savings</span>
+                      <span className="font-normal text-xs sm:text-sm">₹{productSavings.toLocaleString()}</span>
                     </div>
                   )}
 
-                  {/* Total Box Divider & Content - TOTAL PRICE FONT NORMAL / LESS BOLD */}
-                  <div className="p-4 rounded-xl bg-[#FAF6F0] border border-[#C8A46A]/20 space-y-1">
+                  {/* Total Box Divider & Content */}
+                  <div className="p-3.5 rounded-xl bg-[#FAF6F0] border border-[#C8A46A]/20 space-y-0.5">
                     <div className="flex justify-between items-baseline">
-                      <span className="text-sm font-medium text-[#2A2623] font-sans">Total Amount</span>
-                      <span className="text-2xl sm:text-3xl font-normal font-sans text-[#2e0e43] tracking-tight">
+                      <span className="text-xs sm:text-sm font-medium text-[#2A2623] font-sans">Total Amount</span>
+                      <span className="text-xl sm:text-2xl font-normal font-sans text-[#2e0e43] tracking-tight">
                         ₹{total.toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-[11px] text-[#7B6D63] font-serif text-right">
+                    <p className="text-[10px] text-[#7B6D63] font-serif text-right">
                       Inclusive of all applicable taxes
                     </p>
                   </div>
@@ -429,34 +432,34 @@ const Cart = () => {
                         className="w-full flex items-center justify-between text-xs font-sans text-[#7B6D63] hover:text-[#2e0e43] transition-colors py-2 border-t border-b border-[#F5EFE8]"
                       >
                         <span className="flex items-center gap-2">
-                          <Gift size={15} className="text-[#C8A46A]" />
-                          {savedGiftNote ? 'Edit Complimentary Gift Message' : 'Add Complimentary Gift Message'}
+                          <Gift size={14} className="text-[#C8A46A]" />
+                          {savedGiftNote ? 'Edit Complimentary Gift Note' : 'Add Complimentary Gift Note'}
                         </span>
-                        <ChevronRight size={15} />
+                        <ChevronRight size={14} />
                       </button>
                     ) : (
-                      <div className="space-y-3 bg-[#FAF6F0] p-4 rounded-xl border border-[#C8A46A]/30">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] flex items-center gap-2">
-                          <Gift size={15} className="text-[#C8A46A]" />
+                      <div className="space-y-2.5 bg-[#FAF6F0] p-3.5 rounded-xl border border-[#C8A46A]/30">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] flex items-center gap-1.5">
+                          <Gift size={14} className="text-[#C8A46A]" />
                           Complimentary Gift Message
                         </p>
                         <textarea
-                          rows={3}
+                          rows={2.5}
                           placeholder="Write your special message for the recipient..."
                           value={giftNoteText}
                           onChange={(e) => setGiftNoteText(e.target.value)}
-                          className="w-full border border-[#E8DFD5] rounded-lg p-2.5 text-xs text-[#2A2623] bg-white outline-none focus:border-[#C8A46A] resize-none"
+                          className="w-full border border-[#E8DFD5] rounded-lg p-2 text-xs text-[#2A2623] bg-white outline-none focus:border-[#C8A46A] resize-none"
                         />
                         <div className="flex justify-end gap-2">
                           <button
                             onClick={() => setShowGiftNote(false)}
-                            className="px-3 py-1.5 text-xs text-[#7B6D63] hover:text-[#2A2623]"
+                            className="px-2.5 py-1 text-xs text-[#7B6D63] hover:text-[#2A2623]"
                           >
                             Cancel
                           </button>
                           <button
                             onClick={handleSaveGiftNote}
-                            className="px-4 py-1.5 rounded-lg bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#C8A46A] transition-colors"
+                            className="px-3.5 py-1 rounded-lg bg-[#2e0e43] text-white text-[11px] font-semibold uppercase tracking-wider hover:bg-[#C8A46A] transition-colors"
                           >
                             Save Note
                           </button>
@@ -464,27 +467,25 @@ const Cart = () => {
                       </div>
                     )}
                     {savedGiftNote && !showGiftNote && (
-                      <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-100 p-2.5 rounded-lg mt-2 font-serif italic">
+                      <p className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-100 p-2 rounded-lg mt-2 font-serif italic">
                         "{savedGiftNote}"
                       </p>
                     )}
                   </div>
 
-                  {/* Primary Checkout Action Button */}
+                  {/* Primary Checkout Action Button (Desktop View) */}
                   <button 
-                    onClick={() => {
-                      navigate("/checkout");
-                    }}
+                    onClick={() => navigate("/checkout")}
                     disabled={items.length === 0}
-                    className="w-full bg-[#2e0e43] text-white py-4 px-6 rounded-xl text-xs font-semibold uppercase tracking-[0.25em] hover:bg-[#1A0829] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 group cursor-pointer"
+                    className="hidden lg:flex w-full bg-[#2e0e43] text-white py-3.5 px-6 rounded-xl text-xs font-semibold uppercase tracking-[0.25em] hover:bg-[#1A0829] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed items-center justify-center gap-2 group cursor-pointer"
                   >
                     <span>Proceed to Checkout</span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform shrink-0 text-[#C8A46A]" />
+                    <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform shrink-0 text-[#C8A46A]" />
                   </button>
 
                   {/* Safe & Secure Sub-caption */}
-                  <div className="flex items-center justify-center gap-2 text-xs text-[#7B6D63] pt-1 font-serif">
-                    <Lock size={14} className="text-[#C8A46A]" />
+                  <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#7B6D63] font-serif">
+                    <Lock size={13} className="text-[#C8A46A]" />
                     <span>256-Bit SSL Encrypted • Safe & Secure</span>
                   </div>
 
@@ -497,6 +498,33 @@ const Cart = () => {
         )}
 
       </div>
+
+      {/* MOBILE STICKY BOTTOM CHECKOUT BAR */}
+      {items.length > 0 && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E8DFD5] p-3 px-4 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <span className="text-[10px] text-[#7B6D63] font-serif uppercase tracking-wider block">
+              Total ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+            </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-xl font-normal font-sans text-[#2e0e43]">
+                ₹{total.toLocaleString()}
+              </span>
+              <span className="text-[10px] text-emerald-700 font-sans font-medium">
+                Free Shipping
+              </span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => navigate("/checkout")}
+            className="bg-[#2e0e43] text-white py-3 px-5 rounded-xl text-xs font-semibold uppercase tracking-[0.18em] hover:bg-[#1A0829] active:scale-95 transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            <span>Checkout</span>
+            <ArrowRight size={14} className="text-[#C8A46A]" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

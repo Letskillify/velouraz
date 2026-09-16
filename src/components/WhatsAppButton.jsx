@@ -16,16 +16,16 @@ const WhatsAppButton = () => {
       transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-[999] flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-[0_8px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.65)] transition-all duration-300 group cursor-pointer"
+      className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-[999] flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] text-white shadow-[0_8px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.65)] transition-all duration-300 group cursor-pointer"
     >
       {/* Online indicator badge */}
-      <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4">
+      <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 sm:h-4 sm:w-4">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" style={{ animationDuration: '2.5s' }}></span>
-        <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500 border-2 border-white"></span>
+        <span className="relative inline-flex rounded-full h-3.5 w-3.5 sm:h-4 sm:w-4 bg-emerald-500 border-2 border-white"></span>
       </span>
 
       {/* Tooltip on Hover */}
-      <span className="absolute right-16 px-3.5 py-2 bg-[#2A2623] text-[#F8F4EF] text-xs font-medium rounded-xl shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-[#D8CBBE]/30 flex items-center gap-2">
+      <span className="absolute right-14 sm:right-16 px-3.5 py-2 bg-[#2A2623] text-[#F8F4EF] text-xs font-medium rounded-xl shadow-2xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none border border-[#D8CBBE]/30 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
         Chat on WhatsApp
       </span>

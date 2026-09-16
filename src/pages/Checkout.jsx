@@ -23,6 +23,7 @@ import {
   Gem, 
   Gift, 
   ChevronRight, 
+  ChevronDown,
   Check,
   Plus,
   Home,
@@ -48,6 +49,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("razorpay"); // 'razorpay' | 'cod'
   const [orderSuccess, setOrderSuccess] = useState(null);
+  const [showMobileSummary, setShowMobileSummary] = useState(false);
 
   // OTP Modal State for Guest Checkout
   const [showOtpModal, setShowOtpModal] = useState(false);
@@ -672,80 +674,160 @@ const Checkout = () => {
         ]}
       />
 
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-10 pb-24">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-10 pb-32 lg:pb-24">
         
         {/* Stock Alert Banner */}
         {isAnyOutOfStock && (
-          <div className="mb-8 bg-rose-50 border border-rose-200 p-4 rounded-2xl flex items-center gap-3 text-rose-700 text-sm font-medium shadow-xs">
-            <AlertCircle size={20} className="flex-shrink-0 text-rose-600" />
+          <div className="mb-6 bg-rose-50 border border-rose-200 p-3.5 rounded-2xl flex items-center gap-3 text-rose-700 text-xs sm:text-sm font-medium shadow-xs">
+            <AlertCircle size={18} className="flex-shrink-0 text-rose-600" />
             <p>One or more items in your order are out of stock. Please adjust quantities in your bag.</p>
           </div>
         )}
 
-        <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        {/* MOBILE COLLAPSIBLE ORDER SUMMARY ACCORDION */}
+        <div className="lg:hidden bg-white border border-[#E8DFD5] rounded-2xl mb-6 shadow-xs overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowMobileSummary(!showMobileSummary)}
+            className="w-full p-4 bg-[#FAF6F0]/80 flex items-center justify-between text-left cursor-pointer"
+          >
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-[#C8A46A]" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#2e0e43] font-sans">
+                {showMobileSummary ? "Hide Order Summary" : "Show Order Summary"}
+              </span>
+              <span className="text-[11px] font-sans text-[#7B6D63] bg-white border border-[#E8DFD5] px-2 py-0.5 rounded-full">
+                {checkoutItems.length} {checkoutItems.length === 1 ? 'Piece' : 'Pieces'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-base font-normal text-[#2e0e43] font-sans">
+                ₹{total.toLocaleString()}
+              </span>
+              <ChevronDown size={16} className={`text-[#2e0e43] transition-transform duration-300 ${showMobileSummary ? "rotate-180" : ""}`} />
+            </div>
+          </button>
+
+          <AnimatePresence>
+            {showMobileSummary && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="p-4 border-t border-[#E8DFD5] space-y-4 bg-white"
+              >
+                {/* Items List */}
+                <div className="space-y-2.5 max-h-56 overflow-y-auto">
+                  {checkoutItems.map((item, idx) => (
+                    <div key={idx} className="flex gap-3 items-center p-2 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/30">
+                      <div className="w-14 h-16 rounded-lg overflow-hidden bg-[#F4EEE8] border border-[#D8CBBE]/40 flex-shrink-0">
+                        <img 
+                          src={item.image || item.primaryImage || '/img/jewellery/j.png'} 
+                          alt={item.name} 
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-semibold text-[#2A2623] truncate font-serif">{item.name}</h4>
+                        <p className="text-[11px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
+                        <p className="text-xs font-sans font-normal text-[#2e0e43]">
+                          ₹{Number(item.price).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Calculations */}
+                <div className="space-y-2 pt-3 border-t border-[#E8DFD5] text-xs font-sans">
+                  <div className="flex justify-between text-[#7B6D63]">
+                    <span>Subtotal</span>
+                    <span className="font-normal text-[#2A2623]">₹{subtotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-[#7B6D63]">
+                    <span>Insured Delivery</span>
+                    <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[11px]">FREE</span>
+                  </div>
+                  {appliedCoupon && (
+                    <div className="flex justify-between text-emerald-700">
+                      <span>Discount ({appliedCoupon.code})</span>
+                      <span>-₹{discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between items-baseline pt-2 border-t border-[#E8DFD5] font-semibold text-[#2e0e43]">
+                    <span>Total Amount</span>
+                    <span className="text-lg font-normal text-[#2e0e43]">₹{total.toLocaleString()}</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
           
           {/* Left Column: Shipping Address & Payment Selection */}
-          <div className="lg:col-span-7 xl:col-span-8 space-y-8">
+          <div className="lg:col-span-7 xl:col-span-8 space-y-6">
             
             {/* STEP 1: SHIPPING & DELIVERY ADDRESS */}
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#D8CBBE]/50 shadow-sm space-y-6">
+            <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-xs space-y-5">
               
-              <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-4">
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#2e0e43] text-white text-sm font-bold flex items-center justify-center">1</span>
-                  <h3 className="font-serif text-xl sm:text-2xl text-[#2e0e43] font-normal">Shipping & Delivery Address</h3>
+              <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-3.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-7 h-7 rounded-full bg-[#2e0e43] text-white text-xs font-semibold flex items-center justify-center">1</span>
+                  <h3 className="font-serif text-lg sm:text-2xl text-[#2e0e43] font-normal">Shipping & Delivery Address</h3>
                 </div>
-                <span className="text-sm text-[#C8A46A] font-bold uppercase tracking-wider font-sans">Step 1 of 2</span>
+                <span className="text-xs text-[#C8A46A] font-semibold uppercase tracking-wider font-sans">Step 1 of 2</span>
               </div>
 
-              {/* SAVED ADDRESSES SELECTOR (Account Page Integration) */}
+              {/* SAVED ADDRESSES SELECTOR */}
               {savedAddresses.length > 0 && (
-                <div className="space-y-3 bg-[#FDFAF5] p-5 rounded-2xl border border-[#D8CBBE]/50">
+                <div className="space-y-3 bg-[#FDFAF5] p-4 rounded-xl border border-[#D8CBBE]/40">
                   <div className="flex items-center justify-between">
-                    <label className="text-sm font-bold uppercase tracking-wider text-[#2e0e43] flex items-center gap-2">
-                      <MapPin size={16} className="text-[#C8A46A]" />
+                    <label className="text-xs font-semibold uppercase tracking-wider text-[#2e0e43] flex items-center gap-1.5">
+                      <MapPin size={14} className="text-[#C8A46A]" />
                       Select from Saved Addresses
                     </label>
                     <button
                       type="button"
                       onClick={handleAddNewAddress}
-                      className={`text-sm font-bold uppercase tracking-wider flex items-center gap-1 transition-colors ${
+                      className={`text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors ${
                         isNewAddress ? "text-[#2e0e43] underline" : "text-[#C8A46A] hover:text-[#2e0e43]"
                       }`}
                     >
-                      <Plus size={14} /> Add New Address
+                      <Plus size={13} /> Add New Address
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                     {savedAddresses.map((addr, idx) => {
                       const isSelected = selectedSavedIndex === idx && !isNewAddress;
                       return (
                         <div
                           key={idx}
                           onClick={() => handleSelectSavedAddress(idx)}
-                          className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-2 relative ${
+                          className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-1.5 relative ${
                             isSelected
-                              ? "bg-white border-[#2e0e43] ring-2 ring-[#2e0e43]/20 shadow-md"
+                              ? "bg-white border-[#2e0e43] ring-1 ring-[#2e0e43]/20 shadow-xs"
                               : "bg-white/70 border-[#D8CBBE] hover:border-[#C8A46A] hover:bg-white"
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-[#2e0e43] text-white">
+                            <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#2e0e43] text-white">
                               {addr.type || "Home"}
                             </span>
                             {isSelected && (
-                              <span className="text-sm font-bold text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                                <Check size={12} /> Selected
+                              <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                <Check size={11} /> Selected
                               </span>
                             )}
                           </div>
                           <div>
-                            <h4 className="text-sm font-bold text-[#2A2623]">{addr.name}</h4>
-                            <p className="text-sm text-[#7B6D63] line-clamp-2 leading-relaxed">
+                            <h4 className="text-xs font-semibold text-[#2A2623]">{addr.name}</h4>
+                            <p className="text-xs text-[#7B6D63] line-clamp-2 leading-relaxed">
                               {addr.flat ? addr.flat + ', ' : ''}{addr.address}, {addr.city}, {addr.state} - {addr.pincode}
                             </p>
-                            <p className="text-sm text-[#7B6D63] font-semibold mt-1">Phone: {addr.phone}</p>
+                            <p className="text-[11px] text-[#7B6D63] font-medium mt-0.5">Phone: {addr.phone}</p>
                           </div>
                         </div>
                       );
@@ -755,21 +837,21 @@ const Checkout = () => {
               )}
 
               {/* COMPREHENSIVE ADDRESS INPUT FIELDS */}
-              <div className="space-y-4 pt-1">
+              <div className="space-y-3.5 pt-1">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-[#7B6D63]">
-                    {savedAddresses.length > 0 && !isNewAddress ? "Selected Delivery Information" : "Delivery Address Details"}
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-[#7B6D63]">
+                    {savedAddresses.length > 0 && !isNewAddress ? "Selected Delivery Details" : "Delivery Address Details"}
                   </h4>
                   {savedAddresses.length > 0 && !isNewAddress && (
-                    <span className="text-sm text-[#C8A46A] italic">Auto-filled from address book</span>
+                    <span className="text-xs text-[#C8A46A] italic hidden sm:inline">Auto-filled from address book</span>
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-sans">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs sm:text-sm font-sans">
                   
                   {/* Recipient Full Name */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Recipient Full Name *
                     </label>
                     <input
@@ -779,13 +861,13 @@ const Checkout = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Enter full name"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Contact Email */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Email Address *
                     </label>
                     <input
@@ -795,13 +877,13 @@ const Checkout = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="name@example.com"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Primary Phone */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Mobile Phone Number *
                     </label>
                     <input
@@ -811,14 +893,14 @@ const Checkout = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="10-digit mobile number"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Alternate Phone (Optional) */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
-                      Alternate Phone Number <span className="font-normal text-[#7B6D63]/70">(Optional)</span>
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                      Alternate Phone <span className="font-normal text-[#7B6D63]/70">(Optional)</span>
                     </label>
                     <input
                       type="tel"
@@ -826,13 +908,13 @@ const Checkout = () => {
                       value={formData.alternatePhone}
                       onChange={handleInputChange}
                       placeholder="Secondary contact number"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Flat / House No / Building */}
                   <div className="sm:col-span-2">
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Flat / House No. / Building / Suite *
                     </label>
                     <input
@@ -842,13 +924,13 @@ const Checkout = () => {
                       value={formData.flat}
                       onChange={handleInputChange}
                       placeholder="e.g. Flat 402, Royal Residency, Tower B"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Street Address / Area / Colony / Landmark */}
                   <div className="sm:col-span-2">
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Street Address / Area / Landmark *
                     </label>
                     <textarea
@@ -858,13 +940,13 @@ const Checkout = () => {
                       value={formData.address}
                       onChange={handleInputChange}
                       placeholder="Street name, colony, area or nearby landmark"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all resize-none"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm resize-none"
                     />
                   </div>
 
                   {/* City */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       City *
                     </label>
                     <input
@@ -874,13 +956,13 @@ const Checkout = () => {
                       value={formData.city}
                       onChange={handleInputChange}
                       placeholder="e.g. Mumbai"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* State */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       State *
                     </label>
                     <input
@@ -890,13 +972,13 @@ const Checkout = () => {
                       value={formData.state}
                       onChange={handleInputChange}
                       placeholder="e.g. Maharashtra"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm"
                     />
                   </div>
 
                   {/* Pincode */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Pincode / Postal Code *
                     </label>
                     <input
@@ -907,13 +989,13 @@ const Checkout = () => {
                       value={formData.pincode}
                       onChange={handleInputChange}
                       placeholder="6-digit pincode"
-                      className="w-full px-4 py-3 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all font-mono"
+                      className="w-full px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl outline-none focus:border-[#2e0e43] focus:bg-white transition-all text-xs sm:text-sm font-mono"
                     />
                   </div>
 
                   {/* Address Type Pill Radios */}
                   <div>
-                    <label className="block font-bold uppercase tracking-wider text-[#7B6D63] mb-1.5">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
                       Address Type
                     </label>
                     <div className="flex items-center gap-2 pt-0.5">
@@ -922,15 +1004,15 @@ const Checkout = () => {
                           key={t}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, type: t }))}
-                          className={`flex-1 py-2.5 px-3 rounded-xl border text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
+                          className={`flex-1 py-2 px-2.5 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-1 ${
                             formData.type === t
                               ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs"
                               : "bg-[#FDFAF5] text-[#7B6D63] border-[#D8CBBE] hover:border-[#2e0e43]"
                           }`}
                         >
-                          {t === "Home" && <Home size={14} />}
-                          {t === "Work" && <Building2 size={14} />}
-                          {t === "Other" && <MapPin size={14} />}
+                          {t === "Home" && <Home size={13} />}
+                          {t === "Work" && <Building2 size={13} />}
+                          {t === "Other" && <MapPin size={13} />}
                           {t}
                         </button>
                       ))}
@@ -941,16 +1023,16 @@ const Checkout = () => {
 
                 {/* Save to Account Checkbox */}
                 {user?.uid && (
-                  <div className="pt-2">
-                    <label className="flex items-center gap-2.5 cursor-pointer text-sm font-medium text-[#2A2623]">
+                  <div className="pt-1.5">
+                    <label className="flex items-center gap-2 cursor-pointer text-xs font-medium text-[#2A2623]">
                       <input
                         type="checkbox"
                         name="saveToAccount"
                         checked={formData.saveToAccount}
                         onChange={handleInputChange}
-                        className="w-4 h-4 accent-[#2e0e43] rounded"
+                        className="w-3.5 h-3.5 accent-[#2e0e43] rounded"
                       />
-                      <span>Save this address to my account for future express checkouts</span>
+                      <span>Save address to account for future express checkouts</span>
                     </label>
                   </div>
                 )}
@@ -960,28 +1042,28 @@ const Checkout = () => {
             </div>
 
             {/* STEP 2: PAYMENT METHOD */}
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#D8CBBE]/50 shadow-sm space-y-6">
+            <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-xs space-y-5">
               
-              <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-4">
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-8 rounded-full bg-[#2e0e43] text-white text-sm font-bold flex items-center justify-center">2</span>
-                  <h3 className="font-serif text-xl sm:text-2xl text-[#2e0e43] font-normal">Payment Method</h3>
+              <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-3.5">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-7 h-7 rounded-full bg-[#2e0e43] text-white text-xs font-semibold flex items-center justify-center">2</span>
+                  <h3 className="font-serif text-lg sm:text-2xl text-[#2e0e43] font-normal">Payment Method</h3>
                 </div>
-                <span className="text-sm text-[#C8A46A] font-bold uppercase tracking-wider font-sans">Step 2 of 2</span>
+                <span className="text-xs text-[#C8A46A] font-semibold uppercase tracking-wider font-sans">Step 2 of 2</span>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 
                 {/* Razorpay Online Payment */}
                 <label 
                   onClick={() => setPaymentMethod("razorpay")}
-                  className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all duration-300 ${
+                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${
                     paymentMethod === "razorpay"
-                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-sm"
+                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
                       : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
                   }`}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <input
                       type="radio"
                       name="payment"
@@ -990,27 +1072,28 @@ const Checkout = () => {
                       className="accent-[#2e0e43] w-4 h-4"
                     />
                     <div>
-                      <p className="text-sm font-bold text-[#2A2623] uppercase tracking-wider font-sans">
-                        Razorpay Online Payment
+                      <p className="text-xs sm:text-sm font-semibold text-[#2A2623] uppercase tracking-wider font-sans flex items-center gap-2">
+                        <span>Razorpay Online Payment</span>
+                        <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-sans font-normal">Instant</span>
                       </p>
-                      <p className="text-sm text-[#7B6D63] font-serif">
-                        Credit/Debit Cards, UPI (GPay, PhonePe), NetBanking, Wallets
+                      <p className="text-xs text-[#7B6D63] font-serif">
+                        UPI (GPay, PhonePe), Credit/Debit Cards, NetBanking
                       </p>
                     </div>
                   </div>
-                  <CreditCard size={22} className="text-[#2e0e43] shrink-0" />
+                  <CreditCard size={20} className="text-[#2e0e43] shrink-0 hidden sm:block" />
                 </label>
 
                 {/* Cash on Delivery */}
                 <label 
                   onClick={() => setPaymentMethod("cod")}
-                  className={`flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all duration-300 ${
+                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${
                     paymentMethod === "cod"
-                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-sm"
+                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
                       : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
                   }`}
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <input
                       type="radio"
                       name="payment"
@@ -1019,15 +1102,15 @@ const Checkout = () => {
                       className="accent-[#2e0e43] w-4 h-4"
                     />
                     <div>
-                      <p className="text-sm font-bold text-[#2A2623] uppercase tracking-wider font-sans">
+                      <p className="text-xs sm:text-sm font-semibold text-[#2A2623] uppercase tracking-wider font-sans">
                         Cash on Delivery (COD)
                       </p>
-                      <p className="text-sm text-[#7B6D63] font-serif">
+                      <p className="text-xs text-[#7B6D63] font-serif">
                         Pay in cash upon doorstep delivery
                       </p>
                     </div>
                   </div>
-                  <Truck size={22} className="text-[#C8A46A] shrink-0" />
+                  <Truck size={20} className="text-[#C8A46A] shrink-0 hidden sm:block" />
                 </label>
 
               </div>
@@ -1035,23 +1118,23 @@ const Checkout = () => {
             </div>
 
             {/* TRUST & SECURITY GUARANTEES */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-              <div className="bg-white p-5 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1.5 shadow-xs">
-                <ShieldCheck size={24} className="mx-auto text-[#2e0e43]" />
-                <h5 className="text-sm font-bold uppercase tracking-wider text-[#2A2623] font-sans">256-Bit SSL</h5>
-                <p className="text-sm text-[#7B6D63] font-serif">Bank grade security</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
+                <ShieldCheck size={20} className="mx-auto text-[#2e0e43]" />
+                <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">256-Bit SSL</h5>
+                <p className="text-[11px] text-[#7B6D63] font-serif">Bank grade security</p>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1.5 shadow-xs">
-                <Truck size={24} className="mx-auto text-[#C8A46A]" />
-                <h5 className="text-sm font-bold uppercase tracking-wider text-[#2A2623] font-sans">Insured Transit</h5>
-                <p className="text-sm text-[#7B6D63] font-serif">100% door-to-door protection</p>
+              <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
+                <Truck size={20} className="mx-auto text-[#C8A46A]" />
+                <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Insured Transit</h5>
+                <p className="text-[11px] text-[#7B6D63] font-serif">100% door-to-door protection</p>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1.5 shadow-xs">
-                <Gem size={24} className="mx-auto text-[#2e0e43]" />
-                <h5 className="text-sm font-bold uppercase tracking-wider text-[#2A2623] font-sans">Hallmarked Gold</h5>
-                <p className="text-sm text-[#7B6D63] font-serif">Certified high jewellery</p>
+              <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
+                <Gem size={20} className="mx-auto text-[#2e0e43]" />
+                <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Hallmarked Gold</h5>
+                <p className="text-[11px] text-[#7B6D63] font-serif">Certified high jewellery</p>
               </div>
             </div>
 
@@ -1059,20 +1142,23 @@ const Checkout = () => {
 
           {/* Right Column: Sticky Order Summary Sidebar */}
           <div className="lg:col-span-5 xl:col-span-4 space-y-6">
-            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#D8CBBE]/50 shadow-md sticky top-24 space-y-6">
+            <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-md lg:sticky lg:top-24 space-y-5">
               
-              <div className="border-b border-[#D8CBBE]/30 pb-4">
-                <h3 className="font-serif text-2xl text-[#2e0e43] font-normal">Order Summary</h3>
-                <p className="text-sm text-[#7B6D63] font-sans font-medium mt-1">
-                  {checkoutItems.length} Piece{checkoutItems.length > 1 ? 's' : ''} in Bag
-                </p>
+              <div className="border-b border-[#D8CBBE]/30 pb-3.5 flex items-center justify-between">
+                <div>
+                  <h3 className="font-serif text-xl sm:text-2xl text-[#2e0e43] font-normal">Order Summary</h3>
+                  <p className="text-xs text-[#7B6D63] font-sans font-medium mt-0.5">
+                    {checkoutItems.length} Piece{checkoutItems.length > 1 ? 's' : ''} in Bag
+                  </p>
+                </div>
+                <Sparkles size={16} className="text-[#C8A46A]" />
               </div>
 
               {/* Items List Preview */}
-              <div className="space-y-4 max-h-72 overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
                 {checkoutItems.map((item, idx) => (
-                  <div key={idx} className="flex gap-3.5 items-center p-2 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/30">
-                    <div className="w-16 h-18 rounded-lg overflow-hidden bg-[#F4EEE8] border border-[#D8CBBE]/40 flex-shrink-0">
+                  <div key={idx} className="flex gap-3 items-center p-2 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/30">
+                    <div className="w-14 h-16 rounded-lg overflow-hidden bg-[#F4EEE8] border border-[#D8CBBE]/40 flex-shrink-0">
                       <img 
                         src={item.image || item.primaryImage || '/img/jewellery/j.png'} 
                         alt={item.name} 
@@ -1080,9 +1166,9 @@ const Checkout = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-[#2A2623] truncate font-serif">{item.name}</h4>
-                      <p className="text-sm text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
-                      <p className="text-sm font-sans font-bold text-[#2e0e43]">
+                      <h4 className="text-xs font-semibold text-[#2A2623] truncate font-serif">{item.name}</h4>
+                      <p className="text-[11px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
+                      <p className="text-xs font-sans font-normal text-[#2e0e43]">
                         ₹{Number(item.price).toLocaleString()}
                       </p>
                     </div>
@@ -1091,10 +1177,10 @@ const Checkout = () => {
               </div>
 
               {/* Coupon Code Section */}
-              <div className="space-y-2 pt-3 border-t border-[#D8CBBE]/30 font-sans">
-                <label className="text-xs font-bold uppercase tracking-wider text-[#2e0e43] flex items-center gap-1.5">
-                  <TicketPercent size={15} className="text-[#C8A46A]" />
-                  Privilege Coupon / Promo Code
+              <div className="space-y-2 pt-2 border-t border-[#D8CBBE]/30 font-sans">
+                <label className="text-xs font-semibold uppercase tracking-wider text-[#2e0e43] flex items-center gap-1.5">
+                  <TicketPercent size={14} className="text-[#C8A46A]" />
+                  Promo / Coupon Code
                 </label>
 
                 {!appliedCoupon ? (
@@ -1104,24 +1190,24 @@ const Checkout = () => {
                       placeholder="Enter Code (e.g. VELOURAZ10)"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      className="flex-1 px-3.5 py-2.5 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl text-xs font-mono font-bold uppercase outline-none focus:border-[#2e0e43]"
+                      className="flex-1 px-3 py-2 bg-[#FDFAF5] border border-[#D8CBBE] rounded-xl text-xs font-mono font-bold uppercase outline-none focus:border-[#2e0e43]"
                     />
                     <button
                       type="button"
                       onClick={handleApplyCoupon}
                       disabled={couponLoading || !couponCode.trim()}
-                      className="px-4 py-2.5 bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#1A0829] transition-all disabled:opacity-50 cursor-pointer shrink-0"
+                      className="px-3.5 py-2 bg-[#2e0e43] text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-[#1A0829] transition-all disabled:opacity-50 cursor-pointer shrink-0"
                     >
                       {couponLoading ? "..." : "Apply"}
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800">
+                  <div className="flex items-center justify-between p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                      <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
                       <div>
-                        <p className="font-bold font-mono text-sm">{appliedCoupon.code} APPLIED</p>
-                        <p className="text-[11px] text-emerald-700">Saved ₹{appliedCoupon.discountAmount.toLocaleString()}</p>
+                        <p className="font-bold font-mono text-xs">{appliedCoupon.code} APPLIED</p>
+                        <p className="text-[10px] text-emerald-700">Saved ₹{appliedCoupon.discountAmount.toLocaleString()}</p>
                       </div>
                     </div>
                     <button
@@ -1130,7 +1216,7 @@ const Checkout = () => {
                       className="text-emerald-700 hover:text-rose-600 p-1 font-bold cursor-pointer"
                       title="Remove coupon"
                     >
-                      <X size={16} />
+                      <X size={15} />
                     </button>
                   </div>
                 )}
@@ -1140,55 +1226,53 @@ const Checkout = () => {
               </div>
 
               {/* Cost Calculations */}
-              <div className="space-y-3.5 pt-4 border-t border-[#D8CBBE]/30 text-sm font-sans">
+              <div className="space-y-3 pt-3 border-t border-[#D8CBBE]/30 text-xs sm:text-sm font-sans">
                 <div className="flex justify-between text-[#7B6D63]">
                   <span>Subtotal</span>
-                  <span className="font-bold text-[#2A2623]">₹{subtotal.toLocaleString()}</span>
+                  <span className="font-normal text-[#2A2623]">₹{subtotal.toLocaleString()}</span>
                 </div>
 
                 <div className="flex justify-between text-[#7B6D63]">
                   <span>Insured Shipping Fee</span>
-                  <span className="font-bold text-emerald-700 uppercase tracking-wider">
+                  <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[11px]">
                     {shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}
                   </span>
                 </div>
 
                 {appliedCoupon && (
-                  <div className="flex justify-between text-emerald-700 font-bold bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+                  <div className="flex justify-between text-emerald-700 font-medium bg-emerald-50 p-2 rounded-lg border border-emerald-200 text-xs">
                     <span>Coupon Discount ({appliedCoupon.code})</span>
                     <span>-₹{discountAmount.toLocaleString()}</span>
                   </div>
                 )}
                 
-                <div className="flex justify-between items-baseline text-base font-normal text-[#2A2623] pt-4 border-t border-[#D8CBBE]/40 font-sans">
-                  <span>Total Amount</span>
-                  <span className="text-[#2e0e43] text-2xl font-normal font-sans tracking-tight">₹{total.toLocaleString()}</span>
+                <div className="flex justify-between items-baseline pt-3 border-t border-[#D8CBBE]/40 font-sans">
+                  <span className="text-xs sm:text-sm font-medium text-[#2A2623]">Total Amount</span>
+                  <span className="text-[#2e0e43] text-xl sm:text-2xl font-normal font-sans tracking-tight">₹{total.toLocaleString()}</span>
                 </div>
               </div>
 
-              {/* Submit Order CTA */}
+              {/* Primary Submit Order CTA (Desktop View) */}
               <button
                 type="submit"
                 disabled={loading || isAnyOutOfStock}
-                className={`w-full min-h-[56px] py-3.5 px-6 text-sm font-semibold uppercase tracking-[0.18em] rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md hover:shadow-xl ${
+                className={`hidden lg:flex w-full min-h-[52px] py-3.5 px-6 text-xs font-semibold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-xl ${
                   loading || isAnyOutOfStock
                     ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                     : 'bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99]'
                 }`}
               >
                 {loading ? (
-                  <Loader2 size={18} className="animate-spin shrink-0" />
+                  <Loader2 size={16} className="animate-spin shrink-0" />
                 ) : (
-                  <Lock size={18} className="shrink-0 text-[#C8A46A]" />
+                  <Lock size={16} className="shrink-0 text-[#C8A46A]" />
                 )}
-                <span className="text-center flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 leading-snug font-sans">
-                  <span>{loading ? 'Processing Order...' : 'Complete Purchase'}</span>
-                </span>
+                <span>{loading ? 'Processing Order...' : 'Complete Purchase'}</span>
               </button>
 
-              <p className="text-sm text-[#7B6D63] text-center font-serif flex items-center justify-center gap-1.5">
-                <Lock size={14} className="text-[#C8A46A]" />
-                100% Encrypted & Authenticated
+              <p className="text-xs text-[#7B6D63] text-center font-serif flex items-center justify-center gap-1.5">
+                <Lock size={13} className="text-[#C8A46A]" />
+                256-Bit SSL Encrypted & Authenticated
               </p>
 
             </div>
@@ -1196,6 +1280,32 @@ const Checkout = () => {
 
         </form>
 
+      </div>
+
+      {/* MOBILE STICKY BOTTOM ORDER BAR */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E8DFD5] p-3 px-4 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <span className="text-[10px] text-[#7B6D63] font-serif uppercase tracking-wider block">
+            Total Payable
+          </span>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-xl font-normal font-sans text-[#2e0e43]">
+              ₹{total.toLocaleString()}
+            </span>
+            <span className="text-[10px] text-emerald-700 font-sans font-medium">
+              Free Shipping
+            </span>
+          </div>
+        </div>
+
+        <button
+          onClick={handlePlaceOrder}
+          disabled={loading || isAnyOutOfStock}
+          className="bg-[#2e0e43] text-white py-3 px-5 rounded-xl text-xs font-semibold uppercase tracking-[0.18em] hover:bg-[#1A0829] active:scale-95 transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer disabled:opacity-40"
+        >
+          {loading ? <Loader2 size={14} className="animate-spin" /> : <Lock size={14} className="text-[#C8A46A]" />}
+          <span>{loading ? "Processing..." : "Place Order"}</span>
+        </button>
       </div>
 
       {/* Guest Checkout OTP Modal */}

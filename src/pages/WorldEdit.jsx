@@ -9,76 +9,83 @@ import { useStore } from '../hooks/useStore';
 
 const defaultCountries = [
   {
-    id: 'turkey',
-    name: 'Turkey',
-    code: 'TR',
-    flag: '🇹🇷',
-    collection: 'Evil Eye & Oxidised Collection',
-    tagline: 'Sacred protection & Ottoman artisanal heritage',
-    description: 'Intricately handcrafted enamel, protective talismans, and dark oxidised silver inspired by ancient Mediterranean ateliers.',
-    image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=1200',
-    featuredItems: ['Evil Eye Amulets', 'Teardrop Earrings', 'Enamel Necklaces']
+    id: 'paris',
+    name: 'Paris',
+    code: 'FR',
+    flag: '🇫🇷',
+    collection: 'THE MAISON PARIS',
+    tagline: 'Parisian chic & Haute Joaillerie gold',
+    description: 'Clean tennis bracelets, baroque pearl pendants, and versatile gold charms designed for daily sophisticated layering.',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795174/paris44_tisl79.mp4',
+    image: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
+    featuredItems: ['Tennis Bracelets', 'Baroque Pendants', 'Gold Hoops']
   },
   {
-    id: 'japan',
-    name: 'Japan',
-    code: 'JP',
-    flag: '🇯🇵',
-    collection: 'Miyuki & Pearl Collection',
-    tagline: 'Precision beadwork & serene minimalist elegance',
-    description: 'Delicate glass seed beads and pristine Akoya pearls woven into lightweight, modern architectural silhouettes.',
-    image: 'https://images.unsplash.com/photo-1544413660-299165566b1d?auto=format&fit=crop&q=80&w=1200',
-    featuredItems: ['Miyuki Chokers', 'Minimal Pearl Drops', 'Silk Thread Sets']
+    id: 'thailand',
+    name: 'Thailand',
+    code: 'TH',
+    flag: '🇹🇭',
+    collection: 'THE THAI GEMSTONE EDIT',
+    tagline: 'Vibrant sapphires & Siam high jewellery',
+    description: 'Exquisite hand-selected rubies and colored sapphire jewels inspired by Southeast Asian royal ateliers.',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795261/80622904_1788526626895108_iruogb.mp4',
+    image: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
+    featuredItems: ['Ruby Pendants', 'Siam Drop Rings', 'Gemstone Chokers']
   },
   {
     id: 'india',
     name: 'India',
     code: 'IN',
     flag: '🇮🇳',
-    collection: 'Heritage Kundan & Polki',
+    collection: 'HERITAGE COLLECTION',
     tagline: 'Royal court luxury & timeless craft',
     description: 'Centuries-old technique of setting uncut gems in pure gold foils, accented by rich Meenakari enamel artwork.',
-    image: 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=1200',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884537/507503123_1788884097045152_tpzo3m.mp4',
+    image: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
     featuredItems: ['Raw Gemstone Chokers', 'Jadau Earrings', 'Bridal Sets']
+  },
+  {
+    id: 'japan',
+    name: 'Japan',
+    code: 'JP',
+    flag: '🇯🇵',
+    collection: 'MIYUKI ATELIER',
+    tagline: 'Precision beadwork & serene minimalist elegance',
+    description: 'Delicate glass seed beads and pristine Akoya pearls woven into lightweight, modern architectural silhouettes.',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795166/51181631_1788526616621934_a6gfv6.mp4',
+    image: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
+    featuredItems: ['Miyuki Chokers', 'Minimal Pearl Drops', 'Silk Thread Sets']
   },
   {
     id: 'south-korea',
     name: 'South Korea',
     code: 'KR',
     flag: '🇰🇷',
-    collection: 'Korean Luxe & Crystal Edits',
+    collection: 'PEARLS & SILVER',
     tagline: 'Contemporary drama & ethereal glass sheen',
     description: 'Statement ear cuffs, asymmetric drop earrings, and sleek layered chains favored by Seoul fashion directors.',
-    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=1200',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884546/634109263_1788884070021943_pf5oas.mp4',
+    image: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
     featuredItems: ['Layered Chains', 'Asymmetric Drops', 'Crystal Cuffs']
   },
   {
-    id: 'europe',
-    name: 'Europe',
-    code: 'EU',
-    flag: '⚜️',
-    collection: 'Charms & Modern Gold',
-    tagline: 'Parisian chic & Milanese refined gold',
-    description: 'Clean tennis bracelets, baroque pearl pendants, and versatile gold charms designed for daily sophisticated layering.',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=1200',
-    featuredItems: ['Tennis Bracelets', 'Baroque Pendants', 'Gold Hoops']
-  },
-  {
-    id: 'china',
-    name: 'China',
-    code: 'CN',
-    flag: '🇨🇳',
-    collection: 'Jade & Carved Gemstones',
-    tagline: 'Imperial jadeite & symbolic harmony',
-    description: 'Polished green and white jade carved into symbolic coins, lotus petals, and lucky charms wrapped in solid gold settings.',
-    image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=1200',
-    featuredItems: ['Jade Pendants', 'Carved Bangles', 'Lucky Coins']
+    id: 'turkey',
+    name: 'Turkey',
+    code: 'TR',
+    flag: '🇹🇷',
+    collection: 'EVIL EYE & OXIDISED',
+    tagline: 'Sacred protection & Ottoman artisanal heritage',
+    description: 'Intricately handcrafted enamel, protective talismans, and dark oxidised silver inspired by ancient Mediterranean ateliers.',
+    video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795174/paris44_tisl79.mp4',
+    image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=1200',
+    featuredItems: ['Evil Eye Amulets', 'Teardrop Earrings', 'Enamel Necklaces']
   }
 ];
 
 const WorldEdit = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+  const [countriesList, setCountriesList] = useState(defaultCountries);
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [loading, setLoading] = useState(true);
 
@@ -100,18 +107,38 @@ const WorldEdit = () => {
     fetchProducts();
   }, []);
 
+  // Listen to world_edits_carousel Firestore collection for dynamic video uploads
+  useEffect(() => {
+    return onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
+      if (!snap.empty) {
+        const firestoreMap = {};
+        snap.docs.forEach(doc => {
+          const data = doc.data();
+          if (data.country) {
+            firestoreMap[data.country.toLowerCase()] = data.video || data.videoUrl;
+          }
+        });
+
+        setCountriesList(prev => prev.map(c => {
+          const customVideo = firestoreMap[c.name.toLowerCase()];
+          return customVideo ? { ...c, video: customVideo } : c;
+        }));
+      }
+    });
+  }, []);
+
   // Compute product count per country
   const countryCounts = useMemo(() => {
     const counts = {};
-    defaultCountries.forEach(c => {
+    countriesList.forEach(c => {
       counts[c.name] = products.filter(p => p.country && p.country.toLowerCase() === c.name.toLowerCase()).length;
     });
     return counts;
-  }, [products]);
+  }, [products, countriesList]);
 
   const filteredCountries = selectedCountry === 'All' 
-    ? defaultCountries 
-    : defaultCountries.filter(c => c.name.toLowerCase() === selectedCountry.toLowerCase());
+    ? countriesList 
+    : countriesList.filter(c => c.name.toLowerCase() === selectedCountry.toLowerCase());
 
   // Featured products matching active selected country tab
   const countryProducts = useMemo(() => {
@@ -162,9 +189,9 @@ const WorldEdit = () => {
                 : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
             }`}
           >
-            🌐 All Countries ({defaultCountries.length})
+            🌐 All Countries ({countriesList.length})
           </button>
-          {defaultCountries.map((country) => (
+          {countriesList.map((country) => (
             <button
               key={country.id}
               onClick={() => setSelectedCountry(country.name)}
@@ -199,28 +226,41 @@ const WorldEdit = () => {
               className="group bg-[#FFFDF9] rounded-3xl border border-[#EFE8DC] overflow-hidden shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] hover:border-[#C8A97A] transition-all duration-500 flex flex-col justify-between"
             >
               <div>
-                {/* Image Cover */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#F3ECE1]">
-                  <img
-                    src={c.image}
-                    alt={c.name}
-                    className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                {/* Media Cover (Auto-playing Video or Fallback Image - Same as PromoSlider) */}
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-gray-900">
+                  {c.video ? (
+                    <video
+                      src={c.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <img
+                      src={c.image}
+                      alt={c.name}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
+                    />
+                  )}
+
+                  {/* Dark Vignette Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none z-10" />
                   
                   {/* Flag & Name Badge Overlay */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#1A1613]/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-white">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#1A1613]/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-white z-20">
                     <span className="text-base">{c.flag}</span>
                     <span className="text-xs font-bold uppercase tracking-widest">{c.name}</span>
                   </div>
 
                   {/* Dynamic Product Count */}
-                  <div className="absolute top-4 right-4 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md">
-                    {countryCounts[c.name] || 0} Products Available
+                  <div className="absolute top-4 right-4 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md z-20">
+                    {countryCounts[c.name] || 0} Products
                   </div>
 
                   {/* Title Overlay on Image Bottom */}
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <div className="absolute bottom-4 left-4 right-4 text-white z-20">
                     <p className="text-[#C8A97A] text-[11px] font-bold uppercase tracking-widest mb-0.5">
                       {c.collection}
                     </p>
