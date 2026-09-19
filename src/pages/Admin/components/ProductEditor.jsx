@@ -21,7 +21,7 @@ const TAG_SUGGESTIONS = [
   "New Arrivals", "Bestsellers", "Trending", "Limited Edition", "Exclusive",
   "Premium Pick", "Editor's Choice", "Hot Selling", "Featured", "Sale",
   "Lightweight", "Anti Tarnish", "Hypoallergenic", "Handcrafted",
-  "Bridal", "Daily Wear", "Wedding", "Festival", "Gift",
+  "Bridal", "Daily Wear", "Wedding", "Festival", "Gift", "India Silver", "India Luxe"
 ];
 const DEFAULTS = { status: "Published", country: "", category: "", stock: 1, visibility: "Public" };
 

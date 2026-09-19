@@ -8,7 +8,9 @@ export const DEFAULT_TAGS = [
   "Trending",
   "Exclusive",
   "Sale",
-  "Gift Special"
+  "Gift Special",
+  "India Silver",
+  "India Luxe"
 ];
 
 /**

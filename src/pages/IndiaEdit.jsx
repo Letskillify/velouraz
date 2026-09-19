@@ -8,16 +8,16 @@ const IndiaEdit = () => {
   const navigate = useNavigate();
 
   const handleSilverClick = () => {
-    navigate('/shop?country=India&material=Silver');
+    navigate('/shop?country=India&tag=India Silver');
   };
 
   const handleLuxeClick = () => {
-    navigate('/shop?country=India&material=Kundan');
+    navigate('/shop?country=India&tag=India Luxe');
   };
 
   return (
     <div className="min-h-screen bg-[#FAF6F0] font-sans text-[#2A2623]">
-      
+
       {/* Hero Banner Section */}
       <Breadcrumb
         title="The India Edit"
@@ -68,7 +68,7 @@ const IndiaEdit = () => {
               playsInline
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
             />
-            
+
             {/* Gradient Overlays */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/90 transition-opacity duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1A1816] via-[#1A1816]/40 to-transparent opacity-80" />
@@ -90,7 +90,7 @@ const IndiaEdit = () => {
                   The Silver Edit
                 </h2>
               </div>
-              
+
               <button
                 type="button"
                 onClick={handleSilverClick}
@@ -119,7 +119,7 @@ const IndiaEdit = () => {
               playsInline
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
             />
-            
+
             {/* Gradient Overlays */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/90 transition-opacity duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#1A1816] via-[#1A1816]/40 to-transparent opacity-80" />
@@ -141,7 +141,7 @@ const IndiaEdit = () => {
                   The Luxe Edit
                 </h2>
               </div>
-              
+
               <button
                 type="button"
                 onClick={handleLuxeClick}
