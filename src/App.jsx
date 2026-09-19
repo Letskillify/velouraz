@@ -36,6 +36,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const WorldEdit = lazy(() => import("./pages/WorldEdit"));
 const IndiaEdit = lazy(() => import("./pages/IndiaEdit"));
+const Gallery = lazy(() => import("./pages/Gallery"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 import WhatsAppButton from "./components/WhatsAppButton";
@@ -82,6 +83,7 @@ const AppRoutes = () => {
           <Route path="/world-edit" element={<WorldEdit />} />
           <Route path="/world-edit/india" element={<IndiaEdit />} />
           <Route path="/india-edit" element={<IndiaEdit />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

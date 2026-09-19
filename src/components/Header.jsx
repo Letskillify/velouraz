@@ -11,7 +11,7 @@ import { db } from './Firebase';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 
 /* ─── Design Tokens ──────────────────────────────────── */
-const GOLD   = '#C8A97A';
+const GOLD = '#C8A97A';
 const CRIMSON = '#2e0e43';
 const NAV_SERIF = "'Cormorant Garamond', Georgia, serif";
 
@@ -85,7 +85,7 @@ const LuxuryHeader = () => {
     return dbCountries.length >= 5 ? dbCountries.slice(0, 15) : fallbackCountries.slice(0, 15);
   }, [dbCountries]);
 
-  const isTransparentRoute = 
+  const isTransparentRoute =
     location.pathname === '/' ||
     location.pathname === '/shop' ||
     location.pathname === '/cart' ||
@@ -101,12 +101,13 @@ const LuxuryHeader = () => {
   const { cartCount, wishlistCount } = useStore();
 
   const navLinks = [
-    { name: 'New Arrivals',  href: '/shop?filter=new' },
-    { name: 'Best Sellers',  href: '/shop?filter=bestsellers' },
-    { name: 'World Edit',    href: '/world-edit', hasDropdown: true },
-    { name: 'Blogs',         href: '/blog' },
-    { name: 'Our Story',     href: '/about' },
-    { name: 'Contact Us',    href: '/contact' },
+    { name: 'New Arrivals', href: '/shop?filter=new' },
+    { name: 'Best Sellers', href: '/shop?filter=bestsellers' },
+    { name: 'World Edit', href: '/world-edit', hasDropdown: true },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Blogs', href: '/blog' },
+    { name: 'Our Story', href: '/about' },
+    { name: 'Contact Us', href: '/contact' },
   ];
 
   useEffect(() => {
@@ -131,17 +132,17 @@ const LuxuryHeader = () => {
   return (
     <>
       {/* Announcement Bar */}
-      <div 
-        className="relative z-[60] text-center py-1.5 px-4 h-[34px] overflow-hidden flex items-center justify-center shadow-xs" 
+      <div
+        className="relative z-[60] text-center py-1.5 px-4 h-[34px] overflow-hidden flex items-center justify-center shadow-xs"
         style={{ background: CRIMSON, position: 'fixed', top: 0, left: 0, right: 0 }}
       >
         <AnimatePresence mode="wait">
-          <motion.p 
-            key={annIndex} 
-            initial={{ opacity: 0, y: 12 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            exit={{ opacity: 0, y: -12 }} 
-            transition={{ duration: 0.3 }} 
+          <motion.p
+            key={annIndex}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3 }}
             className="text-[12px] sm:text-[13px] tracking-[0.16em] font-medium text-white/90 truncate uppercase"
           >
             {announcements[annIndex]}
@@ -160,35 +161,35 @@ const LuxuryHeader = () => {
           }
         }}
         className="w-full fixed z-50 transition-all duration-300 backdrop-blur-md"
-        style={{ 
-          top: 0, 
-          paddingTop: 34, 
-          background: headerBg, 
-          borderBottom: `1px solid ${headerBorder}`, 
-          boxShadow: scrolled ? '0 4px 25px rgba(0,0,0,0.06)' : 'none' 
+        style={{
+          top: 0,
+          paddingTop: 34,
+          background: headerBg,
+          borderBottom: `1px solid ${headerBorder}`,
+          boxShadow: scrolled ? '0 4px 25px rgba(0,0,0,0.06)' : 'none'
         }}
       >
         {/* Compact Header Top Bar */}
-        <div 
-          className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between" 
+        <div
+          className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between"
           style={{ height: scrolled ? '60px' : '72px', transition: 'height 0.3s ease' }}
         >
           {/* Left: Mobile Menu & Icon-only Search */}
           <div className="flex items-center gap-1 sm:gap-3 flex-1">
-            <button 
-              onClick={() => setMobileOpen(true)} 
-              className="lg:hidden p-1.5 sm:p-2 rounded-full hover:bg-black/5 transition-all" 
-              style={{ color: textColor }} 
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden p-1.5 sm:p-2 rounded-full hover:bg-black/5 transition-all"
+              style={{ color: textColor }}
               aria-label="Menu"
             >
               <Menu className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px]" />
             </button>
-            
+
             {/* Search Icon Only (Desktop & Mobile) */}
-            <button 
-              onClick={() => setIsSearchOpen(true)} 
-              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer group" 
-              style={{ color: textColor }} 
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer group"
+              style={{ color: textColor }}
               title="Search Products"
               aria-label="Search"
             >
@@ -199,11 +200,11 @@ const LuxuryHeader = () => {
           {/* Center: Larger Prominent Luxury Logo */}
           <div className="flex-1 flex justify-center items-center py-1">
             <Link to="/" className="relative group inline-flex items-center justify-center transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]">
-              <img 
-                src="/img/logo.png" 
-                alt="Velouraz" 
-                className="transition-all duration-300 object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.08)]" 
-                style={{ 
+              <img
+                src="/img/logo.png"
+                alt="Velouraz"
+                className="transition-all duration-300 object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.08)]"
+                style={{
                   height: scrolled ? '46px' : '58px',
                   maxHeight: '68px'
                 }}
@@ -213,28 +214,28 @@ const LuxuryHeader = () => {
 
           {/* Right: Icons (Wishlist, Account, Cart) */}
           <div className="flex items-center justify-end gap-0.5 sm:gap-2 flex-1">
-            <Link 
-              to="/wishlist" 
-              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+            <Link
+              to="/wishlist"
+              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all"
               style={{ color: textColor }}
               title="Wishlist"
             >
               <Heart className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px]" />
               {wishlistCount > 0 && <BadgeDot count={wishlistCount} />}
             </Link>
-            
-            <Link 
-              to={user ? '/account' : '/login'} 
-              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+
+            <Link
+              to={user ? '/account' : '/login'}
+              className="p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all"
               style={{ color: textColor }}
               title={user ? "My Account" : "Sign In"}
             >
               <User className="w-[17px] h-[17px] sm:w-[20px] sm:h-[20px]" />
             </Link>
-            
-            <Link 
-              to="/cart" 
-              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all" 
+
+            <Link
+              to="/cart"
+              className="relative p-1.5 sm:p-2.5 rounded-full hover:bg-black/5 hover:scale-105 active:scale-95 transition-all"
               style={{ color: textColor }}
               title="Shopping Bag"
             >
@@ -249,15 +250,15 @@ const LuxuryHeader = () => {
           <div className="max-w-[1440px] mx-auto flex justify-center gap-1">
             {navLinks.map((link) => (
               <div key={link.name} className="relative" onMouseEnter={() => setMegaMenu(link.name)} onMouseLeave={() => setMegaMenu(null)}>
-                <Link 
-                  to={link.href} 
-                  className="flex items-center gap-1.5 px-5 py-2.5 text-[13px] tracking-[0.18em] font-bold uppercase transition-colors" 
+                <Link
+                  to={link.href}
+                  className="flex items-center gap-1.5 px-5 py-2.5 text-[13px] tracking-[0.18em] font-bold uppercase transition-colors"
                   style={{ color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)' }}
                 >
                   {link.name} {link.hasDropdown && <ChevronDown size={12} style={{ transform: megaMenu === link.name ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />}
-                  <span 
-                    className="absolute bottom-0 left-4 right-4 h-[2px] transition-all duration-300" 
-                    style={{ background: GOLD, transform: megaMenu === link.name ? 'scaleX(1)' : 'scaleX(0)' }} 
+                  <span
+                    className="absolute bottom-0 left-4 right-4 h-[2px] transition-all duration-300"
+                    style={{ background: GOLD, transform: megaMenu === link.name ? 'scaleX(1)' : 'scaleX(0)' }}
                   />
                 </Link>
               </div>
@@ -286,17 +287,17 @@ const LuxuryHeader = () => {
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setMobileOpen(false)} 
-              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm" 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-sm"
             />
-            <motion.aside 
-              initial={{ x: '-100%' }} 
-              animate={{ x: 0 }} 
-              exit={{ x: '-100%' }} 
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
               transition={{ type: "spring", damping: 25, stiffness: 250 }}
               className="fixed left-0 top-0 bottom-0 z-[100] w-[88vw] max-w-sm flex flex-col bg-[#0E0B09] shadow-2xl"
             >
@@ -319,7 +320,7 @@ const LuxuryHeader = () => {
                             View All <ArrowRight size={10} />
                           </Link>
                         </div>
-                        
+
                         <div className="flex flex-col gap-2">
                           {worldEditMegaItems.map((item, idx) => (
                             <Link
@@ -484,13 +485,13 @@ const SearchOverlayModal = ({ onClose }) => {
         className="relative z-10 w-full bg-gradient-to-b from-[#14061F] via-[#100419] to-[#0B0212] border-b border-[#C8A46A]/30 text-[#F3ECE1] shadow-[0_30px_90px_rgba(0,0,0,0.9)] overflow-hidden"
       >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-8 space-y-4 sm:space-y-6">
-          
+
           {/* Top Utility Header */}
           <div className="flex items-center justify-between border-b border-[#3A1B54]/60 pb-2.5 sm:pb-3">
             <div className="flex items-center gap-2">
               <Sparkles size={15} className="text-[#C8A46A] animate-pulse" />
               <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.2em] sm:tracking-[0.22em] text-[#C8A46A]">
-                Velouraz Search 
+                Velouraz Search
               </span>
             </div>
 
@@ -533,7 +534,7 @@ const SearchOverlayModal = ({ onClose }) => {
 
           {/* Curated Trending Chips & Country Collections */}
           <div className="space-y-3">
-            
+
             {/* World Edit Country Suggestions */}
             <div className="space-y-1.5">
               <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#C8A46A] flex items-center gap-1.5">
@@ -578,7 +579,7 @@ const SearchOverlayModal = ({ onClose }) => {
           {/* Live Search Results Preview */}
           {queryStr.trim() !== '' && (
             <div className="space-y-3 sm:space-y-4 pt-3 sm:pt-4 border-t border-[#3A1B54]/70 max-h-[60vh] sm:max-h-[55vh] overflow-y-auto pr-1">
-              
+
               <div className="flex items-center justify-between">
                 <span className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-[#E5C794]">
                   Matching Creations ({searchResults.length})

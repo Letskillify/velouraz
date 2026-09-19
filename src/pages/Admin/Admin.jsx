@@ -48,6 +48,7 @@ import {
   CreditCard,
   PanelLeftClose,
   PanelLeftOpen,
+  Camera,
 } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import AdminAuth from "./AdminAuth";
@@ -68,6 +69,7 @@ import ProductImageManager from "./components/ProductImageManager";
 import TagsManager from "./components/TagsManager";
 import CouponManager from "./components/CouponManager";
 import ReviewsManager from "./components/ReviewsManager";
+import GalleryManager from "./components/GalleryManager";
 import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -352,6 +354,8 @@ const Admin = () => {
         return <ReviewsManager isDarkMode={isDarkMode} />;
       case "Banners":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
+      case "Gallery":
+        return <GalleryManager />;
       case "Profile":
         return <AdminProfile adminUser={adminUser} onUpdate={handleProfileUpdate} isDarkMode={isDarkMode} />;
       case "AddProduct":
@@ -440,6 +444,7 @@ const Admin = () => {
           ["Coupon Manager", TicketPercent, "Coupon Manager"],
           ["Tags Manager", Tags, "Tags Manager"],
           ["Product Images", Images, "Product Images"],
+          ["Gallery", Camera, "Gallery"],
           ["Categories", Layers3, "Categories"],
           ["Sub Categories", Layers3, "SubCategories"],
           ["Collections", Layers3, "Collections"],
