@@ -494,7 +494,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                       className={`${inp} ${errors.category ? "border-red-400 ring-2 ring-red-100" : ""}`}
                     >
                       <option value="">Select category</option>
-                      {(dbCategories.length > 0 ? dbCategories : CATEGORIES).map((c) => <option key={c} value={c}>{c}</option>)}
+                      {Array.from(new Set([...(dbCategories.length > 0 ? dbCategories : CATEGORIES), ...(product?.category ? [product.category] : [])])).map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                     {errors.category && <p className="mt-1 text-base text-red-600 font-medium">{errors.category.message}</p>}
                   </div>
@@ -502,7 +502,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     <label className={label}>Sub Category</label>
                     <select {...register("subcategory")} className={inp}>
                       <option value="">Select subcategory</option>
-                      {dbSubCategories.map((sc) => <option key={sc} value={sc}>{sc}</option>)}
+                      {Array.from(new Set([...dbSubCategories, ...(product?.subcategory ? [product.subcategory] : [])])).map((sc) => <option key={sc} value={sc}>{sc}</option>)}
                     </select>
                   </div>
                 </div>
@@ -513,14 +513,14 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     <label className={label}>Brand</label>
                     <select {...register("brand")} className={inp}>
                       <option value="">Select brand</option>
-                      {dbBrands.map((b) => <option key={b} value={b}>{b}</option>)}
+                      {Array.from(new Set([...dbBrands, ...(product?.brand ? [product.brand] : [])])).map((b) => <option key={b} value={b}>{b}</option>)}
                     </select>
                   </div>
                   <div>
                     <label className={label}>Collection Name</label>
                     <select {...register("collectionName")} className={inp}>
                       <option value="">Select collection</option>
-                      {dbCollections.map((col) => <option key={col} value={col}>{col}</option>)}
+                      {Array.from(new Set([...dbCollections, ...(product?.collectionName ? [product.collectionName] : [])])).map((col) => <option key={col} value={col}>{col}</option>)}
                     </select>
                   </div>
                 </div>
@@ -539,7 +539,7 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     <label className={label}>Inspired Country</label>
                     <select {...register("country")} className={inp}>
                       <option value="">Select country</option>
-                      {(dbCountries.length > 0 ? dbCountries : COUNTRIES).map((c) => <option key={c} value={c}>{c}</option>)}
+                      {Array.from(new Set([...(dbCountries.length > 0 ? dbCountries : COUNTRIES), ...(product?.country ? [product.country] : [])])).map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                 </div>
@@ -620,10 +620,10 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                     <label
                       key={opt}
                       className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border py-2.5 text-base font-bold transition-all ${statusWatch === opt
-                          ? opt === "Published"
-                            ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                            : "border-amber-400 bg-amber-50 text-amber-700"
-                          : "border-slate-200 text-slate-500 hover:border-slate-300"
+                        ? opt === "Published"
+                          ? "border-emerald-400 bg-emerald-50 text-emerald-700"
+                          : "border-amber-400 bg-amber-50 text-amber-700"
+                        : "border-slate-200 text-slate-500 hover:border-slate-300"
                         }`}
                     >
                       <input type="radio" value={opt} {...register("status")} className="sr-only" />
