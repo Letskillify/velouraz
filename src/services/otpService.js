@@ -124,11 +124,36 @@ export const createRazorpayOrder = async (items, discountAmount = 0) => {
   const subtotal = items.reduce((sum, i) => sum + (Number(i.price || 0) * (i.quantity || 1)), 0);
   const shipping = subtotal >= 1999 || subtotal === 0 ? 0 : 99;
   const total = Math.max(0, subtotal + shipping - discountAmount);
+  const amountInPaise = Math.round(total * 100);
+
+  try {
+    const res = await fetch("/api/create-razorpay-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: amountInPaise, currency: "INR" }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success) {
+        return {
+          id: data.orderId,
+          amount: data.amount || amountInPaise,
+          currency: data.currency || "INR",
+          keyId: data.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazKey",
+          isSimulated: data.isSimulated || false,
+        };
+      }
+    }
+  } catch (e) {
+    console.log("Razorpay API call notice, fallback to local test order:", e?.message);
+  }
+
   return {
-    id: `order_sim_${Date.now()}`,
-    amount: Math.round(total * 100),
+    id: `order_test_${Date.now()}`,
+    amount: amountInPaise,
     currency: "INR",
-    keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazDummyKey",
+    keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_VelourazKey",
+    isSimulated: true,
   };
 };
 
