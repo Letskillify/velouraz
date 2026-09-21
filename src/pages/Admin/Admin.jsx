@@ -70,7 +70,7 @@ import TagsManager from "./components/TagsManager";
 import CouponManager from "./components/CouponManager";
 import ReviewsManager from "./components/ReviewsManager";
 import GalleryManager from "./components/GalleryManager";
-import { listenToProducts, removeProduct, sortNewestProducts } from "../../services/productService";
+import { listenToProducts, listenToTrashedProducts, trashProduct, restoreProduct, permanentlyDeleteProduct, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
 const sidebarItems = [
@@ -108,6 +108,7 @@ const Admin = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [trashedProducts, setTrashedProducts] = useState([]);
 
   useEffect(() => {
     const tabParam = searchParams.get("tab") || searchParams.get("section");
@@ -212,9 +213,10 @@ const Admin = () => {
       setter(sortNewest(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))));
     }, (error) => console.warn(`Could not listen to ${name}:`, error));
     const stopProducts = listenToProducts(setProducts, (error) => console.warn("Could not listen to products:", error));
+    const stopTrashed = listenToTrashedProducts(setTrashedProducts, (error) => console.warn("Could not listen to trashed products:", error));
     const stopUsers = subscribe("users", setUsers);
     const stopOrders = subscribe("orders", setOrders);
-    return () => { stopProducts(); stopUsers(); stopOrders(); };
+    return () => { stopProducts(); stopTrashed(); stopUsers(); stopOrders(); };
   }, [adminUser]);
 
   // ─── Global Search Logic ─────────────────────────────────────────────────
@@ -235,8 +237,34 @@ const Admin = () => {
   }, [globalSearch, products, orders, users]);
 
   const handleDeleteProduct = async (id) => {
-    await removeProduct(id);
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    await trashProduct(id);
+    // listenToProducts already filters deleted, so no manual state update needed
+  };
+
+  const handleRestoreProduct = async (id) => {
+    await restoreProduct(id);
+  };
+
+  const handlePermanentDelete = async (id) => {
+    await permanentlyDeleteProduct(id);
+  };
+
+  const handleBatchTrash = async (ids) => {
+    for (const id of ids) {
+      await trashProduct(id);
+    }
+  };
+
+  const handleBatchRestore = async (ids) => {
+    for (const id of ids) {
+      await restoreProduct(id);
+    }
+  };
+
+  const handleBatchPermanentDelete = async (ids) => {
+    for (const id of ids) {
+      await permanentlyDeleteProduct(id);
+    }
   };
 
   const handleEditClick = (product) => {
@@ -293,21 +321,26 @@ const Admin = () => {
       case "Products": {
         const activeProducts = products.filter((p) => !p.status || p.status === "Published" || p.status === "Active").length;
         const draftProducts = products.filter((p) => p.status === "Draft").length;
-        const trashedProducts = products.filter((p) => p.status === "Trash").length;
         const productCards = [
           { label: "Total Products", value: products.length, hint: "All catalogue products", icon: Package, color: "crimson" },
           { label: "Active Products", value: activeProducts, hint: "Published and active", icon: Activity, color: "green" },
           { label: "Draft Products", value: draftProducts, hint: "Not published yet", icon: Package, color: "blue" },
-          { label: "Trash", value: trashedProducts, hint: "Archived products", icon: Package, color: "crimson" },
+          { label: "Trash", value: trashedProducts.length, hint: "Soft-deleted products", icon: Package, color: "crimson" },
         ];
         return (
           <>
             <MetricCards cards={productCards} />
             <ProductsTable
               products={products}
+              trashedProducts={trashedProducts}
               onAddProduct={openProductEditor}
               onEditProduct={handleEditClick}
               onDeleteProduct={handleDeleteProduct}
+              onRestoreProduct={handleRestoreProduct}
+              onPermanentDelete={handlePermanentDelete}
+              onBatchTrash={handleBatchTrash}
+              onBatchRestore={handleBatchRestore}
+              onBatchPermanentDelete={handleBatchPermanentDelete}
               onRefresh={loadProducts}
             />
           </>

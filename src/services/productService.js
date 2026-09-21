@@ -6,7 +6,21 @@ export const sortNewestProducts = (products) => [...products].sort((a, b) => sor
 
 export const listenToProducts = (onData, onError) => onSnapshot(
   collection(db, "products"),
-  (snapshot) => onData(sortNewestProducts(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })))),
+  (snapshot) => onData(sortNewestProducts(
+    snapshot.docs
+      .map((item) => ({ id: item.id, ...item.data() }))
+      .filter((item) => !item.deleted)
+  )),
+  onError,
+);
+
+export const listenToTrashedProducts = (onData, onError) => onSnapshot(
+  collection(db, "products"),
+  (snapshot) => onData(sortNewestProducts(
+    snapshot.docs
+      .map((item) => ({ id: item.id, ...item.data() }))
+      .filter((item) => item.deleted === true)
+  )),
   onError,
 );
 
@@ -53,5 +67,24 @@ export const quickUpdateStock = (id, newStock) => {
   });
 };
 
-export const removeProduct = (id) => deleteDoc(doc(db, "products", id));
+// Soft-delete: moves product to trash
+export const trashProduct = (id) =>
+  updateDoc(doc(db, "products", id), {
+    deleted: true,
+    deletedAt: serverTimestamp(),
+  });
+
+// Restore: removes the deleted flag
+export const restoreProduct = (id) =>
+  updateDoc(doc(db, "products", id), {
+    deleted: false,
+    deletedAt: null,
+    updatedAt: serverTimestamp(),
+  });
+
+// Permanently delete from Firestore
+export const permanentlyDeleteProduct = (id) => deleteDoc(doc(db, "products", id));
+
+// Legacy alias kept for backward compat (now soft-deletes)
+export const removeProduct = (id) => trashProduct(id);
 
