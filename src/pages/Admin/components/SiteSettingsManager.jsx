@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Save, Plus, Trash2, Edit3, ImagePlus, Loader2, Play, Video, Type, Link2, Bell, AlertCircle, Check, Image as ImageIcon
 } from "lucide-react";
-import { uploadToCloudinary } from "../../../config/cloudinary";
+import { uploadToCloudinary, uploadToCloudinaryWithProgress } from "../../../config/cloudinary";
 
 const labelStyle = "block text-[16px] font-bold uppercase tracking-wider text-slate-500 mb-1.5";
 
@@ -36,6 +36,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
   const [savedHero, setSavedHero] = useState(false);
   const videoInputRef = useRef(null);
   const [uploadingHeroVideo, setUploadingHeroVideo] = useState(false);
+  const [heroVideoProgress, setHeroVideoProgress] = useState(0);
 
   // ─── Announcements Carousel State ──────────────────────────────────────────
   const [announcements, setAnnouncements] = useState([]);
@@ -142,13 +143,26 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingHeroVideo(true);
+    setHeroVideoProgress(0);
     try {
-      const url = await uploadToCloudinary(file);
-      setHeroData((prev) => ({ ...prev, videoURL: url }));
+      const url = await uploadToCloudinaryWithProgress(file, (percent) => {
+        setHeroVideoProgress(percent);
+      });
+      const updated = { ...heroData, videoURL: url };
+      setHeroData(updated);
+      await setDoc(doc(db, "site_settings", "hero"), updated, { merge: true });
     } catch (err) {
       console.error("Hero video upload failed:", err);
     } finally {
       setUploadingHeroVideo(false);
+    }
+  };
+
+  const handleDeleteHeroVideo = async () => {
+    if (window.confirm("Are you sure you want to remove the Hero video? The fallback image will be displayed.")) {
+      const updated = { ...heroData, videoURL: "" };
+      setHeroData(updated);
+      await setDoc(doc(db, "site_settings", "hero"), updated, { merge: true });
     }
   };
 
@@ -353,21 +367,90 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-4">
               <div>
-                <label className={labelStyle}>Hero Video Source (MP4 / Webm)</label>
+                <div className="flex justify-between items-center mb-1.5">
+                  <label className={labelStyle}>Hero Video Source (MP4 / Webm)</label>
+                  {heroData.videoURL && (
+                    <button
+                      type="button"
+                      onClick={handleDeleteHeroVideo}
+                      className="text-xs font-bold text-rose-500 hover:text-rose-600 flex items-center gap-1 hover:underline"
+                    >
+                      <Trash2 size={12} /> Remove Video
+                    </button>
+                  )}
+                </div>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={heroData.videoURL}
+                    value={heroData.videoURL || ""}
                     onChange={(e) => setHeroData({ ...heroData, videoURL: e.target.value })}
                     className={inp}
-                    placeholder="Enter video URL link"
+                    placeholder="Enter video URL link or upload below"
                   />
-                  <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
+                  <label className={`flex items-center justify-center px-3 py-2 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300 hover:bg-slate-800" : "bg-slate-50 text-slate-600 hover:bg-slate-100"}`} title="Upload new video">
                     <Video size={16} />
+                    <span className="text-xs font-semibold ml-1.5 hidden sm:inline">Upload</span>
                     <input type="file" accept="video/*" className="hidden" onChange={handleHeroVideoUpload} />
                   </label>
+                  {heroData.videoURL && (
+                    <button
+                      type="button"
+                      onClick={handleDeleteHeroVideo}
+                      className="px-3 py-2 bg-rose-500/10 text-rose-600 hover:bg-rose-500 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1"
+                      title="Delete video"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
                 </div>
-                {uploadingHeroVideo && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading hero video...</p>}
+                {uploadingHeroVideo && (
+                  <div className="mt-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-1.5">
+                    <div className="flex justify-between items-center text-xs font-bold text-amber-600">
+                      <span className="flex items-center gap-1.5">
+                        <Loader2 size={13} className="animate-spin" /> Uploading Video to Cloudinary...
+                      </span>
+                      <span className="font-mono text-sm">{heroVideoProgress}%</span>
+                    </div>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-amber-500 to-amber-600 h-full transition-all duration-300 rounded-full" 
+                        style={{ width: `${heroVideoProgress}%` }} 
+                      />
+                    </div>
+                  </div>
+                )}
+                {!heroData.videoURL && <p className="text-xs text-slate-400 mt-1 italic">No video active. Homepage hero will show the fallback background image.</p>}
+              </div>
+
+              <div>
+                <label className={labelStyle}>Hero Fallback Poster Image</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={heroData.posterURL || ""}
+                    onChange={(e) => setHeroData({ ...heroData, posterURL: e.target.value })}
+                    className={inp}
+                    placeholder="e.g. /img/b (1).jpeg or Cloudinary URL"
+                  />
+                  <label className={`flex items-center justify-center px-3 py-2 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300 hover:bg-slate-800" : "bg-slate-50 text-slate-600 hover:bg-slate-100"}`} title="Upload poster image">
+                    <ImageIcon size={16} />
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        try {
+                          const url = await uploadToCloudinary(file);
+                          setHeroData((prev) => ({ ...prev, posterURL: url }));
+                        } catch (err) {
+                          console.error("Poster upload failed:", err);
+                        }
+                      }} 
+                    />
+                  </label>
+                </div>
               </div>
 
               <div>
@@ -444,16 +527,30 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 </div>
               </div>
 
-              {/* Video Preview */}
-              <div className="rounded-xl border border-slate-100 dark:border-slate-700/60 overflow-hidden bg-slate-900 relative aspect-video flex items-center justify-center">
+              {/* Video / Banner Preview */}
+              <div className="rounded-xl border border-slate-100 dark:border-slate-700/60 overflow-hidden bg-slate-900 relative aspect-video flex items-center justify-center group">
                 {heroData.videoURL ? (
-                  <video src={heroData.videoURL} autoPlay muted loop className="w-full h-full object-cover" />
+                  <>
+                    <video src={heroData.videoURL} autoPlay muted loop className="w-full h-full object-cover" />
+                    <div className="absolute top-3 right-3 z-20">
+                      <button
+                        type="button"
+                        onClick={handleDeleteHeroVideo}
+                        className="px-2.5 py-1.5 bg-rose-600/90 hover:bg-rose-600 text-white rounded-lg text-xs font-bold shadow-lg flex items-center gap-1 backdrop-blur-md transition-all"
+                      >
+                        <Trash2 size={12} /> Delete Video
+                      </button>
+                    </div>
+                  </>
+                ) : heroData.posterURL ? (
+                  <img src={heroData.posterURL} alt="Hero Poster" className="w-full h-full object-cover" />
                 ) : (
-                  <span className="text-base text-slate-500">No video selected</span>
+                  <img src="/img/b (1).jpeg" alt="Default Hero Poster" className="w-full h-full object-cover" />
                 )}
-                <div className="absolute inset-0 bg-black/45 p-4 flex flex-col justify-end text-white">
-                  <p className="text-[16px] uppercase tracking-widest text-[#C8A97A] font-bold">{heroData.eyebrow}</p>
-                  <h4 className="font-serif text-sm font-semibold text-white mt-1 leading-tight">{heroData.title}</h4>
+                <div className="absolute inset-0 bg-black/45 p-4 flex flex-col justify-end text-white pointer-events-none">
+                  <p className="text-[14px] uppercase tracking-widest text-[#C8A97A] font-bold">{heroData.eyebrow}</p>
+                  <h4 className="font-serif text-lg font-semibold text-white mt-1 leading-tight">{heroData.title}</h4>
+                  <p className="text-xs text-white/70 line-clamp-1 mt-0.5">{heroData.subtitle}</p>
                 </div>
               </div>
             </div>

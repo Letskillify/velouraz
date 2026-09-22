@@ -24,6 +24,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import { useStore } from "../hooks/useStore";
 import { useAuth } from "../components/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
+import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -195,8 +196,11 @@ const Cart = () => {
                             className="w-20 h-24 sm:w-28 sm:h-32 rounded-xl overflow-hidden bg-[#FAF6F0] flex-shrink-0 border border-[#E8DFD5] group/img relative"
                           >
                             <img 
-                              src={item.image} 
+                              src={getOptimizedImageUrl(item.image)} 
                               alt={item.name} 
+                              loading="lazy"
+                              decoding="async"
+                              onError={(e) => handleImageError(e, item.image)}
                               className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
                             />
                           </Link>

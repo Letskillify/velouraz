@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Check, Loader2, RefreshCw, Trash2, Upload } from "lucide-react";
 import { cloudinaryConfig, uploadToCloudinary } from "../../../config/cloudinary";
 
-const imageUrl = (image) => `https://res.cloudinary.com/${cloudinaryConfig.cloudName}/image/upload/v${image.version}/${image.public_id}.${image.format}`;
+const imageUrl = (image) => `https://res.cloudinary.com/${cloudinaryConfig.cloudName}/image/upload/f_auto,q_auto,w_400,c_limit/v${image.version}/${image.public_id}.${image.format}`;
 const MediaLibrary = () => {
   const [images, setImages] = useState([]); const [selected, setSelected] = useState(new Set()); const [loading, setLoading] = useState(false); const [uploading, setUploading] = useState(false); const [deleting, setDeleting] = useState(false); const [message, setMessage] = useState("");
   const refresh = async () => { setLoading(true); setMessage(""); try { const response = await fetch(`https://res.cloudinary.com/${cloudinaryConfig.cloudName}/image/list/${cloudinaryConfig.galleryTag}.json`); if (response.ok) setImages((await response.json()).resources || []); else if (response.status === 404) setImages([]); else setMessage("Cloudinary resource listing is not enabled. Enable Client-side resource listing in Cloudinary Security settings."); } catch { setMessage("Unable to load the Cloudinary gallery."); } finally { setLoading(false); } };

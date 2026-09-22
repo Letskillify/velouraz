@@ -23,6 +23,7 @@ import {
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
 import { quickUpdateStock } from "../../../services/productService";
+import { getThumbnailUrl, handleImageError } from "../../../config/cloudinary";
 
 // ─── Confirm Dialog ──────────────────────────────────────────────────────────
 const ConfirmDialog = ({ isOpen, title, message, confirmLabel, confirmClass, onConfirm, onCancel, icon: Icon }) => {
@@ -599,13 +600,23 @@ const ProductsTable = ({
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3.5">
                         <div className={`w-11 h-11 rounded-xl bg-slate-100 overflow-hidden border flex-shrink-0 ${viewMode === "trash" ? "border-red-100 grayscale" : "border-slate-200"}`}>
-                          {row.images?.[0] ? (
-                            <img src={row.images[0]} alt={row.name} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-300">
-                              <Package size={18} />
-                            </div>
-                          )}
+                          {(() => {
+                            const rawImg = (Array.isArray(row.images) && row.images[0]) || row.image || (typeof row.images === 'string' ? row.images : null);
+                            return rawImg ? (
+                              <img
+                                src={getThumbnailUrl(rawImg)}
+                                alt={row.name}
+                                loading="lazy"
+                                decoding="async"
+                                onError={(e) => handleImageError(e, rawImg)}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-slate-300">
+                                <Package size={18} />
+                              </div>
+                            );
+                          })()}
                         </div>
                         <div>
                           <p className="text-[16px] font-bold text-slate-900 line-clamp-1 max-w-[185px]">{row.name}</p>

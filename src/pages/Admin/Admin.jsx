@@ -49,6 +49,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Camera,
+  Video,
 } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import AdminAuth from "./AdminAuth";
@@ -70,6 +71,7 @@ import TagsManager from "./components/TagsManager";
 import CouponManager from "./components/CouponManager";
 import ReviewsManager from "./components/ReviewsManager";
 import GalleryManager from "./components/GalleryManager";
+import NewsManager from "./components/NewsManager";
 import { listenToProducts, listenToTrashedProducts, trashProduct, restoreProduct, permanentlyDeleteProduct, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -386,9 +388,16 @@ const Admin = () => {
       case "Reviews":
         return <ReviewsManager isDarkMode={isDarkMode} />;
       case "Banners":
+      case "Hero Banner":
+      case "Hero & Banners":
+      case "HeroBanner":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
       case "Gallery":
         return <GalleryManager />;
+      case "NewsReels":
+      case "News & Reels":
+      case "NewsReelsManager":
+        return <NewsManager isDarkMode={isDarkMode} />;
       case "Profile":
         return <AdminProfile adminUser={adminUser} onUpdate={handleProfileUpdate} isDarkMode={isDarkMode} />;
       case "AddProduct":
@@ -501,7 +510,7 @@ const Admin = () => {
         {!collapsed && (
           <>
             <p className="mb-2 mt-4 px-3 text-[16px] font-medium tracking-wide text-white/50">CONTENT</p>
-            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Hero & Banners", Images, "Banners"], ["News Reels", Video, "NewsReels"], ["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 onClick={() => setActiveItem(target)}
@@ -515,7 +524,7 @@ const Admin = () => {
         {collapsed && (
           <>
             <div className="my-2 border-t border-white/10" />
-            {[["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"], ["Banners", Images, "Banners"]].map(([label, Icon, target]) => (
+            {[["Hero & Banners", Images, "Banners"], ["News Reels", Video, "NewsReels"], ["Pages", FileText, "Pages"], ["Blogs", FileText, "Blogs"], ["Reviews", Star, "Reviews"]].map(([label, Icon, target]) => (
               <button
                 key={label}
                 title={label}

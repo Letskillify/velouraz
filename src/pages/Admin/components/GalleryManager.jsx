@@ -9,7 +9,7 @@ import {
     onSnapshot,
     serverTimestamp,
 } from "firebase/firestore";
-import { uploadToCloudinary } from "../../../config/cloudinary";
+import { uploadToCloudinary, getThumbnailUrl, handleImageError } from "../../../config/cloudinary";
 import { Trash2, Upload, GripVertical, Loader2, ArrowUp, ArrowDown } from "lucide-react";
 
 const GalleryManager = () => {
@@ -144,7 +144,19 @@ const GalleryManager = () => {
                                         </div>
                                     </td>
                                     <td className="px-5 py-3">
-                                        <img src={photo.url} alt="Gallery" className="h-20 w-32 object-cover rounded-lg border border-slate-200 bg-slate-100" />
+                                        {(() => {
+                                            const rawUrl = photo.url || photo.image || photo.src;
+                                            return (
+                                                <img 
+                                                    src={getThumbnailUrl(rawUrl)} 
+                                                    alt="Gallery" 
+                                                    loading="lazy" 
+                                                    decoding="async" 
+                                                    onError={(e) => handleImageError(e, rawUrl)} 
+                                                    className="h-20 w-32 object-cover rounded-lg border border-slate-200 bg-slate-100" 
+                                                />
+                                            );
+                                        })()}
                                     </td>
                                     <td className="px-5 py-3 text-right align-middle">
                                         <button onClick={() => deletePhoto(photo.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">

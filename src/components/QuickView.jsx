@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { X, ShoppingBag, Heart, Loader2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../hooks/useStore';
+import { getOptimizedImageUrl, handleImageError } from '../config/cloudinary';
 
 const QuickView = ({ product, onClose }) => {
   const { addToCart, addToWishlist, isInCart, isInWishlist } = useStore();
@@ -72,8 +73,11 @@ const QuickView = ({ product, onClose }) => {
             <div className="flex items-center justify-center">
               <div className="bg-gradient-to-br from-[#FDFBF7] to-[#E6CCB2]/20 rounded-3xl flex items-center justify-center w-full aspect-square relative overflow-hidden group">
                 <img
-                  src={product.image}
+                  src={getOptimizedImageUrl(product.image)}
                   alt={product.name}
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => handleImageError(e, product.image)}
                   className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-300"
                 />
                 {product.original_price && product.original_price > product.price && (

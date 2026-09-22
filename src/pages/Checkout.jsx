@@ -39,6 +39,8 @@ import { createShiprocketOrder } from "../services/shiprocketService";
 import { validateCoupon } from "../services/couponService";
 import OtpModal from "../components/OtpModal";
 import { createRazorpayOrder, verifyPaymentAndCreateOrder } from "../services/otpService";
+import RazorpayTestModal from "../components/RazorpayTestModal";
+import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
 
 const Checkout = () => {
   const { cartItems, clearCart } = useStore();
@@ -55,6 +57,10 @@ const Checkout = () => {
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState(null);
   const [guestEmail, setGuestEmail] = useState("");
+
+  // Razorpay Test Payment Modal State
+  const [showRazorpayTestModal, setShowRazorpayTestModal] = useState(false);
+  const [rzpTestOrderData, setRzpTestOrderData] = useState(null);
 
   // Saved Addresses State
   const [savedAddresses, setSavedAddresses] = useState([]);
@@ -1159,11 +1165,19 @@ const Checkout = () => {
                 {checkoutItems.map((item, idx) => (
                   <div key={idx} className="flex gap-3 items-center p-2 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/30">
                     <div className="w-14 h-16 rounded-lg overflow-hidden bg-[#F4EEE8] border border-[#D8CBBE]/40 flex-shrink-0">
-                      <img 
-                        src={item.image || item.primaryImage || '/img/jewellery/j.png'} 
-                        alt={item.name} 
-                        className="w-full h-full object-cover" 
-                      />
+                      {(() => {
+                        const rawImg = item.image || item.primaryImage || '/img/jewellery/j.png';
+                        return (
+                          <img 
+                            src={getOptimizedImageUrl(rawImg)} 
+                            alt={item.name} 
+                            loading="lazy"
+                            decoding="async"
+                            onError={(e) => handleImageError(e, rawImg)}
+                            className="w-full h-full object-cover" 
+                          />
+                        );
+                      })()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-semibold text-[#2A2623] truncate font-serif">{item.name}</h4>

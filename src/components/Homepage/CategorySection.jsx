@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { db } from '../../components/Firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { getOptimizedImageUrl, handleImageError } from '../../config/cloudinary';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -213,8 +214,11 @@ const CategorySection = () => {
                   <Link to={category.link} className="relative w-full h-full block">
                     {/* Background Full Image */}
                     <img 
-                      src={category.image} 
+                      src={getOptimizedImageUrl(category.image)} 
                       alt={category.name} 
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => handleImageError(e, category.image)}
                       className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 

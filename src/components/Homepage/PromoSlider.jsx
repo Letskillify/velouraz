@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { db } from '../../components/Firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { getOptimizedImageUrl, getOptimizedVideoUrl, handleImageError } from '../../config/cloudinary';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -110,7 +111,7 @@ const CardItem = ({ item }) => {
         {videoSrc ? (
           <video
             ref={videoRef}
-            src={videoSrc}
+            src={getOptimizedVideoUrl(videoSrc)}
             autoPlay
             loop
             muted
@@ -121,8 +122,11 @@ const CardItem = ({ item }) => {
           <>
             {/* 1st Image */}
             <img
-              src={defaultImg}
+              src={getOptimizedImageUrl(defaultImg)}
               alt={item.country}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => handleImageError(e, defaultImg)}
               className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
                 currentImageIndex === 0 ? 'opacity-100' : 'opacity-0'
               }`}
@@ -130,8 +134,11 @@ const CardItem = ({ item }) => {
 
             {/* 2nd Image */}
             <img
-              src={hoverImg}
+              src={getOptimizedImageUrl(hoverImg)}
               alt={`${item.country} alternative`}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => handleImageError(e, hoverImg)}
               className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
                 currentImageIndex === 1 ? 'opacity-100' : 'opacity-0'
               }`}

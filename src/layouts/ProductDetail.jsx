@@ -12,6 +12,7 @@ import {
   ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass
 } from 'lucide-react';
 import AddToCartModal from "../components/AddToCartModal";
+import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -266,7 +267,14 @@ const ProductDetail = () => {
                             : 'border-[#E5D7C5] opacity-60 hover:opacity-100 hover:border-[#C8A46A]'
                         }`}
                       >
-                        <img src={img} alt={`View ${i + 1}`} className="w-full h-full object-cover" />
+                        <img 
+                          src={getOptimizedImageUrl(img)} 
+                          alt={`View ${i + 1}`} 
+                          loading="lazy"
+                          decoding="async"
+                          onError={(e) => handleImageError(e, img)}
+                          className="w-full h-full object-cover" 
+                        />
                         {selectedImageIndex === i && (
                           <div className="absolute inset-0 bg-[#C8A46A]/10 pointer-events-none" />
                         )}
@@ -287,9 +295,10 @@ const ProductDetail = () => {
                     onClick={() => setIsLightboxOpen(true)}
                   >
                     <img
-                      src={activeImage}
+                      src={getOptimizedImageUrl(activeImage)}
                       alt={product.name}
                       style={zoomStyle}
+                      onError={(e) => handleImageError(e, activeImage)}
                       className="w-full h-full object-cover transition-transform duration-100 ease-out"
                     />
                     

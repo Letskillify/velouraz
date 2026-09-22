@@ -13,6 +13,7 @@ import QuickView from '../components/QuickView';
 import Breadcrumb from '../components/Breadcrumb';
 import AddToCartModal from '../components/AddToCartModal';
 import { listenToTags } from '../services/tagsService';
+import { getOptimizedImageUrl, handleImageError } from '../config/cloudinary';
 
 const fallbackProducts = [
   {
@@ -785,11 +786,19 @@ const Shop = () => {
                     >
                       {/* Image Box */}
                       <div className="relative aspect-square w-full overflow-hidden bg-[#F3ECE1] border-b border-[#EBE3D7]/60">
-                        <img 
-                          src={product.image || product.images?.[0] || 'img/jewellery/j.png'} 
-                          alt={product.name} 
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
+                        {(() => {
+                          const rawImg = product.image || product.images?.[0] || 'img/jewellery/j.png';
+                          return (
+                            <img 
+                              src={getOptimizedImageUrl(rawImg)} 
+                              alt={product.name} 
+                              loading="lazy"
+                              decoding="async"
+                              onError={(e) => handleImageError(e, rawImg)}
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            />
+                          );
+                        })()}
                         
                         {/* Badges */}
                         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">

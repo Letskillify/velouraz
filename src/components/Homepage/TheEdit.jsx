@@ -56,6 +56,8 @@ const TheEdit = () => {
               <img 
                 src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=800"
                 alt="Trending Jewellery"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-[center_20%] lg:object-center transition-transform duration-[1.5s] ease-out group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#F1E9E2] via-[#F1E9E2]/40 to-transparent md:block hidden" />
@@ -93,6 +95,8 @@ const TheEdit = () => {
               <img 
                 src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800"
                 alt="Best Sellers Jewellery"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-center transition-transform duration-[1.5s] ease-out group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-[#EEEAE6] via-[#EEEAE6]/40 to-transparent md:block hidden" />

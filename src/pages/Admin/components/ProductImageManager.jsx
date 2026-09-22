@@ -25,7 +25,7 @@ import {
   Layers
 } from "lucide-react";
 import { updateProduct, listenToProducts } from "../../../services/productService";
-import { uploadToCloudinary } from "../../../config/cloudinary";
+import { uploadToCloudinary, getThumbnailUrl, getOptimizedImageUrl, handleImageError } from "../../../config/cloudinary";
 
 const ProductImageManager = ({ products: initialProducts = [], isDarkMode = false }) => {
   const [products, setProducts] = useState(initialProducts);
@@ -509,8 +509,11 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                             {productImages[0] ? (
                               <>
                                 <img
-                                  src={productImages[0]}
+                                  src={getThumbnailUrl(productImages[0])}
                                   alt={product.name}
+                                  loading="lazy"
+                                  decoding="async"
+                                  onError={(e) => handleImageError(e, productImages[0])}
                                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity grid place-items-center text-white">
@@ -559,8 +562,11 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                                 }`}
                               >
                                 <img
-                                  src={imgUrl}
+                                  src={getThumbnailUrl(imgUrl)}
                                   alt={`Product photo ${idx + 1}`}
+                                  loading="lazy"
+                                  decoding="async"
+                                  onError={(e) => handleImageError(e, imgUrl)}
                                   className="h-full w-full object-cover"
                                 />
 

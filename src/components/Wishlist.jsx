@@ -23,6 +23,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "../hooks/useStore";
 import Breadcrumb from "./Breadcrumb";
+import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -280,8 +281,11 @@ const Wishlist = () => {
                       {/* Image Showcase Container */}
                       <div className="aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden bg-[#F4EEE8] relative mb-3 sm:mb-4 border border-[#D8CBBE]/30">
                         <img 
-                          src={item.image} 
+                          src={getOptimizedImageUrl(item.image)} 
                           alt={item.name} 
+                          loading="lazy"
+                          decoding="async"
+                          onError={(e) => handleImageError(e, item.image)}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                         />
                         <div className="absolute inset-0 bg-[#2A2623]/0 group-hover:bg-[#2A2623]/5 transition-colors duration-300" />

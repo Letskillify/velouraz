@@ -7,6 +7,7 @@ import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
 import { useStore } from '../../hooks/useStore';
 import AddToCartModal from '../AddToCartModal';
+import { getOptimizedImageUrl, handleImageError } from '../../config/cloudinary';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -208,11 +209,19 @@ const BestSellers = () => {
                     >
                       {/* Image Container */}
                       <div className="relative aspect-[4/4.3] w-full overflow-hidden bg-[#FAF6F0]">
-                        <img
-                          src={product.image || product.images?.[0] || 'img/jewellery/j.png'}
-                          alt={product.name}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
+                        {(() => {
+                          const rawImg = product.image || product.images?.[0] || 'img/jewellery/j.png';
+                          return (
+                            <img
+                              src={getOptimizedImageUrl(rawImg)}
+                              alt={product.name}
+                              loading="lazy"
+                              decoding="async"
+                              onError={(e) => handleImageError(e, rawImg)}
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                            />
+                          );
+                        })()}
 
                         {/* Hover Overlay */}
                         <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

@@ -1,5 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { getOptimizedImageUrl, handleImageError } from '../../config/cloudinary';
+
+const BANNER_IMG = "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=80";
 
 const EditorialBanner = () => {
   return (
@@ -8,8 +11,11 @@ const EditorialBanner = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1200&auto=format&fit=crop&q=80"
+            src={getOptimizedImageUrl(BANNER_IMG)}
             alt="Diamonds Macro"
+            loading="lazy"
+            decoding="async"
+            onError={(e) => handleImageError(e, BANNER_IMG)}
             className="w-full h-full object-cover transition-transform duration-[8s] group-hover:scale-110 opacity-60"
           />
           {/* Light-themed Gradient Overlay */}

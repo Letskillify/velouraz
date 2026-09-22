@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, ArrowRight, CheckCircle2, Sparkles, Heart } from 'lucide-react';
+import { getOptimizedImageUrl, handleImageError } from '../config/cloudinary';
 
 const SANS = "'Montserrat', sans-serif";
 const BG_IMAGE = "https://res.cloudinary.com/dcjn4y284/image/upload/v1788008294/velouraz_end_tjyeye.png";
@@ -26,8 +27,11 @@ const Newsletter = () => {
       {/* Background Image - 100% width & height cover */}
       <div className="absolute inset-0 z-0">
         <img
-          src={BG_IMAGE}
+          src={getOptimizedImageUrl(BG_IMAGE)}
           alt="Velouraz Newsletter"
+          loading="lazy"
+          decoding="async"
+          onError={(e) => handleImageError(e, BG_IMAGE)}
           className="w-full h-full object-cover object-center"
         />
       </div>

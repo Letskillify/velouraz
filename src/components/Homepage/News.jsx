@@ -1,57 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Instagram, ArrowRight, ExternalLink, X } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, FreeMode } from 'swiper/modules';
+import { listenToNewsReels, DEFAULT_REELS } from '../../services/newsService';
+import { getOptimizedVideoUrl } from '../../config/cloudinary';
 
 import 'swiper/css';
 import 'swiper/css/free-mode';
 
-const reelPosts = [
-  {
-    id: 'DcLBf4Tghoy',
-    title: "Elegance That Speaks Without Words",
-    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410921/1_pcpxcj.mp4",
-    url: "https://www.instagram.com/reel/DcLBf4Tghoy/?igsh=bW92cHBjZHM3d2Fx",
-    tag: "Luxury Edit",
-    duration: "0:30"
-  },
-  {
-    id: 'DaxMdOLNzLv',
-    title: "Timeless Royal Kundan Craft",
-    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410967/2_l2cima.mp4",
-    url: "https://www.instagram.com/reel/DaxMdOLNzLv/?igsh=MWVlYThqbTYyNHYxYg==",
-    tag: "Artisanal Craft",
-    duration: "0:45"
-  },
-  {
-    id: 'DbAbQzstTso',
-    title: "Precision Setting & Polishing",
-    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410930/3_nc7otj.mp4",
-    url: "https://www.instagram.com/reel/DbAbQzstTso/?igsh=N2V0MHh0MW40Nmdy",
-    tag: "Atelier Reel",
-    duration: "0:25"
-  },
-  {
-    id: 'Db2X8BsDdOg',
-    title: "Handcrafted 925 Sterling Silver",
-    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410991/4_tb8cdk.mp4",
-    url: "https://www.instagram.com/reel/Db2X8BsDdOg/?igsh=MWNkaWM3emRubjQwaw==",
-    tag: "Sterling Silver",
-    duration: "0:35"
-  },
-  {
-    id: 'DbN2BortfR_',
-    title: "Velouraz Signature Statement Edit",
-    video: "https://res.cloudinary.com/dcjn4y284/video/upload/v1787410934/5_asgame.mp4",
-    url: "https://www.instagram.com/reel/DbN2BortfR_/?igsh=MXNxbTAxbDM3N3I5aw==",
-    tag: "Signature Edit",
-    duration: "0:40"
-  }
-];
-
 const TheJournal = () => {
-  const [activeEmbedUrl, setActiveEmbedUrl] = useState(null);
+  const [reelPosts, setReelPosts] = useState(DEFAULT_REELS);
+
+  useEffect(() => {
+    const unsubscribe = listenToNewsReels((data) => {
+      if (data && data.length > 0) {
+        setReelPosts(data);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <section className="bg-[#FAF7F2] py-12 md:py-16 overflow-hidden relative border-t border-[#EAE3D8]">
@@ -96,7 +64,7 @@ const TheJournal = () => {
             className="!overflow-visible"
           >
             {reelPosts.map((post, index) => (
-              <SwiperSlide key={post.id}>
+              <SwiperSlide key={post.id || index}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +75,7 @@ const TheJournal = () => {
                 >
                   {/* Video Reel Preview */}
                   <video
-                    src={post.video}
+                    src={getOptimizedVideoUrl(post.video, { width: 480 })}
                     autoPlay
                     loop
                     muted
@@ -132,7 +100,7 @@ const TheJournal = () => {
                   {/* Bottom Information */}
                   <div className="absolute bottom-4 inset-x-4 z-10 space-y-1">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5C794] block">
-                      ✦ {post.tag}
+                      ✦ {post.tag || "Luxury Edit"}
                     </span>
                     <p className="text-xs sm:text-sm font-serif text-white font-medium line-clamp-2 leading-snug">
                       {post.title}

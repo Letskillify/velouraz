@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, ArrowRight } from 'lucide-react';
+import { getOptimizedImageUrl, handleImageError } from '../../config/cloudinary';
 
 const galleryItems = [
   { id: 1, image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?q=80&w=600&auto=format&fit=crop', handle: '@velouraz_official' },
@@ -67,8 +68,11 @@ const SocialGallery = () => {
               className="group relative overflow-hidden aspect-square bg-[#F5EDD8] border border-[#640D14]/10 rounded-xl hover:border-[#640D14]/30 hover:shadow-[0_12px_40px_rgba(44,26,14,0.08)] transition-all duration-700"
             >
               <img
-                src={item.image}
+                src={getOptimizedImageUrl(item.image)}
                 alt={`Styled by ${item.handle}`}
+                loading="lazy"
+                decoding="async"
+                onError={(e) => handleImageError(e, item.image)}
                 className="w-full h-full object-cover opacity-85 transition-transform duration-1000 ease-out group-hover:scale-105 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-[#2C1A0E]/0 group-hover:bg-[#2C1A0E]/30 transition-colors duration-500 flex flex-col justify-end p-5">
