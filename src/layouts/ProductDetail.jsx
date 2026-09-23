@@ -7,7 +7,7 @@ import { useStore } from '../hooks/useStore';
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Star, Shield, Truck, RotateCcw, Heart, ShoppingBag, 
-  Share2, Gem, Sparkles, Loader2, ChevronRight, Clock,
+  Share2, Gem, Sparkles, Loader2, ChevronRight,
   Eye, Award, Gift, RefreshCw, ZoomIn, Check,
   ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass
 } from 'lucide-react';
@@ -362,44 +362,44 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Right Column: $1B Product Information & Purchase Suite */}
-          <div className="lg:col-span-5 space-y-7">
+          {/* Right Column: High Luxury Product Information & Purchase Suite */}
+          <div className="lg:col-span-5 space-y-6 sm:space-y-7 bg-white/80 p-4.5 sm:p-6 lg:p-8 rounded-3xl border border-[#E5D7C5]/90 shadow-[0_4px_25px_rgba(0,0,0,0.03)] backdrop-blur-sm overflow-hidden">
             
             {/* Top Toolbar: Category Badge, Origin Tag, Wishlist & Share */}
-            <div className="flex items-center justify-between border-b border-[#E5D7C5] pb-4">
+            <div className="flex items-center justify-between border-b border-[#E5D7C5]/80 pb-5">
               <div className="flex items-center gap-2.5 flex-wrap">
-                <span className="bg-[#14111E]/5 text-[#14111E] text-[11px] font-bold uppercase tracking-[0.22em] px-3.5 py-1.5 rounded-lg border border-[#14111E]/10 font-sans">
+                <span className="bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-[0.2em] px-4 py-2 rounded-xl shadow-xs font-sans">
                   {product.category || "Velouraz High Jewellery"}
                 </span>
                 {(product.inspired_country || product.country) && (
-                  <span className="bg-white border border-[#E5D7C5] text-[#786C60] text-[11px] font-medium tracking-wider px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-xs font-sans">
+                  <span className="bg-[#FBF9F5] border border-[#E5D7C5] text-[#5A4D41] text-xs font-medium tracking-wider px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-2xs font-sans">
                     {getFlag(product.inspired_country || product.country)} {product.inspired_country || product.country}
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <button
                   onClick={handleAddToWishlist}
                   disabled={wishlistLoading}
-                  className={`p-3 rounded-full border transition-all duration-300 cursor-pointer ${
+                  className={`w-11 h-11 rounded-full border transition-all duration-300 flex items-center justify-center cursor-pointer ${
                     isInWishlist(product.id)
                       ? 'bg-[#14111E] text-[#FBF9F5] border-[#14111E] shadow-sm scale-105'
                       : 'bg-white text-[#14111E] border-[#E5D7C5] hover:border-[#14111E] hover:bg-[#FBF9F5]'
                   }`}
                   title="Save to Wishlist"
                 >
-                  {wishlistLoading ? <Loader2 size={16} className="animate-spin" /> : <Heart size={16} fill={isInWishlist(product.id) ? "currentColor" : "none"} />}
+                  {wishlistLoading ? <Loader2 size={18} className="animate-spin" /> : <Heart size={18} fill={isInWishlist(product.id) ? "currentColor" : "none"} />}
                 </button>
 
                 <button
                   onClick={handleShare}
-                  className="p-3 rounded-full bg-white border border-[#E5D7C5] text-[#14111E] hover:border-[#14111E] hover:bg-[#FBF9F5] transition-all duration-300 cursor-pointer relative"
+                  className="w-11 h-11 rounded-full bg-white border border-[#E5D7C5] text-[#14111E] hover:border-[#14111E] hover:bg-[#FBF9F5] transition-all duration-300 flex items-center justify-center cursor-pointer relative"
                   title="Share Creation"
                 >
-                  {copiedLink ? <Check size={16} className="text-emerald-700" /> : <Share2 size={16} />}
+                  {copiedLink ? <Check size={18} className="text-emerald-700" /> : <Share2 size={18} />}
                   {copiedLink && (
-                    <span className="absolute -bottom-9 right-0 bg-[#14111E] text-[#FBF9F5] text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-md shadow-md whitespace-nowrap font-sans border border-[#C8A46A]/30">
+                    <span className="absolute -bottom-10 right-0 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md shadow-lg whitespace-nowrap font-sans border border-[#C8A46A]/40 z-20">
                       Link Copied!
                     </span>
                   )}
@@ -408,156 +408,71 @@ const ProductDetail = () => {
             </div>
 
             {/* Collection Indicator & Masterpiece Title */}
-            <div className="space-y-2">
-              <p className="text-[11px] uppercase tracking-[0.3em] text-[#C8A46A] font-bold flex items-center gap-2 font-sans">
-                <Gem size={13} className="text-[#C8A46A]" /> {product.collectionName || "VELOURAZ HAUTE JOAILLERIE"}
+            <div className="space-y-2.5">
+              <p className="text-xs uppercase tracking-[0.3em] text-[#C8A46A] font-bold flex items-center gap-2 font-sans">
+                <Gem size={14} className="text-[#C8A46A]" /> {product.collectionName || "VELOURAZ HAUTE JOAILLERIE"}
               </p>
-              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[44px] text-[#14111E] font-normal leading-[1.14] tracking-tight">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-[42px] text-[#14111E] font-normal leading-[1.16] tracking-tight">
                 {product.name}
               </h1>
             </div>
 
             {/* Verified Collector Endorsement */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3.5 flex-wrap">
               <div className="flex gap-1">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="#C8A46A" stroke="#C8A46A" />
+                  <Star key={i} size={16} fill="#C8A46A" stroke="#C8A46A" />
                 ))}
               </div>
-              <span className="text-xs font-bold text-[#14111E] font-sans">4.9 / 5.0</span>
-              <span className="text-xs text-[#786C60] font-serif italic border-l border-[#E5D7C5] pl-3">
+              <span className="text-sm font-bold text-[#14111E] font-sans">4.9 / 5.0</span>
+              <span className="text-sm text-[#786C60] font-serif italic border-l border-[#E5D7C5] pl-3.5">
                 142 Connoisseur Reviews
               </span>
             </div>
 
             {/* Pricing Suite */}
-            <div className="py-6 border-y border-[#E5D7C5] space-y-3">
+            <div className="py-6 border-y border-[#E5D7C5]/80 space-y-3">
               <div className="flex items-baseline gap-4 font-sans flex-wrap">
-                <span className="font-serif font-normal text-3xl sm:text-4xl lg:text-[42px] text-[#14111E]">
+                <span className="font-serif font-normal text-3xl sm:text-4xl lg:text-[44px] text-[#14111E]">
                   ₹{Number(product.price).toLocaleString()}
                 </span>
                 {product.original_price > product.price && (
-                  <span className="font-sans font-normal text-lg text-[#9E9082] line-through">
+                  <span className="font-sans font-normal text-xl text-[#9E9082] line-through">
                     ₹{Number(product.original_price).toLocaleString()}
                   </span>
                 )}
                 {discountPercent > 0 && (
-                  <span className="bg-[#FAF2E8] text-[#8C6D38] border border-[#C8A46A]/40 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-2xs font-sans">
+                  <span className="bg-[#FAF2E8] text-[#8C6D38] border border-[#C8A46A]/50 text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-2xs font-sans">
                     Save {discountPercent}%
                   </span>
                 )}
               </div>
-              
-              <p className="text-xs text-[#786C60] font-serif italic">
-                Price inclusive of all taxes. Free insured global express delivery across India.
-              </p>
-              
-              {/* EMI Indicator */}
-              <div className="pt-3 flex items-center gap-2.5 text-xs text-[#786C60] border-t border-[#F3EBE0] font-sans">
-                <Clock size={15} className="text-[#C8A46A] shrink-0" />
-                <span>Or 3 interest-free payments of <strong className="text-[#14111E] font-semibold">₹{Math.round((product.price || 0) / 3).toLocaleString()}</strong></span>
-              </div>
-            </div>
-
-            {/* Quantity Selector & Signature Packaging Toggle */}
-            <div className="space-y-5 pt-1">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#14111E] font-sans">Quantity</span>
-                <div className="flex items-center border border-[#E5D7C5] rounded-xl bg-white overflow-hidden shadow-2xs">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-11 h-11 flex items-center justify-center text-[#14111E] hover:bg-[#FBF9F5] transition-colors text-base font-medium cursor-pointer"
-                  >
-                    −
-                  </button>
-                  <span className="w-12 text-center font-bold text-xs text-[#14111E] font-sans">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() => setQuantity(Math.min(Math.min(10, Number(product.stock || 10)), quantity + 1))}
-                    className="w-11 h-11 flex items-center justify-center text-[#14111E] hover:bg-[#FBF9F5] transition-colors text-base font-medium cursor-pointer"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
-              {/* Signature Velvet Packaging Option */}
-              <label className="flex items-center justify-between p-4 bg-[#F6F2EC] rounded-2xl border border-[#E5D7C5] cursor-pointer hover:border-[#C8A46A] transition-all group">
-                <div className="flex items-center gap-3.5">
-                  <Gift size={20} className="text-[#14111E] group-hover:scale-110 transition-transform shrink-0" />
-                  <div>
-                    <p className="text-xs font-bold text-[#14111E] uppercase tracking-wider font-sans">Signature Velvet Gift Packaging</p>
-                    <p className="text-xs text-[#786C60] font-serif italic">Includes plush velvet box, satin ribbon & wax-sealed gift note.</p>
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={giftWrap}
-                  onChange={(e) => setGiftWrap(e.target.checked)}
-                  className="w-4.5 h-4.5 accent-[#14111E] cursor-pointer shrink-0"
-                />
-              </label>
-
-              {/* Desktop CTAs */}
-              <div className="hidden lg:flex flex-row gap-4 pt-2">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={isOutOfStock || cartLoading}
-                  className={`flex-1 min-h-[56px] py-4 px-8 text-xs font-bold uppercase tracking-[0.24em] rounded-xl transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer shadow-md font-sans border border-[#C8A46A]/30 ${
-                    isOutOfStock
-                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                      : isInCart(product.id)
-                      ? 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33]'
-                      : 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.99]'
-                  }`}
-                >
-                  {cartLoading ? (
-                    <Loader2 size={16} className="animate-spin shrink-0" />
-                  ) : (
-                    <ShoppingBag size={16} className="shrink-0 text-[#C8A46A]" />
-                  )}
-                  <span>{isOutOfStock ? 'Out of Stock' : isInCart(product.id) ? 'Added to Bag' : 'Add to Bag'}</span>
-                </button>
-
-                <button
-                  onClick={handleBuyNow}
-                  disabled={isOutOfStock}
-                  className={`flex-1 min-h-[56px] py-4 px-8 text-xs font-bold uppercase tracking-[0.24em] rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer shadow-sm font-sans ${
-                    isOutOfStock
-                      ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5]'
-                  }`}
-                >
-                  Buy Now
-                </button>
-              </div>
             </div>
 
             {/* Delivery Estimator & Product Information */}
-            <div className="pt-6 space-y-6 border-t border-[#E5D7C5]">
+            <div className="pt-2 space-y-6">
               
               {/* Delivery Estimator */}
               {product.stock > 0 && (
-                <div className="bg-[#F6F2EC] p-4.5 rounded-2xl border border-[#E5D7C5] space-y-3">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#14111E] flex items-center gap-2 font-sans">
-                    <Truck size={15} className="text-[#C8A46A]" /> Express Delivery Estimator
+                <div className="bg-[#F6F2EC] p-4 sm:p-5 rounded-2xl border border-[#E5D7C5] space-y-3 shadow-2xs overflow-hidden">
+                  <label className="text-xs sm:text-sm font-bold uppercase tracking-[0.14em] text-[#14111E] flex items-center gap-2.5 font-sans">
+                    <Truck size={17} className="text-[#C8A46A] shrink-0" /> Express Delivery Estimator
                   </label>
-                  <form onSubmit={checkDeliveryPincode} className="flex gap-2">
+                  <form onSubmit={checkDeliveryPincode} className="flex items-center gap-2 sm:gap-2.5">
                     <input
                       type="text"
                       maxLength={6}
                       placeholder="Enter 6-digit Pincode"
                       value={pincode}
                       onChange={(e) => setPincode(e.target.value)}
-                      className="flex-1 px-4 py-3 bg-white border border-[#E5D7C5] rounded-xl text-xs outline-none focus:border-[#14111E] transition-all font-sans"
+                      className="flex-1 min-w-0 px-3.5 sm:px-4 py-3 bg-white border border-[#E5D7C5] rounded-xl text-xs sm:text-sm outline-none focus:border-[#14111E] focus:ring-1 focus:ring-[#14111E] transition-all font-sans placeholder:text-gray-400"
                     />
-                    <button type="submit" className="px-6 py-3 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#251D33] transition-colors cursor-pointer font-sans shadow-xs border border-[#C8A46A]/30">
+                    <button type="submit" className="px-4 sm:px-6 py-3 bg-[#14111E] text-[#FBF9F5] text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-[#251D33] transition-colors cursor-pointer font-sans shadow-xs border border-[#C8A46A]/30 shrink-0">
                       Check
                     </button>
                   </form>
                   {pincodeStatus && (
-                    <p className={`text-xs mt-1 font-serif italic ${pincodeStatus.success ? 'text-emerald-700' : 'text-rose-600'}`}>
+                    <p className={`text-xs sm:text-sm font-serif italic ${pincodeStatus.success ? 'text-emerald-700 font-medium' : 'text-rose-600'}`}>
                       {pincodeStatus.msg}
                     </p>
                   )}
@@ -567,65 +482,61 @@ const ProductDetail = () => {
               {/* Creation Story & Description */}
               {(product.product_details || product.description) && (
                 <div className="py-4 space-y-3">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C8A46A] font-sans">
-                    <Sparkles size={13} /> Creation Story & Description
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#C8A46A] font-sans">
+                    <Sparkles size={14} /> Creation Story & Description
                   </div>
                   <h3 className="font-serif text-2xl sm:text-3xl text-[#14111E] font-normal leading-snug">
                     Artisanal Inspiration & Aesthetics
                   </h3>
-                  <p className="text-sm text-[#786C60] leading-relaxed font-serif whitespace-pre-line">
+                  <p className="text-sm sm:text-base text-[#6B5E52] leading-relaxed font-serif whitespace-pre-line">
                     {product.product_details || product.description}
                   </p>
                 </div>
               )}
 
-              {/* $1B Minimal Luxury Accordions */}
-              <div className="border-t border-[#E5D7C5] pt-2">
+              {/* Luxury Accordions */}
+              <div className="border-t border-[#E5D7C5]/80 pt-2">
                 {[
                   { 
                     id: 'details', 
                     label: 'Product Details & Technical Specs',
                     content: (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-xs font-sans py-2">
-                        <div className="border-b border-[#F3EBE0] pb-2.5">
-                          <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">SKU / Code</span>
-                          <span className="font-bold text-[#14111E] uppercase text-xs mt-0.5 block">{product.sku || product.id.slice(0, 8)}</span>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm font-sans py-2">
+                        <div className="border-b border-[#F3EBE0] pb-3">
+                          <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">SKU / Code</span>
+                          <span className="font-bold text-[#14111E] uppercase text-sm mt-0.5 block">{product.sku || product.id.slice(0, 8)}</span>
                         </div>
                         {product.productType && (
-                          <div className="border-b border-[#F3EBE0] pb-2.5">
-                            <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Product Type</span>
-                            <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.productType}</span>
+                          <div className="border-b border-[#F3EBE0] pb-3">
+                            <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Product Type</span>
+                            <span className="font-bold text-[#14111E] text-sm mt-0.5 block">{product.productType}</span>
                           </div>
                         )}
                         {product.color && (
-                          <div className="border-b border-[#F3EBE0] pb-2.5">
-                            <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Color Palette</span>
-                            <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.color}</span>
+                          <div className="border-b border-[#F3EBE0] pb-3">
+                            <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Color Palette</span>
+                            <span className="font-bold text-[#14111E] text-sm mt-0.5 block">{product.color}</span>
                           </div>
                         )}
                         {(product.size || product.size_weight) && (
-                          <div className="border-b border-[#F3EBE0] pb-2.5">
-                            <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Sizing / Fit</span>
-                            <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.size || product.size_weight}</span>
+                          <div className="border-b border-[#F3EBE0] pb-3">
+                            <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Sizing / Fit</span>
+                            <span className="font-bold text-[#14111E] text-sm mt-0.5 block">{product.size || product.size_weight}</span>
                           </div>
                         )}
-                        <div className="border-b border-[#F3EBE0] pb-2.5">
-                          <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Base Material</span>
-                          <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.material || "18K Gold-tone / Premium Alloy"}</span>
-                        </div>
-                        <div className="border-b border-[#F3EBE0] pb-2.5">
-                          <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Stones / Details</span>
-                          <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.stones || "AAA Cubic Zirconia / Crystals"}</span>
+                        <div className="border-b border-[#F3EBE0] pb-3">
+                          <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Stones / Details</span>
+                          <span className="font-bold text-[#14111E] text-sm mt-0.5 block">{product.stones || "AAA Cubic Zirconia / Crystals"}</span>
                         </div>
                         {(product.inspired_country || product.country) && (
-                          <div className="border-b border-[#F3EBE0] pb-2.5">
-                            <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Country Collection</span>
-                            <span className="font-bold text-[#14111E] text-xs mt-0.5 block">{product.inspired_country || product.country}</span>
+                          <div className="border-b border-[#F3EBE0] pb-3">
+                            <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Country Collection</span>
+                            <span className="font-bold text-[#14111E] text-sm mt-0.5 block">{product.inspired_country || product.country}</span>
                           </div>
                         )}
-                        <div className="border-b border-[#F3EBE0] pb-2.5">
-                          <span className="text-[#786C60] uppercase tracking-wider text-[10px] block font-medium">Finish</span>
-                          <span className="font-bold text-[#14111E] text-xs mt-0.5 block">High-Lustre Anti-Tarnish Finish</span>
+                        <div className="border-b border-[#F3EBE0] pb-3">
+                          <span className="text-[#8C7A6B] uppercase tracking-wider text-xs block font-semibold">Finish</span>
+                          <span className="font-bold text-[#14111E] text-sm mt-0.5 block">High-Lustre Anti-Tarnish Finish</span>
                         </div>
                       </div>
                     )
@@ -634,7 +545,7 @@ const ProductDetail = () => {
                     id: 'craftsmanship', 
                     label: 'Artisanal Craftsmanship & Quality',
                     content: (
-                      <p className="text-xs text-[#786C60] leading-relaxed font-serif italic py-1">
+                      <p className="text-sm text-[#6B5E52] leading-relaxed font-serif italic py-1">
                         Handcrafted by master artisans combining lost-wax casting methods with high-precision micro-pavé gemstone setting techniques. Every piece undergoes rigorous quality testing for optical brilliance, anti-tarnish durability, and skin safety.
                       </p>
                     )
@@ -643,7 +554,7 @@ const ProductDetail = () => {
                     id: 'shipping', 
                     label: 'Shipping, Delivery & Packaging',
                     content: (
-                      <p className="text-xs text-[#786C60] leading-relaxed font-serif italic py-1">
+                      <p className="text-sm text-[#6B5E52] leading-relaxed font-serif italic py-1">
                         {product.shipping || "Dispatched within 1–2 business days. Includes insured doorstep shipping across India. Hand-packed in Velouraz luxury box with authenticity certificate."}
                       </p>
                     )
@@ -652,14 +563,14 @@ const ProductDetail = () => {
                     id: 'care', 
                     label: 'Jewellery Care & Preservation Guide',
                     content: (
-                      <ul className="space-y-2 text-xs text-[#786C60] font-serif py-1">
+                      <ul className="space-y-2.5 text-sm text-[#6B5E52] font-serif py-1">
                         {product.care_instructions ? (
-                          <li className="flex items-start gap-2"><Sparkles size={13} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>{product.care_instructions}</span></li>
+                          <li className="flex items-start gap-2.5"><Sparkles size={15} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>{product.care_instructions}</span></li>
                         ) : (
                           <>
-                            <li className="flex items-start gap-2"><Sparkles size={13} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Store in a dry, velvet-lined Velouraz box or pouch.</span></li>
-                            <li className="flex items-start gap-2"><Sparkles size={13} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Apply perfumes, lotions and cosmetics prior to wearing jewellery.</span></li>
-                            <li className="flex items-start gap-2"><Sparkles size={13} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Clean gently with a soft microfiber polishing cloth after use.</span></li>
+                            <li className="flex items-start gap-2.5"><Sparkles size={15} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Store in a dry, velvet-lined Velouraz box or pouch.</span></li>
+                            <li className="flex items-start gap-2.5"><Sparkles size={15} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Apply perfumes, lotions and cosmetics prior to wearing jewellery.</span></li>
+                            <li className="flex items-start gap-2.5"><Sparkles size={15} className="text-[#C8A46A] shrink-0 mt-0.5" /> <span>Clean gently with a soft microfiber polishing cloth after use.</span></li>
                           </>
                         )}
                       </ul>
@@ -669,13 +580,13 @@ const ProductDetail = () => {
                   <div key={tab.id} className="border-b border-[#E5D7C5]">
                     <button
                       onClick={() => setActiveTab(activeTab === tab.id ? '' : tab.id)}
-                      className="w-full py-4.5 flex items-center justify-between text-left cursor-pointer group"
+                      className="w-full py-5 flex items-center justify-between text-left cursor-pointer group"
                     >
-                      <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#14111E] group-hover:text-[#C8A46A] transition-colors font-sans">{tab.label}</span>
-                      <ChevronRight size={16} className={`text-[#14111E] transition-transform duration-300 ${activeTab === tab.id ? 'rotate-90 text-[#C8A46A]' : ''}`} />
+                      <span className="text-xs sm:text-sm font-bold uppercase tracking-[0.18em] text-[#14111E] group-hover:text-[#C8A46A] transition-colors font-sans">{tab.label}</span>
+                      <ChevronRight size={18} className={`text-[#14111E] transition-transform duration-300 ${activeTab === tab.id ? 'rotate-90 text-[#C8A46A]' : ''}`} />
                     </button>
                     {activeTab === tab.id && (
-                      <div className="pb-5 pt-1">
+                      <div className="pb-6 pt-1">
                         {tab.content}
                       </div>
                     )}
@@ -865,37 +776,75 @@ const ProductDetail = () => {
 
       </div>
 
-      {/* $1B Mobile Aesthetic Glassmorphism Bottom Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[100] bg-[#FAF8F5]/90 backdrop-blur-xl border-t border-[#E5D7C5] p-3 px-4 flex items-center justify-between gap-3 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
-        <div className="shrink-0">
-          <span className="font-serif font-normal text-xl text-[#14111E] block leading-none">₹{Number(product.price).toLocaleString()}</span>
-          {discountPercent > 0 && <span className="text-[10px] text-emerald-700 font-bold uppercase tracking-wider">{discountPercent}% OFF</span>}
-        </div>
-        <div className="flex items-center gap-2.5 flex-1 max-w-[280px]">
-          <button
-            onClick={handleAddToCart}
-            disabled={isOutOfStock || cartLoading}
-            className={`flex-1 min-h-[46px] py-3 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 ${
-              isOutOfStock
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-[#14111E] text-[#FBF9F5] active:scale-[0.98] border border-[#C8A46A]/30'
-            }`}
-          >
-            {cartLoading ? <Loader2 size={15} className="animate-spin" /> : <ShoppingBag size={15} className="text-[#C8A46A]" />}
-            <span>{isOutOfStock ? 'Out' : isInCart(product.id) ? 'Added' : 'Add to Bag'}</span>
-          </button>
+      {/* Floating Pill Sticky Action Bottom Bar (Mobile & Desktop) */}
+      <div className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-[120] w-[94%] sm:w-auto max-w-2xl lg:max-w-3xl rounded-2xl sm:rounded-3xl bg-[#FAF8F5]/95 backdrop-blur-2xl border border-[#E5D7C5] shadow-[0_12px_40px_rgba(0,0,0,0.16)] p-2.5 sm:p-3 px-4 sm:px-6 transition-all duration-300">
+        <div className="flex items-center justify-between gap-4 sm:gap-6">
+          
+          {/* Left: Product Thumbnail, Title & Price (Hidden on Mobile View) */}
+          <div className="hidden sm:flex items-center gap-3 min-w-0">
+            <div className="hidden sm:block w-10 h-12 rounded-xl overflow-hidden bg-[#F6F2EC] border border-[#E5D7C5] shrink-0">
+              <img
+                src={getOptimizedImageUrl(activeImage)}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="min-w-0 space-y-0.5">
+              <h4 className="hidden md:block font-serif text-xs sm:text-sm text-[#14111E] font-medium truncate max-w-[180px]">
+                {product.name}
+              </h4>
+              <div className="flex items-baseline gap-2">
+                <span className="font-serif text-lg sm:text-xl text-[#14111E] font-normal leading-none">
+                  ₹{Number(product.price).toLocaleString()}
+                </span>
+                {product.original_price > product.price && (
+                  <span className="hidden sm:inline text-xs text-[#9E9082] line-through font-sans">
+                    ₹{Number(product.original_price).toLocaleString()}
+                  </span>
+                )}
+                {discountPercent > 0 && (
+                  <span className="text-[10px] sm:text-[11px] text-[#8C6D38] font-bold uppercase tracking-wider bg-[#FAF2E8] border border-[#C8A46A]/40 px-2 py-0.5 rounded-full font-sans">
+                    {discountPercent}% OFF
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
 
-          <button
-            onClick={handleBuyNow}
-            disabled={isOutOfStock}
-            className={`flex-1 min-h-[46px] py-3 px-3 rounded-xl text-[11px] font-bold uppercase tracking-wider flex items-center justify-center shadow-xs font-sans transition-all duration-300 ${
-              isOutOfStock
-                ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
-                : 'border-2 border-[#14111E] bg-white text-[#14111E] active:scale-[0.98]'
-            }`}
-          >
-            Buy Now
-          </button>
+          {/* Right: Add to Bag & Buy Now Action Buttons */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 flex-1 sm:flex-initial">
+            <button
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || cartLoading}
+              className={`flex-1 sm:flex-initial sm:min-w-[140px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer ${
+                isOutOfStock
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : isInCart(product.id)
+                  ? 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
+                  : 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
+              }`}
+            >
+              {cartLoading ? (
+                <Loader2 size={15} className="animate-spin shrink-0" />
+              ) : (
+                <ShoppingBag size={15} className="shrink-0 text-[#C8A46A]" />
+              )}
+              <span className="truncate">{isOutOfStock ? 'Out of Stock' : isInCart(product.id) ? 'Added' : 'Add to Bag'}</span>
+            </button>
+
+            <button
+              onClick={handleBuyNow}
+              disabled={isOutOfStock}
+              className={`flex-1 sm:flex-initial sm:min-w-[120px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 cursor-pointer ${
+                isOutOfStock
+                  ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+                  : 'border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5] active:scale-[0.98] font-bold'
+              }`}
+            >
+              <span className="truncate">Buy Now</span>
+            </button>
+          </div>
+
         </div>
       </div>
 

@@ -19,7 +19,7 @@ const defaultReviews = [
     name: "Ananya Sharma",
     location: "Mumbai, India",
     title: "Verified Buyer",
-    date: "14 Feb 2026",
+    date: "14 may 2026",
     quote: "The Kundan Choker exceeded all my expectations. The craftsmanship is divine and the atelier packaging felt like receiving a royal gift.",
     rating: 5
   },
@@ -28,7 +28,7 @@ const defaultReviews = [
     name: "Rohan Kapoor",
     location: "New Delhi, India",
     title: "Verified Collector",
-    date: "02 Feb 2026",
+    date: "02 jun 2026",
     quote: "Acquired the Solitaire Ring for our 10th anniversary. Exceptional brilliance and unmatched anti-tarnish durability.",
     rating: 5
   },
@@ -37,7 +37,7 @@ const defaultReviews = [
     name: "Meera Oberoi",
     location: "London, UK",
     title: "Verified Buyer",
-    date: "28 Jan 2026",
+    date: "28 april 2026",
     quote: "Velouraz high jewellery pieces have become my signature style for celebrations. The weight, luster, and finish are extraordinary.",
     rating: 5
   },
@@ -46,7 +46,7 @@ const defaultReviews = [
     name: "Kavita Singhania",
     location: "Dubai, UAE",
     title: "Verified Buyer",
-    date: "19 Jan 2026",
+    date: "19 may 2026",
     quote: "The attention to detail and gemstone clarity is remarkable. Truly heirloom-quality creations.",
     rating: 5
   }

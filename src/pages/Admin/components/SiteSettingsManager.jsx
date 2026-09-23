@@ -116,7 +116,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         setAnnouncements(snap.data().items);
       } else {
         setAnnouncements([
-          "Free Shipping Across India | Use Code VEL5 for 5% OFF on your first order",
+          " Use Code VEL5 for 5% OFF on your first order",
           "Artisanal Craftsmanship | 100% Handcrafted Designs",
         ]);
       }

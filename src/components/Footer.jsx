@@ -87,33 +87,7 @@ const Footer = () => {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#EFE6DC]/50 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Value Proposition Strip */}
-      <div className="relative border-b border-[#E8DFC8]/80 bg-[#F5ECE0]/60 backdrop-blur-md">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-8 sm:py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {valueProps.map((prop, index) => (
-              <div 
-                key={index}
-                className="flex items-center gap-4 p-5 rounded-2xl bg-white/70 border border-[#E8DFC8] hover:border-[#C8A46A]/60 hover:bg-white/90 hover:shadow-[0_8px_25px_rgba(200,164,106,0.12)] transition-all duration-300 group"
-              >
-                <div className="w-13 h-13 rounded-full bg-[#FAF3E8] border border-[#C8A46A]/30 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-[#C8A46A] group-hover:text-white transition-all duration-300 shadow-sm">
-                  <span className="group-hover:brightness-200 transition-all duration-300">
-                    {prop.icon}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-base font-bold text-[#2A2623] font-sans tracking-wide">
-                    {prop.title}
-                  </h4>
-                  <p className="text-sm sm:text-base text-[#7B6D63] font-serif font-light">
-                    {prop.subtitle}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
+      
       {/* VIP Atelier Newsletter Subscription Section */}
       
       {/* Main Footer Links & Brand Section */}

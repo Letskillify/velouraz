@@ -1306,9 +1306,7 @@ const Checkout = () => {
             <span className="text-xl font-normal font-sans text-[#2e0e43]">
               ₹{total.toLocaleString()}
             </span>
-            <span className="text-[10px] text-emerald-700 font-sans font-medium">
-              Free Shipping
-            </span>
+           
           </div>
         </div>
 

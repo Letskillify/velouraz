@@ -300,7 +300,7 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              <p className="text-[16px] text-[#7B6D63]">Inclusive of all taxes. Free shipping on orders above ₹999.</p>
+              <p className="text-[16px] text-[#7B6D63]">Inclusive of all taxes.</p>
 
               {/* Divider */}
               <div className="h-px bg-[#D8CBBE]/40" />
