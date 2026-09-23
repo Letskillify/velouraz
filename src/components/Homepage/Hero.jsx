@@ -20,37 +20,31 @@ const usps = [
 ];
 
 const Hero = () => {
-  const videoRef   = useRef(null);
+  const videoRef = useRef(null);
   const sectionRef = useRef(null);
-  const [loaded, setLoaded] = useState(false);
-  const [heroConfig, setHeroConfig] = useState({
-    videoURL: "",
-    posterURL: "/img/b (1).jpeg"
-  });
+  const [heroConfig, setHeroConfig] = useState(null);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "site_settings", "hero"), (snap) => {
       if (snap.exists()) {
         const data = snap.data();
         setHeroConfig(data);
-        if (!data.videoURL) {
-          setLoaded(false); // If video removed, fallback background takes over
-        }
+      } else {
+        setHeroConfig({ videoURL: "" });
       }
     });
     return () => unsub();
   }, []);
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end start'] });
-  const videoScale   = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
-  useEffect(() => { 
-    if (heroConfig.videoURL) {
-      videoRef.current?.play().catch(() => {});
+  useEffect(() => {
+    if (heroConfig?.videoURL) {
+      videoRef.current?.play().catch(() => { });
     }
-  }, [heroConfig.videoURL]);
+  }, [heroConfig?.videoURL]);
 
-  const posterImage = heroConfig.posterURL || "/img/b (1).jpeg";
 
   return (
     <section
@@ -59,34 +53,22 @@ const Hero = () => {
       style={{ height: '100svh', minHeight: 640 }}
     >
 
-      {/* ── VIDEO / IMAGE BG ─────────────────────────── */}
-      <motion.div className="absolute inset-0 z-0 origin-center" style={{ scale: videoScale }}>
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-          style={{ 
-            backgroundImage: `url('${getOptimizedImageUrl(posterImage)}')`, 
-            opacity: (!heroConfig.videoURL || !loaded) ? 1 : 0 
-          }}
-        />
-        {heroConfig.videoURL ? (
+      {/* ── VIDEO BG ─────────────────────────── */}
+      <motion.div className="absolute inset-0 z-0 origin-center bg-[#080503]" style={{ scale: videoScale }}>
+        {heroConfig?.videoURL ? (
           <video
             key={heroConfig.videoURL}
             ref={videoRef}
             src={getOptimizedVideoUrl(heroConfig.videoURL)}
-            autoPlay 
-            muted 
-            loop 
+            autoPlay
+            muted
+            loop
             playsInline
-            onCanPlay={() => setLoaded(true)}
-            onLoadedData={() => setLoaded(true)}
-            onLoadedMetadata={() => setLoaded(true)}
-            onPlay={() => setLoaded(true)}
+            preload="auto"
             onError={(e) => {
-              console.warn("Hero video playback failed, showing fallback image:", e);
-              setLoaded(false);
+              console.warn("Hero video playback failed:", e);
             }}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-            style={{ opacity: loaded ? 1 : 0 }}
+            className="absolute inset-0 w-full h-full object-cover"
           />
         ) : null}
       </motion.div>

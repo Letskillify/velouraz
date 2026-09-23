@@ -72,36 +72,16 @@ export const uploadToCloudinaryWithProgress = (file, onProgress) => {
 };
 
 /**
- * Transforms Cloudinary image/video URLs safely:
- * - f_auto: Optimal format (WebP, AVIF, WebM) per browser
- * - q_auto: Smart quality compression reducing file size up to 70-80%
+ * Returns original Cloudinary URL.
+ * Transformations are disabled because Strict Transformations are actively blocking them and causing 401s.
  */
 export const getOptimizedCloudinaryUrl = (url, options = {}) => {
   if (!url || typeof url !== "string") return url || "";
-  if (!url.includes("res.cloudinary.com") || !url.includes("/upload/")) {
-    return url;
-  }
-
-  const isVideo = url.includes("/video/upload/");
-  const parts = url.split("/upload/");
-  if (parts.length !== 2) return url;
-
-  // Prevent duplicate transformation flags
-  if (
-    parts[1].startsWith("f_auto") ||
-    parts[1].startsWith("q_auto") ||
-    parts[1].startsWith("w_") ||
-    parts[1].includes("/f_auto")
-  ) {
-    return url;
-  }
-
-  const transformString = isVideo ? "f_auto,q_auto,vc_auto" : "f_auto,q_auto";
-  return `${parts[0]}/upload/${transformString}/${parts[1]}`;
+  return url;
 };
 
 /**
- * Shortcut helper for responsive web images (f_auto, q_auto)
+ * Shortcut helper for responsive web images
  */
 export const getOptimizedImageUrl = (url) => {
   return getOptimizedCloudinaryUrl(url);
