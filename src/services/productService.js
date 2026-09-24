@@ -1,8 +1,29 @@
 import { addDoc, collection, deleteDoc, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../components/Firebase";
 
-const sortableDate = (item) => item.createdAt?.toMillis?.() ?? new Date(item.createdAt || item.updatedAt || 0).getTime();
-export const sortNewestProducts = (products) => [...products].sort((a, b) => sortableDate(b) - sortableDate(a));
+export const parseSortableDate = (item) => {
+  if (!item) return 0;
+  const parseVal = (val) => {
+    if (!val) return 0;
+    if (typeof val.toMillis === "function") return val.toMillis();
+    if (typeof val.seconds === "number") return val.seconds * 1000;
+    if (typeof val === "number") return val;
+    if (typeof val === "string") {
+      const t = new Date(val).getTime();
+      return isNaN(t) ? 0 : t;
+    }
+    return 0;
+  };
+  const created = parseVal(item.createdAt);
+  if (created > 0) return created;
+  const updated = parseVal(item.updatedAt);
+  if (updated > 0) return updated;
+  const deleted = parseVal(item.deletedAt);
+  if (deleted > 0) return deleted;
+  return Date.now();
+};
+
+export const sortNewestProducts = (products) => [...products].sort((a, b) => parseSortableDate(b) - parseSortableDate(a));
 
 export const listenToProducts = (onData, onError) => onSnapshot(
   collection(db, "products"),

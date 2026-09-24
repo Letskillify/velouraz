@@ -34,7 +34,8 @@ const MetricCards = ({ cards }) => (
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.08, duration: 0.4 }}
-          className={`relative overflow-hidden bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg ${colors.glow} transition-all duration-300 p-6 group cursor-default`}
+          onClick={card.onClick}
+          className={`relative overflow-hidden bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg ${colors.glow} transition-all duration-300 p-6 group ${card.onClick ? "cursor-pointer hover:border-[#811331]/30" : "cursor-default"}`}
         >
           {/* Gradient accent top-left */}
           <div className={`absolute inset-0 bg-gradient-to-br ${colors.accent} pointer-events-none`} />

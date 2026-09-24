@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
-import { quickUpdateStock } from "../../../services/productService";
+import { quickUpdateStock, parseSortableDate } from "../../../services/productService";
 import { getThumbnailUrl, handleImageError } from "../../../config/cloudinary";
 
 // ─── Confirm Dialog ──────────────────────────────────────────────────────────
@@ -146,8 +146,10 @@ const QuickStockEditor = ({ productId, currentStock }) => {
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 const ProductsTable = ({
-  products,
+  products = [],
   trashedProducts = [],
+  viewMode: externalViewMode,
+  onViewModeChange,
   onAddProduct,
   onEditProduct,
   onDeleteProduct,
@@ -162,9 +164,25 @@ const ProductsTable = ({
   const [search, setSearch] = useState(searchParams.get("search") || searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "All Categories");
   const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "All Countries");
+  const [sortBy, setSortBy] = useState("newest");
 
   // View mode: "active" or "trash"
-  const [viewMode, setViewMode] = useState("active");
+  const [internalViewMode, setInternalViewMode] = useState("active");
+  const viewMode = externalViewMode !== undefined ? externalViewMode : internalViewMode;
+
+  const handleSetViewMode = (mode) => {
+    if (onViewModeChange) {
+      onViewModeChange(mode);
+    }
+    setInternalViewMode(mode);
+    // Reset filters when switching views so trashed items aren't hidden by active product filters
+    setSearch("");
+    setCategory("All Categories");
+    setSelectedCountry("All Countries");
+    updateParam("search", "");
+    updateParam("category", "All Categories");
+    updateParam("country", "All Countries");
+  };
 
   // Pagination & Selection States
   const [currentPage, setCurrentPage] = useState(1);
@@ -195,9 +213,9 @@ const ProductsTable = ({
     setSearchParams(newParams, { replace: true });
   };
 
-  // Filter & Search
+  // Filter & Search & Sort
   const filteredProducts = useMemo(() => {
-    return currentList.filter((product) => {
+    const list = currentList.filter((product) => {
       const queryStr = search.toLowerCase().trim();
       const matchesSearch =
         !queryStr ||
@@ -210,7 +228,27 @@ const ProductsTable = ({
         (product.country && product.country.toLowerCase() === selectedCountry.toLowerCase());
       return matchesSearch && matchesCategory && matchesCountry;
     });
-  }, [currentList, search, category, selectedCountry]);
+
+    return [...list].sort((a, b) => {
+      if (sortBy === "oldest") {
+        return parseSortableDate(a) - parseSortableDate(b);
+      }
+      if (sortBy === "name_asc") {
+        return (a.name || "").localeCompare(b.name || "");
+      }
+      if (sortBy === "name_desc") {
+        return (b.name || "").localeCompare(a.name || "");
+      }
+      if (sortBy === "price_asc") {
+        return (Number(a.price) || 0) - (Number(b.price) || 0);
+      }
+      if (sortBy === "price_desc") {
+        return (Number(b.price) || 0) - (Number(a.price) || 0);
+      }
+      // Default: "newest" (Upload Date: New → Old)
+      return parseSortableDate(b) - parseSortableDate(a);
+    });
+  }, [currentList, search, category, selectedCountry, sortBy]);
 
   // Derived Pagination
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
@@ -223,10 +261,17 @@ const ProductsTable = ({
   useEffect(() => {
     setCurrentPage(1);
     setSelectedIds([]);
-  }, [search, category, selectedCountry, pageSize, viewMode]);
+  }, [search, category, selectedCountry, sortBy, pageSize, viewMode]);
 
-  const allCategories = [...new Set(products.map((p) => p.category).filter(Boolean))];
-  const allCountries = [...new Set(products.map((p) => p.country).filter(Boolean))];
+  const allCategories = useMemo(() => {
+    const combined = [...products, ...trashedProducts];
+    return [...new Set(combined.map((p) => p.category).filter(Boolean))];
+  }, [products, trashedProducts]);
+
+  const allCountries = useMemo(() => {
+    const combined = [...products, ...trashedProducts];
+    return [...new Set(combined.map((p) => p.country).filter(Boolean))];
+  }, [products, trashedProducts]);
 
   // Selection Handlers
   const handleSelectAll = (e) => {
@@ -382,7 +427,7 @@ const ProductsTable = ({
             {/* View Toggle */}
             <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1 gap-1">
               <button
-                onClick={() => setViewMode("active")}
+                onClick={() => handleSetViewMode("active")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all ${
                   viewMode === "active"
                     ? "bg-white text-slate-900 shadow-sm border border-slate-200"
@@ -393,7 +438,7 @@ const ProductsTable = ({
                 Products
               </button>
               <button
-                onClick={() => setViewMode("trash")}
+                onClick={() => handleSetViewMode("trash")}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all relative ${
                   viewMode === "trash"
                     ? "bg-white text-red-600 shadow-sm border border-red-100"
@@ -496,8 +541,8 @@ const ProductsTable = ({
         )}
 
         {/* Filter Toolbar */}
-        <div className="mx-5 mb-4 mt-4 flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 sm:mx-8 sm:flex-row sm:items-center">
-          <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-400">
+        <div className="mx-5 mb-4 mt-4 flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 sm:mx-8 sm:flex-row sm:items-center flex-wrap">
+          <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-400 min-w-[200px]">
             <Search size={15} />
             <input
               value={search}
@@ -518,7 +563,7 @@ const ProductsTable = ({
               setCategory(val);
               updateParam("category", val);
             }}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-600 outline-none"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base font-medium text-slate-600 outline-none cursor-pointer"
           >
             <option value="All Categories">All Categories</option>
             {allCategories.map((item) => (
@@ -533,22 +578,44 @@ const ProductsTable = ({
               setSelectedCountry(val);
               updateParam("country", val);
             }}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-600 outline-none"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-base font-medium text-slate-600 outline-none cursor-pointer"
           >
             <option value="All Countries">All Countries</option>
             {allCountries.map((c) => (
               <option key={c} value={c}>🌍 {c}</option>
             ))}
           </select>
-          {(search || category !== "All Categories") && (
+          {/* Sort By Select */}
+          <div className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-base font-medium text-slate-600">
+            <SlidersHorizontal size={14} className="text-slate-400 flex-shrink-0" />
+            <select
+              value={sortBy}
+              onChange={(event) => setSortBy(event.target.value)}
+              className="bg-transparent outline-none font-bold text-slate-700 cursor-pointer text-base"
+              title="Sort products"
+            >
+              <option value="newest">Sort: Upload Date (New → Old)</option>
+              <option value="oldest">Sort: Upload Date (Old → New)</option>
+              <option value="name_asc">Sort: Name (A → Z)</option>
+              <option value="name_desc">Sort: Name (Z → A)</option>
+              <option value="price_asc">Sort: Price (Low → High)</option>
+              <option value="price_desc">Sort: Price (High → Low)</option>
+            </select>
+          </div>
+          {(search || category !== "All Categories" || selectedCountry !== "All Countries" || sortBy !== "newest") && (
             <button
               onClick={() => {
                 setSearch("");
                 setCategory("All Categories");
+                setSelectedCountry("All Countries");
+                setSortBy("newest");
+                updateParam("search", "");
+                updateParam("category", "All Categories");
+                updateParam("country", "All Countries");
               }}
-              className="px-2 text-base font-semibold text-[#811331]"
+              className="px-3 py-2 rounded-lg bg-slate-200/70 hover:bg-slate-200 text-base font-bold text-[#811331] transition-all"
             >
-              Reset
+              Reset Filters
             </button>
           )}
         </div>
@@ -819,14 +886,31 @@ const ProductsTable = ({
               )}
             </div>
             <h3 className="text-sm font-bold text-slate-900 mb-1">
-              {viewMode === "trash" ? "Trash is empty" : "No products yet"}
+              {currentList.length === 0
+                ? viewMode === "trash" ? "Trash is empty" : "No products yet"
+                : "No matching products found"}
             </h3>
-            <p className="text-base text-slate-400 max-w-[200px] mx-auto">
-              {viewMode === "trash"
-                ? "Deleted products will appear here and can be restored."
-                : "Your inventory is empty. Add your first jewelry item."}
+            <p className="text-base text-slate-400 max-w-[280px] mx-auto">
+              {currentList.length === 0
+                ? viewMode === "trash"
+                  ? "Soft-deleted products will appear here and can be restored."
+                  : "Your inventory is empty. Add your first jewelry item."
+                : "No products matched your search keyword or selected filters."}
             </p>
-            {viewMode === "active" && (
+            {currentList.length > 0 && (
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setCategory("All Categories");
+                  setSelectedCountry("All Countries");
+                  setSortBy("newest");
+                }}
+                className="mt-5 px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-base font-bold transition-all border border-slate-200"
+              >
+                Reset Filters
+              </button>
+            )}
+            {currentList.length === 0 && viewMode === "active" && (
               <button
                 onClick={onAddProduct}
                 className="mt-6 px-6 py-2.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all"

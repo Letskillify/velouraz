@@ -111,6 +111,7 @@ const Admin = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [trashedProducts, setTrashedProducts] = useState([]);
+  const [productViewMode, setProductViewMode] = useState("active");
 
   useEffect(() => {
     const tabParam = searchParams.get("tab") || searchParams.get("section");
@@ -324,10 +325,10 @@ const Admin = () => {
         const activeProducts = products.filter((p) => !p.status || p.status === "Published" || p.status === "Active").length;
         const draftProducts = products.filter((p) => p.status === "Draft").length;
         const productCards = [
-          { label: "Total Products", value: products.length, hint: "All catalogue products", icon: Package, color: "crimson" },
-          { label: "Active Products", value: activeProducts, hint: "Published and active", icon: Activity, color: "green" },
-          { label: "Draft Products", value: draftProducts, hint: "Not published yet", icon: Package, color: "blue" },
-          { label: "Trash", value: trashedProducts.length, hint: "Soft-deleted products", icon: Package, color: "crimson" },
+          { label: "Total Products", value: products.length, hint: "All catalogue products", icon: Package, color: "crimson", onClick: () => setProductViewMode("active") },
+          { label: "Active Products", value: activeProducts, hint: "Published and active", icon: Activity, color: "green", onClick: () => setProductViewMode("active") },
+          { label: "Draft Products", value: draftProducts, hint: "Not published yet", icon: Package, color: "blue", onClick: () => setProductViewMode("active") },
+          { label: "Trash", value: trashedProducts.length, hint: "Soft-deleted products", icon: Package, color: "crimson", onClick: () => setProductViewMode("trash") },
         ];
         return (
           <>
@@ -335,6 +336,8 @@ const Admin = () => {
             <ProductsTable
               products={products}
               trashedProducts={trashedProducts}
+              viewMode={productViewMode}
+              onViewModeChange={setProductViewMode}
               onAddProduct={openProductEditor}
               onEditProduct={handleEditClick}
               onDeleteProduct={handleDeleteProduct}
