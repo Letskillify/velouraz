@@ -91,9 +91,9 @@ const TestimonialSection = () => {
 
   return (
     <section className="py-16 md:py-20 relative overflow-hidden bg-[#F8F4EF] border-t border-b border-[#D8CBBE]/40">
-      
+
       {/* Subtle Ambient Background Radial Lighting */}
-      <div 
+      <div
         className="absolute inset-0 opacity-40 pointer-events-none"
         style={{ backgroundImage: 'radial-gradient(ellipse at center, rgba(200,164,106,0.12), transparent 70%)' }}
       />
@@ -102,7 +102,7 @@ const TestimonialSection = () => {
 
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row items-center justify-between mb-10 md:mb-12 gap-6">
-          
+
           <div className="text-center sm:text-left space-y-2">
             <h2 className="font-serif font-normal leading-tight text-3xl sm:text-4xl md:text-5xl text-[#2e0e43]">
               Real Stories. <span className="italic font-serif">Real Love.</span>
@@ -163,9 +163,9 @@ const TestimonialSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
-                  className="p-7 lg:p-8 h-[310px] flex flex-col justify-between border border-[#E5D7C5] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F0] to-[#F7F0E6] rounded-3xl hover:border-[#C8A46A] hover:shadow-[0_15px_40px_rgba(200,164,106,0.18)] transition-all duration-500 shadow-sm relative group overflow-hidden"
+                  className="p-7 lg:p-8 h-[314px] flex flex-col justify-between border border-[#E5D7C5] bg-gradient-to-b from-[#FFFFFF] via-[#FAF6F0] to-[#F7F0E6] rounded-3xl hover:border-[#C8A46A] hover:shadow-[0_15px_40px_rgba(200,164,106,0.18)] transition-all duration-500 shadow-sm relative group overflow-hidden"
                 >
-                  
+
                   {/* Top Quote Watermark Icon */}
                   <Quote size={36} className="absolute top-5 right-5 text-[#C8A46A]/15 group-hover:text-[#C8A46A]/30 transition-colors pointer-events-none" />
 
@@ -178,7 +178,7 @@ const TestimonialSection = () => {
                     </div>
 
                     {review.location && (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF3E8] border border-[#C8A46A]/30 text-[#8B6B38] text-[11px] font-sans font-semibold tracking-wider uppercase">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF3E8] border border-[#C8A46A]/30 text-[#8B6B38] text-[14px] font-sans font-semibold tracking-wider uppercase">
                         <MapPin size={11} className="text-[#B89355]" />
                         {review.location}
                       </span>
@@ -187,15 +187,15 @@ const TestimonialSection = () => {
 
                   {/* Reviewed Product Tag if present */}
                   {review.productName && (
-                    <div className="mb-2 flex items-center gap-2 text-[11px] text-[#8B6B38] font-sans font-semibold bg-[#FAF3E8]/80 px-2.5 py-1 rounded-lg border border-[#C8A46A]/30 w-fit shrink-0">
+                    <div className="mb-2 flex items-center gap-2 text-[14px] text-[#8B6B38] font-sans font-semibold bg-[#FAF3E8]/80 px-2.5 py-1 rounded-lg border border-[#C8A46A]/30 w-fit shrink-0">
                       {review.productImage && (
-                        <img 
-                          src={getOptimizedImageUrl(review.productImage)} 
-                          alt={review.productName} 
+                        <img
+                          src={getOptimizedImageUrl(review.productImage)}
+                          alt={review.productName}
                           loading="lazy"
                           decoding="async"
                           onError={(e) => handleImageError(e, review.productImage)}
-                          className="w-5 h-5 rounded-md object-cover border border-[#D8CBBE]" 
+                          className="w-5 h-5 rounded-md object-cover border border-[#D8CBBE]"
                         />
                       )}
                       <span className="truncate max-w-[180px]">Item: {review.productName}</span>

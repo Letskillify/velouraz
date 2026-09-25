@@ -5,8 +5,8 @@ import { doc, onSnapshot, collection, getDocs } from "firebase/firestore";
 import { useAuth } from "../components/useAuth";
 import { useStore } from '../hooks/useStore';
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Star, Shield, Truck, RotateCcw, Heart, ShoppingBag, 
+import {
+  Star, Shield, Truck, RotateCcw, Heart, ShoppingBag,
   Share2, Gem, Sparkles, Loader2, ChevronRight,
   Eye, Award, Gift, RefreshCw, ZoomIn, Check,
   ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass
@@ -18,7 +18,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('details');
@@ -84,9 +84,9 @@ const ProductDetail = () => {
         const currentCountry = (product?.inspired_country || product?.country || '').toLowerCase().trim();
         const byCountry = currentCountry
           ? all.filter(p => {
-              const pCountry = (p.inspired_country || p.country || '').toLowerCase().trim();
-              return pCountry && pCountry === currentCountry;
-            })
+            const pCountry = (p.inspired_country || p.country || '').toLowerCase().trim();
+            return pCountry && pCountry === currentCountry;
+          })
           : [];
         setSameCountryProducts(byCountry.slice(0, 5));
       } catch (err) {
@@ -106,8 +106,8 @@ const ProductDetail = () => {
 
   const activeImage = imageUrls[selectedImageIndex] || imageUrls[0] || "";
 
-  const discountPercent = product?.original_price > product?.price 
-    ? Math.round(((product.original_price - product.price) / product.original_price) * 100) 
+  const discountPercent = product?.original_price > product?.price
+    ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : 0;
 
   const handleMouseMove = (e) => {
@@ -215,8 +215,8 @@ const ProductDetail = () => {
         <Gem size={52} className="text-[#C8A46A]/60" />
         <h2 className="font-serif text-3xl sm:text-4xl text-[#14111E] font-normal">Creation unavailable or archived.</h2>
         <p className="text-sm text-[#786C60] max-w-sm font-serif italic">Explore our haute joaillerie boutique collections for handcrafted fine creations.</p>
-        <button 
-          onClick={() => navigate('/shop')} 
+        <button
+          onClick={() => navigate('/shop')}
           className="px-9 py-4 bg-[#14111E] text-[#FBF9F5] text-xs font-bold uppercase tracking-[0.25em] rounded-xl hover:bg-[#251D33] transition-all duration-300 shadow-md font-sans cursor-pointer border border-[#D4B483]/30"
         >
           Explore Boutique Catalogue
@@ -229,12 +229,12 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] selection:bg-[#14111E] selection:text-[#FBF9F5]">
-      
+
       {/* Exact High Luxury Header Banner (Preserved Hero Breadcrumb Banner) */}
       <div className="relative w-full bg-[#120E15] py-8 pt-[170px] pb-10 border-b border-[#C8A46A]/20 text-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(200,169,122,0.14),transparent_75%)] pointer-events-none" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none opacity-40" />
-        
+
         <div className="relative z-10 flex items-center justify-center gap-3 text-xs sm:text-sm tracking-[0.25em] font-semibold uppercase text-white/60">
           <Link to="/" className="hover:text-[#C8A46A] transition-colors duration-300">home</Link>
           <span className="text-[#C8A46A]/40">/</span>
@@ -247,13 +247,13 @@ const ProductDetail = () => {
       {/* Main Stage Showcase Container */}
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-8 lg:py-16 pb-36">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-          
+
           {/* Left Column: $1B High Jewelry Gallery Suite */}
           <div className="lg:col-span-7">
             <div className="lg:sticky lg:top-[120px] space-y-6">
-              
+
               <div className="flex flex-col-reverse md:flex-row gap-4 lg:gap-5">
-                
+
                 {/* Vertical / Horizontal Swatch Thumbnails */}
                 {imageUrls.length > 1 && (
                   <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[600px] no-scrollbar py-1 shrink-0">
@@ -261,19 +261,18 @@ const ProductDetail = () => {
                       <button
                         key={i}
                         onClick={() => setSelectedImageIndex(i)}
-                        className={`w-16 h-20 md:w-20 md:h-26 rounded-2xl overflow-hidden border transition-all duration-300 relative shrink-0 cursor-pointer ${
-                          selectedImageIndex === i 
-                            ? 'border-[#14111E] ring-2 ring-[#C8A46A] shadow-md scale-105' 
-                            : 'border-[#E5D7C5] opacity-60 hover:opacity-100 hover:border-[#C8A46A]'
-                        }`}
+                        className={`w-16 h-20 md:w-20 md:h-26 rounded-2xl overflow-hidden border transition-all duration-300 relative shrink-0 cursor-pointer ${selectedImageIndex === i
+                          ? 'border-[#14111E] ring-2 ring-[#C8A46A] shadow-md scale-105'
+                          : 'border-[#E5D7C5] opacity-60 hover:opacity-100 hover:border-[#C8A46A]'
+                          }`}
                       >
-                        <img 
-                          src={getOptimizedImageUrl(img)} 
-                          alt={`View ${i + 1}`} 
+                        <img
+                          src={getOptimizedImageUrl(img)}
+                          alt={`View ${i + 1}`}
                           loading="lazy"
                           decoding="async"
                           onError={(e) => handleImageError(e, img)}
-                          className="w-full h-full object-cover" 
+                          className="w-full h-full object-cover"
                         />
                         {selectedImageIndex === i && (
                           <div className="absolute inset-0 bg-[#C8A46A]/10 pointer-events-none" />
@@ -285,7 +284,7 @@ const ProductDetail = () => {
 
                 {/* Main Showcase Stage Frame */}
                 <div className="flex-1 relative">
-                  <motion.div 
+                  <motion.div
                     className="aspect-[4/5] rounded-3xl overflow-hidden bg-[#F6F2EC] border border-[#E5D7C5]/80 relative group cursor-zoom-in shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-xl transition-all duration-500"
                     initial={{ opacity: 0, scale: 0.99 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -301,20 +300,20 @@ const ProductDetail = () => {
                       onError={(e) => handleImageError(e, activeImage)}
                       className="w-full h-full object-cover transition-transform duration-100 ease-out"
                     />
-                    
+
                     {/* Floating Luxury Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none z-10">
                       {discountPercent > 0 && (
-                        <span className="bg-[#14111E] text-[#FBF9F5] px-3.5 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-[0.22em] shadow-md border border-[#C8A46A]/30 font-sans flex items-center gap-1.5">
+                        <span className="bg-[#14111E] text-[#FBF9F5] px-3.5 py-1.5 rounded-full text-[14px] uppercase font-bold tracking-[0.22em] shadow-md border border-[#C8A46A]/30 font-sans flex items-center gap-1.5">
                           <Sparkles size={11} className="text-[#C8A46A]" /> {discountPercent}% Privilege Savings
                         </span>
                       )}
                       {product.stock <= 5 && product.stock > 0 && (
-                        <span className="bg-[#FAF6F0] text-[#8C6D38] border border-[#C8A46A]/40 px-3.5 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-[0.2em] shadow-xs backdrop-blur-md font-sans">
+                        <span className="bg-[#FAF6F0] text-[#8C6D38] border border-[#C8A46A]/40 px-3.5 py-1.5 rounded-full text-[14px] uppercase font-bold tracking-[0.2em] shadow-xs backdrop-blur-md font-sans">
                           Limited Atelier Edition ({product.stock} Left)
                         </span>
                       )}
-                      <span className="bg-white/95 text-[#14111E] border border-[#E5D7C5] px-3.5 py-1.5 rounded-full text-[10px] uppercase font-bold tracking-[0.2em] shadow-xs backdrop-blur-md flex items-center gap-1.5 font-sans">
+                      <span className="bg-white/95 text-[#14111E] border border-[#E5D7C5] px-3.5 py-1.5 rounded-full text-[14px] uppercase font-bold tracking-[0.2em] shadow-xs backdrop-blur-md flex items-center gap-1.5 font-sans">
                         <Gem size={11} className="text-[#C8A46A]" /> 100% Anti-Tarnish Lustre
                       </span>
                     </div>
@@ -325,7 +324,7 @@ const ProductDetail = () => {
                     </div>
 
                     {/* Hover Magnify Hint */}
-                    <div className="absolute bottom-4 left-4 bg-[#14111E]/90 text-[#FBF9F5] text-[10px] uppercase tracking-[0.2em] font-semibold px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md pointer-events-none flex items-center gap-2 font-sans border border-[#C8A46A]/30">
+                    <div className="absolute bottom-4 left-4 bg-[#14111E]/90 text-[#FBF9F5] text-[14px] uppercase tracking-[0.2em] font-semibold px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md pointer-events-none flex items-center gap-2 font-sans border border-[#C8A46A]/30">
                       <Eye size={12} className="text-[#C8A46A]" /> High Precision Magnification
                     </div>
                   </motion.div>
@@ -337,7 +336,7 @@ const ProductDetail = () => {
                 <div className="bg-white border border-[#E5D7C5] rounded-2xl p-4 flex items-center gap-3.5 shadow-xs hover:border-[#C8A46A] transition-colors">
                   <Award className="text-[#C8A46A] shrink-0" size={22} />
                   <div>
-                    <h5 className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">100% Certified</h5>
+                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">100% Certified</h5>
                     <p className="text-xs text-[#786C60] font-serif italic">Authenticity Guaranteed</p>
                   </div>
                 </div>
@@ -345,7 +344,7 @@ const ProductDetail = () => {
                 <div className="bg-white border border-[#E5D7C5] rounded-2xl p-4 flex items-center gap-3.5 shadow-xs hover:border-[#C8A46A] transition-colors">
                   <Truck className="text-[#C8A46A] shrink-0" size={22} />
                   <div>
-                    <h5 className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">Insured Express</h5>
+                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">Insured Express</h5>
                     <p className="text-xs text-[#786C60] font-serif italic">Doorstep Delivery</p>
                   </div>
                 </div>
@@ -353,7 +352,7 @@ const ProductDetail = () => {
                 <div className="bg-white border border-[#E5D7C5] rounded-2xl p-4 flex items-center gap-3.5 shadow-xs hover:border-[#C8A46A] transition-colors">
                   <RefreshCw className="text-[#C8A46A] shrink-0" size={22} />
                   <div>
-                    <h5 className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">15-Day Exchange</h5>
+                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">15-Day Exchange</h5>
                     <p className="text-xs text-[#786C60] font-serif italic">Concierge Service</p>
                   </div>
                 </div>
@@ -364,7 +363,7 @@ const ProductDetail = () => {
 
           {/* Right Column: High Luxury Product Information & Purchase Suite */}
           <div className="lg:col-span-5 space-y-6 sm:space-y-7 bg-white/80 p-4.5 sm:p-6 lg:p-8 rounded-3xl border border-[#E5D7C5]/90 shadow-[0_4px_25px_rgba(0,0,0,0.03)] backdrop-blur-sm overflow-hidden">
-            
+
             {/* Top Toolbar: Category Badge, Origin Tag, Wishlist & Share */}
             <div className="flex items-center justify-between border-b border-[#E5D7C5]/80 pb-5">
               <div className="flex items-center gap-2.5 flex-wrap">
@@ -382,11 +381,10 @@ const ProductDetail = () => {
                 <button
                   onClick={handleAddToWishlist}
                   disabled={wishlistLoading}
-                  className={`w-11 h-11 rounded-full border transition-all duration-300 flex items-center justify-center cursor-pointer ${
-                    isInWishlist(product.id)
-                      ? 'bg-[#14111E] text-[#FBF9F5] border-[#14111E] shadow-sm scale-105'
-                      : 'bg-white text-[#14111E] border-[#E5D7C5] hover:border-[#14111E] hover:bg-[#FBF9F5]'
-                  }`}
+                  className={`w-11 h-11 rounded-full border transition-all duration-300 flex items-center justify-center cursor-pointer ${isInWishlist(product.id)
+                    ? 'bg-[#14111E] text-[#FBF9F5] border-[#14111E] shadow-sm scale-105'
+                    : 'bg-white text-[#14111E] border-[#E5D7C5] hover:border-[#14111E] hover:bg-[#FBF9F5]'
+                    }`}
                   title="Save to Wishlist"
                 >
                   {wishlistLoading ? <Loader2 size={18} className="animate-spin" /> : <Heart size={18} fill={isInWishlist(product.id) ? "currentColor" : "none"} />}
@@ -451,7 +449,7 @@ const ProductDetail = () => {
 
             {/* Delivery Estimator & Product Information */}
             <div className="pt-2 space-y-6">
-              
+
               {/* Delivery Estimator */}
               {product.stock > 0 && (
                 <div className="bg-[#F6F2EC] p-4 sm:p-5 rounded-2xl border border-[#E5D7C5] space-y-3 shadow-2xs overflow-hidden">
@@ -497,8 +495,8 @@ const ProductDetail = () => {
               {/* Luxury Accordions */}
               <div className="border-t border-[#E5D7C5]/80 pt-2">
                 {[
-                  { 
-                    id: 'details', 
+                  {
+                    id: 'details',
                     label: 'Product Details & Technical Specs',
                     content: (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm font-sans py-2">
@@ -541,8 +539,8 @@ const ProductDetail = () => {
                       </div>
                     )
                   },
-                  { 
-                    id: 'craftsmanship', 
+                  {
+                    id: 'craftsmanship',
                     label: 'Artisanal Craftsmanship & Quality',
                     content: (
                       <p className="text-sm text-[#6B5E52] leading-relaxed font-serif italic py-1">
@@ -550,8 +548,8 @@ const ProductDetail = () => {
                       </p>
                     )
                   },
-                  { 
-                    id: 'shipping', 
+                  {
+                    id: 'shipping',
                     label: 'Shipping, Delivery & Packaging',
                     content: (
                       <p className="text-sm text-[#6B5E52] leading-relaxed font-serif italic py-1">
@@ -559,8 +557,8 @@ const ProductDetail = () => {
                       </p>
                     )
                   },
-                  { 
-                    id: 'care', 
+                  {
+                    id: 'care',
                     label: 'Jewellery Care & Preservation Guide',
                     content: (
                       <ul className="space-y-2.5 text-sm text-[#6B5E52] font-serif py-1">
@@ -608,7 +606,7 @@ const ProductDetail = () => {
               <div>
                 <div className="mb-8 flex items-end justify-between">
                   <div>
-                    <span className="text-[10px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
+                    <span className="text-[14px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
                       <Sparkles size={11} /> Similar Pieces
                     </span>
                     <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#14111E] mt-1">
@@ -617,7 +615,7 @@ const ProductDetail = () => {
                   </div>
                   <Link
                     to={`/shop${product?.category ? `?category=${encodeURIComponent(product.category)}` : ''}`}
-                    className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
+                    className="hidden sm:flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
                   >
                     View All <ArrowRight size={13} />
                   </Link>
@@ -654,27 +652,27 @@ const ProductDetail = () => {
                             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-600"
                           />
                           {rel.original_price > rel.price && (
-                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[14px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
                               -{Math.round(((rel.original_price - rel.price) / rel.original_price) * 100)}%
                             </span>
                           )}
                           {rel.badge && (
-                            <span className="absolute bottom-2 left-2 bg-[#2E0E43]/90 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                            <span className="absolute bottom-2 left-2 bg-[#2E0E43]/90 text-white text-[14px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
                               {rel.badge}
                             </span>
                           )}
                         </div>
                         <div className="p-2.5 sm:p-3 flex flex-col gap-0.5">
-                          <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
+                          <span className="text-[14px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
                             {rel.category || 'Velouraz'}
                           </span>
-                          <h4 className="font-serif text-[13px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
+                          <h4 className="font-serif text-[14px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
                             {rel.name}
                           </h4>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-[12px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
+                            <span className="text-[14px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
                             {rel.original_price > rel.price && (
-                              <span className="text-[10px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
+                              <span className="text-[14px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
                             )}
                           </div>
                         </div>
@@ -694,7 +692,7 @@ const ProductDetail = () => {
               <div>
                 <div className="mb-8 flex items-end justify-between">
                   <div>
-                    <span className="text-[10px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
+                    <span className="text-[14px] uppercase tracking-[0.35em] text-[#C8A46A] font-bold font-sans flex items-center gap-1.5">
                       <Compass size={11} /> Same Origin
                     </span>
                     <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#14111E] mt-1">
@@ -703,7 +701,7 @@ const ProductDetail = () => {
                   </div>
                   <Link
                     to={`/shop${product?.inspired_country || product?.country ? `?country=${encodeURIComponent(product.inspired_country || product.country)}` : ''}`}
-                    className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
+                    className="hidden sm:flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] hover:text-[#14111E] transition-colors font-sans"
                   >
                     View All <ArrowRight size={13} />
                   </Link>
@@ -740,27 +738,27 @@ const ProductDetail = () => {
                             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-600"
                           />
                           {rel.original_price > rel.price && (
-                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
+                            <span className="absolute top-2 left-2 bg-[#14111E] text-[#FBF9F5] text-[14px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full font-sans">
                               -{Math.round(((rel.original_price - rel.price) / rel.original_price) * 100)}%
                             </span>
                           )}
                           <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/90 backdrop-blur-sm border border-[#E5DBCC] px-2 py-0.5 rounded-full">
-                            <span className="text-[9px] font-bold text-[#8C6D37] uppercase tracking-wider">
+                            <span className="text-[14px] font-bold text-[#8C6D37] uppercase tracking-wider">
                               {getFlag(rel.inspired_country || rel.country)} {(rel.inspired_country || rel.country || '').split(' ')[0]}
                             </span>
                           </div>
                         </div>
                         <div className="p-2.5 sm:p-3 flex flex-col gap-0.5">
-                          <span className="text-[9px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
+                          <span className="text-[14px] uppercase tracking-[0.2em] font-semibold text-[#C8A46A] font-sans truncate">
                             {rel.category || 'Velouraz'}
                           </span>
-                          <h4 className="font-serif text-[13px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
+                          <h4 className="font-serif text-[14px] font-normal text-[#14111E] group-hover:text-[#C8A46A] transition-colors line-clamp-1 leading-snug">
                             {rel.name}
                           </h4>
                           <div className="flex items-baseline gap-1.5 mt-0.5">
-                            <span className="text-[12px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
+                            <span className="text-[14px] font-bold text-[#14111E] font-sans">₹{Number(rel.price).toLocaleString()}</span>
                             {rel.original_price > rel.price && (
-                              <span className="text-[10px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
+                              <span className="text-[14px] text-[#9E9082] line-through font-sans">₹{Number(rel.original_price).toLocaleString()}</span>
                             )}
                           </div>
                         </div>
@@ -777,9 +775,9 @@ const ProductDetail = () => {
       </div>
 
       {/* Floating Pill Sticky Action Bottom Bar (Mobile & Desktop) */}
-      <div className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-[120] w-[94%] sm:w-auto max-w-2xl lg:max-w-3xl rounded-2xl sm:rounded-3xl bg-[#FAF8F5]/95 backdrop-blur-2xl border border-[#E5D7C5] shadow-[0_12px_40px_rgba(0,0,0,0.16)] p-2.5 sm:p-3 px-4 sm:px-6 transition-all duration-300">
+      <div className="fixed bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-[120] w-[94%] sm:w-auto max-w-2xl lg:max-w-3xl rounded-2xl sm:rounded-3xl bg-[#FAF8F5]/95 backdrop-blur-2xl border border-[#E5D7C5] shadow-[0_14px_40px_rgba(0,0,0,0.16)] p-2.5 sm:p-3 px-4 sm:px-6 transition-all duration-300">
         <div className="flex items-center justify-between gap-4 sm:gap-6">
-          
+
           {/* Left: Product Thumbnail, Title & Price (Hidden on Mobile View) */}
           <div className="hidden sm:flex items-center gap-3 min-w-0">
             <div className="hidden sm:block w-10 h-12 rounded-xl overflow-hidden bg-[#F6F2EC] border border-[#E5D7C5] shrink-0">
@@ -803,7 +801,7 @@ const ProductDetail = () => {
                   </span>
                 )}
                 {discountPercent > 0 && (
-                  <span className="text-[10px] sm:text-[11px] text-[#8C6D38] font-bold uppercase tracking-wider bg-[#FAF2E8] border border-[#C8A46A]/40 px-2 py-0.5 rounded-full font-sans">
+                  <span className="text-[14px] sm:text-[14px] text-[#8C6D38] font-bold uppercase tracking-wider bg-[#FAF2E8] border border-[#C8A46A]/40 px-2 py-0.5 rounded-full font-sans">
                     {discountPercent}% OFF
                   </span>
                 )}
@@ -816,13 +814,12 @@ const ProductDetail = () => {
             <button
               onClick={handleAddToCart}
               disabled={isOutOfStock || cartLoading}
-              className={`flex-1 sm:flex-initial sm:min-w-[140px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer ${
-                isOutOfStock
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : isInCart(product.id)
+              className={`flex-1 sm:flex-initial sm:min-w-[140px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer ${isOutOfStock
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : isInCart(product.id)
                   ? 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
                   : 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
-              }`}
+                }`}
             >
               {cartLoading ? (
                 <Loader2 size={15} className="animate-spin shrink-0" />
@@ -835,11 +832,10 @@ const ProductDetail = () => {
             <button
               onClick={handleBuyNow}
               disabled={isOutOfStock}
-              className={`flex-1 sm:flex-initial sm:min-w-[120px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 cursor-pointer ${
-                isOutOfStock
-                  ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
-                  : 'border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5] active:scale-[0.98] font-bold'
-              }`}
+              className={`flex-1 sm:flex-initial sm:min-w-[120px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 cursor-pointer ${isOutOfStock
+                ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+                : 'border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5] active:scale-[0.98] font-bold'
+                }`}
             >
               <span className="truncate">Buy Now</span>
             </button>

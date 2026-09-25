@@ -32,7 +32,7 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [imageFilter, setImageFilter] = useState("all"); // 'all', 'has_images', 'missing_images'
-  
+
   // Modal state for editing a product's full gallery
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalImages, setModalImages] = useState([]);
@@ -40,14 +40,14 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
   const [isUploadingModal, setIsUploadingModal] = useState(false);
   const [modalSuccessMsg, setModalSuccessMsg] = useState("");
   const [modalErrorMsg, setModalErrorMsg] = useState("");
-  
+
   // Quick upload loading state per product row: { [productId]: boolean }
   const [rowUploading, setRowUploading] = useState({});
   const [toastMessage, setToastMessage] = useState(null);
-  
+
   // Image Lightbox Preview
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
-  
+
   const fileInputRef = useRef(null);
   const modalFileInputRef = useRef(null);
 
@@ -81,9 +81,9 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
         `${p.name || ""} ${p.sku || ""} ${p.category || ""}`
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
-      
+
       const matchCategory = categoryFilter === "All" || p.category === categoryFilter;
-      
+
       const imgCount = (p.images && p.images.length > 0) ? p.images.length : (p.image ? 1 : 0);
       let matchImageFilter = true;
       if (imageFilter === "has_images") matchImageFilter = imgCount > 0;
@@ -120,10 +120,10 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
         uploadedUrls.push(url);
       }
 
-      const existingImages = product.images && product.images.length > 0 
-        ? [...product.images] 
+      const existingImages = product.images && product.images.length > 0
+        ? [...product.images]
         : (product.image ? [product.image] : []);
-      
+
       const updatedImages = [...existingImages, ...uploadedUrls];
       const updatedPrimaryImage = updatedImages[0] || "";
 
@@ -145,10 +145,10 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
   const handleDeleteImageFromProduct = async (product, indexToDelete) => {
     if (!window.confirm(`Delete image #${indexToDelete + 1} from "${product.name}"?`)) return;
 
-    const existingImages = product.images && product.images.length > 0 
-      ? [...product.images] 
+    const existingImages = product.images && product.images.length > 0
+      ? [...product.images]
       : (product.image ? [product.image] : []);
-    
+
     const updatedImages = existingImages.filter((_, idx) => idx !== indexToDelete);
     const updatedPrimaryImage = updatedImages[0] || "";
 
@@ -166,8 +166,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
 
   // Set primary image directly from table thumbnail hover
   const handleSetPrimaryFromTable = async (product, indexToPrimary) => {
-    const existingImages = product.images && product.images.length > 0 
-      ? [...product.images] 
+    const existingImages = product.images && product.images.length > 0
+      ? [...product.images]
       : (product.image ? [product.image] : []);
 
     if (indexToPrimary === 0 || indexToPrimary >= existingImages.length) return;
@@ -191,8 +191,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
   // Modal Open Handlers
   const openGalleryModal = (product) => {
     setSelectedProduct(product);
-    const productImages = product.images && product.images.length > 0 
-      ? [...product.images] 
+    const productImages = product.images && product.images.length > 0
+      ? [...product.images]
       : (product.image ? [product.image] : []);
     setModalImages(productImages);
     setNewUrl("");
@@ -309,11 +309,10 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border text-sm font-semibold ${
-              toastMessage.type === "error"
-                ? "bg-red-900/90 border-red-700 text-white"
-                : "bg-emerald-900/90 border-emerald-700 text-white"
-            }`}
+            className={`fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border text-sm font-semibold ${toastMessage.type === "error"
+              ? "bg-red-900/90 border-red-700 text-white"
+              : "bg-emerald-900/90 border-emerald-700 text-white"
+              }`}
           >
             {toastMessage.type === "error" ? <AlertCircle size={18} /> : <Check size={18} />}
             <span>{toastMessage.msg}</span>
@@ -426,31 +425,28 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
             <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">
               <button
                 onClick={() => setImageFilter("all")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
-                  imageFilter === "all"
-                    ? "bg-[#811331] text-white shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-                }`}
+                className={`px-3 py-1.5 rounded-lg transition-all ${imageFilter === "all"
+                  ? "bg-[#811331] text-white shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
               >
                 All ({metrics.total})
               </button>
               <button
                 onClick={() => setImageFilter("has_images")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
-                  imageFilter === "has_images"
-                    ? "bg-emerald-600 text-white shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-                }`}
+                className={`px-3 py-1.5 rounded-lg transition-all ${imageFilter === "has_images"
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
               >
                 With Images ({metrics.withImages})
               </button>
               <button
                 onClick={() => setImageFilter("missing_images")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
-                  imageFilter === "missing_images"
-                    ? "bg-amber-600 text-white shadow-sm"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
-                }`}
+                className={`px-3 py-1.5 rounded-lg transition-all ${imageFilter === "missing_images"
+                  ? "bg-amber-600 text-white shadow-sm"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900"
+                  }`}
               >
                 Missing ({metrics.missing})
               </button>
@@ -489,8 +485,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                     product.images && product.images.length > 0
                       ? product.images
                       : product.image
-                      ? [product.image]
-                      : [];
+                        ? [product.image]
+                        : [];
                   const count = productImages.length;
                   const isUploading = rowUploading[product.id];
 
@@ -502,9 +498,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                           {/* Mini Lead Thumbnail */}
                           <div
                             onClick={() => productImages[0] && setPreviewImageUrl(productImages[0])}
-                            className={`h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border bg-slate-100 dark:bg-slate-800 cursor-pointer grid place-items-center relative group ${
-                              productImages[0] ? "border-[#811331]/30" : "border-dashed border-slate-300"
-                            }`}
+                            className={`h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border bg-slate-100 dark:bg-slate-800 cursor-pointer grid place-items-center relative group ${productImages[0] ? "border-[#811331]/30" : "border-dashed border-slate-300"
+                              }`}
                           >
                             {productImages[0] ? (
                               <>
@@ -531,12 +526,12 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                             </h4>
                             <div className="flex items-center gap-2 mt-0.5">
                               {product.sku && (
-                                <span className="text-[11px] font-mono font-medium text-slate-400 uppercase">
+                                <span className="text-[14px] font-mono font-medium text-slate-400 uppercase">
                                   SKU: {product.sku}
                                 </span>
                               )}
                               {product.category && (
-                                <span className="inline-block rounded-md bg-[#811331]/10 px-2 py-0.5 text-[10px] font-bold text-[#811331]">
+                                <span className="inline-block rounded-md bg-[#811331]/10 px-2 py-0.5 text-[14px] font-bold text-[#811331]">
                                   {product.category}
                                 </span>
                               )}
@@ -557,9 +552,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                             {productImages.map((imgUrl, idx) => (
                               <div
                                 key={idx}
-                                className={`group relative h-14 w-14 flex-shrink-0 rounded-xl overflow-hidden border-2 bg-slate-100 dark:bg-slate-800 shadow-sm transition-all ${
-                                  idx === 0 ? "border-[#811331] ring-2 ring-[#811331]/20" : "border-slate-200 dark:border-slate-700"
-                                }`}
+                                className={`group relative h-14 w-14 flex-shrink-0 rounded-xl overflow-hidden border-2 bg-slate-100 dark:bg-slate-800 shadow-sm transition-all ${idx === 0 ? "border-[#811331] ring-2 ring-[#811331]/20" : "border-slate-200 dark:border-slate-700"
+                                  }`}
                               >
                                 <img
                                   src={getThumbnailUrl(imgUrl)}
@@ -572,7 +566,7 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
 
                                 {/* Primary Badge indicator */}
                                 {idx === 0 && (
-                                  <span className="absolute top-0.5 left-0.5 bg-[#811331] text-white p-0.5 rounded-md text-[9px] shadow-sm">
+                                  <span className="absolute top-0.5 left-0.5 bg-[#811331] text-white p-0.5 rounded-md text-[14px] shadow-sm">
                                     <Crown size={10} />
                                   </span>
                                 )}
@@ -619,11 +613,10 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                       {/* Total Images Count Badge */}
                       <td className="py-4 px-5 align-middle text-center">
                         <span
-                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                            count > 0
-                              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
-                              : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
-                          }`}
+                          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${count > 0
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                            : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                            }`}
                         >
                           <ImageIcon size={13} />
                           {count} {count === 1 ? "Image" : "Images"}
@@ -633,11 +626,10 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                       {/* Quick File Upload Button for Row */}
                       <td className="py-4 px-5 align-middle text-center">
                         <label
-                          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all ${
-                            isUploading
-                              ? "bg-slate-200 text-slate-500 cursor-not-allowed"
-                              : "bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700"
-                          }`}
+                          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-all ${isUploading
+                            ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                            : "bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700"
+                            }`}
                         >
                           {isUploading ? (
                             <>
@@ -787,7 +779,7 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                       className="hidden"
                       onChange={(e) => handleModalUploadFiles(e.target.files)}
                     />
-                    <p className="mt-1.5 text-[11px] text-slate-400">
+                    <p className="mt-1.5 text-[14px] text-slate-400">
                       Supports JPG, PNG, WEBP. Uploads directly to Cloudinary gallery.
                     </p>
                   </div>
@@ -814,7 +806,7 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                         <Plus size={16} />
                       </button>
                     </div>
-                    <p className="mt-1.5 text-[11px] text-slate-400">
+                    <p className="mt-1.5 text-[14px] text-slate-400">
                       Paste a direct web image link and press enter or plus.
                     </p>
                   </div>
@@ -842,9 +834,8 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
                       {modalImages.map((imgUrl, index) => (
                         <div
                           key={index}
-                          className={`group relative aspect-square rounded-2xl overflow-hidden border-2 bg-slate-100 dark:bg-slate-800 shadow-sm transition-all ${
-                            index === 0 ? "border-[#811331] ring-2 ring-[#811331]/30" : "border-slate-200 dark:border-slate-700"
-                          }`}
+                          className={`group relative aspect-square rounded-2xl overflow-hidden border-2 bg-slate-100 dark:bg-slate-800 shadow-sm transition-all ${index === 0 ? "border-[#811331] ring-2 ring-[#811331]/30" : "border-slate-200 dark:border-slate-700"
+                            }`}
                         >
                           <img
                             src={imgUrl}
@@ -854,14 +845,14 @@ const ProductImageManager = ({ products: initialProducts = [], isDarkMode = fals
 
                           {/* Primary Badge */}
                           {index === 0 && (
-                            <div className="absolute top-2 left-2 flex items-center gap-1 rounded-md bg-[#811331] px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
+                            <div className="absolute top-2 left-2 flex items-center gap-1 rounded-md bg-[#811331] px-2 py-0.5 text-[14px] font-bold text-white shadow-md">
                               <Crown size={11} />
                               <span>Primary</span>
                             </div>
                           )}
 
                           {/* Index Badge */}
-                          <div className="absolute top-2 right-2 rounded-md bg-black/60 px-2 py-0.5 text-[10px] font-mono font-bold text-white backdrop-blur-sm">
+                          <div className="absolute top-2 right-2 rounded-md bg-black/60 px-2 py-0.5 text-[14px] font-mono font-bold text-white backdrop-blur-sm">
                             #{index + 1}
                           </div>
 

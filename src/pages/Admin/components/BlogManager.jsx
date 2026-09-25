@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../../components/Firebase';
-import { 
-  collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy 
+import {
+  collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy
 } from 'firebase/firestore';
-import { 
+import {
   FileText, Plus, Edit2, Trash2, Image, Sparkles, X, Check, Search, Calendar, User, Clock, Eye,
   CloudUpload, Loader2, Images, AlertCircle, CheckCircle2
 } from 'lucide-react';
@@ -116,7 +116,7 @@ const BlogManager = () => {
   const handleBulkUploadLocalImages = async () => {
     setBulkUploading(true);
     setBulkMessage('');
-    
+
     const localImageDefs = [
       { keyword: "Japan", path: "/img/blogs/japan-miyuki.png", name: "japan-miyuki.png" },
       { keyword: "Paris", path: "/img/blogs/paris-luxury.png", name: "paris-luxury.png" },
@@ -146,8 +146,8 @@ const BlogManager = () => {
             const currentImg = data.image || "";
 
             if (
-              title.toLowerCase().includes(item.keyword.toLowerCase()) || 
-              currentImg.includes(item.name) || 
+              title.toLowerCase().includes(item.keyword.toLowerCase()) ||
+              currentImg.includes(item.name) ||
               currentImg === item.path
             ) {
               await updateDoc(doc(db, "blogs", blogDoc.id), {
@@ -219,7 +219,7 @@ const BlogManager = () => {
     }
   };
 
-  const filteredBlogs = blogs.filter(b => 
+  const filteredBlogs = blogs.filter(b =>
     b.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     b.category?.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -308,11 +308,11 @@ const BlogManager = () => {
               <div>
                 <div className="relative aspect-video w-full bg-gray-100 overflow-hidden">
                   <img src={blog.image || 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=1200'} alt={blog.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-3 left-3 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md">
+                  <span className="absolute top-3 left-3 bg-[#2e0e43] text-white text-[14px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md">
                     {blog.category}
                   </span>
                   {blog.image?.includes('cloudinary') && (
-                    <span className="absolute top-3 right-3 bg-emerald-600/90 backdrop-blur-xs text-white text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded flex items-center gap-1">
+                    <span className="absolute top-3 right-3 bg-emerald-600/90 backdrop-blur-xs text-white text-[14px] uppercase font-bold tracking-wider px-2 py-0.5 rounded flex items-center gap-1">
                       <CloudUpload size={11} /> Cloudinary
                     </span>
                   )}
@@ -333,9 +333,9 @@ const BlogManager = () => {
 
               {/* Actions Footer */}
               <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
-                <a 
-                  href={`/blog/${blog.id}`} 
-                  target="_blank" 
+                <a
+                  href={`/blog/${blog.id}`}
+                  target="_blank"
                   rel="noreferrer"
                   className="text-xs text-gray-500 hover:text-[#2e0e43] flex items-center gap-1"
                 >
@@ -445,7 +445,7 @@ const BlogManager = () => {
                 {/* Cloudinary Image Upload / URL / Gallery */}
                 <div className="space-y-2">
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-600">Cover Image (Cloudinary)</label>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"

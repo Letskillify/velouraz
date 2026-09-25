@@ -85,7 +85,7 @@ const OrderTracking = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] pt-32 pb-28 selection:bg-[#14111E] selection:text-[#FBF9F5]">
-      
+
       <Breadcrumb
         title="Live Shipment Tracking"
         subtitle="Real-time Shiprocket logistics tracking for your handcrafted Velouraz acquisitions."
@@ -94,7 +94,7 @@ const OrderTracking = () => {
       />
 
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-8">
-        
+
         {/* Search Header Container */}
         <div className="bg-white p-6 sm:p-10 rounded-3xl border border-[#E5D7C5] shadow-xs text-center space-y-6">
           <div className="max-w-xl mx-auto space-y-2">
@@ -152,7 +152,7 @@ const OrderTracking = () => {
             {/* Overview Card */}
             <div className="bg-white rounded-3xl border border-[#E5D7C5] p-6 sm:p-8 shadow-xs grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                   Tracking Code (AWB)
                 </span>
                 <p className="text-sm font-bold font-mono text-[#14111E] mt-1">
@@ -161,7 +161,7 @@ const OrderTracking = () => {
               </div>
 
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                   Logistics Carrier
                 </span>
                 <p className="text-xs font-bold text-[#14111E] mt-1 font-sans flex items-center justify-center md:justify-start gap-1.5">
@@ -170,7 +170,7 @@ const OrderTracking = () => {
               </div>
 
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                   Est. Delivery Date
                 </span>
                 <p className="text-xs font-bold text-emerald-800 mt-1 font-sans flex items-center justify-center md:justify-start gap-1.5">
@@ -179,10 +179,10 @@ const OrderTracking = () => {
               </div>
 
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                   Current Status
                 </span>
-                <span className="inline-block mt-1 px-3 py-1 bg-[#14111E] text-[#FBF9F5] text-[10px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
+                <span className="inline-block mt-1 px-3 py-1 bg-[#14111E] text-[#FBF9F5] text-[14px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
                   {trackingInfo.currentStatus}
                 </span>
               </div>
@@ -200,11 +200,10 @@ const OrderTracking = () => {
                   <div key={idx} className="relative flex items-start gap-4">
                     {/* Status Dot */}
                     <div
-                      className={`absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all ${
-                        step.completed
-                          ? "bg-[#14111E] border-[#C8A46A] text-[#FBF9F5] shadow-xs"
-                          : "bg-white border-[#E5D7C5] text-[#9E9082]"
-                      }`}
+                      className={`absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all ${step.completed
+                        ? "bg-[#14111E] border-[#C8A46A] text-[#FBF9F5] shadow-xs"
+                        : "bg-white border-[#E5D7C5] text-[#9E9082]"
+                        }`}
                     >
                       {step.completed ? <CheckCircle2 size={13} className="text-[#C8A46A]" /> : <Clock size={12} />}
                     </div>
@@ -214,7 +213,7 @@ const OrderTracking = () => {
                         {step.title}
                       </h4>
                       <p className="text-xs text-[#786C60] font-serif italic">
-                        {step.location} • <span className="font-sans text-[11px] not-italic">{step.timestamp}</span>
+                        {step.location} • <span className="font-sans text-[14px] not-italic">{step.timestamp}</span>
                       </p>
                     </div>
                   </div>
@@ -227,7 +226,7 @@ const OrderTracking = () => {
               <div className="bg-white rounded-3xl border border-[#E5D7C5] p-6 sm:p-8 shadow-xs space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#E5D7C5] pb-4">
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C8A46A] block font-sans">
+                    <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#C8A46A] block font-sans">
                       Associated Order Details
                     </span>
                     <h4 className="font-serif text-xl text-[#14111E]">Order #{orderData.id}</h4>
@@ -244,7 +243,7 @@ const OrderTracking = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Shipping Address */}
                   <div className="bg-[#F6F2EC] p-5 rounded-2xl border border-[#E5D7C5] space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
+                    <span className="text-[14px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
                       <MapPin size={13} className="text-[#C8A46A]" /> Delivery Address
                     </span>
                     <p className="text-xs font-bold text-[#14111E] font-sans">{orderData.customerName || orderData.shippingAddress?.name}</p>
@@ -254,7 +253,7 @@ const OrderTracking = () => {
 
                   {/* Items List */}
                   <div className="bg-[#F6F2EC] p-5 rounded-2xl border border-[#E5D7C5] space-y-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
+                    <span className="text-[14px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
                       <Package size={13} className="text-[#C8A46A]" /> Purchased Creations ({(orderData.items || []).length})
                     </span>
                     <div className="space-y-2 max-h-36 overflow-y-auto no-scrollbar">

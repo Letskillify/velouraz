@@ -64,11 +64,11 @@ const sendNodemailerOtp = async (toEmail, otp) => {
           <p style="color: #333; font-size: 16px;">Hello,</p>
           <p style="color: #555; font-size: 14px;">Your 6-digit verification code is:</p>
           <div style="text-align: center; margin: 25px 0;">
-            <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #b8860b; background: #faf8f5; padding: 10px 24px; border-radius: 6px; border: 1px dashed #b8860b;">
+            <span style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #b8860b; background: #faf8f5; padding: 14px 24px; border-radius: 6px; border: 1px dashed #b8860b;">
               ${otp}
             </span>
           </div>
-          <p style="color: #777; font-size: 13px;">This code expires in 10 minutes. If you did not request this code, please ignore this email.</p>
+          <p style="color: #777; font-size: 14px;">This code expires in 10 minutes. If you did not request this code, please ignore this email.</p>
         </div>
       `,
     });

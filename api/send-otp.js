@@ -90,33 +90,33 @@ export default async function handler(req, res) {
           <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
             <tr>
               <td align="center">
-                <table width="100%" maxWidth="550" cellpadding="0" cellspacing="0" style="max-width: 550px; background-color: #161217; border: 1px solid #2e2633; border-radius: 12px; overflow: hidden; padding: 40px 30px;">
+                <table width="100%" maxWidth="550" cellpadding="0" cellspacing="0" style="max-width: 550px; background-color: #161217; border: 1px solid #2e2633; border-radius: 14px; overflow: hidden; padding: 40px 30px;">
                   <tr>
                     <td align="center" style="padding-bottom: 20px;">
                       <h1 style="margin: 0; font-family: Georgia, serif; font-size: 26px; font-weight: normal; letter-spacing: 4px; color: #d4af37;">VELOURAZ</h1>
-                      <p style="margin: 5px 0 0 0; font-size: 11px; tracking: 2px; text-transform: uppercase; color: #8a8292;">High Jewellery</p>
+                      <p style="margin: 5px 0 0 0; font-size: 14px; tracking: 2px; text-transform: uppercase; color: #8a8292;">High Jewellery</p>
                     </td>
                   </tr>
                   <tr>
                     <td style="border-top: 1px solid #2e2633; padding-top: 25px;">
-                      <h2 style="font-size: 18px; font-weight: 500; color: #ffffff; margin-bottom: 12px;">Verification Code</h2>
+                      <h2 style="font-size: 18px; font-weight: 500; color: #ffffff; margin-bottom: 14px;">Verification Code</h2>
                       <p style="font-size: 14px; color: #b5adc0; line-height: 1.6; margin: 0 0 24px 0;">
                         Please enter the verification code below to verify your email and proceed.
                       </p>
                       <div style="text-align: center; margin: 30px 0; padding: 20px; background: #1e1921; border-radius: 8px; border: 1px dashed #d4af37;">
                         <span style="font-size: 34px; font-weight: bold; letter-spacing: 8px; color: #d4af37;">${otp}</span>
                       </div>
-                      <p style="font-size: 13px; color: #8a8292; line-height: 1.5; margin: 0;">
+                      <p style="font-size: 14px; color: #8a8292; line-height: 1.5; margin: 0;">
                         This code is valid for <strong>5 minutes</strong>. For security reasons, please do not share this code with anyone.
                       </p>
                     </td>
                   </tr>
                   <tr>
                     <td align="center" style="border-top: 1px solid #2e2633; margin-top: 30px; padding-top: 25px;">
-                      <p style="font-size: 11px; color: #6b6374; margin: 0;">
+                      <p style="font-size: 14px; color: #6b6374; margin: 0;">
                         If you did not request this code, please ignore this email.
                       </p>
-                      <p style="font-size: 11px; color: #6b6374; margin-top: 8px;">
+                      <p style="font-size: 14px; color: #6b6374; margin-top: 8px;">
                         © ${new Date().getFullYear()} Velouraz High Jewellery. All rights reserved.
                       </p>
                     </td>

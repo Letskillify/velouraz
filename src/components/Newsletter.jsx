@@ -52,11 +52,11 @@ const Newsletter = () => {
           <div className="relative p-7 sm:p-9 rounded-2xl bg-black/40 backdrop-blur-xl border border-[#E5C794]/50 shadow-[0_25px_60px_rgba(0,0,0,0.6),0_0_35px_rgba(200,169,122,0.18)] space-y-6 overflow-hidden group transition-all duration-500">
 
             {/* Glowing Top Gold Accent Line */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E5C794] to-transparent shadow-[0_0_10px_#E5C794]" />
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#E5C794] to-transparent shadow-[0_0_14px_#E5C794]" />
 
             {/* Card Header */}
             <div className="space-y-3 text-left">
-              
+
               <h3 className="text-2xl sm:text-3xl font-light tracking-wide text-white drop-shadow-md">
                 Join the <span className="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#F3E5AB] via-[#FFF8E7] to-[#E5C794]">Inner Circle</span>
               </h3>

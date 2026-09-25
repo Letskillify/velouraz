@@ -68,10 +68,10 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
             </div>
             <div className="mt-3 flex items-baseline justify-between">
               <div>
-                <p className="text-[11px] text-blue-200 uppercase font-medium">Paying Velouraz</p>
+                <p className="text-[14px] text-blue-200 uppercase font-medium">Paying Velouraz</p>
                 <h3 className="text-2xl font-bold text-white">₹{Number(amount || 0).toLocaleString()}</h3>
               </div>
-              <span className="text-[10px] bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-1 rounded-full font-bold">
+              <span className="text-[14px] bg-emerald-400/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-1 rounded-full font-bold">
                 TEST MODE
               </span>
             </div>
@@ -80,43 +80,39 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
           {/* Customer Context Bar */}
           <div className="bg-slate-50 border-b border-slate-100 px-5 py-2.5 flex items-center justify-between text-xs text-slate-600">
             <span className="truncate max-w-[200px] font-medium">{customerData?.name || "Customer"}</span>
-            <span className="font-mono text-slate-400 text-[11px]">{customerData?.phone || customerData?.email}</span>
+            <span className="font-mono text-slate-400 text-[14px]">{customerData?.phone || customerData?.email}</span>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="grid grid-cols-4 border-b border-slate-100 bg-slate-50/50 p-1 text-[11px] font-semibold text-slate-600">
+          <div className="grid grid-cols-4 border-b border-slate-100 bg-slate-50/50 p-1 text-[14px] font-semibold text-slate-600">
             <button
               onClick={() => setActiveTab("upi")}
-              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${
-                activeTab === "upi" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
-              }`}
+              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${activeTab === "upi" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
+                }`}
             >
               <QrCode size={15} />
               <span>UPI / QR</span>
             </button>
             <button
               onClick={() => setActiveTab("card")}
-              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${
-                activeTab === "card" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
-              }`}
+              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${activeTab === "card" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
+                }`}
             >
               <CreditCard size={15} />
               <span>Card</span>
             </button>
             <button
               onClick={() => setActiveTab("netbanking")}
-              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${
-                activeTab === "netbanking" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
-              }`}
+              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${activeTab === "netbanking" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
+                }`}
             >
               <Building2 size={15} />
               <span>NetBanking</span>
             </button>
             <button
               onClick={() => setActiveTab("wallet")}
-              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${
-                activeTab === "wallet" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
-              }`}
+              className={`py-2 px-1 rounded-xl flex flex-col items-center gap-1 transition-all ${activeTab === "wallet" ? "bg-white text-blue-600 shadow-xs font-bold" : "hover:text-slate-900"
+                }`}
             >
               <Wallet size={15} />
               <span>Wallet</span>
@@ -132,11 +128,11 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                   <div className="w-28 h-28 mx-auto my-2.5 bg-white border border-blue-200 rounded-xl p-2 flex items-center justify-center">
                     <QrCode size={90} className="text-slate-800" />
                   </div>
-                  <p className="text-[11px] text-blue-700">Supported: GPay, PhonePe, Paytm, BHIM</p>
+                  <p className="text-[14px] text-blue-700">Supported: GPay, PhonePe, Paytm, BHIM</p>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                  <label className="block text-[14px] font-bold text-slate-600 uppercase mb-1">
                     Virtual Payment Address (VPA)
                   </label>
                   <input
@@ -145,7 +141,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                     onChange={(e) => setUpiId(e.target.value)}
                     className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-mono font-medium outline-none focus:border-blue-500 bg-slate-50"
                   />
-                  <p className="text-[10px] text-slate-400 mt-1">Use 'success@razorpay' to simulate successful payment.</p>
+                  <p className="text-[14px] text-slate-400 mt-1">Use 'success@razorpay' to simulate successful payment.</p>
                 </div>
               </div>
             )}
@@ -153,7 +149,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
             {activeTab === "card" && (
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                  <label className="block text-[14px] font-bold text-slate-600 uppercase mb-1">
                     Card Number
                   </label>
                   <div className="relative">
@@ -169,7 +165,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                    <label className="block text-[14px] font-bold text-slate-600 uppercase mb-1">
                       Expiry (MM/YY)
                     </label>
                     <input
@@ -180,7 +176,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                    <label className="block text-[14px] font-bold text-slate-600 uppercase mb-1">
                       CVV
                     </label>
                     <input
@@ -192,7 +188,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                     />
                   </div>
                 </div>
-                <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl text-[11px] text-emerald-800 flex items-center gap-1.5">
+                <div className="bg-emerald-50 border border-emerald-100 p-2.5 rounded-xl text-[14px] text-emerald-800 flex items-center gap-1.5">
                   <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
                   <span>Razorpay test cards pre-configured for instant verification.</span>
                 </div>
@@ -201,7 +197,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
 
             {activeTab === "netbanking" && (
               <div className="space-y-3">
-                <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                <label className="block text-[14px] font-bold text-slate-600 uppercase">
                   Select Popular Bank
                 </label>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -210,11 +206,10 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                       key={b}
                       type="button"
                       onClick={() => setSelectedBank(b)}
-                      className={`p-2.5 rounded-xl border font-medium flex items-center justify-between transition-all ${
-                        selectedBank === b
-                          ? "border-blue-600 bg-blue-50/50 text-blue-900 font-bold"
-                          : "border-slate-200 bg-slate-50 hover:bg-white text-slate-700"
-                      }`}
+                      className={`p-2.5 rounded-xl border font-medium flex items-center justify-between transition-all ${selectedBank === b
+                        ? "border-blue-600 bg-blue-50/50 text-blue-900 font-bold"
+                        : "border-slate-200 bg-slate-50 hover:bg-white text-slate-700"
+                        }`}
                     >
                       <span>{b}</span>
                       {selectedBank === b && <Check size={14} className="text-blue-600" />}
@@ -226,7 +221,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
 
             {activeTab === "wallet" && (
               <div className="space-y-3">
-                <label className="block text-[11px] font-bold text-slate-600 uppercase">
+                <label className="block text-[14px] font-bold text-slate-600 uppercase">
                   Select Wallet
                 </label>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -235,11 +230,10 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
                       key={w}
                       type="button"
                       onClick={() => setSelectedBank(w)}
-                      className={`p-2.5 rounded-xl border font-medium flex items-center justify-between transition-all ${
-                        selectedBank === w
-                          ? "border-blue-600 bg-blue-50/50 text-blue-900 font-bold"
-                          : "border-slate-200 bg-slate-50 hover:bg-white text-slate-700"
-                      }`}
+                      className={`p-2.5 rounded-xl border font-medium flex items-center justify-between transition-all ${selectedBank === w
+                        ? "border-blue-600 bg-blue-50/50 text-blue-900 font-bold"
+                        : "border-slate-200 bg-slate-50 hover:bg-white text-slate-700"
+                        }`}
                     >
                       <span>{w}</span>
                       {selectedBank === w && <Check size={14} className="text-blue-600" />}
@@ -271,7 +265,7 @@ const RazorpayTestModal = ({ isOpen, onClose, amount, orderId, customerData, onS
               </button>
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+            <div className="flex items-center justify-between text-[14px] text-slate-400 pt-1">
               <span className="flex items-center gap-1">
                 <Lock size={12} className="text-slate-400" />
                 256-Bit SSL Encrypted

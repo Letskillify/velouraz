@@ -106,7 +106,7 @@ const CategorySection = () => {
         setCategories(snap.docs.map((d, index) => {
           const item = d.data();
           let targetCategory = item.name || '';
-          
+
           // Map to match Shop category filters
           const nameLower = targetCategory.toLowerCase().trim();
           if (nameLower === 'necklaces') targetCategory = 'Necklace';
@@ -135,14 +135,14 @@ const CategorySection = () => {
   }, []);
 
   return (
-    <section 
+    <section
       className="py-6 md:py-8 overflow-hidden relative bg-cover bg-center bg-no-repeat bg-[#FAF7F2]"
       style={{
         backgroundImage: `url('https://res.cloudinary.com/duzwys877/image/upload/v1785055538/ChatGPT_Image_Jul_26_2026_02_14_54_PM_ynzwqp.png')`
       }}
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12">
-        
+
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between mb-6 md:mb-8 gap-6">
           <div className="w-10 opacity-0 hidden lg:block" /> {/* Spacer for centering */}
@@ -209,13 +209,13 @@ const CategorySection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
-                  className="group flex flex-col h-full rounded-2xl border border-[#D5C29D]/50 bg-black overflow-hidden shadow-[0_6px_25px_rgba(0,0,0,0.12)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.22)] hover:border-[#B58E58] transition-all duration-500 cursor-pointer relative aspect-[3/3.8]"
+                  className="group flex flex-col h-full rounded-2xl border border-[#D5C29D]/50 bg-black overflow-hidden shadow-[0_6px_25px_rgba(0,0,0,0.12)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.22)] hover:border-[#B58E58] transition-all duration-500 cursor-pointer relative aspect-[3/3.8]"
                 >
                   <Link to={category.link} className="relative w-full h-full block">
                     {/* Background Full Image */}
-                    <img 
-                      src={getOptimizedImageUrl(category.image)} 
-                      alt={category.name} 
+                    <img
+                      src={getOptimizedImageUrl(category.image)}
+                      alt={category.name}
                       loading="lazy"
                       decoding="async"
                       onError={(e) => handleImageError(e, category.image)}

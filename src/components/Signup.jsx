@@ -208,7 +208,7 @@ const Signup = () => {
 
           <div className="flex items-center gap-3 mb-5">
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
-            <span className="text-[11px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/60">Or with Email</span>
+            <span className="text-[14px] tracking-[0.2em] uppercase font-bold text-[#7B6D63]/60">Or with Email</span>
             <div className="flex-1 h-px bg-[#D8CBBE]/40" />
           </div>
 
@@ -217,22 +217,20 @@ const Signup = () => {
             <button
               type="button"
               onClick={() => { setAuthMode("otp"); setError(""); }}
-              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${
-                authMode === "otp"
+              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${authMode === "otp"
                   ? "bg-white text-[#2e0e43] shadow-xs"
                   : "text-[#7B6D63] hover:text-[#2e0e43]"
-              }`}
+                }`}
             >
               Email OTP
             </button>
             <button
               type="button"
               onClick={() => { setAuthMode("password"); setError(""); }}
-              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${
-                authMode === "password"
+              className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${authMode === "password"
                   ? "bg-white text-[#2e0e43] shadow-xs"
                   : "text-[#7B6D63] hover:text-[#2e0e43]"
-              }`}
+                }`}
             >
               Password
             </button>
@@ -254,7 +252,7 @@ const Signup = () => {
                     required
                   />
                 </div>
-                <p className="text-[11px] text-[#7B6D63] mt-1" style={{ fontFamily: SERIF }}>
+                <p className="text-[14px] text-[#7B6D63] mt-1" style={{ fontFamily: SERIF }}>
                   We'll send a 6-digit code to your email. Instant, no password needed.
                 </p>
               </div>

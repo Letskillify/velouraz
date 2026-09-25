@@ -276,7 +276,7 @@ const NewsManager = ({ isDarkMode }) => {
             >
               {/* Top Action Controls overlay */}
               <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between gap-1">
-                <div className="flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[10px] font-bold tracking-wider">
+                <div className="flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[14px] font-bold tracking-wider">
                   <Instagram size={11} className="text-[#e8c37b]" />
                   <span>REEL</span>
                 </div>
@@ -314,7 +314,7 @@ const NewsManager = ({ isDarkMode }) => {
 
                 {/* Bottom Overlay Info on Video */}
                 <div className="absolute bottom-3 inset-x-3 text-white space-y-1 z-10">
-                  <div className="flex items-center justify-between text-[10px] font-bold text-[#e8c37b]">
+                  <div className="flex items-center justify-between text-[14px] font-bold text-[#e8c37b]">
                     <span>✦ {reel.tag || "Luxury Edit"}</span>
                     <span>{reel.duration || "0:30"}</span>
                   </div>
@@ -441,14 +441,14 @@ const NewsManager = ({ isDarkMode }) => {
                           <span className="font-mono text-sm">{uploadProgress}%</span>
                         </div>
                         <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
-                          <div 
-                            className="bg-gradient-to-r from-[#811331] to-[#b01844] h-full transition-all duration-300 rounded-full" 
-                            style={{ width: `${uploadProgress}%` }} 
+                          <div
+                            className="bg-gradient-to-r from-[#811331] to-[#b01844] h-full transition-all duration-300 rounded-full"
+                            style={{ width: `${uploadProgress}%` }}
                           />
                         </div>
                       </div>
                     )}
-                    <p className={`text-[11px] ${textMuted}`}>
+                    <p className={`text-[14px] ${textMuted}`}>
                       You can paste a video URL or upload an MP4 video file to Cloudinary.
                     </p>
                   </div>

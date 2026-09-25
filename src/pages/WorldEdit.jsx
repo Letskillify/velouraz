@@ -136,8 +136,8 @@ const WorldEdit = () => {
     return counts;
   }, [products, countriesList]);
 
-  const filteredCountries = selectedCountry === 'All' 
-    ? countriesList 
+  const filteredCountries = selectedCountry === 'All'
+    ? countriesList
     : countriesList.filter(c => c.name.toLowerCase() === selectedCountry.toLowerCase());
 
   // Featured products matching active selected country tab
@@ -183,11 +183,10 @@ const WorldEdit = () => {
         <div className="flex flex-wrap items-center justify-center gap-2.5 mb-12 border-b border-[#EFE8DC] pb-6">
           <button
             onClick={() => setSelectedCountry('All')}
-            className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
-              selectedCountry === 'All'
-                ? 'bg-[#2e0e43] text-white shadow-md'
-                : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
-            }`}
+            className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${selectedCountry === 'All'
+              ? 'bg-[#2e0e43] text-white shadow-md'
+              : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
+              }`}
           >
             🌐 All Countries ({countriesList.length})
           </button>
@@ -195,18 +194,16 @@ const WorldEdit = () => {
             <button
               key={country.id}
               onClick={() => setSelectedCountry(country.name)}
-              className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${
-                selectedCountry === country.name
-                  ? 'bg-[#2e0e43] text-white shadow-md'
-                  : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
-              }`}
+              className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-2 ${selectedCountry === country.name
+                ? 'bg-[#2e0e43] text-white shadow-md'
+                : 'bg-[#FFFDF9] text-[#7B6D63] border border-[#EFE8DC] hover:border-[#B58E58] hover:text-[#2e0e43]'
+                }`}
             >
               <span>{country.flag}</span>
               <span>{country.name}</span>
               {countryCounts[country.name] > 0 && (
-                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                  selectedCountry === country.name ? 'bg-white/20 text-white' : 'bg-[#EFE8DC] text-[#2A2623]'
-                }`}>
+                <span className={`text-[14px] px-1.5 py-0.5 rounded-full ${selectedCountry === country.name ? 'bg-white/20 text-white' : 'bg-[#EFE8DC] text-[#2A2623]'
+                  }`}>
                   {countryCounts[country.name]}
                 </span>
               )}
@@ -223,7 +220,7 @@ const WorldEdit = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="group bg-[#FFFDF9] rounded-3xl border border-[#EFE8DC] overflow-hidden shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_35px_rgba(0,0,0,0.08)] hover:border-[#C8A97A] transition-all duration-500 flex flex-col justify-between"
+              className="group bg-[#FFFDF9] rounded-3xl border border-[#EFE8DC] overflow-hidden shadow-[0_4px_25px_rgba(0,0,0,0.03)] hover:shadow-[0_14px_35px_rgba(0,0,0,0.08)] hover:border-[#C8A97A] transition-all duration-500 flex flex-col justify-between"
             >
               <div>
                 {/* Media Cover (Auto-playing Video or Fallback Image - Same as PromoSlider) */}
@@ -247,7 +244,7 @@ const WorldEdit = () => {
 
                   {/* Dark Vignette Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none z-10" />
-                  
+
                   {/* Flag & Name Badge Overlay */}
                   <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#1A1613]/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-white z-20">
                     <span className="text-base">{c.flag}</span>
@@ -255,13 +252,13 @@ const WorldEdit = () => {
                   </div>
 
                   {/* Dynamic Product Count */}
-                  <div className="absolute top-4 right-4 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md z-20">
+                  <div className="absolute top-4 right-4 bg-[#2e0e43] text-white text-[14px] uppercase font-bold tracking-widest px-3 py-1 rounded-full shadow-md z-20">
                     {countryCounts[c.name] || 0} Products
                   </div>
 
                   {/* Title Overlay on Image Bottom */}
                   <div className="absolute bottom-4 left-4 right-4 text-white z-20">
-                    <p className="text-[#C8A97A] text-[11px] font-bold uppercase tracking-widest mb-0.5">
+                    <p className="text-[#C8A97A] text-[14px] font-bold uppercase tracking-widest mb-0.5">
                       {c.collection}
                     </p>
                     <h3 className="font-serif text-2xl font-light leading-tight">
@@ -278,12 +275,12 @@ const WorldEdit = () => {
 
                   {/* Featured Signature Elements */}
                   <div className="pt-2 border-t border-[#EFE8DC]/60">
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-[#B58E58] block mb-2">
+                    <span className="text-[14px] uppercase font-bold tracking-widest text-[#B58E58] block mb-2">
                       Key Highlights
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {c.featuredItems.map((item, i) => (
-                        <span key={i} className="text-[10px] font-medium bg-[#FAF7F2] border border-[#EFE8DC] text-[#2A2623] px-2.5 py-1 rounded-md">
+                        <span key={i} className="text-[14px] font-medium bg-[#FAF7F2] border border-[#EFE8DC] text-[#2A2623] px-2.5 py-1 rounded-md">
                           ✦ {item}
                         </span>
                       ))}
@@ -345,13 +342,13 @@ const WorldEdit = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {product.country && (
-                      <span className="absolute top-2 left-2 bg-black/75 text-white text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
+                      <span className="absolute top-2 left-2 bg-black/75 text-white text-[14px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
                         {product.country}
                       </span>
                     )}
                   </div>
                   <div className="p-4 space-y-1.5">
-                    <span className="text-[10px] font-semibold text-[#B58E58] uppercase tracking-wider block">
+                    <span className="text-[14px] font-semibold text-[#B58E58] uppercase tracking-wider block">
                       {product.category || 'Jewellery'}
                     </span>
                     <h4 className="font-serif text-sm font-bold text-[#2A2623] truncate group-hover:text-[#2e0e43] transition-colors">

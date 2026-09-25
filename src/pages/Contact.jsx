@@ -64,8 +64,8 @@ const Contact = () => {
             {/* Atelier Info Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EAE3D8] shadow-[0_4px_25px_rgba(0,0,0,0.03)] space-y-6 flex-1">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#C8A97A] block mb-1">
-                  ✦ VELOURAZ 
+                <span className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#C8A97A] block mb-1">
+                  ✦ VELOURAZ
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-serif text-[#2e0e43] font-normal leading-tight">
                   Get in Touch
@@ -86,9 +86,9 @@ const Contact = () => {
                     <Mail size={18} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Email Us</p>
+                    <p className="text-[14px] font-bold uppercase tracking-widest text-[#9C8B7C]">Email Us</p>
                     <p className="text-sm font-semibold text-[#2A2623] group-hover:text-[#2e0e43] transition-colors">contact@velouraz.in</p>
-                    <p className="text-[11px] text-[#8C7B6C] mt-0.5">Response within 24 hours</p>
+                    <p className="text-[14px] text-[#8C7B6C] mt-0.5">Response within 24 hours</p>
                   </div>
                 </a>
 
@@ -101,9 +101,9 @@ const Contact = () => {
                     <Phone size={18} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Call Us</p>
+                    <p className="text-[14px] font-bold uppercase tracking-widest text-[#9C8B7C]">Call Us</p>
                     <p className="text-sm font-semibold text-[#2A2623] group-hover:text-[#2e0e43] transition-colors">+91 83494 40045</p>
-                    <p className="text-[11px] text-[#8C7B6C] mt-0.5">Mon   Sat, 10am - 7pm IST</p>
+                    <p className="text-[14px] text-[#8C7B6C] mt-0.5">Mon   Sat, 10am - 7pm IST</p>
                   </div>
                 </a>
 
@@ -113,9 +113,9 @@ const Contact = () => {
                     <MapPin size={18} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Our Location</p>
+                    <p className="text-[14px] font-bold uppercase tracking-widest text-[#9C8B7C]">Our Location</p>
                     <p className="text-sm font-semibold text-[#2A2623]">783 Khatiwala tank, Indore 452014</p>
-                    <p className="text-[11px] text-[#8C7B6C] mt-0.5">Handcrafted in the heart of artisanal heritage</p>
+                    <p className="text-[14px] text-[#8C7B6C] mt-0.5">Handcrafted in the heart of artisanal heritage</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +141,7 @@ const Contact = () => {
 
               {/* Social Channels */}
               <div className="pt-2 flex items-center justify-between border-t border-[#EAE3D8]/60">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#9C8B7C]">Follow Velouraz</span>
+                <span className="text-[14px] font-bold uppercase tracking-widest text-[#9C8B7C]">Follow Velouraz</span>
                 <div className="flex items-center gap-2">
                   <a
                     href="https://www.instagram.com/_velouraz_?igsh=cWt5bDBjZHZuZG9h&utm_source=qr"
@@ -224,7 +224,7 @@ const Contact = () => {
                   {/* Name & Email 2-Column Grid */}
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-[#5C4F44]">Full Name *</label>
+                      <label className="text-[14px] font-bold uppercase tracking-wider text-[#5C4F44]">Full Name *</label>
                       <input
                         type="text"
                         required
@@ -236,7 +236,7 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-[#5C4F44]">Email Address *</label>
+                      <label className="text-[14px] font-bold uppercase tracking-wider text-[#5C4F44]">Email Address *</label>
                       <input
                         type="email"
                         required
@@ -250,7 +250,7 @@ const Contact = () => {
 
                   {/* Inquiry Type Select */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#5C4F44]">Inquiry Type</label>
+                    <label className="text-[14px] font-bold uppercase tracking-wider text-[#5C4F44]">Inquiry Type</label>
                     <div className="relative">
                       <select
                         value={formData.subject}
@@ -269,7 +269,7 @@ const Contact = () => {
 
                   {/* Message Textarea */}
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#5C4F44]">Your Message *</label>
+                    <label className="text-[14px] font-bold uppercase tracking-wider text-[#5C4F44]">Your Message *</label>
                     <textarea
                       rows="4"
                       required
@@ -295,7 +295,7 @@ const Contact = () => {
               </div>
 
               {/* Bottom Note */}
-              <div className="pt-6 mt-6 border-t border-[#EAE3D8]/60 flex items-center justify-between text-[11px] text-[#8C7B6C]">
+              <div className="pt-6 mt-6 border-t border-[#EAE3D8]/60 flex items-center justify-between text-[14px] text-[#8C7B6C]">
                 <span>🔒 Your personal information is protected by our privacy commitment.</span>
               </div>
             </div>

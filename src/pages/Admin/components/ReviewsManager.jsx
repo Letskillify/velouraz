@@ -191,7 +191,7 @@ const ReviewsManager = ({ isDarkMode }) => {
 
   return (
     <div className="space-y-6">
-      
+
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -269,11 +269,10 @@ const ReviewsManager = ({ isDarkMode }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by customer, quote, place..."
-            className={`w-full pl-10 pr-4 py-2 rounded-xl text-sm outline-none transition-all ${
-              isDarkMode
-                ? "bg-slate-900 border border-slate-700 text-white focus:border-[#811331]"
-                : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-            }`}
+            className={`w-full pl-10 pr-4 py-2 rounded-xl text-sm outline-none transition-all ${isDarkMode
+              ? "bg-slate-900 border border-slate-700 text-white focus:border-[#811331]"
+              : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+              }`}
           />
         </div>
 
@@ -283,11 +282,10 @@ const ReviewsManager = ({ isDarkMode }) => {
           <select
             value={filterRating}
             onChange={(e) => setFilterRating(e.target.value)}
-            className={`px-3 py-2 rounded-xl text-sm font-medium outline-none transition-all ${
-              isDarkMode
-                ? "bg-slate-900 border border-slate-700 text-white"
-                : "bg-slate-50 border border-slate-200 text-slate-800"
-            }`}
+            className={`px-3 py-2 rounded-xl text-sm font-medium outline-none transition-all ${isDarkMode
+              ? "bg-slate-900 border border-slate-700 text-white"
+              : "bg-slate-50 border border-slate-200 text-slate-800"
+              }`}
           >
             <option value="all">All Stars</option>
             <option value="5">5 Stars</option>
@@ -322,7 +320,7 @@ const ReviewsManager = ({ isDarkMode }) => {
               <tbody className={`divide-y ${isDarkMode ? "divide-slate-700/60 text-slate-300" : "divide-slate-100 text-slate-700"}`}>
                 {filteredReviews.map((rev) => (
                   <tr key={rev.id} className={`transition-colors ${isDarkMode ? "hover:bg-slate-700/40" : "hover:bg-slate-50/60"}`}>
-                    
+
                     {/* Customer & Place */}
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
@@ -336,7 +334,7 @@ const ReviewsManager = ({ isDarkMode }) => {
                           <div className="flex items-center gap-2 mt-1 text-xs text-slate-500 font-serif">
                             <span className="text-[#811331] font-semibold">{rev.title || "Verified Buyer"}</span>
                             {(rev.place || rev.location) && (
-                              <span className="inline-flex items-center gap-1 bg-amber-500/10 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded-md font-sans text-[11px] font-medium border border-amber-500/20">
+                              <span className="inline-flex items-center gap-1 bg-amber-500/10 text-amber-700 dark:text-amber-400 px-2 py-0.5 rounded-md font-sans text-[14px] font-medium border border-amber-500/20">
                                 <MapPin size={10} />
                                 {rev.place || rev.location}
                               </span>
@@ -375,11 +373,10 @@ const ReviewsManager = ({ isDarkMode }) => {
                     <td className="py-4 px-4 text-center whitespace-nowrap">
                       <button
                         onClick={() => handleToggleVisibility(rev)}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                          rev.visible !== false
-                            ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 hover:bg-emerald-500/20"
-                            : "bg-slate-500/10 text-slate-400 border border-slate-500/30 hover:bg-slate-500/20"
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all cursor-pointer ${rev.visible !== false
+                          ? "bg-emerald-500/10 text-emerald-600 border border-emerald-500/30 hover:bg-emerald-500/20"
+                          : "bg-slate-500/10 text-slate-400 border border-slate-500/30 hover:bg-slate-500/20"
+                          }`}
                       >
                         {rev.visible !== false ? (
                           <>
@@ -443,9 +440,8 @@ const ReviewsManager = ({ isDarkMode }) => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`relative z-10 w-full max-w-lg rounded-3xl border shadow-2xl p-6 sm:p-8 overflow-hidden ${
-                isDarkMode ? "bg-slate-900 border-slate-700 text-white" : "bg-white border-slate-100 text-slate-900"
-              }`}
+              className={`relative z-10 w-full max-w-lg rounded-3xl border shadow-2xl p-6 sm:p-8 overflow-hidden ${isDarkMode ? "bg-slate-900 border-slate-700 text-white" : "bg-white border-slate-100 text-slate-900"
+                }`}
             >
               <div className="flex items-center justify-between border-b pb-4 mb-6 border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2">
@@ -475,18 +471,17 @@ const ReviewsManager = ({ isDarkMode }) => {
                       value={formData.customerName}
                       onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
                       placeholder="e.g. Ananya Sharma"
-                      className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${
-                        isDarkMode
-                          ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
-                          : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${isDarkMode
+                        ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
+                        : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+                        }`}
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-500 dark:text-slate-400 flex items-center justify-between">
                       <span>Place / Location</span>
-                      <span className="text-[10px] text-[#811331] font-normal">Requested Field</span>
+                      <span className="text-[14px] text-[#811331] font-normal">Requested Field</span>
                     </label>
                     <div className="relative">
                       <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500" />
@@ -495,11 +490,10 @@ const ReviewsManager = ({ isDarkMode }) => {
                         value={formData.place}
                         onChange={(e) => setFormData({ ...formData, place: e.target.value })}
                         placeholder="e.g. Mumbai, India"
-                        className={`w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none transition-all ${
-                          isDarkMode
-                            ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
-                            : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-                        }`}
+                        className={`w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none transition-all ${isDarkMode
+                          ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
+                          : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+                          }`}
                       />
                     </div>
                   </div>
@@ -516,11 +510,10 @@ const ReviewsManager = ({ isDarkMode }) => {
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       placeholder="e.g. Verified Buyer"
-                      className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${
-                        isDarkMode
-                          ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
-                          : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-                      }`}
+                      className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${isDarkMode
+                        ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
+                        : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+                        }`}
                     />
                   </div>
 
@@ -556,11 +549,10 @@ const ReviewsManager = ({ isDarkMode }) => {
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                     placeholder="e.g. 14 Feb 2026"
-                    className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${
-                      isDarkMode
-                        ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
-                        : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-                    }`}
+                    className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${isDarkMode
+                      ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
+                      : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+                      }`}
                   />
                 </div>
 
@@ -575,11 +567,10 @@ const ReviewsManager = ({ isDarkMode }) => {
                     value={formData.quote}
                     onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
                     placeholder="Enter the customer review or quote..."
-                    className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${
-                      isDarkMode
-                        ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
-                        : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
-                    }`}
+                    className={`w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all ${isDarkMode
+                      ? "bg-slate-800 border border-slate-700 text-white focus:border-[#811331]"
+                      : "bg-slate-50 border border-slate-200 text-slate-900 focus:border-[#811331]"
+                      }`}
                   />
                 </div>
 

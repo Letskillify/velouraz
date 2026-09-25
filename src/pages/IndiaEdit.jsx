@@ -57,7 +57,7 @@ const IndiaEdit = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             onClick={handleSilverClick}
-            className="group relative bg-[#1A1816] rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(184,147,85,0.25)] transition-all duration-700 cursor-pointer min-h-[550px] sm:min-h-[600px] flex flex-col justify-end border border-transparent hover:border-[#C8A46A]/50"
+            className="group relative bg-[#1A1816] rounded-3xl overflow-hidden shadow-[0_14px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(184,147,85,0.25)] transition-all duration-700 cursor-pointer min-h-[550px] sm:min-h-[600px] flex flex-col justify-end border border-transparent hover:border-[#C8A46A]/50"
           >
             {/* Background Video */}
             <video
@@ -108,7 +108,7 @@ const IndiaEdit = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
             onClick={handleLuxeClick}
-            className="group relative bg-[#1A1816] rounded-3xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(184,147,85,0.25)] transition-all duration-700 cursor-pointer min-h-[550px] sm:min-h-[600px] flex flex-col justify-end border border-transparent hover:border-[#C8A46A]/50"
+            className="group relative bg-[#1A1816] rounded-3xl overflow-hidden shadow-[0_14px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_50px_rgba(184,147,85,0.25)] transition-all duration-700 cursor-pointer min-h-[550px] sm:min-h-[600px] flex flex-col justify-end border border-transparent hover:border-[#C8A46A]/50"
           >
             {/* Background Video */}
             <video

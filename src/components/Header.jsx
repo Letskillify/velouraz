@@ -143,7 +143,7 @@ const LuxuryHeader = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.3 }}
-            className="text-[12px] sm:text-[13px] tracking-[0.16em] font-medium text-white/90 truncate uppercase"
+            className="text-[14px] sm:text-[14px] tracking-[0.16em] font-medium text-white/90 truncate uppercase"
           >
             {announcements[annIndex]}
           </motion.p>
@@ -203,7 +203,7 @@ const LuxuryHeader = () => {
               <img
                 src="/img/logo.png"
                 alt="Velouraz"
-                className="transition-all duration-300 object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.08)]"
+                className="transition-all duration-300 object-contain drop-shadow-[0_2px_14px_rgba(0,0,0,0.08)]"
                 style={{
                   height: scrolled ? '46px' : '58px',
                   maxHeight: '68px'
@@ -252,7 +252,7 @@ const LuxuryHeader = () => {
               <div key={link.name} className="relative" onMouseEnter={() => setMegaMenu(link.name)} onMouseLeave={() => setMegaMenu(null)}>
                 <Link
                   to={link.href}
-                  className="flex items-center gap-1.5 px-5 py-2.5 text-[13px] tracking-[0.18em] font-bold uppercase transition-colors"
+                  className="flex items-center gap-1.5 px-5 py-2.5 text-[14px] tracking-[0.18em] font-bold uppercase transition-colors"
                   style={{ color: scrolled ? '#2A2623' : 'rgba(255,255,255,0.95)' }}
                 >
                   {link.name} {link.hasDropdown && <ChevronDown size={12} style={{ transform: megaMenu === link.name ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />}
@@ -315,8 +315,8 @@ const LuxuryHeader = () => {
                     {link.hasDropdown && mobileExpanded === link.name && (
                       <div className="mb-5 rounded-2xl p-4 bg-[#140D1C] border border-[#C8A97A]/25 space-y-3.5 shadow-lg">
                         <div className="flex items-center justify-between border-b border-[#C8A97A]/20 pb-2.5">
-                          <span className="text-[11px] uppercase font-bold tracking-[0.2em] text-[#C8A97A]">Featured World Edits</span>
-                          <Link to="/world-edit" onClick={() => setMobileOpen(false)} className="text-[10px] font-bold uppercase tracking-wider text-[#F0D5A8] hover:text-white flex items-center gap-1">
+                          <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#C8A97A]">Featured World Edits</span>
+                          <Link to="/world-edit" onClick={() => setMobileOpen(false)} className="text-[14px] font-bold uppercase tracking-wider text-[#F0D5A8] hover:text-white flex items-center gap-1">
                             View All <ArrowRight size={10} />
                           </Link>
                         </div>
@@ -335,7 +335,7 @@ const LuxuryHeader = () => {
                                   <p className="text-sm font-medium text-white group-hover:text-[#F0D5A8] transition-colors leading-tight" style={{ fontFamily: NAV_SERIF }}>
                                     {item.country}
                                   </p>
-                                  <p className="text-[10px] italic text-white/60 mt-0.5" style={{ fontFamily: NAV_SERIF }}>{item.subtitle}</p>
+                                  <p className="text-[14px] italic text-white/60 mt-0.5" style={{ fontFamily: NAV_SERIF }}>{item.subtitle}</p>
                                 </div>
                               </div>
                               <ArrowRight size={12} className="text-[#C8A97A] group-hover:translate-x-1 transition-transform shrink-0" />
@@ -347,7 +347,7 @@ const LuxuryHeader = () => {
                           <Link
                             to="/world-edit"
                             onClick={() => setMobileOpen(false)}
-                            className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#C8A97A] hover:text-white transition-colors py-1 text-decoration-none"
+                            className="inline-flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-[0.2em] text-[#C8A97A] hover:text-white transition-colors py-1 text-decoration-none"
                           >
                             <span>Explore All Countries</span>
                             <ArrowRight size={12} />
@@ -367,7 +367,7 @@ const LuxuryHeader = () => {
 };
 
 const BadgeDot = ({ count }) => (
-  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-[#2e0e43] border border-white">
+  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[14px] font-bold text-white bg-[#2e0e43] border border-white">
     {count}
   </span>
 );
@@ -712,14 +712,14 @@ const WorldEditDropdownPanel = ({ onClose }) => {
     >
       {/* Top Banner Bar */}
       <div className="border-b border-[#C8A97A]/20 bg-[#0F0B14] px-8 py-2.5 flex items-center justify-between z-20 relative">
-        <div className="flex items-center gap-2 text-[11px] tracking-[0.25em] font-semibold text-[#C8A97A] uppercase">
+        <div className="flex items-center gap-2 text-[14px] tracking-[0.25em] font-semibold text-[#C8A97A] uppercase">
           <Globe2 size={13} className="text-[#C8A97A]" />
           <span>The World Edit • Globally Curated Jewellery Collections</span>
         </div>
         <Link
           to="/world-edit"
           onClick={onClose}
-          className="flex items-center gap-1.5 text-[11px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
+          className="flex items-center gap-1.5 text-[14px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
         >
           <span>Explore All Countries</span>
           <ArrowRight size={12} />
@@ -767,13 +767,13 @@ const WorldEditDropdownPanel = ({ onClose }) => {
               {/* Accent Line */}
               <div className="w-8 group-hover:w-16 h-[1px] bg-[#C8A97A] transition-all duration-300 my-3.5 shadow-sm" />
 
-              <div className="text-[11px] lg:text-[12px] font-bold tracking-[0.22em] uppercase text-[#F0D5A8] leading-tight drop-shadow">
+              <div className="text-[14px] lg:text-[14px] font-bold tracking-[0.22em] uppercase text-[#F0D5A8] leading-tight drop-shadow">
                 {item.collection}
               </div>
             </div>
 
             {/* Bottom Discover CTA */}
-            <div className="relative z-10 pt-4 flex items-center justify-between text-[11px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
+            <div className="relative z-10 pt-4 flex items-center justify-between text-[14px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
               <span>{item.cta}</span>
               <ArrowRight size={14} className="text-[#C8A97A] group-hover:translate-x-2 transition-transform duration-300" />
             </div>

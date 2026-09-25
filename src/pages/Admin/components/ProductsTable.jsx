@@ -123,13 +123,12 @@ const QuickStockEditor = ({ productId, currentStock }) => {
             e.target.blur();
           }
         }}
-        className={`w-14 px-1.5 py-1 text-center text-sm font-bold border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#811331]/30 transition-all ${
-          val > 10
+        className={`w-14 px-1.5 py-1 text-center text-sm font-bold border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#811331]/30 transition-all ${val > 10
             ? "border-emerald-200 text-emerald-700 bg-emerald-50/40"
             : val > 0
-            ? "border-amber-200 text-amber-700 bg-amber-50/40"
-            : "border-red-200 text-red-700 bg-red-50/50"
-        }`}
+              ? "border-amber-200 text-amber-700 bg-amber-50/40"
+              : "border-red-200 text-red-700 bg-red-50/50"
+          }`}
       />
       <button
         type="button"
@@ -428,27 +427,25 @@ const ProductsTable = ({
             <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1 gap-1">
               <button
                 onClick={() => handleSetViewMode("active")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all ${
-                  viewMode === "active"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all ${viewMode === "active"
                     ? "bg-white text-slate-900 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-700"
-                }`}
+                  }`}
               >
                 <Package size={13} />
                 Products
               </button>
               <button
                 onClick={() => handleSetViewMode("trash")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all relative ${
-                  viewMode === "trash"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-base font-bold transition-all relative ${viewMode === "trash"
                     ? "bg-white text-red-600 shadow-sm border border-red-100"
                     : "text-slate-500 hover:text-red-500"
-                }`}
+                  }`}
               >
                 <Trash2 size={13} />
                 Trash
                 {trashedProducts.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[14px] font-bold flex items-center justify-center">
                     {trashedProducts.length > 99 ? "99+" : trashedProducts.length}
                   </span>
                 )}

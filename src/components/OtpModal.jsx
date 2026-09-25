@@ -223,7 +223,7 @@ const OtpModal = ({ isOpen, onClose, email, orderId, displayName = "", onSuccess
             </div>
 
             <div className="text-center space-y-2 mb-6">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.25em] text-[#C8A46A]">
+              <span className="text-[14px] font-sans font-semibold uppercase tracking-[0.25em] text-[#C8A46A]">
                 Security Verification
               </span>
               <h3 className="text-2xl font-serif font-normal text-[#2e0e43]">
@@ -328,7 +328,7 @@ const OtpModal = ({ isOpen, onClose, email, orderId, displayName = "", onSuccess
             </div>
 
             <div className="text-center space-y-2 mb-6">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.25em] text-[#C8A46A]">
+              <span className="text-[14px] font-sans font-semibold uppercase tracking-[0.25em] text-[#C8A46A]">
                 New Account Created
               </span>
               <h3 className="text-2xl font-serif font-normal text-[#2e0e43]">
@@ -414,7 +414,7 @@ const OtpModal = ({ isOpen, onClose, email, orderId, displayName = "", onSuccess
         )}
 
         {/* Security Guarantee Note */}
-        <div className="mt-4 text-center text-[11px] text-[#9A8E85] font-serif flex items-center justify-center gap-1.5">
+        <div className="mt-4 text-center text-[14px] text-[#9A8E85] font-serif flex items-center justify-center gap-1.5">
           <Lock size={12} className="text-[#C8A46A]" />
           <span>Your information is encrypted & securely processed</span>
         </div>

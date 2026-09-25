@@ -70,9 +70,9 @@ const Blog = () => {
 
   const filteredBlogs = blogs.filter(blog => {
     const term = searchTerm.toLowerCase();
-    return blog.title?.toLowerCase().includes(term) || 
-           blog.excerpt?.toLowerCase().includes(term) ||
-           blog.category?.toLowerCase().includes(term);
+    return blog.title?.toLowerCase().includes(term) ||
+      blog.excerpt?.toLowerCase().includes(term) ||
+      blog.category?.toLowerCase().includes(term);
   });
 
   const formatDate = (timestamp) => {
@@ -84,7 +84,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-[#FAF7F2] font-sans text-[#2A2623]">
       {/* Premium Breadcrumb Hero */}
-      <Breadcrumb 
+      <Breadcrumb
         title="The Journal"
         subtitle="Artisanal stories, high jewellery heritage, global inspirations, and exclusive styling perspectives."
         bgImage="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=1600"
@@ -142,9 +142,9 @@ const Blog = () => {
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
-                  
+
                   {/* Category Badge */}
-                  <span className="absolute top-4 left-4 bg-[#2e0e43]/90 backdrop-blur-md text-white text-[9px] uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded-full border border-white/10 shadow-sm">
+                  <span className="absolute top-4 left-4 bg-[#2e0e43]/90 backdrop-blur-md text-white text-[14px] uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded-full border border-white/10 shadow-sm">
                     {blog.category || 'Journal'}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ const Blog = () => {
                 <div className="p-6 md:p-7 flex flex-col justify-between flex-1 space-y-4">
                   <div className="space-y-3">
                     {/* Meta Info */}
-                    <div className="flex items-center gap-4 text-[11px] font-semibold text-[#C8A97A] tracking-wider uppercase font-sans">
+                    <div className="flex items-center gap-4 text-[14px] font-semibold text-[#C8A97A] tracking-wider uppercase font-sans">
                       <span className="flex items-center gap-1.5">
                         <Calendar size={12} strokeWidth={1.5} /> {formatDate(blog.createdAt)}
                       </span>
@@ -179,12 +179,12 @@ const Blog = () => {
 
                   {/* Footer Info */}
                   <div className="pt-4 border-t border-[#E7DEC8]/60 flex items-center justify-between mt-auto">
-                    <span className="text-[11px] font-semibold text-[#5C5248] tracking-wide">
+                    <span className="text-[14px] font-semibold text-[#5C5248] tracking-wide">
                       {blog.author || 'Velouraz Editorial'}
                     </span>
                     <Link
                       to={`/blog/${blog.id}`}
-                      className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors group/link"
+                      className="inline-flex items-center gap-2 text-[14px] font-bold uppercase tracking-[0.2em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors group/link"
                     >
                       <span>Read Story</span>
                       <ArrowRight size={13} className="transition-transform duration-300 group-hover/link:translate-x-1" />

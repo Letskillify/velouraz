@@ -65,7 +65,7 @@ const SocialGallery = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="group relative overflow-hidden aspect-square bg-[#F5EDD8] border border-[#640D14]/10 rounded-xl hover:border-[#640D14]/30 hover:shadow-[0_12px_40px_rgba(44,26,14,0.08)] transition-all duration-700"
+              className="group relative overflow-hidden aspect-square bg-[#F5EDD8] border border-[#640D14]/10 rounded-xl hover:border-[#640D14]/30 hover:shadow-[0_14px_40px_rgba(44,26,14,0.08)] transition-all duration-700"
             >
               <img
                 src={getOptimizedImageUrl(item.image)}
@@ -89,7 +89,7 @@ const SocialGallery = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="hidden lg:flex flex-col justify-center items-center text-center p-10 border border-[#640D14]/15 bg-[#F5EDD8] aspect-square rounded-xl hover:border-[#640D14]/30 hover:shadow-[0_12px_40px_rgba(100,13,20,0.1)] transition-all duration-500 group cursor-pointer"
+            className="hidden lg:flex flex-col justify-center items-center text-center p-10 border border-[#640D14]/15 bg-[#F5EDD8] aspect-square rounded-xl hover:border-[#640D14]/30 hover:shadow-[0_14px_40px_rgba(100,13,20,0.1)] transition-all duration-500 group cursor-pointer"
           >
             <Instagram size={32} strokeWidth={1} className="text-[#640D14] mb-6 group-hover:scale-110 transition-transform duration-300" />
             <h3 className="font-serif text-2xl text-[#2C1A0E] mb-4">Share Your Sparkle</h3>

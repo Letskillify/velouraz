@@ -119,7 +119,7 @@ const About = () => {
           {...fadeUp}
         >
           <div className="max-w-3xl mx-auto space-y-3 relative z-10">
-            <span className="text-[11px] sm:text-xs tracking-[0.3em] font-semibold text-[#C8A97A] uppercase" style={{ fontFamily: SANS }}>
+            <span className="text-[14px] sm:text-xs tracking-[0.3em] font-semibold text-[#C8A97A] uppercase" style={{ fontFamily: SANS }}>
               ✦ VELOURAZ PHILOSOPHY ✦
             </span>
             <p className="italic text-base sm:text-xl lg:text-2xl text-black font-medium leading-relaxed" style={{ fontFamily: SANS }}>

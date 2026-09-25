@@ -19,14 +19,14 @@ Use these pre-designed luxury HTML templates in your EmailJS dashboard (https://
     .container { max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 1px solid #E5D7C5; border-radius: 16px; padding: 40px; }
     .header { text-align: center; border-bottom: 1px solid #E5D7C5; padding-bottom: 24px; margin-bottom: 24px; }
     .brand { font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; color: #14111E; font-weight: bold; }
-    .subbrand { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: #C8A46A; margin-top: 4px; }
+    .subbrand { font-size: 14px; letter-spacing: 0.3em; text-transform: uppercase; color: #C8A46A; margin-top: 4px; }
     .title { font-size: 24px; margin-top: 20px; color: #14111E; font-weight: normal; }
-    .details { font-family: 'Helvetica', sans-serif; font-size: 13px; line-height: 1.6; color: #786C60; margin-bottom: 24px; }
-    .box { background: #F6F2EC; border-radius: 12px; padding: 20px; margin: 20px 0; font-family: 'Helvetica', sans-serif; font-size: 13px; }
-    .item-list { white-space: pre-line; font-family: monospace; color: #14111E; font-size: 13px; }
-    .total { font-size: 18px; font-weight: bold; color: #14111E; text-align: right; margin-top: 16px; border-top: 1px solid #E5D7C5; padding-top: 12px; }
-    .btn { display: inline-block; background: #14111E; color: #FBF9F5; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-family: 'Helvetica', sans-serif; font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; margin-top: 20px; }
-    .footer { text-align: center; font-size: 11px; color: #9E9082; margin-top: 30px; border-top: 1px solid #E5D7C5; padding-top: 20px; font-family: 'Helvetica', sans-serif; }
+    .details { font-family: 'Helvetica', sans-serif; font-size: 14px; line-height: 1.6; color: #786C60; margin-bottom: 24px; }
+    .box { background: #F6F2EC; border-radius: 14px; padding: 20px; margin: 20px 0; font-family: 'Helvetica', sans-serif; font-size: 14px; }
+    .item-list { white-space: pre-line; font-family: monospace; color: #14111E; font-size: 14px; }
+    .total { font-size: 18px; font-weight: bold; color: #14111E; text-align: right; margin-top: 16px; border-top: 1px solid #E5D7C5; padding-top: 14px; }
+    .btn { display: inline-block; background: #14111E; color: #FBF9F5; text-decoration: none; padding: 14px 28px; border-radius: 14px; font-family: 'Helvetica', sans-serif; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: bold; margin-top: 20px; }
+    .footer { text-align: center; font-size: 14px; color: #9E9082; margin-top: 30px; border-top: 1px solid #E5D7C5; padding-top: 20px; font-family: 'Helvetica', sans-serif; }
   </style>
 </head>
 <body>
@@ -83,12 +83,12 @@ Use these pre-designed luxury HTML templates in your EmailJS dashboard (https://
   <style>
     body { font-family: 'Helvetica', sans-serif; background-color: #F8F5F0; color: #14111E; margin: 0; padding: 30px 15px; }
     .container { max-width: 600px; margin: 0 auto; background: #FFFFFF; border: 2px solid #14111E; border-radius: 16px; padding: 30px; }
-    .header { background: #14111E; color: #FBF9F5; padding: 16px 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
+    .header { background: #14111E; color: #FBF9F5; padding: 16px 20px; border-radius: 14px; margin-bottom: 20px; text-align: center; }
     .title { font-size: 16px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; margin: 0; }
-    .row { padding: 8px 0; border-bottom: 1px solid #E5D7C5; font-size: 13px; }
-    .label { font-weight: bold; color: #786C60; text-transform: uppercase; font-size: 11px; }
-    .items { background: #F6F2EC; padding: 15px; border-radius: 10px; margin: 15px 0; white-space: pre-line; font-family: monospace; font-size: 13px; }
-    .total-badge { background: #C8A46A; color: #14111E; font-weight: bold; font-size: 18px; padding: 10px 15px; border-radius: 8px; text-align: center; margin-top: 15px; }
+    .row { padding: 8px 0; border-bottom: 1px solid #E5D7C5; font-size: 14px; }
+    .label { font-weight: bold; color: #786C60; text-transform: uppercase; font-size: 14px; }
+    .items { background: #F6F2EC; padding: 15px; border-radius: 14px; margin: 15px 0; white-space: pre-line; font-family: monospace; font-size: 14px; }
+    .total-badge { background: #C8A46A; color: #14111E; font-weight: bold; font-size: 18px; padding: 14px 15px; border-radius: 8px; text-align: center; margin-top: 15px; }
   </style>
 </head>
 <body>

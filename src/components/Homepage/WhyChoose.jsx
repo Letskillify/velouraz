@@ -47,11 +47,11 @@ const features = [
 
 const QualitySection = () => {
   return (
-    <section 
+    <section
       className="py-10 md:py-14 relative overflow-hidden bg-[#FAF7F2]"
     >
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-10">
-        
+
         {/* Header Section */}
         <div className="max-w-2xl mx-auto text-center mb-8 md:mb-10">
           <h2
@@ -80,15 +80,15 @@ const QualitySection = () => {
                 className="group flex flex-col items-center text-center p-6 md:p-7 rounded-2xl border border-[#EFE8DC] bg-[#FAF7F2]/90 hover:bg-white hover:border-[#D5C6B1] transition-all duration-300 shadow-[0_4px_25px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               >
                 {/* Gold Circle Ring Icon Container */}
-                <div 
+                <div
                   className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 mb-5 border border-[#D5C6B1] bg-white/80 text-[#B58E58] group-hover:scale-105 group-hover:border-[#B58E58]"
                 >
                   <IconComponent size={22} strokeWidth={1.2} className="text-[#B58E58]" />
                 </div>
 
                 {/* Title */}
-                <h3 
-                  className="text-xs md:text-[13px] font-bold tracking-[0.14em] uppercase mb-2 text-[#2A2623] group-hover:text-[#2e0e43] transition-colors font-sans"
+                <h3
+                  className="text-xs md:text-[14px] font-bold tracking-[0.14em] uppercase mb-2 text-[#2A2623] group-hover:text-[#2e0e43] transition-colors font-sans"
                 >
                   {feature.title}
                 </h3>

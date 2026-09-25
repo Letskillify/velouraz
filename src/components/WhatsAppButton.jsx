@@ -16,7 +16,7 @@ const WhatsAppButton = () => {
       transition={{ delay: 0.5, type: 'spring', stiffness: 260, damping: 20 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-[999] flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] text-white shadow-[0_8px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_12px_35px_rgba(37,211,102,0.65)] transition-all duration-300 group cursor-pointer"
+      className="fixed bottom-20 lg:bottom-6 right-4 sm:right-6 z-[999] flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] text-white shadow-[0_8px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_14px_35px_rgba(37,211,102,0.65)] transition-all duration-300 group cursor-pointer"
     >
       {/* Online indicator badge */}
       <span className="absolute -top-0.5 -right-0.5 flex h-3.5 w-3.5 sm:h-4 sm:w-4">

@@ -5,24 +5,24 @@ import { db } from "../components/Firebase";
 import { collection, addDoc, serverTimestamp, doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ShieldCheck, 
-  Truck, 
-  ArrowLeft, 
-  CreditCard, 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  CheckCircle2, 
-  Lock, 
-  Sparkles, 
-  AlertCircle, 
-  Loader2, 
-  PackageCheck, 
-  Gem, 
-  Gift, 
-  ChevronRight, 
+import {
+  ShieldCheck,
+  Truck,
+  ArrowLeft,
+  CreditCard,
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  CheckCircle2,
+  Lock,
+  Sparkles,
+  AlertCircle,
+  Loader2,
+  PackageCheck,
+  Gem,
+  Gift,
+  ChevronRight,
   ChevronDown,
   Check,
   Plus,
@@ -107,7 +107,7 @@ const Checkout = () => {
           if (addrs.length === 0 && data.defaultAddress) {
             addrs.push({ ...data.defaultAddress, type: "Home", isDefault: true });
           }
-          
+
           setSavedAddresses(addrs);
 
           if (addrs.length > 0) {
@@ -115,10 +115,10 @@ const Checkout = () => {
             const defaultIdx = addrs.findIndex(a => a.isDefault);
             const activeIdx = defaultIdx !== -1 ? defaultIdx : 0;
             const activeAddr = addrs[activeIdx];
-            
+
             setSelectedSavedIndex(activeIdx);
             setIsNewAddress(false);
-            
+
             setFormData({
               name: activeAddr.name || data.displayName || data.name || user.displayName || "",
               email: data.email || user.email || "",
@@ -562,7 +562,7 @@ const Checkout = () => {
   if (orderSuccess) {
     return (
       <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] pt-32 pb-24 flex items-center justify-center p-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-2xl w-full bg-white rounded-3xl border border-[#E5D7C5] p-8 sm:p-12 text-center shadow-xl space-y-6 relative overflow-hidden"
@@ -586,23 +586,23 @@ const Checkout = () => {
           {/* Detailed Summary Box */}
           <div className="bg-[#F6F2EC] rounded-2xl p-6 border border-[#E5D7C5] text-left space-y-3 text-xs sm:text-sm">
             <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
-              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Recipient Name</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[14px]">Recipient Name</span>
               <span className="font-semibold text-[#14111E]">{orderSuccess.customerName}</span>
             </div>
             <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
-              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Shiprocket AWB</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[14px]">Shiprocket AWB</span>
               <span className="font-mono font-bold text-[#14111E]">{orderSuccess.trackingNumber}</span>
             </div>
             <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
-              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Delivery Destination</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[14px]">Delivery Destination</span>
               <span className="font-medium text-[#14111E] text-right max-w-xs">{orderSuccess.shippingAddress.fullAddress}</span>
             </div>
             <div className="flex justify-between border-b border-[#E5D7C5] pb-2.5">
-              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Payment Method</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[14px]">Payment Method</span>
               <span className="font-bold text-[#14111E] uppercase tracking-wider">{orderSuccess.paymentMethod} ({orderSuccess.paymentStatus})</span>
             </div>
             <div className="flex justify-between items-baseline pt-1">
-              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[10px]">Total Paid</span>
+              <span className="text-[#786C60] uppercase font-bold tracking-wider text-[14px]">Total Paid</span>
               <span className="font-bold text-[#14111E] font-sans text-xl">₹{Number(orderSuccess.totalAmount).toLocaleString()}</span>
             </div>
           </div>
@@ -667,9 +667,9 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F4EF] font-sans text-[#2A2623]">
-      
+
       {/* Top Breadcrumb Header */}
-      <Breadcrumb 
+      <Breadcrumb
         title="Express Checkout"
         subtitle="Complete your order securely with insured express delivery across India."
         bgImage="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=1600"
@@ -681,7 +681,7 @@ const Checkout = () => {
       />
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-10 pb-32 lg:pb-24">
-        
+
         {/* Stock Alert Banner */}
         {isAnyOutOfStock && (
           <div className="mb-6 bg-rose-50 border border-rose-200 p-3.5 rounded-2xl flex items-center gap-3 text-rose-700 text-xs sm:text-sm font-medium shadow-xs">
@@ -702,7 +702,7 @@ const Checkout = () => {
               <span className="text-xs font-semibold uppercase tracking-wider text-[#2e0e43] font-sans">
                 {showMobileSummary ? "Hide Order Summary" : "Show Order Summary"}
               </span>
-              <span className="text-[11px] font-sans text-[#7B6D63] bg-white border border-[#E8DFD5] px-2 py-0.5 rounded-full">
+              <span className="text-[14px] font-sans text-[#7B6D63] bg-white border border-[#E8DFD5] px-2 py-0.5 rounded-full">
                 {checkoutItems.length} {checkoutItems.length === 1 ? 'Piece' : 'Pieces'}
               </span>
             </div>
@@ -727,15 +727,15 @@ const Checkout = () => {
                   {checkoutItems.map((item, idx) => (
                     <div key={idx} className="flex gap-3 items-center p-2 rounded-xl bg-[#FDFAF5] border border-[#D8CBBE]/30">
                       <div className="w-14 h-16 rounded-lg overflow-hidden bg-[#F4EEE8] border border-[#D8CBBE]/40 flex-shrink-0">
-                        <img 
-                          src={item.image || item.primaryImage || '/img/jewellery/j.png'} 
-                          alt={item.name} 
-                          className="w-full h-full object-cover" 
+                        <img
+                          src={item.image || item.primaryImage || '/img/jewellery/j.png'}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
                         />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="text-xs font-semibold text-[#2A2623] truncate font-serif">{item.name}</h4>
-                        <p className="text-[11px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
+                        <p className="text-[14px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
                         <p className="text-xs font-sans font-normal text-[#2e0e43]">
                           ₹{Number(item.price).toLocaleString()}
                         </p>
@@ -752,7 +752,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-[#7B6D63]">
                     <span>Insured Delivery</span>
-                    <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[11px]">FREE</span>
+                    <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[14px]">FREE</span>
                   </div>
                   {appliedCoupon && (
                     <div className="flex justify-between text-emerald-700">
@@ -771,13 +771,13 @@ const Checkout = () => {
         </div>
 
         <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
-          
+
           {/* Left Column: Shipping Address & Payment Selection */}
           <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-            
+
             {/* STEP 1: SHIPPING & DELIVERY ADDRESS */}
             <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-xs space-y-5">
-              
+
               <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-3.5">
                 <div className="flex items-center gap-2.5">
                   <span className="w-7 h-7 rounded-full bg-[#2e0e43] text-white text-xs font-semibold flex items-center justify-center">1</span>
@@ -797,9 +797,8 @@ const Checkout = () => {
                     <button
                       type="button"
                       onClick={handleAddNewAddress}
-                      className={`text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors ${
-                        isNewAddress ? "text-[#2e0e43] underline" : "text-[#C8A46A] hover:text-[#2e0e43]"
-                      }`}
+                      className={`text-xs font-semibold uppercase tracking-wider flex items-center gap-1 transition-colors ${isNewAddress ? "text-[#2e0e43] underline" : "text-[#C8A46A] hover:text-[#2e0e43]"
+                        }`}
                     >
                       <Plus size={13} /> Add New Address
                     </button>
@@ -812,18 +811,17 @@ const Checkout = () => {
                         <div
                           key={idx}
                           onClick={() => handleSelectSavedAddress(idx)}
-                          className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-1.5 relative ${
-                            isSelected
-                              ? "bg-white border-[#2e0e43] ring-1 ring-[#2e0e43]/20 shadow-xs"
-                              : "bg-white/70 border-[#D8CBBE] hover:border-[#C8A46A] hover:bg-white"
-                          }`}
+                          className={`p-3.5 rounded-xl border cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-1.5 relative ${isSelected
+                            ? "bg-white border-[#2e0e43] ring-1 ring-[#2e0e43]/20 shadow-xs"
+                            : "bg-white/70 border-[#D8CBBE] hover:border-[#C8A46A] hover:bg-white"
+                            }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#2e0e43] text-white">
+                            <span className="text-[14px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#2e0e43] text-white">
                               {addr.type || "Home"}
                             </span>
                             {isSelected && (
-                              <span className="text-[10px] font-semibold text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                              <span className="text-[14px] font-semibold text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                                 <Check size={11} /> Selected
                               </span>
                             )}
@@ -833,7 +831,7 @@ const Checkout = () => {
                             <p className="text-xs text-[#7B6D63] line-clamp-2 leading-relaxed">
                               {addr.flat ? addr.flat + ', ' : ''}{addr.address}, {addr.city}, {addr.state} - {addr.pincode}
                             </p>
-                            <p className="text-[11px] text-[#7B6D63] font-medium mt-0.5">Phone: {addr.phone}</p>
+                            <p className="text-[14px] text-[#7B6D63] font-medium mt-0.5">Phone: {addr.phone}</p>
                           </div>
                         </div>
                       );
@@ -854,10 +852,10 @@ const Checkout = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs sm:text-sm font-sans">
-                  
+
                   {/* Recipient Full Name */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Recipient Full Name *
                     </label>
                     <input
@@ -873,7 +871,7 @@ const Checkout = () => {
 
                   {/* Contact Email */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Email Address *
                     </label>
                     <input
@@ -889,7 +887,7 @@ const Checkout = () => {
 
                   {/* Primary Phone */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Mobile Phone Number *
                     </label>
                     <input
@@ -905,7 +903,7 @@ const Checkout = () => {
 
                   {/* Alternate Phone (Optional) */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Alternate Phone <span className="font-normal text-[#7B6D63]/70">(Optional)</span>
                     </label>
                     <input
@@ -920,7 +918,7 @@ const Checkout = () => {
 
                   {/* Flat / House No / Building */}
                   <div className="sm:col-span-2">
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Flat / House No. / Building / Suite *
                     </label>
                     <input
@@ -936,7 +934,7 @@ const Checkout = () => {
 
                   {/* Street Address / Area / Colony / Landmark */}
                   <div className="sm:col-span-2">
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Street Address / Area / Landmark *
                     </label>
                     <textarea
@@ -952,7 +950,7 @@ const Checkout = () => {
 
                   {/* City */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       City *
                     </label>
                     <input
@@ -968,7 +966,7 @@ const Checkout = () => {
 
                   {/* State */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       State *
                     </label>
                     <input
@@ -984,7 +982,7 @@ const Checkout = () => {
 
                   {/* Pincode */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Pincode / Postal Code *
                     </label>
                     <input
@@ -1001,7 +999,7 @@ const Checkout = () => {
 
                   {/* Address Type Pill Radios */}
                   <div>
-                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[11px]">
+                    <label className="block font-semibold uppercase tracking-wider text-[#7B6D63] mb-1 text-[14px]">
                       Address Type
                     </label>
                     <div className="flex items-center gap-2 pt-0.5">
@@ -1010,11 +1008,10 @@ const Checkout = () => {
                           key={t}
                           type="button"
                           onClick={() => setFormData(prev => ({ ...prev, type: t }))}
-                          className={`flex-1 py-2 px-2.5 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-1 ${
-                            formData.type === t
-                              ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs"
-                              : "bg-[#FDFAF5] text-[#7B6D63] border-[#D8CBBE] hover:border-[#2e0e43]"
-                          }`}
+                          className={`flex-1 py-2 px-2.5 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-1 ${formData.type === t
+                            ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs"
+                            : "bg-[#FDFAF5] text-[#7B6D63] border-[#D8CBBE] hover:border-[#2e0e43]"
+                            }`}
                         >
                           {t === "Home" && <Home size={13} />}
                           {t === "Work" && <Building2 size={13} />}
@@ -1049,7 +1046,7 @@ const Checkout = () => {
 
             {/* STEP 2: PAYMENT METHOD */}
             <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-xs space-y-5">
-              
+
               <div className="flex items-center justify-between border-b border-[#D8CBBE]/30 pb-3.5">
                 <div className="flex items-center gap-2.5">
                   <span className="w-7 h-7 rounded-full bg-[#2e0e43] text-white text-xs font-semibold flex items-center justify-center">2</span>
@@ -1059,15 +1056,14 @@ const Checkout = () => {
               </div>
 
               <div className="space-y-3">
-                
+
                 {/* Razorpay Online Payment */}
-                <label 
+                <label
                   onClick={() => setPaymentMethod("razorpay")}
-                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "razorpay"
-                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
-                      : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
-                  }`}
+                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${paymentMethod === "razorpay"
+                    ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
+                    : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <input
@@ -1080,7 +1076,7 @@ const Checkout = () => {
                     <div>
                       <p className="text-xs sm:text-sm font-semibold text-[#2A2623] uppercase tracking-wider font-sans flex items-center gap-2">
                         <span>Razorpay Online Payment</span>
-                        <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-sans font-normal">Instant</span>
+                        <span className="text-[14px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-sans font-normal">Instant</span>
                       </p>
                       <p className="text-xs text-[#7B6D63] font-serif">
                         UPI (GPay, PhonePe), Credit/Debit Cards, NetBanking
@@ -1091,13 +1087,12 @@ const Checkout = () => {
                 </label>
 
                 {/* Cash on Delivery */}
-                <label 
+                <label
                   onClick={() => setPaymentMethod("cod")}
-                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "cod"
-                      ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
-                      : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
-                  }`}
+                  className={`flex items-center justify-between p-4 rounded-xl sm:rounded-2xl border cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
+                    ? "bg-[#2e0e43]/5 border-[#2e0e43] ring-1 ring-[#2e0e43] shadow-xs"
+                    : "bg-[#FDFAF5] border-[#D8CBBE] hover:border-[#C8A46A]"
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <input
@@ -1128,19 +1123,19 @@ const Checkout = () => {
               <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
                 <ShieldCheck size={20} className="mx-auto text-[#2e0e43]" />
                 <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">256-Bit SSL</h5>
-                <p className="text-[11px] text-[#7B6D63] font-serif">Bank grade security</p>
+                <p className="text-[14px] text-[#7B6D63] font-serif">Bank grade security</p>
               </div>
 
               <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
                 <Truck size={20} className="mx-auto text-[#C8A46A]" />
                 <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Insured Transit</h5>
-                <p className="text-[11px] text-[#7B6D63] font-serif">100% door-to-door protection</p>
+                <p className="text-[14px] text-[#7B6D63] font-serif">100% door-to-door protection</p>
               </div>
 
               <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
                 <Gem size={20} className="mx-auto text-[#2e0e43]" />
                 <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Hallmarked Gold</h5>
-                <p className="text-[11px] text-[#7B6D63] font-serif">Certified high jewellery</p>
+                <p className="text-[14px] text-[#7B6D63] font-serif">Certified high jewellery</p>
               </div>
             </div>
 
@@ -1149,7 +1144,7 @@ const Checkout = () => {
           {/* Right Column: Sticky Order Summary Sidebar */}
           <div className="lg:col-span-5 xl:col-span-4 space-y-6">
             <div className="bg-white p-5 sm:p-7 rounded-2xl sm:rounded-3xl border border-[#D8CBBE]/50 shadow-md lg:sticky lg:top-24 space-y-5">
-              
+
               <div className="border-b border-[#D8CBBE]/30 pb-3.5 flex items-center justify-between">
                 <div>
                   <h3 className="font-serif text-xl sm:text-2xl text-[#2e0e43] font-normal">Order Summary</h3>
@@ -1168,20 +1163,20 @@ const Checkout = () => {
                       {(() => {
                         const rawImg = item.image || item.primaryImage || '/img/jewellery/j.png';
                         return (
-                          <img 
-                            src={getOptimizedImageUrl(rawImg)} 
-                            alt={item.name} 
+                          <img
+                            src={getOptimizedImageUrl(rawImg)}
+                            alt={item.name}
                             loading="lazy"
                             decoding="async"
                             onError={(e) => handleImageError(e, rawImg)}
-                            className="w-full h-full object-cover" 
+                            className="w-full h-full object-cover"
                           />
                         );
                       })()}
                     </div>
                     <div className="flex-1 min-w-0">
                       <h4 className="text-xs font-semibold text-[#2A2623] truncate font-serif">{item.name}</h4>
-                      <p className="text-[11px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
+                      <p className="text-[14px] text-[#7B6D63] font-sans">Qty: {item.quantity || 1}</p>
                       <p className="text-xs font-sans font-normal text-[#2e0e43]">
                         ₹{Number(item.price).toLocaleString()}
                       </p>
@@ -1221,7 +1216,7 @@ const Checkout = () => {
                       <CheckCircle2 size={15} className="text-emerald-600 shrink-0" />
                       <div>
                         <p className="font-bold font-mono text-xs">{appliedCoupon.code} APPLIED</p>
-                        <p className="text-[10px] text-emerald-700">Saved ₹{appliedCoupon.discountAmount.toLocaleString()}</p>
+                        <p className="text-[14px] text-emerald-700">Saved ₹{appliedCoupon.discountAmount.toLocaleString()}</p>
                       </div>
                     </div>
                     <button
@@ -1248,7 +1243,7 @@ const Checkout = () => {
 
                 <div className="flex justify-between text-[#7B6D63]">
                   <span>Insured Shipping Fee</span>
-                  <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[11px]">
+                  <span className="font-semibold text-emerald-700 uppercase tracking-wider text-[14px]">
                     {shippingFee === 0 ? 'FREE' : `₹${shippingFee}`}
                   </span>
                 </div>
@@ -1259,7 +1254,7 @@ const Checkout = () => {
                     <span>-₹{discountAmount.toLocaleString()}</span>
                   </div>
                 )}
-                
+
                 <div className="flex justify-between items-baseline pt-3 border-t border-[#D8CBBE]/40 font-sans">
                   <span className="text-xs sm:text-sm font-medium text-[#2A2623]">Total Amount</span>
                   <span className="text-[#2e0e43] text-xl sm:text-2xl font-normal font-sans tracking-tight">₹{total.toLocaleString()}</span>
@@ -1270,11 +1265,10 @@ const Checkout = () => {
               <button
                 type="submit"
                 disabled={loading || isAnyOutOfStock}
-                className={`hidden lg:flex w-full min-h-[52px] py-3.5 px-6 text-xs font-semibold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-xl ${
-                  loading || isAnyOutOfStock
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99]'
-                }`}
+                className={`hidden lg:flex w-full min-h-[52px] py-3.5 px-6 text-xs font-semibold uppercase tracking-[0.2em] rounded-xl transition-all duration-300 items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-xl ${loading || isAnyOutOfStock
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99]'
+                  }`}
               >
                 {loading ? (
                   <Loader2 size={16} className="animate-spin shrink-0" />
@@ -1299,14 +1293,14 @@ const Checkout = () => {
       {/* MOBILE STICKY BOTTOM ORDER BAR */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E8DFD5] p-3 px-4 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-4">
         <div className="min-w-0">
-          <span className="text-[10px] text-[#7B6D63] font-serif uppercase tracking-wider block">
+          <span className="text-[14px] text-[#7B6D63] font-serif uppercase tracking-wider block">
             Total Payable
           </span>
           <div className="flex items-baseline gap-1.5">
             <span className="text-xl font-normal font-sans text-[#2e0e43]">
               ₹{total.toLocaleString()}
             </span>
-           
+
           </div>
         </div>
 

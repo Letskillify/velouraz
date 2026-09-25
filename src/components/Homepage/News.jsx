@@ -31,7 +31,7 @@ const TheJournal = () => {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C8A97A] block mb-1.5"
+            className="text-[14px] font-bold uppercase tracking-[0.3em] text-[#C8A97A] block mb-1.5"
           >
             ✦ VELOURAZ ON INSTAGRAM
           </motion.span>
@@ -90,22 +90,22 @@ const TheJournal = () => {
                   <div className="absolute top-4 inset-x-4 flex items-center justify-between z-10">
                     <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
                       <Instagram size={13} className="text-[#E5C794]" />
-                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">@_velouraz_</span>
+                      <span className="text-[14px] font-bold text-white tracking-widest uppercase">@_velouraz_</span>
                     </div>
-                    <span className="text-[10px] font-bold text-white/80 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
+                    <span className="text-[14px] font-bold text-white/80 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full">
                       REEL
                     </span>
                   </div>
 
                   {/* Bottom Information */}
                   <div className="absolute bottom-4 inset-x-4 z-10 space-y-1">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5C794] block">
+                    <span className="text-[14px] font-bold uppercase tracking-wider text-[#E5C794] block">
                       ✦ {post.tag || "Luxury Edit"}
                     </span>
                     <p className="text-xs sm:text-sm font-serif text-white font-medium line-clamp-2 leading-snug">
                       {post.title}
                     </p>
-                    <div className="flex items-center gap-1.5 pt-1 text-[11px] text-white/70 group-hover:text-white transition-colors">
+                    <div className="flex items-center gap-1.5 pt-1 text-[14px] text-white/70 group-hover:text-white transition-colors">
                       <span>Watch Reel on Instagram</span>
                       <ExternalLink size={11} />
                     </div>

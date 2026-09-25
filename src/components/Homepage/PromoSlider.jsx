@@ -105,7 +105,7 @@ const CardItem = ({ item }) => {
       className="group relative block aspect-[3/4] w-full overflow-hidden bg-gray-900 rounded-none shadow-md"
     >
       {/* Organic Ribbon Badge */}
-      
+
       {/* Container for Video or Images */}
       <div className="relative w-full h-full overflow-hidden">
         {videoSrc ? (
@@ -127,9 +127,8 @@ const CardItem = ({ item }) => {
               loading="lazy"
               decoding="async"
               onError={(e) => handleImageError(e, defaultImg)}
-              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
-                currentImageIndex === 0 ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${currentImageIndex === 0 ? 'opacity-100' : 'opacity-0'
+                }`}
             />
 
             {/* 2nd Image */}
@@ -139,9 +138,8 @@ const CardItem = ({ item }) => {
               loading="lazy"
               decoding="async"
               onError={(e) => handleImageError(e, hoverImg)}
-              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
-                currentImageIndex === 1 ? 'opacity-100' : 'opacity-0'
-              }`}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${currentImageIndex === 1 ? 'opacity-100' : 'opacity-0'
+                }`}
             />
           </>
         )}
@@ -156,7 +154,7 @@ const CardItem = ({ item }) => {
           {item.country}
         </h3>
         {item.collection && (
-          <p className="text-white/85 text-[9px] sm:text-[10px] md:text-[11px] tracking-[0.18em] uppercase mt-1 font-medium opacity-90">
+          <p className="text-white/85 text-[14px] sm:text-[14px] md:text-[14px] tracking-[0.18em] uppercase mt-1 font-medium opacity-90">
             {item.collection}
           </p>
         )}
@@ -209,7 +207,7 @@ const PromoSlider = () => {
     <section className="w-full relative py-6 md:py-8 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
       <div className="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-10 mb-6 md:mb-8 flex items-center justify-between">
         <div className="w-10 opacity-0 hidden sm:block" /> {/* Spacer for centering */}
-        
+
         <div className="max-w-2xl mx-auto text-center">
           <h2
             className="font-serif font-light leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-[42px] text-[#222222]"

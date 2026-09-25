@@ -7,15 +7,15 @@ const Breadcrumb = ({ title, subtitle, bgImage, links }) => {
   return (
     <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] overflow-hidden flex items-center justify-center border-b border-[#C8A97A]/25 shadow-sm">
       {/* Background Image with Slow Scale Animation */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 1.12 }}
         animate={{ scale: 1 }}
         transition={{ duration: 2.2, ease: [0.19, 1, 0.22, 1] }}
         className="absolute inset-0"
       >
-        <img 
-          src={bgImage} 
-          alt={title} 
+        <img
+          src={bgImage}
+          alt={title}
           className="w-full h-full object-cover object-center"
         />
         {/* Layered Gradient Overlays for Luxury Contrast */}
@@ -27,11 +27,11 @@ const Breadcrumb = ({ title, subtitle, bgImage, links }) => {
       <div className="relative z-10 max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-12 pt-16 sm:pt-20 md:pt-24 text-center text-white">
         {/* Navigation Breadcrumb Links */}
         {links && links.length > 0 && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-            className="flex items-center justify-center gap-2 text-[11px] sm:text-xs tracking-[0.3em] font-bold uppercase mb-4"
+            className="flex items-center justify-center gap-2 text-[14px] sm:text-xs tracking-[0.3em] font-bold uppercase mb-4"
           >
             {links.map((link, index) => (
               <React.Fragment key={index}>
@@ -50,7 +50,7 @@ const Breadcrumb = ({ title, subtitle, bgImage, links }) => {
 
         {/* Title */}
         <div className="overflow-hidden mb-3">
-          <motion.h1 
+          <motion.h1
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             transition={{ delay: 0.3, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}
@@ -59,10 +59,10 @@ const Breadcrumb = ({ title, subtitle, bgImage, links }) => {
             {title}
           </motion.h1>
         </div>
-        
+
         {/* Subtitle */}
         {subtitle && (
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease: [0.19, 1, 0.22, 1] }}

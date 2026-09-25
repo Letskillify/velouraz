@@ -2,19 +2,19 @@ import { sendMailWithFallback } from "./utils/mailer.js";
 
 const formatItemsHtml = (items = []) => {
   if (!items || items.length === 0) {
-    return `<tr><td colspan="3" style="padding: 12px; color: #8a8292;">No items specified</td></tr>`;
+    return `<tr><td colspan="3" style="padding: 14px; color: #8a8292;">No items specified</td></tr>`;
   }
   return items
     .map(
       (item) => `
       <tr style="border-bottom: 1px solid #2e2633;">
-        <td style="padding: 12px; color: #ffffff; font-size: 14px;">
+        <td style="padding: 14px; color: #ffffff; font-size: 14px;">
           <strong>${item.name || item.title || "Jewellery Item"}</strong>
         </td>
-        <td style="padding: 12px; color: #b5adc0; font-size: 14px; text-align: center;">
+        <td style="padding: 14px; color: #b5adc0; font-size: 14px; text-align: center;">
           ${item.quantity || 1}
         </td>
-        <td style="padding: 12px; color: #d4af37; font-size: 14px; text-align: right; font-weight: 500;">
+        <td style="padding: 14px; color: #d4af37; font-size: 14px; text-align: right; font-weight: 500;">
           ₹${(Number(item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}
         </td>
       </tr>
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
     day: "numeric",
   });
   const totalFormatted = `₹${Number(orderData.totalAmount || orderData.total || 0).toLocaleString("en-IN")}`;
-  const addressFormatted = orderData.shippingAddress?.fullAddress || 
+  const addressFormatted = orderData.shippingAddress?.fullAddress ||
     `${orderData.shippingAddress?.address || ""}, ${orderData.shippingAddress?.city || ""} - ${orderData.shippingAddress?.pincode || ""}`;
   const paymentMethod = (orderData.paymentMethod || "online").toUpperCase();
   const paymentStatus = orderData.paymentStatus || "Paid";
@@ -89,11 +89,11 @@ export default async function handler(req, res) {
         <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
           <tr>
             <td align="center">
-              <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #161217; border: 1px solid #2e2633; border-radius: 12px; overflow: hidden; padding: 40px 30px;">
+              <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #161217; border: 1px solid #2e2633; border-radius: 14px; overflow: hidden; padding: 40px 30px;">
                 <tr>
                   <td align="center" style="padding-bottom: 20px;">
                     <h1 style="margin: 0; font-family: Georgia, serif; font-size: 26px; font-weight: normal; letter-spacing: 4px; color: #d4af37;">VELOURAZ</h1>
-                    <p style="margin: 5px 0 0 0; font-size: 11px; tracking: 2px; text-transform: uppercase; color: #8a8292;">High Jewellery</p>
+                    <p style="margin: 5px 0 0 0; font-size: 14px; tracking: 2px; text-transform: uppercase; color: #8a8292;">High Jewellery</p>
                   </td>
                 </tr>
                 <tr>
@@ -105,18 +105,18 @@ export default async function handler(req, res) {
                     </p>
 
                     <div style="background: #1e1921; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 3px solid #d4af37;">
-                      <p style="margin: 3px 0; font-size: 13px; color: #b5adc0;"><strong>Order ID:</strong> #${orderId}</p>
-                      <p style="margin: 3px 0; font-size: 13px; color: #b5adc0;"><strong>Date:</strong> ${orderDateFormatted}</p>
-                      <p style="margin: 3px 0; font-size: 13px; color: #b5adc0;"><strong>Payment Method:</strong> ${paymentMethod} (${paymentStatus})</p>
+                      <p style="margin: 3px 0; font-size: 14px; color: #b5adc0;"><strong>Order ID:</strong> #${orderId}</p>
+                      <p style="margin: 3px 0; font-size: 14px; color: #b5adc0;"><strong>Date:</strong> ${orderDateFormatted}</p>
+                      <p style="margin: 3px 0; font-size: 14px; color: #b5adc0;"><strong>Payment Method:</strong> ${paymentMethod} (${paymentStatus})</p>
                     </div>
 
-                    <h3 style="font-size: 15px; color: #d4af37; margin-bottom: 12px;">Order Summary</h3>
+                    <h3 style="font-size: 15px; color: #d4af37; margin-bottom: 14px;">Order Summary</h3>
                     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-bottom: 20px;">
                       <thead>
                         <tr style="border-bottom: 1px solid #2e2633; background: #1e1921;">
-                          <th style="padding: 10px; text-align: left; color: #8a8292; font-size: 12px; text-transform: uppercase;">Item</th>
-                          <th style="padding: 10px; text-align: center; color: #8a8292; font-size: 12px; text-transform: uppercase;">Qty</th>
-                          <th style="padding: 10px; text-align: right; color: #8a8292; font-size: 12px; text-transform: uppercase;">Price</th>
+                          <th style="padding: 14px; text-align: left; color: #8a8292; font-size: 14px; text-transform: uppercase;">Item</th>
+                          <th style="padding: 14px; text-align: center; color: #8a8292; font-size: 14px; text-transform: uppercase;">Qty</th>
+                          <th style="padding: 14px; text-align: right; color: #8a8292; font-size: 14px; text-transform: uppercase;">Price</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -124,22 +124,22 @@ export default async function handler(req, res) {
                       </tbody>
                     </table>
 
-                    <div style="text-align: right; padding-top: 10px; border-top: 1px dashed #2e2633;">
+                    <div style="text-align: right; padding-top: 14px; border-top: 1px dashed #2e2633;">
                       <p style="margin: 0; font-size: 18px; font-weight: bold; color: #d4af37;">Total Amount: ${totalFormatted}</p>
                     </div>
 
                     <div style="margin-top: 30px; padding: 20px; background: #1e1921; border-radius: 8px;">
                       <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #ffffff;">Shipping Address</h4>
-                      <p style="margin: 0; font-size: 13px; color: #b5adc0; line-height: 1.5;">${addressFormatted}</p>
+                      <p style="margin: 0; font-size: 14px; color: #b5adc0; line-height: 1.5;">${addressFormatted}</p>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td align="center" style="border-top: 1px solid #2e2633; margin-top: 30px; padding-top: 25px;">
-                    <p style="font-size: 12px; color: #8a8292; margin: 0;">
+                    <p style="font-size: 14px; color: #8a8292; margin: 0;">
                       Need assistance? Reply to this email or contact support at ${adminEmail}.
                     </p>
-                    <p style="font-size: 11px; color: #6b6374; margin-top: 12px;">
+                    <p style="font-size: 14px; color: #6b6374; margin-top: 14px;">
                       © ${new Date().getFullYear()} Velouraz High Jewellery. All rights reserved.
                     </p>
                   </td>

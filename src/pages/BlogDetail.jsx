@@ -229,7 +229,7 @@ const BlogDetail = () => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-5 lg:sticky lg:top-28"
           >
-            <div className="relative rounded-3xl border border-[#E7DEC8] overflow-hidden bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)] group">
+            <div className="relative rounded-3xl border border-[#E7DEC8] overflow-hidden bg-white shadow-[0_14px_40px_rgba(0,0,0,0.06)] group">
               <div className="aspect-[16/10] max-h-[380px] sm:max-h-[420px] w-full overflow-hidden bg-[#F3ECE1]">
                 <img
                   src={blog.image}
@@ -239,7 +239,7 @@ const BlogDetail = () => {
               </div>
 
               {/* Floating Category Tag */}
-              <span className="absolute top-5 left-5 bg-[#2e0e43] text-white text-[10px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-white/10 shadow-md">
+              <span className="absolute top-5 left-5 bg-[#2e0e43] text-white text-[14px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-white/10 shadow-md">
                 {blog.category || 'Journal'}
               </span>
 
@@ -249,7 +249,7 @@ const BlogDetail = () => {
                   <Sparkles size={14} />
                   <span>Velouraz Editorial</span>
                 </div>
-                <span className="text-[11px] text-[#7B6D63] font-medium">{blog.readTime || '5 min read'}</span>
+                <span className="text-[14px] text-[#7B6D63] font-medium">{blog.readTime || '5 min read'}</span>
               </div>
             </div>
           </motion.div>
@@ -357,7 +357,7 @@ const BlogDetail = () => {
                       alt={rBlog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-[#2e0e43]/90 text-white text-[9px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 bg-[#2e0e43]/90 text-white text-[14px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-full">
                       {rBlog.category}
                     </span>
                   </div>
@@ -370,7 +370,7 @@ const BlogDetail = () => {
                     </h4>
                     <Link
                       to={`/blog/${rBlog.id}`}
-                      className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors pt-2"
+                      className="inline-flex items-center gap-1.5 text-[14px] font-bold uppercase tracking-[0.18em] text-[#2e0e43] hover:text-[#C8A97A] transition-colors pt-2"
                     >
                       Read Story <ArrowLeft size={12} className="rotate-180" />
                     </Link>

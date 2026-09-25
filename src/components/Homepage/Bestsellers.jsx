@@ -127,7 +127,7 @@ const BestSellers = () => {
             </h2>
             <div className="flex items-center gap-2.5 mt-2 justify-center sm:justify-start">
               <span className="w-7 h-[1px] bg-[#B58E58]/60" />
-              <span className="text-[11px] text-[#B58E58] uppercase tracking-[0.25em] font-semibold">Curated Pieces</span>
+              <span className="text-[14px] text-[#B58E58] uppercase tracking-[0.25em] font-semibold">Curated Pieces</span>
             </div>
           </div>
 
@@ -229,9 +229,8 @@ const BestSellers = () => {
                         {/* Badge Tag */}
                         <div className="absolute top-3 left-3 z-10">
                           <span
-                            className={`inline-block text-[10px] tracking-[0.2em] font-bold uppercase px-3 py-1 rounded-md text-white shadow-xs ${
-                              isSoldOut ? 'bg-gray-800' : 'bg-[#2E0E43]'
-                            }`}
+                            className={`inline-block text-[14px] tracking-[0.2em] font-bold uppercase px-3 py-1 rounded-md text-white shadow-xs ${isSoldOut ? 'bg-gray-800' : 'bg-[#2E0E43]'
+                              }`}
                           >
                             {badgeLabel}
                           </span>
@@ -239,7 +238,7 @@ const BestSellers = () => {
 
                         {/* Country Tag */}
                         <div className="absolute bottom-3 left-3 z-10 group-hover:opacity-0 transition-opacity duration-300">
-                          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-[#E5DBCC] text-[10px] font-bold text-[#8C6D37] tracking-wider uppercase shadow-xs">
+                          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/90 backdrop-blur-xs border border-[#E5DBCC] text-[14px] font-bold text-[#8C6D37] tracking-wider uppercase shadow-xs">
                             <Globe size={11} className="text-[#8C6D37]" />
                             <span>{country}</span>
                           </div>
@@ -269,11 +268,10 @@ const BestSellers = () => {
                           <button
                             onClick={(e) => handleAddToCart(e, product)}
                             disabled={isSoldOut || isCartLoading}
-                            className={`w-full py-2.5 px-4 rounded-full text-[11px] font-bold tracking-[0.18em] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer border border-white/20 ${
-                              isSoldOut
-                                ? 'bg-gray-800/90 text-white/70 cursor-not-allowed'
-                                : 'bg-[#2E0E43] text-white hover:bg-[#1E092D] active:scale-95'
-                            }`}
+                            className={`w-full py-2.5 px-4 rounded-full text-[14px] font-bold tracking-[0.18em] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-2 cursor-pointer border border-white/20 ${isSoldOut
+                              ? 'bg-gray-800/90 text-white/70 cursor-not-allowed'
+                              : 'bg-[#2E0E43] text-white hover:bg-[#1E092D] active:scale-95'
+                              }`}
                           >
                             {isCartLoading ? (
                               <Loader2 size={13} className="animate-spin" />
@@ -290,10 +288,10 @@ const BestSellers = () => {
                       {/* Product Details */}
                       <div className="p-4 sm:p-5 bg-white flex flex-col justify-between flex-1 text-left border-t border-[#F5EFE6]">
                         <div>
-                          <span className="text-[10px] font-bold tracking-[0.25em] text-[#B58E58] block mb-1 uppercase">
+                          <span className="text-[14px] font-bold tracking-[0.25em] text-[#B58E58] block mb-1 uppercase">
                             {product.brand || "VELOURAZ"}
                           </span>
-                          <h3 className="text-[13px] sm:text-[15px] font-serif font-medium text-[#222222] group-hover:text-[#2E0E43] leading-snug line-clamp-1 mb-2.5 transition-colors">
+                          <h3 className="text-[14px] sm:text-[15px] font-serif font-medium text-[#222222] group-hover:text-[#2E0E43] leading-snug line-clamp-1 mb-2.5 transition-colors">
                             {product.name}
                           </h3>
                         </div>
@@ -329,7 +327,7 @@ const BestSellers = () => {
           <div className="flex justify-center mt-10 md:mt-12">
             <Link
               to="/shop?tag=Bestsellers"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#2E0E43] text-[#2E0E43] text-[13px] font-semibold tracking-[0.22em] uppercase hover:bg-[#2E0E43] hover:text-white transition-all duration-300 rounded-full"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 border border-[#2E0E43] text-[#2E0E43] text-[14px] font-semibold tracking-[0.22em] uppercase hover:bg-[#2E0E43] hover:text-white transition-all duration-300 rounded-full"
             >
               <span>EXPLORE ALL BESTSELLERS</span>
               <span className="text-xs text-[#B58E58] group-hover:text-white">✦</span>

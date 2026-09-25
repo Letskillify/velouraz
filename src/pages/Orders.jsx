@@ -205,7 +205,7 @@ const Orders = () => {
       };
 
       await addDoc(collection(db, "reviews"), reviewData);
-      
+
       if (selectedOrderForReview?.id) {
         setReviewedItemMap(prev => ({
           ...prev,
@@ -269,7 +269,7 @@ const Orders = () => {
 
   return (
     <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] pt-32 pb-28 selection:bg-[#14111E] selection:text-[#FBF9F5]">
-      
+
       <Breadcrumb
         title="Orders & Live Tracking"
         subtitle="Manage your acquisitions, download tax invoices, and track Shiprocket deliveries in real time."
@@ -278,12 +278,12 @@ const Orders = () => {
       />
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mt-10 space-y-8">
-        
+
         {/* Main Mode Toggle Header Bar */}
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E5D7C5] shadow-xs space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#E5D7C5] pb-6">
             <div>
-              <span className="text-[11px] uppercase tracking-[0.25em] font-bold text-[#C8A46A] block font-sans">
+              <span className="text-[14px] uppercase tracking-[0.25em] font-bold text-[#C8A46A] block font-sans">
                 Velouraz Concierge Portal
               </span>
               <h1 className="font-serif text-3xl font-normal text-[#14111E]">
@@ -298,11 +298,10 @@ const Orders = () => {
                   setActiveTabMode("history");
                   setSearchParams({});
                 }}
-                className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 font-sans cursor-pointer flex items-center justify-center gap-2 ${
-                  activeTabMode === "history"
-                    ? "bg-[#14111E] text-[#FBF9F5] shadow-xs border border-[#C8A46A]/30"
-                    : "text-[#786C60] hover:text-[#14111E]"
-                }`}
+                className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 font-sans cursor-pointer flex items-center justify-center gap-2 ${activeTabMode === "history"
+                  ? "bg-[#14111E] text-[#FBF9F5] shadow-xs border border-[#C8A46A]/30"
+                  : "text-[#786C60] hover:text-[#14111E]"
+                  }`}
               >
                 <Package size={15} className={activeTabMode === "history" ? "text-[#C8A46A]" : ""} />
                 <span>My Purchases ({orders.length})</span>
@@ -317,11 +316,10 @@ const Orders = () => {
                     handleTrackLookup(firstId);
                   }
                 }}
-                className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 font-sans cursor-pointer flex items-center justify-center gap-2 ${
-                  activeTabMode === "tracking"
-                    ? "bg-[#14111E] text-[#FBF9F5] shadow-xs border border-[#C8A46A]/30"
-                    : "text-[#786C60] hover:text-[#14111E]"
-                }`}
+                className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 font-sans cursor-pointer flex items-center justify-center gap-2 ${activeTabMode === "tracking"
+                  ? "bg-[#14111E] text-[#FBF9F5] shadow-xs border border-[#C8A46A]/30"
+                  : "text-[#786C60] hover:text-[#14111E]"
+                  }`}
               >
                 <Truck size={15} className={activeTabMode === "tracking" ? "text-[#C8A46A]" : ""} />
                 <span>Shiprocket Tracker</span>
@@ -341,11 +339,10 @@ const Orders = () => {
                   <button
                     key={tab.id}
                     onClick={() => setStatusFilter(tab.id)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-sans cursor-pointer ${
-                      statusFilter === tab.id
-                        ? "bg-[#14111E] text-[#FBF9F5] border border-[#C8A46A]/30"
-                        : "bg-[#F6F2EC] text-[#786C60] border border-[#E5D7C5] hover:text-[#14111E]"
-                    }`}
+                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-sans cursor-pointer ${statusFilter === tab.id
+                      ? "bg-[#14111E] text-[#FBF9F5] border border-[#C8A46A]/30"
+                      : "bg-[#F6F2EC] text-[#786C60] border border-[#E5D7C5] hover:text-[#14111E]"
+                      }`}
                   >
                     {tab.label}
                   </button>
@@ -382,10 +379,10 @@ const Orders = () => {
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-[#E5D7C5] pb-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#786C60] font-sans">
+                        <span className="text-[14px] font-bold uppercase tracking-widest text-[#786C60] font-sans">
                           Order Reference
                         </span>
-                        <span className="px-3 py-0.5 bg-[#14111E] text-[#FBF9F5] text-[10px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
+                        <span className="px-3 py-0.5 bg-[#14111E] text-[#FBF9F5] text-[14px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
                           {order.orderStatus || order.paymentStatus || "Paid"}
                         </span>
                       </div>
@@ -394,7 +391,7 @@ const Orders = () => {
 
                     <div className="flex flex-wrap items-center gap-6 text-xs text-[#786C60] font-sans">
                       <div>
-                        <p className="text-[10px] uppercase font-bold text-[#786C60] tracking-wider">Order Date</p>
+                        <p className="text-[14px] uppercase font-bold text-[#786C60] tracking-wider">Order Date</p>
                         <p className="font-semibold text-[#14111E] mt-0.5">
                           {new Date(order.createdAt?.seconds * 1000 || order.orderDate || Date.now()).toLocaleDateString("en-IN", {
                             month: "short",
@@ -405,7 +402,7 @@ const Orders = () => {
                       </div>
                       <div className="h-6 w-px bg-[#E5D7C5] hidden sm:block" />
                       <div>
-                        <p className="text-[10px] uppercase font-bold text-[#786C60] tracking-wider">Payment Method</p>
+                        <p className="text-[14px] uppercase font-bold text-[#786C60] tracking-wider">Payment Method</p>
                         <p className="font-semibold text-[#14111E] uppercase mt-0.5">{order.paymentMethod || "Online"}</p>
                       </div>
                     </div>
@@ -434,7 +431,7 @@ const Orders = () => {
                           <button
                             type="button"
                             onClick={() => handleOpenReviewModal(order, item)}
-                            className="text-[11px] font-sans font-semibold text-[#B89355] hover:text-[#2A2623] hover:underline inline-flex items-center gap-1 mt-1 justify-end cursor-pointer"
+                            className="text-[14px] font-sans font-semibold text-[#B89355] hover:text-[#2A2623] hover:underline inline-flex items-center gap-1 mt-1 justify-end cursor-pointer"
                           >
                             <Star size={11} className="fill-[#B89355]" /> Review Item
                           </button>
@@ -446,7 +443,7 @@ const Orders = () => {
                   {/* Bottom Action Footer */}
                   <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 pt-4 border-t border-[#E5D7C5]">
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-[#786C60] font-sans tracking-wider">Total Amount</span>
+                      <span className="text-[14px] uppercase font-bold text-[#786C60] font-sans tracking-wider">Total Amount</span>
                       <p className="text-xl font-serif font-normal text-[#14111E]">
                         ₹{Number(order.totalAmount || order.total || 0).toLocaleString()}
                       </p>
@@ -512,7 +509,7 @@ const Orders = () => {
             {/* Search Input Box */}
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#E5D7C5] shadow-xs space-y-4 text-center">
               <div className="max-w-md mx-auto space-y-1">
-                <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#C8A46A] font-sans flex items-center justify-center gap-1.5">
+                <span className="text-[14px] uppercase font-bold tracking-[0.25em] text-[#C8A46A] font-sans flex items-center justify-center gap-1.5">
                   <Truck size={13} /> Direct Logistics Lookup
                 </span>
                 <h3 className="font-serif text-2xl text-[#14111E]">Check Shiprocket Tracking Status</h3>
@@ -553,11 +550,11 @@ const Orders = () => {
             {/* Tracking Output Details */}
             {trackingInfo && (
               <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                
+
                 {/* Status Summary Bar */}
                 <div className="bg-white rounded-3xl border border-[#E5D7C5] p-6 sm:p-8 shadow-xs grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-left">
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                    <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                       AWB Tracking Code
                     </span>
                     <p className="text-xs font-bold font-mono text-[#14111E] mt-1">
@@ -566,7 +563,7 @@ const Orders = () => {
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                    <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                       Carrier Partner
                     </span>
                     <p className="text-xs font-bold text-[#14111E] mt-1 font-sans flex items-center justify-center md:justify-start gap-1.5">
@@ -575,7 +572,7 @@ const Orders = () => {
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                    <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                       Est. Delivery Date
                     </span>
                     <p className="text-xs font-bold text-emerald-800 mt-1 font-sans flex items-center justify-center md:justify-start gap-1.5">
@@ -584,10 +581,10 @@ const Orders = () => {
                   </div>
 
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
+                    <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#786C60] block font-sans">
                       Current Dispatch Status
                     </span>
-                    <span className="inline-block mt-1 px-3 py-1 bg-[#14111E] text-[#FBF9F5] text-[10px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
+                    <span className="inline-block mt-1 px-3 py-1 bg-[#14111E] text-[#FBF9F5] text-[14px] font-bold uppercase tracking-wider rounded-full font-sans border border-[#C8A46A]/30">
                       {trackingInfo.currentStatus}
                     </span>
                   </div>
@@ -603,11 +600,10 @@ const Orders = () => {
                     {trackingInfo.timeline.map((step, idx) => (
                       <div key={idx} className="relative flex items-start gap-4">
                         <div
-                          className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all ${
-                            step.completed
-                              ? "bg-[#14111E] border-[#C8A46A] text-[#FBF9F5]"
-                              : "bg-white border-[#E5D7C5] text-[#9E9082]"
-                          }`}
+                          className={`absolute -left-6 sm:-left-8 top-1 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs transition-all ${step.completed
+                            ? "bg-[#14111E] border-[#C8A46A] text-[#FBF9F5]"
+                            : "bg-white border-[#E5D7C5] text-[#9E9082]"
+                            }`}
                         >
                           {step.completed ? <CheckCircle2 size={13} className="text-[#C8A46A]" /> : <Clock size={12} />}
                         </div>
@@ -617,7 +613,7 @@ const Orders = () => {
                             {step.title}
                           </h4>
                           <p className="text-xs text-[#786C60] font-serif italic">
-                            {step.location} • <span className="font-sans text-[11px] not-italic">{step.timestamp}</span>
+                            {step.location} • <span className="font-sans text-[14px] not-italic">{step.timestamp}</span>
                           </p>
                         </div>
                       </div>
@@ -630,7 +626,7 @@ const Orders = () => {
                   <div className="bg-white rounded-3xl border border-[#E5D7C5] p-6 sm:p-8 shadow-xs space-y-6">
                     <div className="flex justify-between items-center border-b border-[#E5D7C5] pb-4">
                       <div>
-                        <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C8A46A] block font-sans">
+                        <span className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#C8A46A] block font-sans">
                           Order Breakdown
                         </span>
                         <h4 className="font-serif text-xl text-[#14111E]">Order #{trackingOrderData.id}</h4>
@@ -646,7 +642,7 @@ const Orders = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="bg-[#F6F2EC] p-5 rounded-2xl border border-[#E5D7C5] space-y-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
+                        <span className="text-[14px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
                           <MapPin size={13} className="text-[#C8A46A]" /> Destination Address
                         </span>
                         <p className="text-xs font-bold text-[#14111E] font-sans">{trackingOrderData.customerName || trackingOrderData.shippingAddress?.name}</p>
@@ -654,7 +650,7 @@ const Orders = () => {
                       </div>
 
                       <div className="bg-[#F6F2EC] p-5 rounded-2xl border border-[#E5D7C5] space-y-3">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
+                        <span className="text-[14px] font-bold uppercase tracking-wider text-[#14111E] font-sans flex items-center gap-1.5">
                           <Package size={13} className="text-[#C8A46A]" /> Items List ({(trackingOrderData.items || []).length})
                         </span>
                         <div className="space-y-2 max-h-32 overflow-y-auto no-scrollbar">
@@ -696,7 +692,7 @@ const Orders = () => {
             >
               <div className="flex justify-between items-center border-b border-[#E5D7C5] pb-4">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#C8A46A] font-sans">Velouraz Acquisition Receipt</span>
+                  <span className="text-[14px] font-bold uppercase tracking-wider text-[#C8A46A] font-sans">Velouraz Acquisition Receipt</span>
                   <h3 className="font-serif text-xl font-bold font-mono text-[#14111E]">#{selectedOrder.id}</h3>
                 </div>
                 <button onClick={() => setShowDetailModal(false)} className="p-2 text-gray-400 hover:text-black">
@@ -723,10 +719,10 @@ const Orders = () => {
               </div>
 
               <div className="bg-[#F6F2EC] p-4 rounded-xl border border-[#E5D7C5] space-y-2 text-xs font-sans">
-                <h4 className="font-bold text-[#14111E] uppercase tracking-wider text-[10px]">Shipping & Payment Info</h4>
+                <h4 className="font-bold text-[#14111E] uppercase tracking-wider text-[14px]">Shipping & Payment Info</h4>
                 <p><span className="font-bold text-[#14111E]">{selectedOrder.customerName || selectedOrder.shippingAddress?.name}</span> ({selectedOrder.phone || selectedOrder.shippingAddress?.phone})</p>
                 <p>{selectedOrder.shippingAddress?.fullAddress || `${selectedOrder.shippingAddress?.address}, ${selectedOrder.shippingAddress?.city} - ${selectedOrder.shippingAddress?.pincode}`}</p>
-                <p className="pt-1 text-[10px]">Payment Method: <span className="font-bold text-[#14111E] uppercase">{selectedOrder.paymentMethod} ({selectedOrder.paymentStatus})</span></p>
+                <p className="pt-1 text-[14px]">Payment Method: <span className="font-bold text-[#14111E] uppercase">{selectedOrder.paymentMethod} ({selectedOrder.paymentStatus})</span></p>
               </div>
 
               <div className="flex justify-between items-center pt-2 border-t border-[#E5D7C5]">
@@ -737,7 +733,7 @@ const Orders = () => {
                   <Download size={14} className="text-[#C8A46A]" /> Download Tax Invoice
                 </button>
                 <div className="text-right font-sans">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#786C60]">Grand Total</span>
+                  <span className="text-[14px] font-bold uppercase tracking-wider text-[#786C60]">Grand Total</span>
                   <p className="text-lg font-serif font-bold text-[#14111E]">₹{Number(selectedOrder.totalAmount || selectedOrder.total || 0).toLocaleString()}</p>
                 </div>
               </div>
@@ -766,7 +762,7 @@ const Orders = () => {
               {/* Modal Header */}
               <div className="flex justify-between items-start border-b border-[#E5D7C5] pb-4">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] font-sans flex items-center gap-1.5">
+                  <span className="text-[14px] font-bold uppercase tracking-[0.2em] text-[#C8A46A] font-sans flex items-center gap-1.5">
                     <Sparkles size={12} /> Share Your Experience
                   </span>
                   <h3 className="font-serif text-2xl font-normal text-[#14111E]">Product & Order Review</h3>
@@ -794,7 +790,7 @@ const Orders = () => {
                   {/* Select Item (if order has items) */}
                   {selectedOrderForReview.items?.length > 0 && (
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block">
+                      <label className="text-[14px] uppercase font-bold tracking-wider text-[#786C60] font-sans block">
                         Select Item to Review
                       </label>
                       <div className="grid grid-cols-1 gap-2 max-h-36 overflow-y-auto pr-1">
@@ -802,16 +798,15 @@ const Orders = () => {
                           <div
                             key={idx}
                             onClick={() => setSelectedItemForReview(item)}
-                            className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${
-                              selectedItemForReview?.name === item.name
-                                ? "bg-[#FAF3E8] border-[#C8A46A] shadow-xs"
-                                : "bg-[#F6F2EC] border-[#E5D7C5] hover:border-[#C8A46A]/50"
-                            }`}
+                            className={`flex items-center gap-3 p-2.5 rounded-xl border cursor-pointer transition-all ${selectedItemForReview?.name === item.name
+                              ? "bg-[#FAF3E8] border-[#C8A46A] shadow-xs"
+                              : "bg-[#F6F2EC] border-[#E5D7C5] hover:border-[#C8A46A]/50"
+                              }`}
                           >
                             <img src={item.image || '/img/jewellery/j.png'} alt={item.name} className="w-10 h-12 rounded-lg object-cover border border-[#E5D7C5]" />
                             <div className="flex-1 min-w-0">
                               <p className="font-serif text-sm text-[#14111E] truncate">{item.name}</p>
-                              <p className="text-[11px] text-[#786C60] font-sans">₹{(Number(item.price || 0)).toLocaleString()}</p>
+                              <p className="text-[14px] text-[#786C60] font-sans">₹{(Number(item.price || 0)).toLocaleString()}</p>
                             </div>
                             {selectedItemForReview?.name === item.name && (
                               <Check size={16} className="text-[#C8A46A] shrink-0" />
@@ -824,7 +819,7 @@ const Orders = () => {
 
                   {/* Rating Stars */}
                   <div className="space-y-1.5 text-center bg-[#FAF6F0] p-4 rounded-2xl border border-[#E8DFC8]">
-                    <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#8B6B38] font-sans block">
+                    <label className="text-[14px] uppercase font-bold tracking-[0.2em] text-[#8B6B38] font-sans block">
                       Your Rating
                     </label>
                     <div className="flex justify-center gap-2 pt-1">
@@ -837,16 +832,15 @@ const Orders = () => {
                         >
                           <Star
                             size={26}
-                            className={`${
-                              star <= reviewForm.rating
-                                ? "fill-[#B89355] text-[#B89355]"
-                                : "text-gray-300"
-                            } transition-colors`}
+                            className={`${star <= reviewForm.rating
+                              ? "fill-[#B89355] text-[#B89355]"
+                              : "text-gray-300"
+                              } transition-colors`}
                           />
                         </button>
                       ))}
                     </div>
-                    <p className="text-[11px] font-sans font-semibold text-[#8B6B38] pt-1">
+                    <p className="text-[14px] font-sans font-semibold text-[#8B6B38] pt-1">
                       {reviewForm.rating === 5 && "✦ Royal Excellence (5/5)"}
                       {reviewForm.rating === 4 && "✦ Very Satisfied (4/5)"}
                       {reviewForm.rating === 3 && "✦ Satisfied (3/5)"}
@@ -858,7 +852,7 @@ const Orders = () => {
                   {/* Name & Location */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                      <label className="text-[14px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
                         Your Name
                       </label>
                       <input
@@ -871,7 +865,7 @@ const Orders = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                      <label className="text-[14px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
                         Location / City
                       </label>
                       <input
@@ -887,7 +881,7 @@ const Orders = () => {
 
                   {/* Review Title */}
                   <div>
-                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                    <label className="text-[14px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
                       Review Title / Badge
                     </label>
                     <input
@@ -901,7 +895,7 @@ const Orders = () => {
 
                   {/* Review Quote Text */}
                   <div>
-                    <label className="text-[10px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
+                    <label className="text-[14px] uppercase font-bold tracking-wider text-[#786C60] font-sans block mb-1">
                       Your Review / Story
                     </label>
                     <textarea

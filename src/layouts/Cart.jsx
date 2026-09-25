@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import { db } from "../components/Firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  ShoppingBag, 
-  Trash2, 
-  ArrowLeft, 
-  ShieldCheck, 
-  Truck, 
-  Minus, 
-  Plus, 
-  CheckCircle2, 
-  AlertCircle, 
-  Tag, 
-  ChevronRight, 
-  Gift, 
-  Lock, 
-  RefreshCw, 
+import {
+  ShoppingBag,
+  Trash2,
+  ArrowLeft,
+  ShieldCheck,
+  Truck,
+  Minus,
+  Plus,
+  CheckCircle2,
+  AlertCircle,
+  Tag,
+  ChevronRight,
+  Gift,
+  Lock,
+  RefreshCw,
   ArrowRight,
   Sparkles
 } from "lucide-react";
@@ -33,7 +33,7 @@ const Cart = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [liveStocks, setLiveStocks] = useState({});
-  
+
   // Gift note state
   const [showGiftNote, setShowGiftNote] = useState(false);
   const [giftNoteText, setGiftNoteText] = useState("");
@@ -101,9 +101,9 @@ const Cart = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] font-sans text-[#2A2623]">
-      
+
       {/* Hero Breadcrumb */}
-      <Breadcrumb 
+      <Breadcrumb
         title="Shopping Cart"
         subtitle="Review your curated high-jewellery items before checkout"
         bgImage="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=1600"
@@ -115,13 +115,13 @@ const Cart = () => {
       />
 
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-10 pb-32 lg:pb-24">
-        
+
         {/* Top Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-[#E8DFD5]">
           <div>
             <h1 className="text-xl sm:text-3xl font-serif text-[#2e0e43] font-normal tracking-tight flex items-center gap-2.5">
-              Your Selection 
-              <span className="text-[11px] sm:text-xs font-sans font-normal text-[#C8A46A] bg-[#FAF6F0] border border-[#C8A46A]/30 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
+              Your Selection
+              <span className="text-[14px] sm:text-xs font-sans font-normal text-[#C8A46A] bg-[#FAF6F0] border border-[#C8A46A]/30 px-2.5 py-0.5 rounded-full tracking-wider uppercase">
                 {itemCount} {itemCount === 1 ? 'Item' : 'Items'}
               </span>
             </h1>
@@ -130,8 +130,8 @@ const Cart = () => {
             </p>
           </div>
 
-          <Link 
-            to="/shop" 
+          <Link
+            to="/shop"
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors duration-300 group self-start sm:self-auto"
           >
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
@@ -141,7 +141,7 @@ const Cart = () => {
 
         {items.length === 0 ? (
           /* Empty Cart State */
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             className="py-16 sm:py-20 px-6 rounded-3xl bg-white border border-[#E8DFD5] shadow-sm text-center max-w-lg mx-auto"
@@ -153,8 +153,8 @@ const Cart = () => {
             <p className="text-xs sm:text-sm text-[#7B6D63] mb-6 leading-relaxed max-w-md mx-auto font-serif">
               Your personal high-jewellery bag is waiting. Discover our bespoke collections and curate your style.
             </p>
-            <Link 
-              to="/shop" 
+            <Link
+              to="/shop"
               className="inline-flex items-center justify-center gap-2 bg-[#2e0e43] text-white px-7 py-3.5 rounded-xl text-xs font-semibold uppercase tracking-[0.2em] hover:bg-[#C8A46A] transition-all duration-300 shadow-md hover:shadow-lg"
             >
               Explore Collection
@@ -164,10 +164,10 @@ const Cart = () => {
         ) : (
           /* Main 2-Column Cart Layout */
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
-            
+
             {/* Left Column: Cart Items + Trust Bar + Assurance Banner */}
             <div className="lg:col-span-7 xl:col-span-8 space-y-4 sm:space-y-6">
-              
+
               {/* Item Cards List */}
               <div className="space-y-3 sm:space-y-4">
                 <AnimatePresence mode="popLayout">
@@ -175,33 +175,33 @@ const Cart = () => {
                     const unitPrice = Number(item.price);
                     const originalPrice = Number(item.original_price || item.price);
                     const itemSavings = originalPrice > unitPrice ? (originalPrice - unitPrice) * (item.quantity || 1) : 0;
-                    
+
                     return (
-                      <motion.div 
+                      <motion.div
                         layout
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -30 }}
                         key={item.id}
-                        className="p-3.5 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-[#C8A46A]/40 transition-all duration-300 relative overflow-hidden group"
+                        className="p-3.5 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-[0_2px_14px_rgba(0,0,0,0.02)] hover:border-[#C8A46A]/40 transition-all duration-300 relative overflow-hidden group"
                       >
                         {/* Top subtle golden gradient hairline */}
                         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C8A46A]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                         <div className="flex gap-3.5 sm:gap-5 items-center">
-                          
+
                           {/* Product Image */}
-                          <Link 
+                          <Link
                             to={`/product/${item.id}`}
                             className="w-20 h-24 sm:w-28 sm:h-32 rounded-xl overflow-hidden bg-[#FAF6F0] flex-shrink-0 border border-[#E8DFD5] group/img relative"
                           >
-                            <img 
-                              src={getOptimizedImageUrl(item.image)} 
-                              alt={item.name} 
+                            <img
+                              src={getOptimizedImageUrl(item.image)}
+                              alt={item.name}
                               loading="lazy"
                               decoding="async"
                               onError={(e) => handleImageError(e, item.image)}
-                              className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500" 
+                              className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-500"
                             />
                           </Link>
 
@@ -209,11 +209,11 @@ const Cart = () => {
                           <div className="flex-1 min-w-0 space-y-1 sm:space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="min-w-0">
-                                <span className="text-[10px] sm:text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-[#C8A46A] block">
+                                <span className="text-[14px] sm:text-[14px] font-sans font-semibold uppercase tracking-[0.2em] text-[#C8A46A] block">
                                   Velouraz High Jewellery
                                 </span>
-                                <Link 
-                                  to={`/product/${item.id}`} 
+                                <Link
+                                  to={`/product/${item.id}`}
                                   className="text-sm sm:text-base font-serif text-[#2e0e43] hover:text-[#C8A46A] transition-colors leading-tight font-normal truncate block mt-0.5"
                                 >
                                   {item.name}
@@ -221,7 +221,7 @@ const Cart = () => {
                               </div>
 
                               {/* Remove Button for Desktop & Mobile */}
-                              <button 
+                              <button
                                 onClick={() => removeItem(item.id)}
                                 className="text-[#7B6D63]/60 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition-colors shrink-0"
                                 title="Remove item"
@@ -233,7 +233,7 @@ const Cart = () => {
 
                             {/* Variant / Size info if present */}
                             {(item.size || item.metal || item.color) && (
-                              <p className="text-[11px] sm:text-xs text-[#7B6D63] font-sans flex items-center gap-2">
+                              <p className="text-[14px] sm:text-xs text-[#7B6D63] font-sans flex items-center gap-2">
                                 {item.size && <span>Size: <strong className="text-[#2A2623] font-normal">{item.size}</strong></span>}
                                 {item.metal && <span>Metal: <strong className="text-[#2A2623] font-normal">{item.metal}</strong></span>}
                               </p>
@@ -241,7 +241,7 @@ const Cart = () => {
 
                             {/* Price Tag & Quantity Row */}
                             <div className="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-[#F5EFE8]">
-                              
+
                               {/* Price display */}
                               <div className="flex items-baseline gap-2">
                                 <span className="text-base sm:text-lg font-normal text-[#2e0e43] font-sans tracking-tight">
@@ -253,7 +253,7 @@ const Cart = () => {
                                   </span>
                                 )}
                                 {itemSavings > 0 && (
-                                  <span className="text-[10px] font-normal px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200/50 font-sans hidden sm:inline-block">
+                                  <span className="text-[14px] font-normal px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200/50 font-sans hidden sm:inline-block">
                                     Save ₹{itemSavings.toLocaleString()}
                                   </span>
                                 )}
@@ -271,7 +271,7 @@ const Cart = () => {
                                 <span className="w-7 sm:w-8 text-center font-normal text-[#2A2623] text-xs sm:text-sm font-sans">
                                   {item.quantity || 1}
                                 </span>
-                                <button 
+                                <button
                                   onClick={() => updateCartQuantity(item.id, (item.quantity || 1) + 1)}
                                   disabled={(item.quantity || 1) >= Math.min(10, liveStocks[item.id] ?? item.stock ?? 1)}
                                   className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center text-[#2A2623] hover:bg-[#E8DFD5] active:bg-[#D8CBBE] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
@@ -295,7 +295,7 @@ const Cart = () => {
               {/* Trust Highlights Suite Card */}
               <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
-                  
+
                   {/* Secure Checkout */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
@@ -303,7 +303,7 @@ const Cart = () => {
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">100% Certified</h4>
-                      <p className="text-[11px] text-[#7B6D63] font-serif">Hallmarked & Authenticated</p>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Hallmarked & Authenticated</p>
                     </div>
                   </div>
 
@@ -314,7 +314,7 @@ const Cart = () => {
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Insured Shipping</h4>
-                      <p className="text-[11px] text-[#7B6D63] font-serif">Complimentary door delivery</p>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Complimentary door delivery</p>
                     </div>
                   </div>
 
@@ -325,7 +325,7 @@ const Cart = () => {
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">7–10 Day Returns</h4>
-                      <p className="text-[11px] text-[#7B6D63] font-serif">Hassle-free return policy</p>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Hassle-free return policy</p>
                     </div>
                   </div>
 
@@ -340,13 +340,13 @@ const Cart = () => {
                   </div>
                   <div>
                     <h4 className="text-xs sm:text-sm font-medium text-[#2e0e43] font-serif">Love it or return it</h4>
-                    <p className="text-[11px] text-[#7B6D63] font-serif hidden sm:block">Easy 7–10 day returns. Full refund upon quality inspection.</p>
+                    <p className="text-[14px] text-[#7B6D63] font-serif hidden sm:block">Easy 7–10 day returns. Full refund upon quality inspection.</p>
                   </div>
                 </div>
 
-                <Link 
-                  to="/return-policy" 
-                  className="inline-flex items-center gap-1 text-[11px] uppercase tracking-wider font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors shrink-0 font-sans"
+                <Link
+                  to="/return-policy"
+                  className="inline-flex items-center gap-1 text-[14px] uppercase tracking-wider font-semibold text-[#2e0e43] hover:text-[#C8A46A] transition-colors shrink-0 font-sans"
                 >
                   Policy <ArrowRight size={13} />
                 </Link>
@@ -357,7 +357,7 @@ const Cart = () => {
             {/* Right Column: Price Details & Order Summary Card */}
             <div className="lg:col-span-5 xl:col-span-4">
               <div className="lg:sticky lg:top-24 bg-white rounded-2xl border border-[#E8DFD5] border-t-2 border-t-[#C8A46A] shadow-[0_4px_25px_rgba(0,0,0,0.03)] overflow-hidden">
-                
+
                 {/* Header */}
                 <div className="px-5 py-3.5 border-b border-[#E8DFD5] bg-[#FAF6F0]/80 backdrop-blur-sm flex items-center justify-between">
                   <h2 className="text-xs font-semibold text-[#2e0e43] uppercase tracking-[0.2em] font-sans flex items-center gap-2">
@@ -370,10 +370,10 @@ const Cart = () => {
                 </div>
 
                 <div className="p-5 space-y-4">
-                  
+
                   {/* Line Items */}
                   <div className="space-y-3 text-xs sm:text-sm font-sans">
-                    
+
                     {/* Price Subtotal */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
                       <span>Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
@@ -396,7 +396,7 @@ const Cart = () => {
                     {/* Delivery Charges */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
                       <span>Insured Express Delivery</span>
-                      <span className="font-semibold text-emerald-700 text-[11px] uppercase tracking-wider">COMPLIMENTARY</span>
+                      <span className="font-semibold text-emerald-700 text-[14px] uppercase tracking-wider">COMPLIMENTARY</span>
                     </div>
 
                     {/* GST Included */}
@@ -423,7 +423,7 @@ const Cart = () => {
                         ₹{total.toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-[10px] text-[#7B6D63] font-serif text-right">
+                    <p className="text-[14px] text-[#7B6D63] font-serif text-right">
                       Inclusive of all applicable taxes
                     </p>
                   </div>
@@ -431,7 +431,7 @@ const Cart = () => {
                   {/* Gift Note Section */}
                   <div className="pt-1">
                     {!showGiftNote ? (
-                      <button 
+                      <button
                         onClick={() => setShowGiftNote(true)}
                         className="w-full flex items-center justify-between text-xs font-sans text-[#7B6D63] hover:text-[#2e0e43] transition-colors py-2 border-t border-b border-[#F5EFE8]"
                       >
@@ -463,7 +463,7 @@ const Cart = () => {
                           </button>
                           <button
                             onClick={handleSaveGiftNote}
-                            className="px-3.5 py-1 rounded-lg bg-[#2e0e43] text-white text-[11px] font-semibold uppercase tracking-wider hover:bg-[#C8A46A] transition-colors"
+                            className="px-3.5 py-1 rounded-lg bg-[#2e0e43] text-white text-[14px] font-semibold uppercase tracking-wider hover:bg-[#C8A46A] transition-colors"
                           >
                             Save Note
                           </button>
@@ -471,14 +471,14 @@ const Cart = () => {
                       </div>
                     )}
                     {savedGiftNote && !showGiftNote && (
-                      <p className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-100 p-2 rounded-lg mt-2 font-serif italic">
+                      <p className="text-[14px] text-emerald-700 bg-emerald-50 border border-emerald-100 p-2 rounded-lg mt-2 font-serif italic">
                         "{savedGiftNote}"
                       </p>
                     )}
                   </div>
 
                   {/* Primary Checkout Action Button (Desktop View) */}
-                  <button 
+                  <button
                     onClick={() => navigate("/checkout")}
                     disabled={items.length === 0}
                     className="hidden lg:flex w-full bg-[#2e0e43] text-white py-3.5 px-6 rounded-xl text-xs font-semibold uppercase tracking-[0.25em] hover:bg-[#1A0829] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed items-center justify-center gap-2 group cursor-pointer"
@@ -488,7 +488,7 @@ const Cart = () => {
                   </button>
 
                   {/* Safe & Secure Sub-caption */}
-                  <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#7B6D63] font-serif">
+                  <div className="flex items-center justify-center gap-1.5 text-[14px] text-[#7B6D63] font-serif">
                     <Lock size={13} className="text-[#C8A46A]" />
                     <span>256-Bit SSL Encrypted • Safe & Secure</span>
                   </div>
@@ -507,14 +507,14 @@ const Cart = () => {
       {items.length > 0 && (
         <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#E8DFD5] p-3 px-4 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <span className="text-[10px] text-[#7B6D63] font-serif uppercase tracking-wider block">
+            <span className="text-[14px] text-[#7B6D63] font-serif uppercase tracking-wider block">
               Total ({itemCount} {itemCount === 1 ? 'item' : 'items'})
             </span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-xl font-normal font-sans text-[#2e0e43]">
                 ₹{total.toLocaleString()}
               </span>
-             
+
             </div>
           </div>
 
