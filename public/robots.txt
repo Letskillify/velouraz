@@ -29,7 +29,7 @@ Allow: /return-policy
 Allow: /terms-and-conditions
 Allow: /product/
 
-# Sitemap
+# Sitemap — dynamically generated, always up-to-date
 Sitemap: https://www.velouraz.in/sitemap.xml
 
 # Crawl delay for polite crawling
