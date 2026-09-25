@@ -2,8 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Compass, Search } from 'lucide-react';
+import useSEO from '../hooks/useSEO';
 
 const NotFound = () => {
+  useSEO({
+    title: 'Page Not Found - 404',
+    description: 'This page could not be found. Return to the Velouraz homepage to explore our globally curated jewellery collection.',
+    noIndex: true,
+  });
+
   return (
     <div className="min-h-screen bg-[#FDFAF5] text-[#2A2623] flex items-center justify-center px-6 font-sans overflow-hidden selection:bg-[#2A2623] selection:text-white">
       <div className="text-center space-y-16 max-w-4xl relative">

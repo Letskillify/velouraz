@@ -6,8 +6,23 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Breadcrumb from '../components/Breadcrumb';
+import useSEO from '../hooks/useSEO';
 
 const Contact = () => {
+  useSEO({
+    title: 'Contact Us - Get in Touch with Velouraz',
+    description: 'Have a question about a piece or need help with your order? Reach out to the Velouraz team by email, phone or WhatsApp. We are available Monday to Saturday, 10am to 7pm IST.',
+    keywords: 'contact velouraz, velouraz customer support, jewellery brand contact india, velouraz whatsapp, velouraz email, velouraz indore',
+    canonical: '/contact',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Velouraz",
+      "url": "https://www.velouraz.in/contact",
+      "description": "Contact the Velouraz team for order support, custom inquiries or general information about our jewellery collections."
+    }
+  });
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',

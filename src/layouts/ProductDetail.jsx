@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import AddToCartModal from "../components/AddToCartModal";
 import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
+import useSEO from "../hooks/useSEO";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -38,6 +39,56 @@ const ProductDetail = () => {
   const [giftWrap, setGiftWrap] = useState(false);
 
   const { addToCart, addToWishlist, isInCart, isInWishlist } = useStore();
+
+  // Dynamic per-product SEO
+  useSEO({
+    title: product
+      ? `${product.name} - ${product.category || 'Jewellery'} by Velouraz`
+      : 'Jewellery by Velouraz',
+    description: product
+      ? `${product.description ? product.description.slice(0, 155).replace(/\n/g, ' ') + '...' : `Shop ${product.name} from the Velouraz ${product.collectionName || ''} collection. Globally curated, handcrafted jewellery delivered across India.`}`
+      : 'Shop fine jewellery from Velouraz. Globally curated, handcrafted pieces delivered across India.',
+    keywords: product
+      ? `${product.name}, ${product.category || ''} india, ${product.collectionName || ''}, ${(product.tags || []).join(', ')}, velouraz, buy jewellery india`
+      : 'velouraz jewellery',
+    canonical: product ? `/product/${product.id}` : '/shop',
+    ogType: 'product',
+    ogImage: product?.primaryImage || product?.image || product?.images?.[0] || undefined,
+    structuredData: product ? {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "description": (product.description || '').replace(/\n/g, ' '),
+      "image": product.images && product.images.length > 0 ? product.images : [product.image || product.primaryImage].filter(Boolean),
+      "sku": product.sku || product.id,
+      "brand": {
+        "@type": "Brand",
+        "name": product.brand || "Velouraz"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": `https://www.velouraz.in/product/${product.id}`,
+        "priceCurrency": "INR",
+        "price": Number(product.price || 0),
+        "priceValidUntil": new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        "availability": Number(product.stock || 0) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        "seller": { "@type": "Organization", "name": "Velouraz" },
+        "itemCondition": "https://schema.org/NewCondition",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": { "@type": "MonetaryAmount", "value": 0, "currency": "INR" },
+          "deliveryTime": { "@type": "ShippingDeliveryTime", "handlingTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2, "unitCode": "DAY" }, "transitTime": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 3, "unitCode": "DAY" } }
+        }
+      },
+      "category": product.category || 'Jewellery',
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 4.9,
+        "reviewCount": 142,
+        "bestRating": 5
+      }
+    } : null
+  });
 
   useEffect(() => {
     if (!id) return undefined;

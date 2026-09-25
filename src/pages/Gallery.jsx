@@ -4,8 +4,16 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, X, Maximize2 } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
+import useSEO from "../hooks/useSEO";
 
 const Gallery = () => {
+    useSEO({
+        title: 'Gallery - Behind the Scenes at Velouraz',
+        description: 'Take a peek inside the world of Velouraz. From international gem sourcing trips and live exhibitions to happy customers wearing our globally curated jewellery.',
+        keywords: 'velouraz gallery, jewellery brand india gallery, behind the scenes jewellery, velouraz events, jewellery exhibition india',
+        canonical: '/gallery',
+    });
+
     const [photos, setPhotos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -64,7 +72,7 @@ const Gallery = () => {
                             >
                                 <img
                                     src={photo.url}
-                                    alt="Gallery Item"
+                                    alt={photo.caption || photo.title || `Velouraz jewellery - ${photo.id}`}
                                     className="w-full h-auto object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
                                     loading="lazy"
                                 />

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import AboutBreadcrumb from '../components/AboutBreadcrumb';
 import Newsletter from '../components/Newsletter';
+import useSEO from '../hooks/useSEO';
 
 const CRIMSON = '#000000';
 const DARK = '#000000';
@@ -17,6 +18,22 @@ const fadeUp = {
 };
 
 const About = () => {
+  useSEO({
+    title: 'Our Story - The Journey Behind Velouraz',
+    description: 'Velouraz was born from the friendship and shared love of travel of founders Zahabiya Kalabhai and Alifiya Bohra. Discover how their global journeys inspired a collection of jewellery that brings the world closer to you.',
+    keywords: 'velouraz story, about velouraz, jewellery brand india, zahabiya kalabhai, alifiya bohra, globally curated jewellery brand, jewellery founders india',
+    canonical: '/about',
+    ogType: 'website',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.velouraz.in/" },
+        { "@type": "ListItem", "position": 2, "name": "Our Story", "item": "https://www.velouraz.in/about" }
+      ]
+    }
+  });
+
   const breadcrumbLinks = [
     { name: 'Home', href: '/' },
     { name: 'Our Story', href: '/about', active: true }

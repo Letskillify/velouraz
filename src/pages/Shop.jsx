@@ -14,6 +14,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import AddToCartModal from '../components/AddToCartModal';
 import { listenToTags } from '../services/tagsService';
 import { getOptimizedImageUrl, handleImageError } from '../config/cloudinary';
+import useSEO from '../hooks/useSEO';
 
 const fallbackProducts = [
   {
@@ -134,6 +135,39 @@ const Shop = () => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [availability, setAvailability] = useState('all');
+
+  // Dynamic SEO based on active filters
+  const seoCategory = selectedCategory !== 'All' ? selectedCategory : null;
+  const seoCountry = selectedCountry !== 'All' ? selectedCountry : null;
+  const seoTitle = seoCategory
+    ? `Shop ${seoCategory} - Velouraz Jewellery Collection`
+    : seoCountry
+      ? `${seoCountry}-Inspired Jewellery - Velouraz Collection`
+      : 'Shop All Jewellery - Earrings, Bangles, Rings, Necklaces';
+  const seoDescription = seoCategory
+    ? `Browse Velouraz ${seoCategory.toLowerCase()} collection. Handpicked, globally curated designs inspired by cultures around the world. Shop now with free insured delivery across India.`
+    : 'Explore the complete Velouraz jewellery collection. Shop earrings, bangles, rings, necklaces, bracelets and bridal wear. Globally curated pieces for the modern woman.';
+
+  useSEO({
+    title: seoTitle,
+    description: seoDescription,
+    keywords: `velouraz shop, buy jewellery online india, ${seoCategory ? seoCategory.toLowerCase() + ' india,' : ''} statement jewellery, gold jewellery, festival jewellery india, bridal jewellery online`,
+    canonical: '/shop',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": seoTitle,
+      "url": "https://www.velouraz.in/shop",
+      "description": seoDescription,
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.velouraz.in/" },
+          { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://www.velouraz.in/shop" }
+        ]
+      }
+    }
+  });
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();

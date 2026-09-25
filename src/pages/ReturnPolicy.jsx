@@ -1,28 +1,36 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  ShieldCheck, 
-  RefreshCcw, 
-  Clock, 
-  AlertTriangle, 
-  CheckCircle, 
-  Ban, 
-  Sparkles, 
-  Search, 
-  CreditCard, 
-  Truck, 
-  Tag, 
-  PackageX, 
-  Lock, 
-  Scale, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Globe 
+import {
+  ShieldCheck,
+  RefreshCcw,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  Ban,
+  Sparkles,
+  Search,
+  CreditCard,
+  Truck,
+  Tag,
+  PackageX,
+  Lock,
+  Scale,
+  Mail,
+  Phone,
+  MapPin,
+  Globe
 } from 'lucide-react';
 import Breadcrumb from '../components/Breadcrumb';
+import useSEO from '../hooks/useSEO';
 
 const ReturnPolicy = () => {
+  useSEO({
+    title: 'Return and Refund Policy - Velouraz',
+    description: 'At Velouraz, we want you to love your jewellery. If you receive a damaged, defective or incorrect item, our team is here to help. Read our full return and refund policy.',
+    keywords: 'velouraz return policy, jewellery refund india, velouraz exchange policy, damaged jewellery return',
+    canonical: '/return-policy',
+  });
+
   const fader = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -37,9 +45,9 @@ const ReturnPolicy = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFAF5] text-[#2A2623] font-sans overflow-hidden">
-      
+
       {/* Premium Breadcrumb */}
-      <Breadcrumb 
+      <Breadcrumb
         title="Return & Refund Policy"
         subtitle="At VelourAZ, we want you to love your jewellery. Detailed guidelines for returns, exchanges, and refunds."
         bgImage="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1600"
@@ -48,7 +56,7 @@ const ReturnPolicy = () => {
 
       <div className="max-w-4xl mx-auto py-16 px-6 relative z-10">
         <motion.div {...fader} className="space-y-16">
-          
+
           {/* Intro Notice Banner */}
           <div className="p-8 bg-white/70 rounded-3xl border border-[#D8CBBE]/40 shadow-sm space-y-3">
             <p className="text-[#7B6D63] text-base sm:text-lg leading-relaxed font-light">
@@ -57,7 +65,7 @@ const ReturnPolicy = () => {
           </div>
 
           <div className="space-y-16 text-[#7B6D63] leading-relaxed tracking-wide text-base sm:text-lg font-light">
-            
+
             {/* 1. Eligibility for Returns */}
             <section className="space-y-6 group">
               <div className="flex items-center gap-4 text-[#2e0e43]">

@@ -2,11 +2,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, UserCheck, Settings, Mail, CreditCard, Truck, Lock, Clock, Globe, AlertTriangle, RefreshCw, Phone, MapPin } from 'lucide-react';
 import Breadcrumb from '../components/Breadcrumb';
+import useSEO from '../hooks/useSEO';
 
 const PrivacyPolicy = () => {
+  useSEO({
+    title: 'Privacy Policy - How Velouraz Protects Your Data',
+    description: 'Read the Velouraz Privacy Policy to understand how we collect, use and protect your personal information when you shop for jewellery on our website.',
+    keywords: 'velouraz privacy policy, data protection velouraz, jewellery brand privacy india',
+    canonical: '/privacy-policy',
+  });
+
   const fader = {
     initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },    viewport: { once: true },
+    whileInView: { opacity: 1, y: 0 }, viewport: { once: true },
     transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
   };
 
@@ -17,9 +25,9 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFAF5] text-[#2A2623] font-sans overflow-hidden">
-      
+
       {/* Premium Breadcrumb */}
-      <Breadcrumb 
+      <Breadcrumb
         title="Privacy Policy"
         subtitle="The Privacy Policy describes that by using our website you acknowledge that you have read and understood this Privacy Policy."
         bgImage="https://images.unsplash.com/photo-1544027993-37dbfe43552e?auto=format&fit=crop&q=80&w=1600"
@@ -28,7 +36,7 @@ const PrivacyPolicy = () => {
 
       <div className="max-w-4xl mx-auto py-16 px-6 relative z-10">
         <motion.div {...fader} className="space-y-16">
-          
+
           {/* Intro Notice Banner */}
           <div className="p-8 bg-white/70 rounded-3xl border border-[#D8CBBE]/40 shadow-sm space-y-3">
             <p className="text-[#7B6D63] text-base sm:text-lg leading-relaxed font-light">
@@ -40,7 +48,7 @@ const PrivacyPolicy = () => {
           </div>
 
           <div className="space-y-16 text-[#7B6D63] leading-relaxed tracking-wide text-base sm:text-lg font-light">
-            
+
             {/* Section A */}
             <section className="space-y-6 group">
               <div className="flex items-center gap-4 text-[#2e0e43]">

@@ -5,6 +5,7 @@ import { Search, Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Breadcrumb from '../components/Breadcrumb';
+import useSEO from '../hooks/useSEO';
 
 const GOLD = '#C8A97A';
 const SERIF = "'Cormorant Garamond', Georgia, serif";
@@ -43,6 +44,25 @@ const defaultBlogs = [
 ];
 
 const Blog = () => {
+  useSEO({
+    title: 'The Journal - Jewellery Stories, Trends and Styling',
+    description: 'Read the Velouraz journal for inspiring stories about jewellery heritage, global craft traditions, styling guides and the latest trends in contemporary jewellery.',
+    keywords: 'velouraz journal, jewellery blog india, jewellery care guide, bridal jewellery trends, kundan craftsmanship, jewellery styling tips',
+    canonical: '/blog',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "The Velouraz Journal",
+      "url": "https://www.velouraz.in/blog",
+      "description": "Artisanal stories, high jewellery heritage, global inspirations and exclusive styling perspectives.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Velouraz",
+        "logo": { "@type": "ImageObject", "url": "https://www.velouraz.in/img/logo.png" }
+      }
+    }
+  });
+
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
