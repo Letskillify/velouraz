@@ -8,8 +8,12 @@ const normalizeEmail = (email) => {
 };
 
 const hashOtp = (email, otp) => {
-  const secret = process.env.OTP_SECRET || "velouraz_secure_otp_salt_2026";
-  return crypto.createHmac("sha256", secret).update(`${email}:${otp}`).digest("hex");
+  // OTP_SECRET must be set in environment — prevents use of predictable salts
+  const secret = process.env.OTP_SECRET;
+  if (!secret) {
+    throw new Error('[Velouraz OTP] OTP_SECRET environment variable is not set. Add it to your .env or Vercel settings.');
+  }
+  return crypto.createHmac('sha256', secret).update(`${email}:${otp}`).digest('hex');
 };
 
 export default async function handler(req, res) {
@@ -72,8 +76,8 @@ export default async function handler(req, res) {
     });
 
     // 7. Prepare email content
-    const smtpUser = process.env.SMTP_USER || "velourazglobal@gmail.com";
-    const fromAddress = process.env.SMTP_FROM || `"Velouraz High Jewellery" <${smtpUser}>`;
+    const smtpUser = process.env.SMTP_USER;
+    const fromAddress = process.env.SMTP_FROM || (smtpUser ? `"Velouraz High Jewellery" <${smtpUser}>` : '');
 
     const mailOptions = {
       from: fromAddress,

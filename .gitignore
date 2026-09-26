@@ -12,7 +12,33 @@ dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# ─── ENVIRONMENT FILES — NEVER COMMIT THESE ───────────────────────
+# These contain secrets, API keys, and credentials
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.staging
+.env.*.local
+
+# ─── FIREBASE ─────────────────────────────────────────────────────
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+functions/.env
+functions/.env.local
+functions/node_modules
+.firebaserc
+
+# ─── TEMPORARY UPLOAD SCRIPTS — Do NOT commit to production ───────
+upload*.js
+delete_old.js
+new_product.json
+
+# ─── EDITOR DIRECTORIES AND FILES ─────────────────────────────────
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +48,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Thumbs.db

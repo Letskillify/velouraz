@@ -1,9 +1,28 @@
+// ─── Cloudinary Client Configuration ────────────────────────────────────────
+// Values must be set in .env (local) or Vercel Environment Variables (production).
+// ⚠️  NEVER add hardcoded fallback values here — this file is tracked by Git.
+
+if (import.meta.env.DEV) {
+  if (!import.meta.env.VITE_CLOUDINARY_CLOUD_NAME) {
+    console.warn('[Velouraz] Missing VITE_CLOUDINARY_CLOUD_NAME — add it to your .env file.');
+  }
+  if (!import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET) {
+    console.warn('[Velouraz] Missing VITE_CLOUDINARY_UPLOAD_PRESET — add it to your .env file.');
+  }
+}
+
+const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || '';
+const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || '';
+
 export const cloudinaryConfig = {
-  cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dy1g9f3bj",
-  uploadPreset: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "velouraz_preset",
-  uploadUrl: `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dy1g9f3bj"}/image/upload`,
-  galleryTag: "velouraz_gallery", // This tag will be used to list images
+  cloudName,
+  uploadPreset,
+  uploadUrl: cloudName
+    ? `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
+    : '',
+  galleryTag: 'velouraz_gallery',
 };
+
 
 export const uploadToCloudinary = async (file) => {
   const data = new FormData();

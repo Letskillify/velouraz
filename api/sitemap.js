@@ -9,12 +9,20 @@
  *  - Returns a fresh, fully SEO-compliant sitemap.xml in real-time
  *  - Vercel caches the response for 1 hour (s-maxage=3600), so it's fast and cost-efficient
  *
- * No environment variables required — uses Firestore public REST API with project ID
+ * Required env vars: VITE_FIREBASE_PROJECT_ID, VITE_SITE_URL
  */
 
-const SITE_URL = 'https://www.velouraz.in';
-const FIREBASE_PROJECT_ID = 'velouraz-e708a';
-const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+const SITE_URL = process.env.VITE_SITE_URL || 'https://www.velouraz.in';
+const FIREBASE_PROJECT_ID = process.env.VITE_FIREBASE_PROJECT_ID;
+
+if (!FIREBASE_PROJECT_ID) {
+    console.error('[Velouraz Sitemap] VITE_FIREBASE_PROJECT_ID is not set in environment variables.');
+}
+
+const FIRESTORE_BASE = FIREBASE_PROJECT_ID
+    ? `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`
+    : null;
+
 
 // Static pages with their SEO priority and update frequency
 const STATIC_PAGES = [
@@ -44,6 +52,10 @@ const STATIC_PAGES = [
  * Returns array of document objects with id + flattened fields
  */
 async function fetchFirestoreCollection(collectionName) {
+    if (!FIRESTORE_BASE) {
+        console.warn(`[Velouraz Sitemap] Skipping ${collectionName} fetch — VITE_FIREBASE_PROJECT_ID is not set.`);
+        return [];
+    }
     try {
         const url = `${FIRESTORE_BASE}/${collectionName}?pageSize=300`;
         const response = await fetch(url, {

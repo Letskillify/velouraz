@@ -1,20 +1,40 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// ─── Firebase Configuration ────────────────────────────────────────────────
+// All values are loaded from environment variables.
+// For local development → set in .env file
+// For Vercel production → set in Vercel Dashboard → Project Settings → Environment Variables
+// ⚠️  NEVER hardcode credentials here. This file is tracked by Git.
+
+const requiredEnvVars = [
+  "VITE_FIREBASE_API_KEY",
+  "VITE_FIREBASE_AUTH_DOMAIN",
+  "VITE_FIREBASE_PROJECT_ID",
+  "VITE_FIREBASE_STORAGE_BUCKET",
+  "VITE_FIREBASE_MESSAGING_SENDER_ID",
+  "VITE_FIREBASE_APP_ID",
+];
+
+// In development, warn about missing env vars
+if (import.meta.env.DEV) {
+  const missing = requiredEnvVars.filter((key) => !import.meta.env[key]);
+  if (missing.length > 0) {
+    console.warn(
+      `[Velouraz Firebase] Missing environment variables:\n${missing.map((k) => `  • ${k}`).join("\n")}\nAdd them to your .env file. See .env.example for reference.`
+    );
+  }
+}
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDKTCwXYM5BlOT8uhYvB5H3Bk4UiIX5aN4",
-  authDomain: "velouraz-e708a.firebaseapp.com",
-  projectId: "velouraz-e708a",
-  storageBucket: "velouraz-e708a.firebasestorage.app",
-  messagingSenderId: "427246020538",
-  appId: "1:427246020538:web:f709bc8574fbcfe6061f83",
-  measurementId: "G-6NH5MQ96B2"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);

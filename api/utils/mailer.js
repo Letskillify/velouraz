@@ -1,21 +1,29 @@
 import nodemailer from "nodemailer";
 
-const createTransporterForPort = (port, secure) => {
-  const host = process.env.SMTP_HOST || "smtp.gmail.com";
-  const user = (process.env.SMTP_USER || "velourazglobal@gmail.com").trim();
+// ─── SMTP Configuration ────────────────────────────────────────────────────────
+// All credentials come from environment variables only.
+// Set SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS in:
+//   Local → .env file
+//   Production → Vercel Dashboard → Project → Settings → Environment Variables
+
+const createTransporter = (port, secure) => {
+  const host = process.env.SMTP_HOST;
+  const user = (process.env.SMTP_USER || "").trim();
   const pass = (process.env.SMTP_PASS || "").trim();
+
+  if (!host || !user || !pass) {
+    throw new Error(
+      "[Velouraz Mailer] SMTP credentials not configured. " +
+      "Set SMTP_HOST, SMTP_USER, and SMTP_PASS in your environment variables."
+    );
+  }
 
   return nodemailer.createTransport({
     host,
     port,
     secure,
-    auth: {
-      user,
-      pass,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
+    auth: { user, pass },
+    tls: { rejectUnauthorized: false },
     connectionTimeout: 15000,
     greetingTimeout: 15000,
     socketTimeout: 20000,
@@ -24,28 +32,41 @@ const createTransporterForPort = (port, secure) => {
 
 /**
  * Sends mail with automatic fallback between Port 465 (SSL) and Port 587 (STARTTLS)
- * to handle unexpected socket closures on different ISP/firewall configurations.
+ * Returns simulated success in dev mode if SMTP is not configured.
  */
 export const sendMailWithFallback = async (mailOptions) => {
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+
+  // Dev mode: simulate email if SMTP not configured
+  if (!smtpUser || !smtpPass) {
+    console.warn(
+      "[Velouraz Mailer] SMTP not configured — email simulated in dev mode.\n" +
+      `  To: ${mailOptions.to}\n  Subject: ${mailOptions.subject}`
+    );
+    return { simulated: true, messageId: `dev-${Date.now()}` };
+  }
+
   const primaryPort = Number(process.env.SMTP_PORT) || 465;
-  const primarySecure = process.env.SMTP_SECURE === "true" || (process.env.SMTP_SECURE !== "false" && primaryPort === 465);
+  const primarySecure =
+    process.env.SMTP_SECURE === "true" ||
+    (process.env.SMTP_SECURE !== "false" && primaryPort === 465);
 
   try {
-    const primaryTransporter = createTransporterForPort(primaryPort, primarySecure);
-    return await primaryTransporter.sendMail(mailOptions);
+    const transporter = createTransporter(primaryPort, primarySecure);
+    return await transporter.sendMail(mailOptions);
   } catch (err) {
-    console.warn(`[Nodemailer] Primary attempt (port ${primaryPort}, secure=${primarySecure}) failed: ${err.message}. Retrying with fallback configuration...`);
-
-    // Fallback: If port 465 (SSL) failed due to socket close, try port 587 (STARTTLS)
+    console.warn(
+      `[Velouraz Mailer] Primary attempt (port ${primaryPort}) failed: ${err.message}. Trying fallback port...`
+    );
     const fallbackPort = primaryPort === 465 ? 587 : 465;
     const fallbackSecure = fallbackPort === 465;
-
-    const fallbackTransporter = createTransporterForPort(fallbackPort, fallbackSecure);
+    const fallbackTransporter = createTransporter(fallbackPort, fallbackSecure);
     return await fallbackTransporter.sendMail(mailOptions);
   }
 };
 
-export const transporter = createTransporterForPort(
-  Number(process.env.SMTP_PORT) || 465,
-  process.env.SMTP_SECURE === "true" || (process.env.SMTP_SECURE !== "false" && (Number(process.env.SMTP_PORT) || 465) === 465)
-);
+// Named transporter export for direct use
+export const transporter = {
+  sendMail: sendMailWithFallback,
+};
