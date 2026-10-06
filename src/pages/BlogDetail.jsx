@@ -238,11 +238,6 @@ const BlogDetail = () => {
                 />
               </div>
 
-              {/* Floating Category Tag */}
-              <span className="absolute top-5 left-5 bg-[#2e0e43] text-white text-[14px] uppercase font-bold tracking-[0.2em] px-4 py-2 rounded-full border border-white/10 shadow-md">
-                {blog.category || 'Journal'}
-              </span>
-
               {/* Image Footer Details */}
               <div className="p-5 bg-white border-t border-[#E7DEC8]/80 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs font-semibold text-[#C8A97A]">
@@ -261,14 +256,8 @@ const BlogDetail = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="lg:col-span-7 space-y-8"
           >
-            {/* Category & Title Header */}
+            {/* Article Title Header */}
             <div className="space-y-4 border-b border-[#E7DEC8] pb-8">
-              <span
-                className="text-xs uppercase font-bold tracking-[0.3em] text-[#C8A97A]"
-                style={{ fontFamily: SERIF }}
-              >
-                {blog.category || 'Editorial Story'}
-              </span>
 
               <h1
                 className="text-3xl sm:text-4xl lg:text-5xl font-normal text-[#2A2623] leading-[1.15]"
@@ -357,9 +346,6 @@ const BlogDetail = () => {
                       alt={rBlog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-[#2e0e43]/90 text-white text-[14px] uppercase font-bold tracking-[0.18em] px-2.5 py-1 rounded-full">
-                      {rBlog.category}
-                    </span>
                   </div>
                   <div className="p-5 space-y-2 flex-1 flex flex-col justify-between">
                     <h4

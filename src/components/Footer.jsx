@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight, Mail, CheckCircle2, Sparkles } from 'lucide-react';
+import { Instagram, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight, Mail, CheckCircle2, Sparkles } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,13 +25,12 @@ const Footer = () => {
       links: [
         { name: "All Collections", href: "/shop" },
         { name: "The World Edit", href: "/world-edit" },
-        { name: "Featured Bestsellers", href: "/shop" }
+        { name: "Featured Bestsellers", href: "/shop?filter=bestsellers" }
       ]
     },
     {
       title: "CUSTOMER CARE",
       links: [
-        { name: "Contact Us", href: "/contact" },
         { name: "Track Orders", href: "/orders" },
         { name: "Shopping Bag", href: "/cart" },
         { name: "My Wishlist", href: "/wishlist" }
@@ -41,7 +40,7 @@ const Footer = () => {
       title: "OUR HOUSE",
       links: [
         { name: "Our Story & Heritage", href: "/about" },
-        { name: "Atelier Journal", href: "/blog" },
+        { name: "Blogs", href: "/blog" },
         { name: "My Account", href: "/account" },
         { name: "Contact Us", href: "/contact" }
       ]
@@ -137,15 +136,6 @@ const Footer = () => {
                     className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
                   >
                     <Instagram size={20} />
-                  </a>
-                  <a 
-                    href="https://www.facebook.com/share/1Bg4DRSKhd/?mibextid=wwXIfr" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    aria-label="Facebook" 
-                    className="w-12 h-12 rounded-full bg-white/80 border border-[#E0D5C1] flex items-center justify-center text-[#2A2623] hover:text-white hover:bg-[#B89355] hover:border-[#B89355] hover:shadow-[0_4px_15px_rgba(184,147,85,0.35)] transition-all duration-300"
-                  >
-                    <Facebook size={20} />
                   </a>
                   <a 
                     href="https://pin.it/1J19Fel5b" 

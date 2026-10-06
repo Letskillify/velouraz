@@ -162,11 +162,6 @@ const Blog = () => {
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
-
-                  {/* Category Badge */}
-                  <span className="absolute top-4 left-4 bg-[#2e0e43]/90 backdrop-blur-md text-white text-[14px] uppercase font-bold tracking-[0.2em] px-3 py-1.5 rounded-full border border-white/10 shadow-sm">
-                    {blog.category || 'Journal'}
-                  </span>
                 </div>
 
                 {/* Card Body */}

@@ -394,10 +394,7 @@ const Cart = () => {
                     )}
 
                     {/* Delivery Charges */}
-                    <div className="flex justify-between items-center text-[#7B6D63]">
-                      <span>Insured Express Delivery</span>
-                      <span className="font-semibold text-emerald-700 text-[14px] uppercase tracking-wider">COMPLIMENTARY</span>
-                    </div>
+                    
 
                     {/* GST Included */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
