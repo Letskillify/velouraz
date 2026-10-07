@@ -1,5 +1,5 @@
 // SuperAdmin.jsx
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { db, auth } from "../../components/Firebase";
 import {
   addDoc,
@@ -57,8 +57,10 @@ import {
   Trash2,
   TrendingUp,
   ArrowUpRight,
-  ShieldCheck
+  ShieldCheck,
+  Video
 } from "lucide-react";
+
 import SuperAdminAuth from "./SuperAdminAuth";
 import MetricCards from "../Admin/components/MetricCards";
 import ProductsTable from "../Admin/components/ProductsTable";
@@ -68,7 +70,15 @@ import ProductEditor from "../Admin/components/ProductEditor";
 import CatalogManager from "../Admin/components/CatalogManager";
 import SiteSettingsManager from "../Admin/components/SiteSettingsManager";
 import ProductImageManager from "../Admin/components/ProductImageManager";
-import { uploadToCloudinary } from "../../config/cloudinary";
+import BlogManager from "../Admin/components/BlogManager";
+import ReviewsManager from "../Admin/components/ReviewsManager";
+import GalleryManager from "../Admin/components/GalleryManager";
+import NewsManager from "../Admin/components/NewsManager";
+import TagsManager from "../Admin/components/TagsManager";
+import CouponManager from "../Admin/components/CouponManager";
+import AdminsTable from "./components/AdminsTable";
+import SuperAdminOrders from "./components/SuperAdminOrders";
+import { listenToProducts, listenToTrashedProducts, trashProduct, restoreProduct, permanentlyDeleteProduct } from "../../services/productService";
 
 // Chart.js imports
 import { Chart as ChartJS, ArcElement, CategoryScale, Filler, Legend, LineElement, LinearScale, PointElement, Tooltip } from "chart.js";
@@ -77,28 +87,28 @@ import { Line } from "react-chartjs-2";
 ChartJS.register(ArcElement, CategoryScale, Filler, Legend, LineElement, LinearScale, PointElement, Tooltip);
 
 const sidebarItems = [
-  { name: "Dashboard", icon: LayoutDashboard, desc: "Overview" },
-  { name: "Products", icon: Package, desc: "Catalog" },
+  { name: "Dashboard", icon: LayoutDashboard, desc: "Executive Platform Overview" },
+  { name: "Products", icon: Package, desc: "Product Catalog & Trashed Items" },
   { name: "Product Images", icon: Images, desc: "Manage Product Photos & Gallery" },
-  { name: "Orders", icon: ShoppingBag, desc: "Transactions" },
-  { name: "Inventory", icon: Database, desc: "Stock" },
-  { name: "Billing", icon: CreditCard, desc: "Revenue & Invoices" },
-  { name: "Categories", icon: List, desc: "Structure" },
-  { name: "Users", icon: Users, desc: "Accounts" },
-  { name: "Admins", icon: ShieldCheck, desc: "Access Control" },
-  { name: "Media", icon: Image, desc: "Assets" },
-  { name: "Banners", icon: Images, desc: "Hero & Carousel" },
+  { name: "Orders", icon: ShoppingBag, desc: "Live Customer Transactions & Status Updates" },
+  { name: "Inventory", icon: Database, desc: "Stock Adjustments & Low Stock Control" },
+  { name: "Billing", icon: CreditCard, desc: "Gross Income & Invoice Audit Logs" },
+  { name: "Categories", icon: List, desc: "Store Categories" },
+  { name: "Sub Categories", icon: Grid2X2, desc: "Sub-Categories" },
+  { name: "Collections", icon: Layers3, desc: "Curated Collections" },
+  { name: "Countries", icon: Globe2, desc: "Regional Hubs" },
+  { name: "Attributes", icon: Tags, desc: "Jewellery Attributes" },
+  { name: "Tags Manager", icon: Tags, desc: "Product Meta Tags" },
+  { name: "Coupon Manager", icon: TicketPercent, desc: "Discount Coupons & Promotions" },
+  { name: "Blogs", icon: FileText, desc: "Journal & Editorial Articles" },
+  { name: "Reviews", icon: Star, desc: "Customer Reviews & Ratings" },
+  { name: "Gallery", icon: Images, desc: "Visual Experience Gallery" },
+  { name: "News & Reels", icon: Video, desc: "Short Videos & Press Updates" },
+  { name: "Hero & Banners", icon: Settings, desc: "Hero Carousels & Banners" },
+  { name: "Users", icon: Users, desc: "Registered User Accounts" },
+  { name: "Admins", icon: ShieldCheck, desc: "Create & Manage Super Admins & Store Admins" },
+  { name: "Media", icon: Image, desc: "Cloudinary Asset Library" },
 ];
-
-const statusBadgeClasses = (status) => {
-  switch (status?.toLowerCase()) {
-    case "delivered": return "bg-emerald-50 text-emerald-700 border-emerald-200/60";
-    case "shipped": return "bg-blue-50 text-blue-700 border-blue-200/60";
-    case "processing": return "bg-purple-50 text-purple-700 border-purple-200/60";
-    case "cancelled": return "bg-red-50 text-red-700 border-red-200/60";
-    default: return "bg-amber-50 text-amber-700 border-amber-200/60";
-  }
-};
 
 const sortNewest = (rows) => [...rows].sort((a, b) => {
   const toMillis = (value) => value?.toMillis?.() ?? new Date(value || 0).getTime();
@@ -109,29 +119,21 @@ const SuperAdmin = () => {
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+
   const [products, setProducts] = useState([]);
+  const [trashedProducts, setTrashedProducts] = useState([]);
+  const [productViewMode, setProductViewMode] = useState("active");
+
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [adminsList, setAdminsList] = useState([]);
+  const [superAdminsList, setSuperAdminsList] = useState([]);
+
   const [superAdminUser, setSuperAdminUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [productsMenuOpen, setProductsMenuOpen] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Admin access management modals
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-  const [newAdmin, setNewAdmin] = useState({
-    adminId: "",
-    email: "",
-    password: "",
-    role: "Admin",
-    displayName: "",
-    photoURL: "",
-  });
-  const [uploadingAdminPhoto, setUploadingAdminPhoto] = useState(false);
-  const [emailStatus, setEmailStatus] = useState(null);
 
   // Global search state
   const [globalSearch, setGlobalSearch] = useState("");
@@ -153,8 +155,15 @@ const SuperAdmin = () => {
     localStorage.setItem("velouraz_superadmin_dark", isDarkMode);
   }, [isDarkMode]);
 
-  // ─── Super Admin Authentication ─────────────────────────────────────────────
+  // ─── Super Admin Authentication Persistence ──────────────────────────────
   useEffect(() => {
+    const storedSuper = localStorage.getItem("velouraz_superadmin");
+    if (storedSuper) {
+      try {
+        setSuperAdminUser(JSON.parse(storedSuper));
+      } catch (e) {}
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
@@ -162,16 +171,18 @@ const SuperAdmin = () => {
           const docSnap = await getDoc(docRef);
           if (docSnap.exists() && docSnap.data().role === "superadmin") {
             setSuperAdminUser(user);
+            localStorage.setItem("velouraz_superadmin", JSON.stringify(user));
           } else {
-            await signOut(auth);
-            setSuperAdminUser(null);
+            const q = query(collection(db, "superadmins"), where("email", "==", user.email));
+            const qSnap = await getDocs(q);
+            if (!qSnap.empty) {
+              setSuperAdminUser(user);
+              localStorage.setItem("velouraz_superadmin", JSON.stringify(user));
+            }
           }
         } catch (error) {
           console.error("Error verifying superadmin status:", error);
-          setSuperAdminUser(null);
         }
-      } else {
-        setSuperAdminUser(null);
       }
       setLoadingAuth(false);
     });
@@ -182,9 +193,8 @@ const SuperAdmin = () => {
   useEffect(() => {
     if (!superAdminUser) return undefined;
 
-    const snapProducts = onSnapshot(collection(db, "products"), (snapshot) => {
-      setProducts(sortNewest(snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))));
-    });
+    const stopProducts = listenToProducts(setProducts, (err) => console.warn("Products listener err:", err));
+    const stopTrashed = listenToTrashedProducts(setTrashedProducts, (err) => console.warn("Trashed listener err:", err));
 
     const snapUsers = onSnapshot(collection(db, "users"), (snapshot) => {
       setUsers(sortNewest(snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))));
@@ -198,19 +208,31 @@ const SuperAdmin = () => {
       setAdminsList(sortNewest(snapshot.docs.map((d) => ({ firestoreId: d.id, ...d.data() }))));
     });
 
+    const snapSuperAdmins = onSnapshot(collection(db, "superadmins"), (snapshot) => {
+      setSuperAdminsList(sortNewest(snapshot.docs.map((d) => ({ firestoreId: d.id, ...d.data() }))));
+    });
+
     return () => {
-      snapProducts();
+      stopProducts();
+      stopTrashed();
       snapUsers();
       snapOrders();
       snapAdmins();
+      snapSuperAdmins();
     };
   }, [superAdminUser]);
 
-  // ─── Calculations ──────────────────────────────────────────────────────────
+  const handleLogout = () => {
+    signOut(auth);
+    setSuperAdminUser(null);
+    localStorage.removeItem("velouraz_superadmin");
+  };
+
+  // ─── Revenue & Calculations ────────────────────────────────────────────────
   const grossRevenue = useMemo(() => {
     return orders
-      .filter((o) => o.status !== "Cancelled")
-      .reduce((sum, o) => sum + Number(o.total || 0), 0);
+      .filter((o) => (o.status || o.orderStatus) !== "Cancelled")
+      .reduce((sum, o) => sum + Number(o.total || o.totalAmount || 0), 0);
   }, [orders]);
 
   const profitMargin = useMemo(() => {
@@ -241,19 +263,17 @@ const SuperAdmin = () => {
     setShowSearchResults(true);
   }, [globalSearch, products, orders, users]);
 
-  // ─── Functions ──────────────────────────────────────────────────────────────
+  // ─── Product Operations ────────────────────────────────────────────────────
   const handleDeleteProduct = async (id) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      await deleteDoc(doc(db, "products", id));
-    }
+    await trashProduct(id);
   };
 
-  const handleUpdateOrderStatus = async (orderId, newStatus) => {
-    try {
-      await updateDoc(doc(db, "orders", orderId), { status: newStatus });
-    } catch (e) {
-      console.error("Order status update failed:", e);
-    }
+  const handleRestoreProduct = async (id) => {
+    await restoreProduct(id);
+  };
+
+  const handlePermanentDelete = async (id) => {
+    await permanentlyDeleteProduct(id);
   };
 
   const handleQuickStockAdjustment = async (productId, amount) => {
@@ -272,72 +292,6 @@ const SuperAdmin = () => {
     }
   };
 
-  const handleAdminPhotoUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploadingAdminPhoto(true);
-    try {
-      const url = await uploadToCloudinary(file);
-      setNewAdmin((prev) => ({ ...prev, photoURL: url }));
-    } catch (err) {
-      console.error("Admin photo upload failed:", err);
-    } finally {
-      setUploadingAdminPhoto(false);
-    }
-  };
-
-  const handleCreateAdmin = async (e) => {
-    e.preventDefault();
-    if (!newAdmin.adminId || !newAdmin.email || !newAdmin.password) return;
-    try {
-      await addDoc(collection(db, "admins"), {
-        adminId: newAdmin.adminId.trim(),
-        email: newAdmin.email.trim(),
-        password: newAdmin.password.trim(),
-        role: newAdmin.role,
-        displayName: newAdmin.displayName.trim() || newAdmin.adminId.trim(),
-        photoURL: newAdmin.photoURL,
-        createdAt: new Date().toISOString()
-      });
-
-      // Construct and trigger a direct access email template
-      const emailSubject = encodeURIComponent("Welcome to Velouraz - Admin Panel Access Details");
-      const emailBody = encodeURIComponent(
-        `Hello ${newAdmin.displayName || newAdmin.adminId},\n\n` +
-        `You have been granted access to the Velouraz Admin Panel.\n\n` +
-        `Credentials:\n` +
-        `- Admin ID: ${newAdmin.adminId}\n` +
-        `- Access Password: ${newAdmin.password}\n\n` +
-        `Link: ${window.location.origin}/admin\n\n` +
-        `Best regards,\nSuper Admin Team`
-      );
-
-      // Trigger user's mail client or display credentials status
-      window.open(`mailto:${newAdmin.email}?subject=${emailSubject}&body=${emailBody}`);
-
-      setEmailStatus(`Access granted! Email template opened for: ${newAdmin.email}`);
-      setTimeout(() => setEmailStatus(null), 6000);
-
-      setNewAdmin({
-        adminId: "",
-        email: "",
-        password: "",
-        role: "Admin",
-        displayName: "",
-        photoURL: "",
-      });
-      setIsAdminModalOpen(false);
-    } catch (error) {
-      console.error("Error creating admin credential:", error);
-    }
-  };
-
-  const handleDeleteAdmin = async (firestoreId) => {
-    if (window.confirm("Are you sure you want to revoke remote access and delete this administrator account?")) {
-      await deleteDoc(doc(db, "admins", firestoreId));
-    }
-  };
-
   // Chart data calculations
   const chartData = useMemo(() => {
     const dates = Array.from({ length: 14 }, (_, i) => {
@@ -352,7 +306,7 @@ const SuperAdmin = () => {
       const oDate = o.createdAt ? new Date(o.createdAt) : new Date();
       const diff = Math.floor((new Date() - oDate) / (1000 * 60 * 60 * 24));
       if (diff >= 0 && diff < 14) {
-        revenueArr[13 - diff] += Number(o.total || 0);
+        revenueArr[13 - diff] += Number(o.total || o.totalAmount || 0);
       }
     });
 
@@ -368,37 +322,39 @@ const SuperAdmin = () => {
       {
         label: "Platform Revenue (₹)",
         data: chartData.revenueArr,
-        borderColor: "#9c1237",
-        backgroundColor: "rgba(156,18,55,.05)",
+        borderColor: "#811331",
+        backgroundColor: "rgba(129,19,49,.08)",
         fill: true,
         tension: 0.4,
-        pointRadius: 2,
+        pointRadius: 3,
         borderWidth: 2
       }
     ]
   };
+
+  const currentItem = sidebarItems.find((i) => i.name === activeItem);
 
   // ─── Header ─────────────────────────────────────────────────────────────────
   const renderHeader = () => (
     <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-base font-medium text-slate-400">Velauraz SuperAdmin</span>
+          <span className="text-base font-medium text-slate-400">Velouraz Executive</span>
           <ChevronRight size={12} className="text-slate-300" />
           <span className="text-base font-semibold text-[#811331]">{activeItem}</span>
         </div>
         <h1 className={`text-2xl font-bold tracking-tight ${isDarkMode ? "text-white" : "text-slate-900"}`}>
           {activeItem}
         </h1>
-        <p className={`mt-1 text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-          Control Center   fully configure products, catalog, transactions & remote administrative accounts
+        <p className={`mt-1 text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+          {currentItem?.desc || "Super Admin Control Console"}
         </p>
       </div>
       <div className="flex items-center gap-3 self-end sm:self-auto">
         <div className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-full shadow-sm border ${isDarkMode ? "bg-slate-800 border-slate-700" : "bg-white border-slate-100"}`}>
           <span className="h-2 w-2 rounded-full bg-red-500 shadow-[0_0_6px_1px_rgba(239,68,68,0.6)] animate-pulse" />
           <span className={`text-base font-medium ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
-            Access: <span className="font-bold text-red-500">Super User Mode</span>
+            Access: <span className="font-bold text-red-500">Super Admin Mode</span>
           </span>
         </div>
         <button
@@ -408,7 +364,7 @@ const SuperAdmin = () => {
           }}
           className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
         >
-          <Plus size={14} />
+          <Plus size={16} />
           <span>Add Product</span>
         </button>
       </div>
@@ -423,11 +379,11 @@ const SuperAdmin = () => {
           <div className="space-y-6">
             {/* Analytics Metrics */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
+              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Income</p>
-                    <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{grossRevenue.toLocaleString("en-IN")}</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Gross Revenue</p>
+                    <p className="text-2xl font-bold mt-2">₹{grossRevenue.toLocaleString("en-IN")}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-rose-50 text-[#811331]">
                     <TrendingUp size={20} />
@@ -435,59 +391,59 @@ const SuperAdmin = () => {
                 </div>
                 <div className="flex items-center gap-1 mt-3 text-base text-emerald-600 font-semibold">
                   <ArrowUpRight size={14} />
-                  <span>Platform live transactions</span>
+                  <span>Real-time platform sales</span>
                 </div>
               </div>
 
-              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
+              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
                 <div className="flex justify-between items-start">
                   <div>
                     <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Total Orders</p>
-                    <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{orders.length}</p>
+                    <p className="text-2xl font-bold mt-2">{orders.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-blue-50 text-blue-600">
                     <ShoppingBag size={20} />
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-3 text-base text-blue-600 font-semibold">
-                  <span>Across all regions</span>
+                  <span>Across all users</span>
                 </div>
               </div>
 
-              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
+              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Live Catalog Products</p>
-                    <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{products.length}</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Live Products</p>
+                    <p className="text-2xl font-bold mt-2">{products.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-[#811331]/10 text-[#811331]">
                     <Package size={20} />
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-3 text-base text-amber-600 font-semibold">
-                  <span>{lowStockCount} low stock alerts</span>
+                  <span>{lowStockCount} low stock items</span>
                 </div>
               </div>
 
-              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-slate-800 border-slate-700/60" : "bg-white border-slate-100"}`}>
+              <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Active Customers</p>
-                    <p className={`text-2xl font-bold mt-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>{users.length}</p>
+                    <p className={`text-base font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Active Users</p>
+                    <p className="text-2xl font-bold mt-2">{users.length}</p>
                   </div>
                   <span className="p-3 rounded-xl bg-purple-50 text-purple-600">
                     <Users size={20} />
                   </span>
                 </div>
                 <div className="flex items-center gap-1 mt-3 text-base text-purple-600 font-semibold">
-                  <span>Platform accounts</span>
+                  <span>Customer accounts</span>
                 </div>
               </div>
             </div>
 
             {/* Line graph of revenue */}
-            <div className={`p-5 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
-              <h3 className={`text-sm font-bold mb-4 ${isDarkMode ? "text-white" : "text-slate-900"}`}>Revenue / Platform Volume over the last 14 days</h3>
+            <div className={`p-6 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
+              <h3 className="text-base font-bold mb-4">Platform Revenue Volume (Last 14 Days)</h3>
               <div className="h-64">
                 <Line data={lineChartData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
               </div>
@@ -499,61 +455,83 @@ const SuperAdmin = () => {
         return (
           <ProductsTable
             products={products}
+            trashedProducts={trashedProducts}
+            viewMode={productViewMode}
+            onViewModeChange={setProductViewMode}
             onAddProduct={() => { setEditingProduct(null); setIsProductModalOpen(true); }}
             onEditProduct={(p) => { setEditingProduct(p); setIsProductModalOpen(true); }}
             onDeleteProduct={handleDeleteProduct}
+            onRestoreProduct={handleRestoreProduct}
+            onPermanentDelete={handlePermanentDelete}
             onRefresh={() => { }}
           />
         );
 
       case "Orders":
+        return <SuperAdminOrders orders={orders} isDarkMode={isDarkMode} />;
+
+      case "Inventory":
         return (
           <div className={`rounded-2xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
             <div className="px-6 py-5 border-b border-slate-100/10">
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Platform Order Fulfillments</h3>
-              <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Review platform order status and set status updates</p>
+              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Super Admin Inventory Control</h3>
+              <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Manage product stock levels and perform instant inventory adjustments</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
-                    <th className="px-6 py-4">Order ID</th>
-                    <th className="px-6 py-4">Customer</th>
-                    <th className="px-6 py-4">Date</th>
-                    <th className="px-6 py-4">Total Amount</th>
-                    <th className="px-6 py-4">Status</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
+                    <th className="px-6 py-4">Product</th>
+                    <th className="px-6 py-4">Category</th>
+                    <th className="px-6 py-4">Current Stock</th>
+                    <th className="px-6 py-4">Quick Adjustments</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100/10 text-base font-medium">
-                  {orders.map((o) => (
-                    <tr key={o.id} className="hover:bg-slate-50/5">
-                      <td className="px-6 py-4 font-mono font-bold">{o.id.slice(0, 8)}</td>
+                <tbody className="divide-y divide-slate-100/10 text-base">
+                  {products.map((p) => (
+                    <tr key={p.id} className="hover:bg-slate-50/5">
                       <td className="px-6 py-4">
-                        <div>
-                          <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{o.customerName || "Platform Guest"}</p>
-                          <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
+                        <div className="flex items-center gap-3">
+                          <img src={p.images?.[0] || p.image} alt="" className="w-10 h-10 rounded-xl object-cover bg-slate-100" />
+                          <div>
+                            <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{p.name}</p>
+                            <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>SKU: {p.sku || "N/A"}</p>
+                          </div>
                         </div>
                       </td>
-                      <td className={`px-6 py-4 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.createdAt ? new Date(o.createdAt).toLocaleDateString("en-IN") : "Recent"}</td>
-                      <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{Number(o.total || 0).toLocaleString("en-IN")}</td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-block px-2.5 py-1 rounded-full font-bold border text-[16px] uppercase ${statusBadgeClasses(o.status)}`}>
-                          {o.status || "Pending"}
+                      <td className={`px-6 py-4 font-semibold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{p.category}</td>
+                      <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>
+                        <span className={`inline-block px-3 py-1 rounded-lg ${Number(p.stock || 0) <= 10 ? "bg-amber-50 text-amber-700 border border-amber-200 font-bold" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>
+                          {p.stock || 0} units
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-right">
-                        <select
-                          value={o.status || "Pending"}
-                          onChange={(e) => handleUpdateOrderStatus(o.id, e.target.value)}
-                          className="bg-transparent border border-slate-200 dark:border-slate-700 rounded-lg p-1 text-base outline-none focus:border-[#811331]"
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Processing">Processing</option>
-                          <option value="Shipped">Shipped</option>
-                          <option value="Delivered">Delivered</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => handleQuickStockAdjustment(p.id, -1)}
+                            className="w-8 h-8 bg-slate-150 hover:bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center font-bold text-slate-700 dark:text-white"
+                          >
+                            -1
+                          </button>
+                          <button
+                            onClick={() => handleQuickStockAdjustment(p.id, 5)}
+                            className="px-3 py-1 bg-[#811331]/10 text-[#811331] rounded-lg font-bold text-[16px]"
+                          >
+                            +5
+                          </button>
+                          <button
+                            onClick={() => handleQuickStockAdjustment(p.id, 25)}
+                            className="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg font-bold text-[16px]"
+                          >
+                            +25
+                          </button>
+                          <button
+                            onClick={() => handleQuickStockAdjustment(p.id, 1)}
+                            className="w-8 h-8 bg-slate-150 hover:bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center font-bold text-slate-700 dark:text-white"
+                          >
+                            +1
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -563,141 +541,36 @@ const SuperAdmin = () => {
           </div>
         );
 
-      case "Inventory":
-        return (
-          <div className={`rounded-2xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
-            <div className="px-6 py-5 border-b border-slate-100/10">
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Inventory Control</h3>
-              <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-1`}>Super Admin inventory controls. Perform quick stock operations</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
-                    <th className="px-6 py-4">Product</th>
-                    <th className="px-6 py-4">Category</th>
-                    <th className="px-6 py-4">Stock Level</th>
-                    <th className="px-6 py-4">Adjustment</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100/10 text-base">
-                  {products.map((p) => {
-                    const isLow = Number(p.stock || 0) <= 10;
-                    return (
-                      <tr key={p.id} className="hover:bg-slate-50/5">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            <img src={p.images?.[0] || p.image} alt="" className="w-10 h-10 rounded-xl object-cover bg-slate-100" />
-                            <div>
-                              <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{p.name}</p>
-                              <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>SKU: {p.sku || "N/A"}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className={`px-6 py-4 font-semibold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{p.category}</td>
-                        <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>{p.stock || 0} units</td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              onClick={() => handleQuickStockAdjustment(p.id, -1)}
-                              className="w-7 h-7 bg-slate-150 hover:bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center font-bold text-slate-700 dark:text-white"
-                            >
-                              -
-                            </button>
-                            <button
-                              onClick={() => handleQuickStockAdjustment(p.id, 5)}
-                              className="px-2.5 py-1 bg-[#811331]/10 text-[#811331] rounded-lg font-bold text-[16px]"
-                            >
-                              +5
-                            </button>
-                            <button
-                              onClick={() => handleQuickStockAdjustment(p.id, 25)}
-                              className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg font-bold text-[16px]"
-                            >
-                              +25
-                            </button>
-                            <button
-                              onClick={() => handleQuickStockAdjustment(p.id, 1)}
-                              className="w-7 h-7 bg-slate-150 hover:bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center font-bold text-slate-700 dark:text-white"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        );
-
       case "Billing":
         return (
-          <div className="space-y-6">
-            <div className={`p-6 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
-              <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-900"} mb-2`}>Billing Statements & Gross Sales</h3>
+          <div className="space-y-6 font-sans">
+            <div className={`p-6 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
+              <h3 className="text-base font-bold mb-2">Platform Billing & Revenue Audit</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Revenue</p>
-                  <p className={`text-2xl font-bold mt-1 ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{grossRevenue.toLocaleString("en-IN")}</p>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Total Gross Revenue</p>
+                  <p className="text-2xl font-bold mt-1">₹{grossRevenue.toLocaleString("en-IN")}</p>
                 </div>
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Estimated Margins</p>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Estimated Catalog Margin</p>
                   <p className="text-2xl font-bold mt-1 text-emerald-600">₹{profitMargin.toLocaleString("en-IN")}</p>
                 </div>
                 <div className={`p-4 rounded-xl border ${isDarkMode ? "border-slate-700 bg-slate-900/40" : "border-slate-100 bg-slate-50"}`}>
-                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Platform Average Invoices</p>
-                  <p className={`text-2xl font-bold mt-1 ${isDarkMode ? "text-white" : "text-slate-900"}`}>
+                  <p className={`text-base font-bold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>Average Order Invoice</p>
+                  <p className="text-2xl font-bold mt-1">
                     ₹{orders.length ? Math.round(grossRevenue / orders.length).toLocaleString("en-IN") : 0}
                   </p>
                 </div>
               </div>
             </div>
-
-            <div className={`rounded-2xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
-              <div className="px-6 py-5 border-b border-slate-100/10">
-                <h4 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Invoices Log</h4>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
-                      <th className="px-6 py-4">Invoice #</th>
-                      <th className="px-6 py-4">Customer</th>
-                      <th className="px-6 py-4">Order Value</th>
-                      <th className="px-6 py-4">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100/10 text-base">
-                    {orders.map((o) => (
-                      <tr key={o.id} className="hover:bg-slate-50/5">
-                        <td className="px-6 py-4 font-mono font-bold">INV-{o.id.slice(0, 6).toUpperCase()}</td>
-                        <td className="px-6 py-4">
-                          <div>
-                            <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{o.customerName || "Platform Guest"}</p>
-                            <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{o.email}</p>
-                          </div>
-                        </td>
-                        <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>₹{Number(o.total || 0).toLocaleString("en-IN")}</td>
-                        <td className="px-6 py-4">
-                          <span className={`inline-block px-2.5 py-0.5 rounded-full font-bold border text-[16px] uppercase ${statusBadgeClasses(o.status)}`}>
-                            {o.status || "Pending"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         );
 
+      // ─── Catalog Structure ───
       case "Categories":
         return <CatalogManager type="Categories" />;
       case "Sub Categories":
+      case "SubCategories":
         return <CatalogManager type="SubCategories" />;
       case "Collections":
         return <CatalogManager type="Collections" />;
@@ -705,103 +578,50 @@ const SuperAdmin = () => {
         return <CatalogManager type="Countries" />;
       case "Attributes":
         return <CatalogManager type="Attributes" />;
+      case "Tags Manager":
+      case "TagsManager":
+        return <TagsManager />;
+      case "Coupon Manager":
+      case "CouponManager":
+        return <CouponManager />;
 
-      case "Users":
-        return <UsersTable users={users} />;
-
-      case "Admins":
-        return (
-          <div className="space-y-6">
-            {emailStatus && (
-              <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-base font-semibold">
-                {emailStatus}
-              </div>
-            )}
-
-            <div className={`p-6 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"}`}>
-              <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
-                <div>
-                  <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Remote Access Control</h3>
-                  <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-0.5`}>Create admin accounts, assign photo, and set credentials</p>
-                </div>
-                <button
-                  onClick={() => setIsAdminModalOpen(true)}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-[#811331] text-white rounded-xl text-base font-bold hover:bg-[#9d1a3d] transition-all"
-                >
-                  <Plus size={14} /> Add new admin
-                </button>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead>
-                    <tr className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"}`}>
-                      <th className="px-6 py-4">Administrator</th>
-                      <th className="px-6 py-4">Email</th>
-                      <th className="px-6 py-4">Access key</th>
-                      <th className="px-6 py-4">Role</th>
-                      <th className="px-6 py-4 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100/10 text-base">
-                    {adminsList.map((admin) => (
-                      <tr key={admin.firestoreId} className="hover:bg-slate-50/5">
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
-                            {admin.photoURL ? (
-                              <img src={admin.photoURL} alt="" className="w-8 h-8 rounded-full object-cover border" />
-                            ) : (
-                              <span className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[16px] font-bold">
-                                {admin.adminId?.charAt(0).toUpperCase()}
-                              </span>
-                            )}
-                            <div>
-                              <p className={`font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>{admin.displayName || admin.adminId}</p>
-                              <p className={`text-[16px] ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>ID: {admin.adminId}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className={`px-6 py-4 font-semibold ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>{admin.email || "No Email"}</td>
-                        <td className="px-6 py-4 font-mono font-bold text-slate-600 dark:text-slate-300">{admin.password}</td>
-                        <td className="px-6 py-4">
-                          <span className="inline-block px-2.5 py-0.5 rounded-full font-bold bg-[#811331]/10 text-[#811331] text-[16px] uppercase">
-                            {admin.role || "Admin"}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <button
-                            onClick={() => handleDeleteAdmin(admin.firestoreId)}
-                            className="p-1.5 border border-red-200 rounded-lg hover:bg-red-50 text-red-500"
-                            title="Delete"
-                          >
-                            <Trash2 size={12} />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        );
-
-      case "Media":
-        return <MediaLibrary />;
-
-      case "Product Images":
-      case "ProductImageManager":
-        return <ProductImageManager products={products} isDarkMode={isDarkMode} />;
-
+      // ─── Content & Editorial ───
+      case "Blogs":
+        return <BlogManager />;
+      case "Reviews":
+        return <ReviewsManager isDarkMode={isDarkMode} />;
+      case "Gallery":
+        return <GalleryManager />;
+      case "News & Reels":
+      case "NewsReels":
+        return <NewsManager isDarkMode={isDarkMode} />;
+      case "Hero & Banners":
       case "Banners":
         return <SiteSettingsManager isDarkMode={isDarkMode} />;
+
+      // ─── Users, Admins & Media ───
+      case "Users":
+        return <UsersTable users={users} />;
+      case "Admins":
+        return (
+          <AdminsTable
+            adminsList={adminsList}
+            superAdminsList={superAdminsList}
+            isDarkMode={isDarkMode}
+            onRefresh={() => {}}
+          />
+        );
+      case "Media":
+        return <MediaLibrary />;
+      case "Product Images":
+        return <ProductImageManager products={products} isDarkMode={isDarkMode} />;
 
       default:
         return null;
     }
   };
 
-  // ─── Sidebar ────────────────────────────────────────────────────────────────
+  // ─── Sidebar Component ───────────────────────────────────────────────────────
   const SidebarContent = ({ collapsed = false }) => (
     <div className="flex flex-col h-full bg-gradient-to-b from-[#630a21] via-[#570819] to-[#31040e] text-white">
       <div className={`border-b border-white/10 ${collapsed ? "px-3 py-5" : "px-6 py-5"}`}>
@@ -827,11 +647,14 @@ const SuperAdmin = () => {
           return (
             <button
               key={item.name}
-              onClick={() => setActiveItem(item.name)}
+              onClick={() => {
+                setActiveItem(item.name);
+                setIsSidebarOpen(false);
+              }}
               className={`flex w-full items-center rounded-lg font-semibold transition-all mb-1 ${collapsed ? "justify-center px-2 py-2.5" : "gap-3 px-3 py-2.5"
-                } ${isActive ? "bg-[#a4143e] text-white" : "text-white/80 hover:bg-white/10"}`}
+                } ${isActive ? "bg-[#a4143e] text-white shadow-md" : "text-white/80 hover:bg-white/10"}`}
             >
-              <Icon size={15} />
+              <Icon size={16} />
               {!collapsed && <span>{item.name}</span>}
             </button>
           );
@@ -840,11 +663,11 @@ const SuperAdmin = () => {
 
       <div className={`border-t border-white/10 py-3 space-y-1 ${collapsed ? "px-2" : "px-3"}`}>
         <button
-          onClick={() => signOut(auth)}
-          className={`flex w-full items-center rounded-lg px-2 py-2 text-[16px] text-white/80 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
+          onClick={handleLogout}
+          className={`flex w-full items-center rounded-lg px-2 py-2 text-[16px] font-bold text-red-300 hover:bg-white/10 ${collapsed ? "justify-center" : "gap-3 px-3"}`}
         >
-          <LogOut size={15} />
-          {!collapsed && "Logout"}
+          <LogOut size={16} />
+          {!collapsed && "Logout Super Admin"}
         </button>
       </div>
     </div>
@@ -859,7 +682,7 @@ const SuperAdmin = () => {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="w-10 h-10 border-[3px] border-white/10 border-t-[#811331] rounded-full"
           />
-          <p className="text-base text-white/30 font-medium tracking-widest uppercase">Loading...</p>
+          <p className="text-base text-white/40 font-medium tracking-widest uppercase">Verifying Super Admin Access...</p>
         </div>
       </div>
     );
@@ -870,14 +693,14 @@ const SuperAdmin = () => {
   }
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? "bg-[#0f1117]" : "bg-[#f5f5f7]"} ${isDarkMode ? "text-white" : "text-slate-900"} font-sans selection:bg-[#811331]/10 transition-colors duration-300`}>
+    <div className={`min-h-screen ${isDarkMode ? "bg-[#0f1117] text-white" : "bg-[#f5f5f7] text-slate-900"} font-sans selection:bg-[#811331]/10 transition-colors duration-300`}>
       {/* Sidebar - Desktop */}
-      <aside className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-300 ${isSidebarCollapsed ? "w-16" : "w-60"}`}>
+      <aside className={`hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-300 ${isSidebarCollapsed ? "w-16" : "w-64"}`}>
         <SidebarContent collapsed={isSidebarCollapsed} />
       </aside>
 
       {/* Main Content offset */}
-      <div className={`flex flex-col min-h-screen transition-all duration-300 ${isSidebarCollapsed ? "lg:ml-16" : "lg:ml-60"}`}>
+      <div className={`flex flex-col min-h-screen transition-all duration-300 ${isSidebarCollapsed ? "lg:ml-16" : "lg:ml-64"}`}>
         {/* Topbar */}
         <header className={`hidden lg:flex h-[74px] items-center gap-6 justify-between border-b px-7 xl:px-9 ${isDarkMode ? "bg-[#1a1d27] border-slate-700/60" : "bg-white border-slate-200/80"} sticky top-0 z-20`}>
           <button
@@ -893,7 +716,7 @@ const SuperAdmin = () => {
               <Search size={17} className="text-slate-400" />
               <input
                 className="w-full bg-transparent text-base outline-none"
-                placeholder="Search products, orders, customers…"
+                placeholder="Search catalog, orders, users..."
                 value={globalSearch}
                 onChange={(e) => setGlobalSearch(e.target.value)}
                 onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
@@ -911,7 +734,7 @@ const SuperAdmin = () => {
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
             <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#631028] text-base font-bold text-white">SA</span>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#811331] text-base font-bold text-white shadow-md">SA</span>
               <div>
                 <p className={`text-base font-semibold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Super Admin</p>
                 <p className="text-[16px] text-slate-400">{superAdminUser.email}</p>
@@ -923,38 +746,50 @@ const SuperAdmin = () => {
         {/* Mobile Navbar */}
         <nav className={`lg:hidden flex items-center justify-between px-4 py-3 border-b sticky top-0 z-30 ${isDarkMode ? "bg-slate-900 border-slate-800" : "bg-white border-slate-100"}`}>
           <div className="flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-xl bg-[#0f0a0b] flex items-center justify-center shadow-md">
-              <Gem size={13} className="text-white" />
+            <div className="h-8 w-8 rounded-xl bg-[#811331] flex items-center justify-center shadow-md">
+              <Gem size={15} className="text-white" />
             </div>
             <div>
-              <p className={`text-sm font-bold tracking-tight leading-none ${isDarkMode ? "text-white" : "text-slate-900"}`}>Velauraz</p>
-              <p className="text-[16px] font-medium tracking-widest uppercase mt-0.5 text-slate-400">SuperAdmin</p>
+              <p className={`text-sm font-bold tracking-tight leading-none ${isDarkMode ? "text-white" : "text-slate-900"}`}>Velouraz</p>
+              <p className="text-[16px] font-medium tracking-widest uppercase mt-0.5 text-[#811331]">Super Admin Console</p>
             </div>
           </div>
           <button
             onClick={() => setIsSidebarOpen(true)}
             className={`p-2 rounded-xl ${isDarkMode ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600"}`}
           >
-            <Menu size={16} />
+            <Menu size={18} />
           </button>
         </nav>
+
+        {/* Mobile Sidebar Overlay */}
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <div className="fixed inset-0 z-50 lg:hidden flex">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsSidebarOpen(false)} className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" />
+              <motion.div initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }} className="relative z-10 w-72 h-full">
+                <SidebarContent />
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto px-4 py-5 pb-24 sm:px-8 sm:py-8 lg:px-7 lg:py-6 lg:pb-10 xl:px-9">
           <div className="max-w-[1500px] mx-auto">
-            {activeItem !== "AddProduct" && activeItem !== "EditProduct" && renderHeader()}
-            <motion.div key={activeItem} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+            {renderHeader()}
+            <motion.div key={activeItem} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
               {renderMainContent()}
             </motion.div>
           </div>
         </main>
       </div>
 
-      {/* Product Modal */}
+      {/* Product Editor Modal */}
       <AnimatePresence>
         {isProductModalOpen && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsProductModalOpen(false)} className="absolute inset-0 bg-slate-950/40 backdrop-blur-md" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsProductModalOpen(false)} className="absolute inset-0 bg-slate-950/50 backdrop-blur-md" />
             <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className={`rounded-3xl shadow-2xl max-w-4xl w-full relative z-10 max-h-[90vh] overflow-hidden flex flex-col ${isDarkMode ? "bg-[#1a1d26]" : "bg-white"}`}>
               <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
                 <div>
@@ -970,98 +805,8 @@ const SuperAdmin = () => {
           </div>
         )}
       </AnimatePresence>
-
-      {/* Grant Admin Access Modal */}
-      <AnimatePresence>
-        {isAdminModalOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsAdminModalOpen(false)} className="absolute inset-0 bg-slate-950/40 backdrop-blur-md" />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className={`rounded-3xl shadow-2xl max-w-md w-full relative z-10 overflow-hidden flex flex-col ${isDarkMode ? "bg-[#1a1d26]" : "bg-white"}`}
-            >
-              <div className={`px-6 py-4 border-b flex items-center justify-between ${isDarkMode ? "border-slate-700" : "border-slate-100"}`}>
-                <div>
-                  <h2 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>Grant Admin Access</h2>
-                  <p className="text-base text-slate-400">Add admin credentials & email access details</p>
-                </div>
-                <button type="button" onClick={() => setIsAdminModalOpen(false)} className="p-1.5 rounded-lg text-slate-400"><X size={16} /></button>
-              </div>
-              <div className="px-6 py-6">
-                <form onSubmit={handleCreateAdmin} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Admin ID / User Name</label>
-                    <input
-                      type="text" required value={newAdmin.adminId}
-                      onChange={(e) => setNewAdmin({ ...newAdmin, adminId: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
-                      placeholder="e.g. catalog_mgr"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Display Name / Full Name</label>
-                    <input
-                      type="text" value={newAdmin.displayName}
-                      onChange={(e) => setNewAdmin({ ...newAdmin, displayName: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
-                      placeholder="e.g. John Doe"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">User's Email</label>
-                    <input
-                      type="email" required value={newAdmin.email}
-                      onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
-                      placeholder="john@velouraz.com"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Access Password</label>
-                    <input
-                      type="text" required value={newAdmin.password}
-                      onChange={(e) => setNewAdmin({ ...newAdmin, password: e.target.value })}
-                      className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
-                      placeholder="Password"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400">Photo URL</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text" value={newAdmin.photoURL}
-                        onChange={(e) => setNewAdmin({ ...newAdmin, photoURL: e.target.value })}
-                        className={`flex-1 px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-slate-50 border-slate-200"}`}
-                        placeholder="Image Link"
-                      />
-                      <label className="flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800">
-                        <Camera size={16} />
-                        <input type="file" accept="image/*" className="hidden" onChange={handleAdminPhotoUpload} />
-                      </label>
-                    </div>
-                    {uploadingAdminPhoto && <p className="text-[16px] text-amber-600 font-semibold animate-pulse">Uploading photo...</p>}
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3 bg-[#811331] hover:bg-[#9d1a3d] text-white text-base font-bold rounded-xl transition-all shadow-md mt-2"
-                  >
-                    Grant Access & Send Email
-                  </button>
-                </form>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
-
-
 
 export default SuperAdmin;

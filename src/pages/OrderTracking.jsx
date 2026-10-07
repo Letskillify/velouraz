@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { db } from "../components/Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { motion } from "framer-motion";
 import {
   Truck,
@@ -33,6 +33,7 @@ const OrderTracking = () => {
   const [orderData, setOrderData] = useState(null);
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [activeSearchId, setActiveSearchId] = useState(queryId);
 
   const handleTrack = async (searchId) => {
     const targetId = String(searchId || inputQuery).trim();
@@ -41,6 +42,7 @@ const OrderTracking = () => {
       return;
     }
 
+    setActiveSearchId(targetId);
     setLoading(true);
     setErrorMsg("");
     setOrderData(null);
@@ -70,6 +72,26 @@ const OrderTracking = () => {
       setLoading(false);
     }
   };
+
+  // Real-time Firestore subscription to order status updates
+  useEffect(() => {
+    if (!activeSearchId) return undefined;
+
+    const docRef = doc(db, "orders", activeSearchId);
+    const unsubscribe = onSnapshot(
+      docRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          setOrderData({ id: docSnap.id, ...docSnap.data() });
+        }
+      },
+      (err) => {
+        console.warn("Order tracking real-time listener notice:", err);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [activeSearchId]);
 
   useEffect(() => {
     if (queryId) {

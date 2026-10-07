@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../components/useAuth";
 import { db } from "../components/Firebase";
-import { collection, query, where, getDocs, orderBy, doc, getDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy, doc, getDoc, addDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
 import { useNavigate, useSearchParams, useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -56,73 +56,82 @@ const Orders = () => {
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [trackingError, setTrackingError] = useState("");
 
-  // Load User Orders from Firestore
+  // Load User Orders from Firestore with Live Real-time Subscription
   useEffect(() => {
     if (!user) {
       navigate("/login");
       return;
     }
 
-    const fetchOrders = async () => {
-      setLoading(true);
-      try {
-        const cleanEmail = (user?.email || "").trim().toLowerCase();
-        if (user?.uid && cleanEmail) {
-          try {
-            await syncUserGuestOrders(user.uid, cleanEmail);
-          } catch (syncErr) {
-            console.warn("Guest order sync notice:", syncErr);
-          }
-        }
+    setLoading(true);
+    const cleanEmail = (user?.email || "").trim().toLowerCase();
+    if (user?.uid && cleanEmail) {
+      syncUserGuestOrders(user.uid, cleanEmail).catch((syncErr) => {
+        console.warn("Guest order sync notice:", syncErr);
+      });
+    }
 
-        const ordersRef = collection(db, "orders");
-        const orderMap = new Map();
+    const ordersRef = collection(db, "orders");
 
-        // Query 1: by userId
-        if (user?.uid) {
-          try {
-            const q1 = query(ordersRef, where("userId", "==", user.uid));
-            const snap1 = await getDocs(q1);
-            snap1.docs.forEach((docSnap) => {
-              orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
-            });
-          } catch (e1) {
-            console.warn("Orders page query by userId notice:", e1?.message);
-          }
-        }
-
-        // Query 2: by email
-        if (cleanEmail) {
-          try {
-            const q2 = query(ordersRef, where("email", "==", cleanEmail));
-            const snap2 = await getDocs(q2);
-            snap2.docs.forEach((docSnap) => {
-              orderMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
-            });
-          } catch (e2) {
-            console.warn("Orders page query by email notice:", e2?.message);
-          }
-        }
-
-        const list = Array.from(orderMap.values());
-
-        const parseOrderDate = (val) => {
-          if (!val) return 0;
-          if (typeof val === 'number') return val;
-          if (val?.seconds) return val.seconds * 1000;
-          const parsed = new Date(val).getTime();
-          return isNaN(parsed) ? 0 : parsed;
-        };
-        list.sort((a, b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
-        setOrders(list);
-      } catch (err) {
-        console.error("Error fetching orders:", err);
-      } finally {
-        setLoading(false);
-      }
+    const parseOrderDate = (val) => {
+      if (!val) return 0;
+      if (typeof val === 'number') return val;
+      if (val?.seconds) return val.seconds * 1000;
+      const parsed = new Date(val).getTime();
+      return isNaN(parsed) ? 0 : parsed;
     };
 
-    fetchOrders();
+    let mapUserId = new Map();
+    let mapEmail = new Map();
+
+    const combineAndSetOrders = () => {
+      const combinedMap = new Map([...mapUserId, ...mapEmail]);
+      const list = Array.from(combinedMap.values());
+      list.sort((a, b) => parseOrderDate(b.createdAt) - parseOrderDate(a.createdAt));
+      setOrders(list);
+      setLoading(false);
+    };
+
+    // Real-time Query 1: by userId
+    const q1 = query(ordersRef, where("userId", "==", user.uid));
+    const unsub1 = onSnapshot(
+      q1,
+      (snap1) => {
+        mapUserId = new Map();
+        snap1.docs.forEach((docSnap) => {
+          mapUserId.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+        });
+        combineAndSetOrders();
+      },
+      (err1) => {
+        console.warn("Real-time orders by userId notice:", err1);
+        setLoading(false);
+      }
+    );
+
+    // Real-time Query 2: by email
+    let unsub2 = () => {};
+    if (cleanEmail) {
+      const q2 = query(ordersRef, where("email", "==", cleanEmail));
+      unsub2 = onSnapshot(
+        q2,
+        (snap2) => {
+          mapEmail = new Map();
+          snap2.docs.forEach((docSnap) => {
+            mapEmail.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+          });
+          combineAndSetOrders();
+        },
+        (err2) => {
+          console.warn("Real-time orders by email notice:", err2);
+        }
+      );
+    }
+
+    return () => {
+      unsub1();
+      unsub2();
+    };
   }, [user, navigate]);
 
   // Handle Shiprocket Live Tracking Lookup
