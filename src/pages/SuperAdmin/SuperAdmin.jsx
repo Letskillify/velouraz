@@ -140,6 +140,18 @@ const SuperAdmin = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
 
+  // Graph Range & Metric Controls State
+  const [graphMetric, setGraphMetric] = useState("orders"); // "orders" | "products"
+  const [chartRangeMode, setChartRangeMode] = useState("14days"); // "14days" | "month" | "year" | "custom"
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [customStartDate, setCustomStartDate] = useState(
+    new Date(Date.now() - 13 * 86400000).toISOString().split("T")[0]
+  );
+  const [customEndDate, setCustomEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+
   // ─── Theme preference ───────────────────────────────────────────────────────
   useEffect(() => {
     const darkPref = localStorage.getItem("velouraz_superadmin_dark");
@@ -246,6 +258,35 @@ const SuperAdmin = () => {
     return products.filter((p) => Number(p.stock || 0) <= 10).length;
   }, [products]);
 
+  // Helper for parsing any Firestore item date format
+  const parseItemDate = (val) => {
+    if (!val) return null;
+    if (typeof val === "object" && typeof val.toDate === "function") {
+      return val.toDate();
+    }
+    if (typeof val === "object" && val.seconds) {
+      return new Date(val.seconds * 1000);
+    }
+    if (typeof val === "number") {
+      return new Date(val);
+    }
+    if (typeof val === "string") {
+      const parsed = new Date(val);
+      if (!isNaN(parsed.getTime())) return parsed;
+    }
+    return null;
+  };
+
+  const getItemDate = (item) => {
+    return (
+      parseItemDate(item.createdAt) ||
+      parseItemDate(item.orderDate) ||
+      parseItemDate(item.date) ||
+      parseItemDate(item.timestamp) ||
+      parseItemDate(item.created_at)
+    );
+  };
+
   // ─── Global Search ──────────────────────────────────────────────────────────
   useEffect(() => {
     const q = globalSearch.trim().toLowerCase();
@@ -292,38 +333,274 @@ const SuperAdmin = () => {
     }
   };
 
-  // Chart data calculations
+  // Chart data calculations with metric toggle (Uploaded Products vs Orders & Revenue)
   const chartData = useMemo(() => {
-    const dates = Array.from({ length: 14 }, (_, i) => {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      return d.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
-    }).reverse();
+    let labels = [];
+    let dataArr = [];
+    let periodTotal = 0;
+    let periodCount = 0;
 
-    const revenueArr = Array(14).fill(0);
+    if (graphMetric === "orders") {
+      const validOrders = orders.filter(
+        (o) => (o.status || o.orderStatus) !== "Cancelled"
+      );
 
-    orders.forEach((o) => {
-      const oDate = o.createdAt ? new Date(o.createdAt) : new Date();
-      const diff = Math.floor((new Date() - oDate) / (1000 * 60 * 60 * 24));
-      if (diff >= 0 && diff < 14) {
-        revenueArr[13 - diff] += Number(o.total || o.totalAmount || 0);
+      if (chartRangeMode === "14days") {
+        const dates = Array.from({ length: 14 }, (_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - (13 - i));
+          return d;
+        });
+
+        labels = dates.map((d) =>
+          d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+        );
+        dataArr = Array(14).fill(0);
+
+        validOrders.forEach((o) => {
+          const oDate = getItemDate(o);
+          if (!oDate) return;
+
+          const matchIdx = dates.findIndex(
+            (d) =>
+              d.getDate() === oDate.getDate() &&
+              d.getMonth() === oDate.getMonth() &&
+              d.getFullYear() === oDate.getFullYear()
+          );
+
+          if (matchIdx !== -1) {
+            dataArr[matchIdx] += Number(o.total || o.totalAmount || 0);
+            periodCount += 1;
+          }
+        });
+      } else if (chartRangeMode === "month") {
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+        const dates = Array.from({ length: daysInMonth }, (_, i) => {
+          return new Date(selectedYear, selectedMonth, i + 1);
+        });
+
+        labels = dates.map((d) =>
+          d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+        );
+        dataArr = Array(daysInMonth).fill(0);
+
+        validOrders.forEach((o) => {
+          const oDate = getItemDate(o);
+          if (!oDate) return;
+
+          if (
+            oDate.getMonth() === Number(selectedMonth) &&
+            oDate.getFullYear() === Number(selectedYear)
+          ) {
+            const dayIdx = oDate.getDate() - 1;
+            if (dayIdx >= 0 && dayIdx < daysInMonth) {
+              dataArr[dayIdx] += Number(o.total || o.totalAmount || 0);
+              periodCount += 1;
+            }
+          }
+        });
+      } else if (chartRangeMode === "year") {
+        const monthNames = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        labels = monthNames;
+        dataArr = Array(12).fill(0);
+
+        validOrders.forEach((o) => {
+          const oDate = getItemDate(o);
+          if (!oDate) return;
+
+          if (oDate.getFullYear() === Number(selectedYear)) {
+            const monthIdx = oDate.getMonth();
+            if (monthIdx >= 0 && monthIdx < 12) {
+              dataArr[monthIdx] += Number(o.total || o.totalAmount || 0);
+              periodCount += 1;
+            }
+          }
+        });
+      } else if (chartRangeMode === "custom") {
+        const start = new Date(customStartDate + "T00:00:00");
+        const end = new Date(customEndDate + "T23:59:59");
+
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start <= end) {
+          const diffTime = Math.abs(end - start);
+          const diffDays = Math.min(
+            Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1,
+            90
+          );
+
+          const dates = Array.from({ length: diffDays }, (_, i) => {
+            const d = new Date(start);
+            d.setDate(d.getDate() + i);
+            return d;
+          });
+
+          labels = dates.map((d) =>
+            d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+          );
+          dataArr = Array(diffDays).fill(0);
+
+          validOrders.forEach((o) => {
+            const oDate = getItemDate(o);
+            if (!oDate) return;
+
+            if (oDate >= start && oDate <= end) {
+              const matchIdx = dates.findIndex(
+                (d) =>
+                  d.getDate() === oDate.getDate() &&
+                  d.getMonth() === oDate.getMonth() &&
+                  d.getFullYear() === oDate.getFullYear()
+              );
+              if (matchIdx !== -1) {
+                dataArr[matchIdx] += Number(o.total || o.totalAmount || 0);
+                periodCount += 1;
+              }
+            }
+          });
+        } else {
+          labels = ["Select Valid Dates"];
+          dataArr = [0];
+        }
       }
-    });
+
+      periodTotal = dataArr.reduce((a, b) => a + b, 0);
+    } else {
+      // Metric: Uploaded Products count
+      if (chartRangeMode === "14days") {
+        const dates = Array.from({ length: 14 }, (_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - (13 - i));
+          return d;
+        });
+
+        labels = dates.map((d) =>
+          d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+        );
+        dataArr = Array(14).fill(0);
+
+        products.forEach((p) => {
+          const pDate = getItemDate(p);
+          if (!pDate) return;
+
+          const matchIdx = dates.findIndex(
+            (d) =>
+              d.getDate() === pDate.getDate() &&
+              d.getMonth() === pDate.getMonth() &&
+              d.getFullYear() === pDate.getFullYear()
+          );
+
+          if (matchIdx !== -1) {
+            dataArr[matchIdx] += 1;
+          }
+        });
+      } else if (chartRangeMode === "month") {
+        const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
+        const dates = Array.from({ length: daysInMonth }, (_, i) => {
+          return new Date(selectedYear, selectedMonth, i + 1);
+        });
+
+        labels = dates.map((d) =>
+          d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+        );
+        dataArr = Array(daysInMonth).fill(0);
+
+        products.forEach((p) => {
+          const pDate = getItemDate(p);
+          if (!pDate) return;
+
+          if (
+            pDate.getMonth() === Number(selectedMonth) &&
+            pDate.getFullYear() === Number(selectedYear)
+          ) {
+            const dayIdx = pDate.getDate() - 1;
+            if (dayIdx >= 0 && dayIdx < daysInMonth) {
+              dataArr[dayIdx] += 1;
+            }
+          }
+        });
+      } else if (chartRangeMode === "year") {
+        const monthNames = [
+          "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        labels = monthNames;
+        dataArr = Array(12).fill(0);
+
+        products.forEach((p) => {
+          const pDate = getItemDate(p);
+          if (!pDate) return;
+
+          if (pDate.getFullYear() === Number(selectedYear)) {
+            const monthIdx = pDate.getMonth();
+            if (monthIdx >= 0 && monthIdx < 12) {
+              dataArr[monthIdx] += 1;
+            }
+          }
+        });
+      } else if (chartRangeMode === "custom") {
+        const start = new Date(customStartDate + "T00:00:00");
+        const end = new Date(customEndDate + "T23:59:59");
+
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && start <= end) {
+          const diffTime = Math.abs(end - start);
+          const diffDays = Math.min(
+            Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1,
+            90
+          );
+
+          const dates = Array.from({ length: diffDays }, (_, i) => {
+            const d = new Date(start);
+            d.setDate(d.getDate() + i);
+            return d;
+          });
+
+          labels = dates.map((d) =>
+            d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })
+          );
+          dataArr = Array(diffDays).fill(0);
+
+          products.forEach((p) => {
+            const pDate = getItemDate(p);
+            if (!pDate) return;
+
+            if (pDate >= start && pDate <= end) {
+              const matchIdx = dates.findIndex(
+                (d) =>
+                  d.getDate() === pDate.getDate() &&
+                  d.getMonth() === pDate.getMonth() &&
+                  d.getFullYear() === pDate.getFullYear()
+              );
+              if (matchIdx !== -1) {
+                dataArr[matchIdx] += 1;
+              }
+            }
+          });
+        } else {
+          labels = ["Select Valid Dates"];
+          dataArr = [0];
+        }
+      }
+
+      periodTotal = dataArr.reduce((a, b) => a + b, 0);
+    }
 
     return {
-      labels: dates,
-      revenueArr
+      labels,
+      dataArr,
+      periodTotal,
+      periodCount
     };
-  }, [orders]);
+  }, [orders, products, graphMetric, chartRangeMode, selectedMonth, selectedYear, customStartDate, customEndDate]);
 
   const lineChartData = {
     labels: chartData.labels,
     datasets: [
       {
-        label: "Platform Revenue (₹)",
-        data: chartData.revenueArr,
-        borderColor: "#811331",
-        backgroundColor: "rgba(129,19,49,.08)",
+        label: graphMetric === "orders" ? "Platform Revenue (₹)" : "Uploaded Products",
+        data: chartData.dataArr,
+        borderColor: graphMetric === "orders" ? "#811331" : "#059669",
+        backgroundColor: graphMetric === "orders" ? "rgba(129,19,49,.08)" : "rgba(5,150,105,.08)",
         fill: true,
         tension: 0.4,
         pointRadius: 3,
@@ -441,11 +718,173 @@ const SuperAdmin = () => {
               </div>
             </div>
 
-            {/* Line graph of revenue */}
-            <div className={`p-6 rounded-2xl border shadow-sm ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
-              <h3 className="text-base font-bold mb-4">Platform Revenue Volume (Last 14 Days)</h3>
-              <div className="h-64">
-                <Line data={lineChartData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }} />
+            {/* Line graph with dataset Metric Switcher & Date Range Selectors */}
+            <div className={`p-6 rounded-2xl border shadow-sm space-y-4 ${isDarkMode ? "bg-[#1e2230] border-slate-700/60 text-white" : "bg-white border-slate-100 text-slate-900"}`}>
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 border-slate-100/10">
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap mb-2">
+                    <h3 className="text-base font-bold">Platform Analytics Graph</h3>
+                    {graphMetric === "orders" ? (
+                      <span className="px-3 py-1 rounded-full bg-[#811331]/10 text-[#811331] dark:text-rose-400 font-bold text-sm">
+                        ₹{chartData.periodTotal.toLocaleString("en-IN")} Total Revenue ({chartData.periodCount} Orders)
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 font-bold text-sm border border-emerald-200">
+                        {chartData.periodTotal} Products Uploaded in Period
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Metric Switcher Options */}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setGraphMetric("orders")}
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-base font-bold transition-all ${
+                        graphMetric === "orders"
+                          ? "bg-[#811331] text-white shadow-md"
+                          : isDarkMode
+                          ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      <ShoppingBag size={14} />
+                      <span>Orders & Revenue</span>
+                    </button>
+                    <button
+                      onClick={() => setGraphMetric("products")}
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-base font-bold transition-all ${
+                        graphMetric === "products"
+                          ? "bg-emerald-600 text-white shadow-md"
+                          : isDarkMode
+                          ? "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Package size={14} />
+                      <span>Uploaded Products</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Date Range Mode Selector and Controls */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Mode Buttons */}
+                  <div className={`p-1 rounded-xl flex items-center gap-1 border ${isDarkMode ? "bg-slate-900 border-slate-700" : "bg-slate-100 border-slate-200"}`}>
+                    {[
+                      { id: "14days", label: "14 Days" },
+                      { id: "month", label: "Month" },
+                      { id: "year", label: "Year" },
+                      { id: "custom", label: "Custom Dates" }
+                    ].map((btn) => (
+                      <button
+                        key={btn.id}
+                        onClick={() => setChartRangeMode(btn.id)}
+                        className={`px-3 py-1.5 rounded-lg text-base font-bold transition-all ${
+                          chartRangeMode === btn.id
+                            ? "bg-[#811331] text-white shadow-sm"
+                            : isDarkMode
+                            ? "text-slate-300 hover:text-white"
+                            : "text-slate-600 hover:text-slate-900"
+                        }`}
+                      >
+                        {btn.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Controls for Month Mode */}
+                  {chartRangeMode === "month" && (
+                    <div className="flex items-center gap-2">
+                      <select
+                        value={selectedMonth}
+                        onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                        className={`px-3 py-1.5 rounded-xl font-bold text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-900"}`}
+                      >
+                        {[
+                          "January", "February", "March", "April", "May", "June",
+                          "July", "August", "September", "October", "November", "December"
+                        ].map((mName, idx) => (
+                          <option key={idx} value={idx}>{mName}</option>
+                        ))}
+                      </select>
+                      <select
+                        value={selectedYear}
+                        onChange={(e) => setSelectedYear(Number(e.target.value))}
+                        className={`px-3 py-1.5 rounded-xl font-bold text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-900"}`}
+                      >
+                        {[2024, 2025, 2026, 2027].map((yr) => (
+                          <option key={yr} value={yr}>{yr}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Controls for Year Mode */}
+                  {chartRangeMode === "year" && (
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(Number(e.target.value))}
+                      className={`px-3 py-1.5 rounded-xl font-bold text-base outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-900"}`}
+                    >
+                      {[2024, 2025, 2026, 2027].map((yr) => (
+                        <option key={yr} value={yr}>{yr}</option>
+                      ))}
+                    </select>
+                  )}
+
+                  {/* Controls for Custom Date Range */}
+                  {chartRangeMode === "custom" && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => setCustomStartDate(e.target.value)}
+                        className={`px-3 py-1.5 rounded-xl text-base font-bold outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-900"}`}
+                      />
+                      <span className="text-slate-400 font-bold">to</span>
+                      <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => setCustomEndDate(e.target.value)}
+                        className={`px-3 py-1.5 rounded-xl text-base font-bold outline-none border ${isDarkMode ? "bg-slate-800 border-slate-700 text-white" : "bg-white border-slate-200 text-slate-900"}`}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="h-64 pt-2">
+                <Line
+                  data={lineChartData}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { display: false },
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => {
+                            const val = Number(context.raw || 0);
+                            return graphMetric === "orders"
+                              ? ` Revenue: ₹${val.toLocaleString("en-IN")}`
+                              : ` Uploaded Products: ${val} items`;
+                          }
+                        }
+                      }
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        ticks: {
+                          callback: (val) =>
+                            graphMetric === "orders"
+                              ? `₹${Number(val).toLocaleString("en-IN")}`
+                              : `${val} items`
+                        }
+                      }
+                    }
+                  }}
+                />
               </div>
             </div>
           </div>

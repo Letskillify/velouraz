@@ -8,7 +8,9 @@ ChartJS.register(ArcElement, CategoryScale, Filler, Legend, LineElement, LinearS
 const money = (value) => `₹${Number(value || 0).toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
 const timestampDate = (value) => {
   if (!value) return null;
-  if (typeof value.toDate === "function") return value.toDate();
+  if (typeof value === "object" && typeof value.toDate === "function") return value.toDate();
+  if (typeof value === "object" && value.seconds) return new Date(value.seconds * 1000);
+  if (typeof value === "number") return new Date(value);
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? null : date;
 };

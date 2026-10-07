@@ -369,7 +369,7 @@ const ReturnPolicy = () => {
           </div>
 
           <div className="mt-24 pt-12 border-t border-[#D8CBBE]/30 text-center">
-            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 VELOURAZ. Artisans of Luxury.</p>
+            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 VELOURAZ. </p>
           </div>
         </motion.div>
       </div>

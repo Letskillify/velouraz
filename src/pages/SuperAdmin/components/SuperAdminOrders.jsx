@@ -19,7 +19,8 @@ import {
   Save,
   X,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  Download
 } from "lucide-react";
 import { generateInvoicePDF } from "../../../utils/invoice";
 
@@ -38,13 +39,42 @@ const statusBadgeClasses = (status) => {
   }
 };
 
+const formatOrderDate = (order) => {
+  const val = order?.createdAt || order?.orderDate || order?.date || order?.timestamp || order?.created_at;
+  if (!val) return "N/A";
+
+  try {
+    let dateObj;
+    if (typeof val === "object" && typeof val.toDate === "function") {
+      dateObj = val.toDate();
+    } else if (typeof val === "object" && val.seconds) {
+      dateObj = new Date(val.seconds * 1000);
+    } else if (typeof val === "number") {
+      dateObj = new Date(val);
+    } else if (typeof val === "string") {
+      dateObj = new Date(val);
+    }
+
+    if (dateObj && !isNaN(dateObj.getTime())) {
+      return dateObj.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
+  } catch (e) {
+    console.warn("Date parse error:", e);
+  }
+  return String(val || "N/A");
+};
+
 const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
   const [filterStatus, setFilterStatus] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Edit fields for selected order
+  // Edit fields for selected order modal
   const [editStatus, setEditStatus] = useState("");
   const [editTrackingNumber, setEditTrackingNumber] = useState("");
   const [editCourier, setEditCourier] = useState("");
@@ -60,6 +90,21 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
     setEditEstDelivery(order.estimatedDelivery || "");
     setEditAdminNotes(order.adminNotes || "");
     setSaveSuccessMsg("");
+  };
+
+  const handleTableStatusChange = async (orderId, newStatus) => {
+    try {
+      const orderRef = doc(db, "orders", orderId);
+      await updateDoc(orderRef, {
+        status: newStatus,
+        orderStatus: newStatus,
+        updatedAt: new Date().toISOString(),
+        lastUpdatedBy: "Super Admin"
+      });
+    } catch (err) {
+      console.error("Failed to update status from table:", err);
+      alert("Error updating order status: " + err.message);
+    }
   };
 
   const handleSaveOrderDetails = async () => {
@@ -174,7 +219,7 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
               Super Admin Order Management ({filteredOrders.length})
             </h3>
             <p className={`text-base ${isDarkMode ? "text-slate-400" : "text-slate-500"} mt-0.5`}>
-              Update live order statuses & dispatch tracking details for instant customer sync
+              Edit order statuses directly from the table & download invoices
             </p>
           </div>
           <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[16px] font-bold uppercase tracking-wider">
@@ -193,7 +238,7 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
               >
                 <th className="px-6 py-4">Order ID</th>
                 <th className="px-6 py-4">Customer</th>
-                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4">Ordering Date</th>
                 <th className="px-6 py-4">Total Amount</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
@@ -202,13 +247,7 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
             <tbody className="divide-y divide-slate-100/10 text-base font-medium">
               {filteredOrders.map((o) => {
                 const currentStatus = o.status || o.orderStatus || "Pending";
-                const orderDate = o.createdAt
-                  ? new Date(o.createdAt).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric"
-                    })
-                  : "Recent";
+                const displayDate = formatOrderDate(o);
 
                 return (
                   <tr
@@ -239,29 +278,45 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
                         </p>
                       </div>
                     </td>
-                    <td className={`px-6 py-4 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-                      {orderDate}
+                    <td className={`px-6 py-4 font-semibold ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
+                      {displayDate}
                     </td>
                     <td className={`px-6 py-4 font-bold ${isDarkMode ? "text-white" : "text-slate-900"}`}>
                       ₹{Number(o.total || o.totalAmount || 0).toLocaleString("en-IN")}
                     </td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`inline-block px-3 py-1 rounded-full font-bold border text-[16px] uppercase tracking-wider ${statusBadgeClasses(
+                      <select
+                        value={currentStatus}
+                        onChange={(e) => handleTableStatusChange(o.id, e.target.value)}
+                        className={`px-3 py-1 rounded-full font-bold border text-[16px] uppercase tracking-wider outline-none cursor-pointer transition-all ${statusBadgeClasses(
                           currentStatus
                         )}`}
                       >
-                        {currentStatus}
-                      </span>
+                        <option value="Pending" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Pending</option>
+                        <option value="Processing" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Processing</option>
+                        <option value="Shipped" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Shipped</option>
+                        <option value="Delivered" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Delivered</option>
+                        <option value="Cancelled" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Cancelled</option>
+                      </select>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => handleOpenOrderModal(o)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-sm hover:bg-[#9d1a3d] transition-all"
-                      >
-                        <Eye size={14} />
-                        <span>Manage & Track</span>
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => generateInvoicePDF(o)}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-sm hover:bg-[#9d1a3d] transition-all active:scale-95"
+                          title="Download PDF Invoice"
+                        >
+                          <FileText size={14} />
+                          <span>Download Invoice</span>
+                        </button>
+                        <button
+                          onClick={() => handleOpenOrderModal(o)}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                          title="View Details & Tracking"
+                        >
+                          <Eye size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -308,14 +363,14 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-base font-bold text-[#811331]">Order Control</span>
+                  <span className="text-base font-bold text-[#811331]">Order Details</span>
                   <ChevronRight size={14} className="text-slate-400" />
                   <span className="font-mono font-bold">
                     #{selectedOrder.orderId || selectedOrder.id}
                   </span>
                 </div>
                 <p className="text-base text-slate-400 mt-0.5">
-                  Update live order status, tracking info, and view full purchase details
+                  View purchase items, customer details, and tracking codes
                 </p>
               </div>
               <button
@@ -344,7 +399,7 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
                 }`}
               >
                 <h4 className="text-base font-bold uppercase tracking-wider text-[#811331] flex items-center gap-2">
-                  <Truck size={16} /> Update Live Order Status
+                  <Truck size={16} /> Order Tracking & Dispatch Info
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -445,7 +500,7 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
                     className="flex items-center gap-2 px-6 py-2.5 bg-[#811331] hover:bg-[#9d1a3d] text-white font-bold rounded-xl shadow-md transition-all active:scale-95 disabled:opacity-50"
                   >
                     <Save size={16} />
-                    <span>{isUpdating ? "Updating Live Status..." : "Save Live Status"}</span>
+                    <span>{isUpdating ? "Saving Changes..." : "Save Dispatch Details"}</span>
                   </button>
                 </div>
               </div>
@@ -540,10 +595,10 @@ const SuperAdminOrders = ({ orders = [], isDarkMode = false }) => {
             >
               <button
                 onClick={() => generateInvoicePDF(selectedOrder)}
-                className="flex items-center gap-1.5 px-4 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-white rounded-xl text-base font-bold transition-all"
+                className="flex items-center gap-1.5 px-4 py-2 bg-[#811331] text-white hover:bg-[#9d1a3d] rounded-xl text-base font-bold transition-all shadow-md"
               >
                 <FileText size={16} />
-                <span>Download Invoice</span>
+                <span>Download Invoice PDF</span>
               </button>
 
               <button

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { db, auth } from "../../../components/Firebase";
-import { deleteDoc, doc, addDoc, collection, setDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ShieldCheck, UserPlus, Trash2, Key, Calendar, Mail, Crown, Camera, User } from "lucide-react";
+import { db } from "../../../components/Firebase";
+import { deleteDoc, doc, addDoc, collection } from "firebase/firestore";
+import { ShieldCheck, UserPlus, Trash2, Crown, Camera } from "lucide-react";
 import { uploadToCloudinary } from "../../../config/cloudinary";
+import { sendAdminCredentialsEmail } from "../../../services/emailService";
 
 const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkMode = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [role, setRole] = useState("superadmin");
   const [adminId, setAdminId] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,51 +37,39 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
     setEmailStatus(null);
 
     try {
-      if (role === "superadmin") {
-        // Save to superadmins collection
-        await addDoc(collection(db, "superadmins"), {
-          adminId: adminId.trim(),
-          displayName: displayName.trim() || adminId.trim(),
-          email: email.trim().toLowerCase(),
-          password: password.trim(),
-          role: "superadmin",
-          photoURL: photoURL || "",
-          createdAt: new Date().toISOString()
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanAdminId = adminId.trim();
+      const cleanName = displayName.trim() || cleanAdminId;
+      const cleanPassword = password.trim();
+
+      // Save to admins collection (Only Admin creation permitted)
+      await addDoc(collection(db, "admins"), {
+        adminId: cleanAdminId,
+        displayName: cleanName,
+        email: cleanEmail,
+        password: cleanPassword,
+        role: "Admin",
+        photoURL: photoURL || "",
+        createdAt: new Date().toISOString()
+      });
+
+      // Dispatch Nodemailer email silently via serverless API (/api/send-admin-credentials)
+      let apiResult = null;
+      try {
+        apiResult = await sendAdminCredentialsEmail({
+          email: cleanEmail,
+          adminId: cleanAdminId,
+          displayName: cleanName,
+          password: cleanPassword,
         });
-      } else {
-        // Save to admins collection
-        await addDoc(collection(db, "admins"), {
-          adminId: adminId.trim(),
-          displayName: displayName.trim() || adminId.trim(),
-          email: email.trim().toLowerCase(),
-          password: password.trim(),
-          role: "Admin",
-          photoURL: photoURL || "",
-          createdAt: new Date().toISOString()
-        });
+      } catch (apiErr) {
+        console.warn("Nodemailer API notice:", apiErr?.message);
       }
 
-      // Send credential email template
-      const emailSubject = encodeURIComponent(
-        `Welcome to Velouraz - ${role === "superadmin" ? "Super Admin" : "Admin"} Panel Credentials`
-      );
-      const emailBody = encodeURIComponent(
-        `Hello ${displayName || adminId},\n\n` +
-          `You have been granted ${role === "superadmin" ? "Super Administrator" : "Administrator"} access to Velouraz.\n\n` +
-          `Login Credentials:\n` +
-          `- ID: ${adminId}\n` +
-          `- Email: ${email}\n` +
-          `- Password: ${password}\n` +
-          `- Access URL: ${window.location.origin}/${role === "superadmin" ? "superadmin" : "admin"}\n\n` +
-          `Best regards,\nVelouraz Executive Control`
-      );
-
-      window.open(`mailto:${email}?subject=${emailSubject}&body=${emailBody}`);
-
       setEmailStatus(
-        `New ${role === "superadmin" ? "Super Admin" : "Admin"} account created successfully for ${email}!`
+        `New Admin account created successfully! Login credentials emailed to ${cleanEmail}.`
       );
-      setTimeout(() => setEmailStatus(null), 6000);
+      setTimeout(() => setEmailStatus(null), 8000);
 
       // Reset form & close modal
       setAdminId("");
@@ -137,10 +124,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
           <div>
             <h2 className={`text-lg font-bold flex items-center gap-2 ${isDarkMode ? "text-white" : "text-slate-900"}`}>
               <ShieldCheck size={22} className="text-[#811331]" />
-              Administrators & Super Admins Control
+              Administrators Control & Accounts Manager
             </h2>
             <p className={`text-base font-medium mt-0.5 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-              Manage super admin keys, create new super administrators, and delegate store permissions
+              Manage active store administrators, create new admins, and dispatch login credentials directly to their email.
             </p>
           </div>
 
@@ -151,7 +138,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
               className="flex items-center gap-2 px-5 py-2.5 bg-[#811331] text-white rounded-xl text-base font-bold shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d] transition-all active:scale-95"
             >
               <UserPlus size={16} />
-              <span>Create Super Admin / Admin</span>
+              <span>Create Admin</span>
             </button>
             <span className="px-3.5 py-1.5 rounded-full bg-[#811331]/10 text-[#811331] text-[16px] font-bold uppercase tracking-wider">
               {allAccounts.length} Accounts
@@ -171,7 +158,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                 <th className="px-8 py-5">Account Name / ID</th>
                 <th className="px-6 py-5">Email Address</th>
                 <th className="px-6 py-5">Role Level</th>
-                <th className="px-6 py-5">Access Key</th>
+                <th className="px-6 py-5">Access Password</th>
                 <th className="px-6 py-5">Created On</th>
                 <th className="px-8 py-5 text-right">Actions</th>
               </tr>
@@ -270,7 +257,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                       No administrative accounts registered
                     </p>
                     <p className="text-base text-slate-400 mt-1">
-                      Click 'Create Super Admin / Admin' above to grant access to another super admin or team manager.
+                      Click 'Create Admin' above to grant access to a store manager.
                     </p>
                   </td>
                 </tr>
@@ -301,10 +288,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
               <div>
                 <h3 className="text-base font-bold flex items-center gap-2">
                   <ShieldCheck size={20} className="text-[#811331]" />
-                  Create Admin or Super Admin Account
+                  Create Admin Account
                 </h3>
                 <p className="text-base text-slate-400 mt-0.5">
-                  Grant store access and generate login credentials
+                  Grant store permissions and email credentials to the new admin
                 </p>
               </div>
               <button
@@ -316,22 +303,9 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
             </div>
 
             <form onSubmit={handleCreateAccount} className="p-6 space-y-4">
-              <div>
-                <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-                  Account Level / Role
-                </label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className={`w-full px-4 py-2.5 rounded-xl font-bold text-base outline-none border ${
-                    isDarkMode
-                      ? "bg-slate-800 border-slate-700 text-white"
-                      : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
-                >
-                  <option value="superadmin">⭐ Super Admin (Full Control Center Access)</option>
-                  <option value="admin">🛡️ Store Admin (Catalog & Orders Manager)</option>
-                </select>
+              <div className="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 rounded-xl text-blue-700 dark:text-blue-300 font-semibold text-sm flex items-center gap-2">
+                <ShieldCheck size={18} />
+                <span>Account Role Level: <strong>Store Administrator (Admin)</strong></span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -344,7 +318,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                     required
                     value={adminId}
                     onChange={(e) => setAdminId(e.target.value)}
-                    placeholder="e.g. super_alex"
+                    placeholder="e.g. admin_alex"
                     className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${
                       isDarkMode
                         ? "bg-slate-800 border-slate-700 text-white"
@@ -373,14 +347,14 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
 
               <div>
                 <label className="block text-[16px] font-bold uppercase tracking-wider text-slate-400 mb-1">
-                  User Email Address
+                  New Admin Email Address
                 </label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alex@velouraz.com"
+                  placeholder="admin.alex@velouraz.com"
                   className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${
                     isDarkMode
                       ? "bg-slate-800 border-slate-700 text-white"
@@ -398,7 +372,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
+                  placeholder="Set login password"
                   className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border font-mono ${
                     isDarkMode
                       ? "bg-slate-800 border-slate-700 text-white"
@@ -453,7 +427,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                   disabled={isSubmitting}
                   className="px-6 py-2.5 bg-[#811331] hover:bg-[#9d1a3d] text-white font-bold text-base rounded-xl shadow-md transition-all disabled:opacity-50"
                 >
-                  {isSubmitting ? "Creating..." : "Grant Access & Open Mail"}
+                  {isSubmitting ? "Creating..." : "Create Admin & Mail Credentials"}
                 </button>
               </div>
             </form>
