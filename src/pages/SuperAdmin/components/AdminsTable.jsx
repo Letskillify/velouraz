@@ -73,7 +73,7 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
           `- ID: ${adminId}\n` +
           `- Email: ${email}\n` +
           `- Password: ${password}\n` +
-          `- Access URL: ${window.location.origin}/${role === "superadmin" ? "super" : "admin"}\n\n` +
+          `- Access URL: ${window.location.origin}/${role === "superadmin" ? "superadmin" : "admin"}\n\n` +
           `Best regards,\nVelouraz Executive Control`
       );
 

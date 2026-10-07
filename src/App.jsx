@@ -46,6 +46,7 @@ const AppRoutes = () => {
   const location = useLocation();
   const hideChrome =
     location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/superadmin") ||
     location.pathname.startsWith("/super") ||
     location.pathname === "/login" ||
     location.pathname === "/signup";
@@ -58,6 +59,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/superadmin" element={<SuperAdmin />} />
           <Route path="/super" element={<SuperAdmin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
