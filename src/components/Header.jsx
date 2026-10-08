@@ -3,17 +3,81 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Search, Menu, X, ShoppingBag, Heart, User,
-  ChevronDown, ArrowRight, Loader2, Globe2, Sparkles, Tag
+  ChevronDown, ArrowRight, Loader2, Globe2, Sparkles, Tag, ChevronLeft, ChevronRight
 } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 import { useAuth } from './useAuth';
 import { useStore } from '../hooks/useStore';
 import { db } from './Firebase';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, onSnapshot } from 'firebase/firestore';
+
 
 /* ─── Design Tokens ──────────────────────────────────── */
 const GOLD = '#C8A97A';
 const CRIMSON = '#2e0e43';
 const NAV_SERIF = "'Cormorant Garamond', Georgia, serif";
+
+export const DEFAULT_HEADER_WORLD_EDITS = [
+  {
+    id: 'paris',
+    country: 'Paris',
+    flag: '🇫🇷',
+    subtitle: 'Inspired by Paris',
+    collection: 'THE MAISON PARIS',
+    cta: 'DISCOVER PARIS',
+    href: '/shop?country=Paris',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
+    order: 1
+  },
+  {
+    id: 'thailand',
+    country: 'Thailand',
+    flag: '🇹🇭',
+    subtitle: 'Inspired by Thailand',
+    collection: 'THE THAI GEMSTONE EDIT',
+    cta: 'DISCOVER THAILAND',
+    href: '/shop?country=Thailand',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
+    order: 2
+  },
+  {
+    id: 'india',
+    country: 'India',
+    flag: '🇮🇳',
+    subtitle: 'Inspired by India',
+    collection: 'THE SIGNATURE COLLECTION',
+    cta: 'DISCOVER INDIA',
+    href: '/world-edit/india',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
+    order: 3
+  },
+  {
+    id: 'japan',
+    country: 'Japan',
+    flag: '🇯🇵',
+    subtitle: 'Inspired by Japan',
+    collection: 'THE MIYUKI ATELIER',
+    cta: 'DISCOVER JAPAN',
+    href: '/shop?country=Japan',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
+    order: 4
+  },
+  {
+    id: 'south-korea',
+    country: 'South Korea',
+    flag: '🇰🇷',
+    subtitle: 'Inspired by South Korea',
+    collection: 'THE PEARL EDIT',
+    cta: 'DISCOVER SOUTH KOREA',
+    href: '/shop?country=South%20Korea',
+    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1788798991/ChatGPT_Image_Sep_7_2026_10_04_26_PM_ogtaqk.png',
+    order: 5
+  },
+];
+
 
 const fallbackCountries = [
   "Turkey", "Japan", "India", "South Korea", "Europe",
@@ -51,6 +115,7 @@ const LuxuryHeader = () => {
   ]);
   const [annIndex, setAnnIndex] = useState(0);
   const [dbCountries, setDbCountries] = useState([]);
+  const [headerWorldEdits, setHeaderWorldEdits] = useState(DEFAULT_HEADER_WORLD_EDITS);
 
   // Search State
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -71,7 +136,21 @@ const LuxuryHeader = () => {
         }
       })
       .catch((err) => console.error("Error fetching countries:", err));
+
+    // Listen to real-time header_world_edits Firestore collection
+    const unsubEdits = onSnapshot(collection(db, "header_world_edits"), (snap) => {
+      if (!snap.empty) {
+        const fetched = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        fetched.sort((a, b) => (a.order || 0) - (b.order || 0));
+        setHeaderWorldEdits(fetched);
+      } else {
+        setHeaderWorldEdits(DEFAULT_HEADER_WORLD_EDITS);
+      }
+    }, (err) => console.error("Error fetching header_world_edits:", err));
+
+    return () => unsubEdits();
   }, []);
+
 
   useEffect(() => {
     if (announcements.length <= 1) return;
@@ -278,7 +357,7 @@ const LuxuryHeader = () => {
       <AnimatePresence>
         {megaMenu && navLinks.find(l => l.name === megaMenu)?.hasDropdown && (
           <div onMouseEnter={() => setMegaMenu(megaMenu)} onMouseLeave={() => setMegaMenu(null)}>
-            <WorldEditDropdownPanel countries={dropdownCountries} onClose={() => setMegaMenu(null)} />
+            <WorldEditDropdownPanel items={headerWorldEdits} onClose={() => setMegaMenu(null)} />
           </div>
         )}
       </AnimatePresence>
@@ -322,26 +401,32 @@ const LuxuryHeader = () => {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                          {worldEditMegaItems.map((item, idx) => (
-                            <Link
-                              key={`${item.country}-${idx}`}
-                              to={item.href}
-                              onClick={() => setMobileOpen(false)}
-                              className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#C8A97A]/40 hover:bg-[#C8A97A]/10 transition-all group text-decoration-none"
-                            >
-                              <div className="flex items-center gap-3">
-                                <span className="text-lg filter drop-shadow-xs">{item.flag}</span>
-                                <div>
-                                  <p className="text-sm font-medium text-white group-hover:text-[#F0D5A8] transition-colors leading-tight" style={{ fontFamily: NAV_SERIF }}>
-                                    {item.country}
-                                  </p>
-                                  <p className="text-[14px] italic text-white/60 mt-0.5" style={{ fontFamily: NAV_SERIF }}>{item.subtitle}</p>
+                          {headerWorldEdits.map((item, idx) => {
+                            const flag = item.flag || getCountryFlag(item.country);
+                            return (
+                              <Link
+                                key={item.id || `${item.country}-${idx}`}
+                                to={item.href || item.link || '/world-edit'}
+                                onClick={() => setMobileOpen(false)}
+                                className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-[#C8A97A]/40 hover:bg-[#C8A97A]/10 transition-all group text-decoration-none"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <span className="text-lg filter drop-shadow-xs">{flag}</span>
+                                  <div>
+                                    <p className="text-sm font-medium text-white group-hover:text-[#F0D5A8] transition-colors leading-tight" style={{ fontFamily: NAV_SERIF }}>
+                                      {item.country}
+                                    </p>
+                                    {item.subtitle && (
+                                      <p className="text-[14px] italic text-white/60 mt-0.5" style={{ fontFamily: NAV_SERIF }}>{item.subtitle}</p>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              <ArrowRight size={12} className="text-[#C8A97A] group-hover:translate-x-1 transition-transform shrink-0" />
-                            </Link>
-                          ))}
+                                <ArrowRight size={12} className="text-[#C8A97A] group-hover:translate-x-1 transition-transform shrink-0" />
+                              </Link>
+                            );
+                          })}
                         </div>
+
 
                         <div className="pt-2 border-t border-[#C8A97A]/20 text-center">
                           <Link
@@ -652,55 +737,68 @@ const SearchOverlayModal = ({ onClose }) => {
   );
 };
 
-const worldEditMegaItems = [
-  {
-    country: 'Paris',
-    flag: '🇫🇷',
-    subtitle: 'Inspired by Paris',
-    collection: 'THE MAISON PARIS',
-    cta: 'DISCOVER PARIS',
-    href: '/shop?country=Paris',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
-  },
-  {
-    country: 'Thailand',
-    flag: '🇹🇭',
-    subtitle: 'Inspired by Thailand',
-    collection: 'THE THAI GEMSTONE EDIT',
-    cta: 'DISCOVER THAILAND',
-    href: '/shop?country=Thailand',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
-  },
-  {
-    country: 'India',
-    flag: '🇮🇳',
-    subtitle: 'Inspired by India',
-    collection: 'THE SIGNATURE COLLECTION',
-    cta: 'DISCOVER INDIA',
-    href: '/world-edit/india',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
-  },
-  {
-    country: 'Japan',
-    flag: '🇯🇵',
-    subtitle: 'Inspired by Japan',
-    collection: 'THE MIYUKI ATELIER',
-    cta: 'DISCOVER JAPAN',
-    href: '/shop?country=Japan',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
-  },
-  {
-    country: 'South Korea',
-    flag: '🇰🇷',
-    subtitle: 'Inspired by South Korea',
-    collection: 'THE PEARL EDIT',
-    cta: 'DISCOVER SOUTH KOREA',
-    href: '/shop?country=South%20Korea',
-    bgImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1788798991/ChatGPT_Image_Sep_7_2026_10_04_26_PM_ogtaqk.png',
-  },
-];
+const WorldEditDropdownCard = ({ item, onClose }) => {
+  const bgImg = item.bgImage || item.image || '';
+  const flag = item.flag || getCountryFlag(item.country);
+  return (
+    <Link
+      to={item.href || item.link || '/world-edit'}
+      onClick={onClose}
+      className="group relative p-7 flex flex-col justify-between overflow-hidden text-decoration-none min-h-[480px] h-full w-full block"
+    >
+      <div className="absolute inset-0 z-0 overflow-hidden bg-zinc-950">
+        {bgImg && (
+          <img
+            src={bgImg}
+            alt={item.country}
+            className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
+      </div>
 
-const WorldEditDropdownPanel = ({ onClose }) => {
+      <div className="relative z-10 space-y-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xl filter drop-shadow-md">{flag}</span>
+        </div>
+
+        <div>
+          <h3
+            className="text-3xl lg:text-4xl text-white font-normal tracking-tight group-hover:text-[#F0D5A8] transition-colors drop-shadow-md"
+            style={{ fontFamily: NAV_SERIF }}
+          >
+            {item.country}
+          </h3>
+          {item.subtitle && (
+            <p className="text-xs lg:text-sm italic text-white/90 font-light mt-0.5 drop-shadow" style={{ fontFamily: NAV_SERIF }}>
+              {item.subtitle}
+            </p>
+          )}
+        </div>
+
+        <div className="w-8 group-hover:w-16 h-[1px] bg-[#C8A97A] transition-all duration-300 my-3.5 shadow-sm" />
+
+        {item.collection && (
+          <div className="text-[14px] lg:text-[14px] font-bold tracking-[0.22em] uppercase text-[#F0D5A8] leading-tight drop-shadow">
+            {item.collection}
+          </div>
+        )}
+      </div>
+
+      <div className="relative z-10 pt-4 flex items-center justify-between text-[14px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
+        <span>{item.cta || `DISCOVER ${item.country.toUpperCase()}`}</span>
+        <ArrowRight size={14} className="text-[#C8A97A] group-hover:translate-x-2 transition-transform duration-300" />
+      </div>
+    </Link>
+  );
+};
+
+const WorldEditDropdownPanel = ({ items = [], onClose }) => {
+  const displayItems = items && items.length > 0 ? items : DEFAULT_HEADER_WORLD_EDITS;
+  const [prevEl, setPrevEl] = useState(null);
+  const [nextEl, setNextEl] = useState(null);
+  const isSliderNeeded = displayItems.length > 5;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -8 }}
@@ -716,73 +814,101 @@ const WorldEditDropdownPanel = ({ onClose }) => {
           <Globe2 size={13} className="text-[#C8A97A]" />
           <span>The World Edit • Globally Curated Jewellery Collections</span>
         </div>
-        <Link
-          to="/world-edit"
-          onClick={onClose}
-          className="flex items-center gap-1.5 text-[14px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
-        >
-          <span>Explore All Countries</span>
-          <ArrowRight size={12} />
-        </Link>
+
+        <div className="flex items-center gap-4">
+          {/* Swiper Slider Arrows when > 5 options */}
+          {isSliderNeeded && (
+            <div className="flex items-center gap-2 border-r border-[#C8A97A]/30 pr-4">
+              <span className="text-[12px] font-mono tracking-widest text-[#C8A97A]/80 uppercase hidden sm:inline-block mr-1">
+                Slide Options:
+              </span>
+              <button
+                onClick={() => prevEl && prevEl.click()}
+                className="w-8 h-8 rounded-full bg-[#1A1024] border border-[#C8A97A]/50 text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#0A070D] transition-all flex items-center justify-center cursor-pointer shadow-sm active:scale-95"
+                aria-label="Previous options"
+                title="Previous Slide"
+              >
+                <ChevronLeft size={16} strokeWidth={2.5} />
+              </button>
+              <button
+                onClick={() => nextEl && nextEl.click()}
+                className="w-8 h-8 rounded-full bg-[#1A1024] border border-[#C8A97A]/50 text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#0A070D] transition-all flex items-center justify-center cursor-pointer shadow-sm active:scale-95"
+                aria-label="Next options"
+                title="Next Slide"
+              >
+                <ChevronRight size={16} strokeWidth={2.5} />
+              </button>
+            </div>
+          )}
+
+          <Link
+            to="/world-edit"
+            onClick={onClose}
+            className="flex items-center gap-1.5 text-[14px] font-bold tracking-[0.2em] uppercase text-[#F0D5A8] hover:text-white transition-colors"
+          >
+            <span>Explore All Countries</span>
+            <ArrowRight size={12} />
+          </Link>
+        </div>
       </div>
 
-      {/* 5 Vertical Columns Grid */}
-      <div className="w-full max-w-[1600px] mx-auto grid grid-cols-5 divide-x divide-[#C8A97A]/20 min-h-[480px]">
-        {worldEditMegaItems.map((item, index) => (
-          <Link
-            key={index}
-            to={item.href}
-            onClick={onClose}
-            className="group relative p-7 flex flex-col justify-between overflow-hidden text-decoration-none min-h-[480px]"
+      {/* Dynamic Swiper Carousel or Grid */}
+      <div className="relative w-full max-w-[1600px] mx-auto min-h-[480px] group">
+        {/* Floating Side Navigation Buttons for Swiper (Clear & Prominent) */}
+        {isSliderNeeded && (
+          <>
+            <button
+              ref={(node) => setPrevEl(node)}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-[#0A070D]/90 backdrop-blur-md border-2 border-[#C8A97A] text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#0A070D] hover:scale-110 active:scale-95 shadow-[0_0_25px_rgba(200,169,122,0.5)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:pointer-events-none"
+              aria-label="Previous options"
+              title="Previous Countries"
+            >
+              <ChevronLeft size={24} strokeWidth={2.5} />
+            </button>
+            <button
+              ref={(node) => setNextEl(node)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-[#0A070D]/90 backdrop-blur-md border-2 border-[#C8A97A] text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#0A070D] hover:scale-110 active:scale-95 shadow-[0_0_25px_rgba(200,169,122,0.5)] transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:pointer-events-none"
+              aria-label="Next options"
+              title="Next Countries"
+            >
+              <ChevronRight size={24} strokeWidth={2.5} />
+            </button>
+          </>
+        )}
+
+        {!isSliderNeeded ? (
+          <div
+            className="grid divide-x divide-[#C8A97A]/20 min-h-[480px]"
+            style={{ gridTemplateColumns: `repeat(${displayItems.length}, minmax(0, 1fr))` }}
           >
-            {/* Full Background Image without color overlays */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
-              <img
-                src={item.bgImage}
-                alt={item.country}
-                className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-              />
-              {/* Soft transparent gradient only for text contrast */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/75 pointer-events-none" />
-            </div>
-
-            {/* Top Text Content */}
-            <div className="relative z-10 space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xl filter drop-shadow-md">{item.flag}</span>
-              </div>
-
-              <div>
-                <h3
-                  className="text-3xl lg:text-4xl text-white font-normal tracking-tight group-hover:text-[#F0D5A8] transition-colors drop-shadow-md"
-                  style={{ fontFamily: NAV_SERIF }}
-                >
-                  {item.country}
-                </h3>
-                <p className="text-xs lg:text-sm italic text-white/90 font-light mt-0.5 drop-shadow" style={{ fontFamily: NAV_SERIF }}>
-                  {item.subtitle}
-                </p>
-              </div>
-
-              {/* Accent Line */}
-              <div className="w-8 group-hover:w-16 h-[1px] bg-[#C8A97A] transition-all duration-300 my-3.5 shadow-sm" />
-
-              <div className="text-[14px] lg:text-[14px] font-bold tracking-[0.22em] uppercase text-[#F0D5A8] leading-tight drop-shadow">
-                {item.collection}
-              </div>
-            </div>
-
-            {/* Bottom Discover CTA */}
-            <div className="relative z-10 pt-4 flex items-center justify-between text-[14px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
-              <span>{item.cta}</span>
-              <ArrowRight size={14} className="text-[#C8A97A] group-hover:translate-x-2 transition-transform duration-300" />
-            </div>
-          </Link>
-        ))}
+            {displayItems.map((item, index) => (
+              <WorldEditDropdownCard key={item.id || index} item={item} onClose={onClose} />
+            ))}
+          </div>
+        ) : (
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            spaceBetween={0}
+            slidesPerView={5}
+            navigation={{
+              prevEl,
+              nextEl,
+            }}
+            className="w-full h-full divide-x divide-[#C8A97A]/20"
+          >
+            {displayItems.map((item, index) => (
+              <SwiperSlide key={item.id || index} className="h-full border-r border-[#C8A97A]/20">
+                <WorldEditDropdownCard item={item} onClose={onClose} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </motion.div>
   );
 };
 
 export default LuxuryHeader;
+
+
 

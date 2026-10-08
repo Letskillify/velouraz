@@ -4,17 +4,19 @@ import { db } from "../../../components/Firebase";
 import { doc, getDoc, setDoc, collection, onSnapshot, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Save, Plus, Trash2, Edit3, ImagePlus, Loader2, Play, Video, Type, Link2, Bell, AlertCircle, Check, Image as ImageIcon
+  Save, Plus, Trash2, Edit3, ImagePlus, Loader2, Play, Video, Type, Link2, Bell, AlertCircle, Check, Image as ImageIcon, RefreshCw, Upload, Globe
 } from "lucide-react";
 import { uploadToCloudinary, uploadToCloudinaryWithProgress } from "../../../config/cloudinary";
+import { DEFAULT_HEADER_WORLD_EDITS } from "../../../components/Header";
+import { DEFAULT_HOMEPAGE_WORLD_EDIT_VIDEOS } from "../../../components/Homepage/PromoSlider";
 
 const labelStyle = "block text-[16px] font-bold uppercase tracking-wider text-slate-500 mb-1.5";
 
 const SiteSettingsManager = ({ isDarkMode = false }) => {
-  const [activeSubTab, setActiveSubTab] = useState("hero"); // hero, announcements, world_edits, mega_menus
+  const [activeSubTab, setActiveSubTab] = useState("hero"); // hero, announcements, world_edits, header_world_edit, mega_menus
 
   const cardStyle = isDarkMode
-    ? "p-5 rounded-2xl border bg-slate-850 border-slate-700 shadow-sm text-white"
+    ? "p-5 rounded-2xl border bg-slate-855 border-slate-700 shadow-sm text-white"
     : "p-5 rounded-2xl border bg-white border-slate-100 shadow-sm text-slate-800";
 
   const inp = isDarkMode
@@ -44,17 +46,41 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
   const [savingAnnouncements, setSavingAnnouncements] = useState(false);
   const [savedAnnouncements, setSavedAnnouncements] = useState(false);
 
-  // ─── World Edits Carousel State ─────────────────────────────────────────────
+  // ─── Homepage World Edit Videos State ──────────────────────────────────────
   const [worldEdits, setWorldEdits] = useState([]);
   const [editingEdit, setEditingEdit] = useState(null);
   const [newEdit, setNewEdit] = useState({
     country: "",
     collection: "",
-    image: "",
+    video: "",
+    defaultImage: "",
+    hoverImage: "",
     link: "",
+    badge: "ORGANIC",
+    order: 1
   });
+  const [uploadingEditVideo, setUploadingEditVideo] = useState(false);
+  const [editVideoProgress, setEditVideoProgress] = useState(0);
   const [uploadingEditImage, setUploadingEditImage] = useState(false);
-  const editImageRef = useRef(null);
+  const [uploadingHoverImage, setUploadingHoverImage] = useState(false);
+  const [seedingHomepage, setSeedingHomepage] = useState(false);
+
+  // ─── Header World Edit Dropdown State ──────────────────────────────────────
+  const [headerEdits, setHeaderEdits] = useState([]);
+  const [editingHeaderDoc, setEditingHeaderDoc] = useState(null);
+  const [newHeaderDoc, setNewHeaderDoc] = useState({
+    country: "",
+    flag: "",
+    subtitle: "",
+    collection: "",
+    cta: "",
+    href: "",
+    bgImage: "",
+    order: 1
+  });
+  const [uploadingHeaderBg, setUploadingHeaderBg] = useState(false);
+  const [seedingHeader, setSeedingHeader] = useState(false);
+
 
   // ─── Header Mega Menus Dynamic State ───────────────────────────────────────
   const [megaMenus, setMegaMenus] = useState({
@@ -130,12 +156,24 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
       }
     });
 
-    // Realtime listen to World Edits Carousel items
+    // Realtime listen to Homepage World Edits Carousel items
     const stopEdits = onSnapshot(collection(db, "world_edits_carousel"), (snap) => {
-      setWorldEdits(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
+      setWorldEdits(items);
     });
 
-    return () => stopEdits();
+    // Realtime listen to Header World Edit dropdown items
+    const stopHeaderEdits = onSnapshot(collection(db, "header_world_edits"), (snap) => {
+      const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
+      setHeaderEdits(items);
+    });
+
+    return () => {
+      stopEdits();
+      stopHeaderEdits();
+    };
   }, []);
 
   // ─── Hero video upload ──────────────────────────────────────────────────────
@@ -205,7 +243,28 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     }
   };
 
-  // ─── World Edits actions ────────────────────────────────────────────────────
+  // ─── Homepage World Edit Videos actions ──────────────────────────────────────
+  const handleWorldEditVideoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingEditVideo(true);
+    setEditVideoProgress(0);
+    try {
+      const url = await uploadToCloudinaryWithProgress(file, (percent) => {
+        setEditVideoProgress(percent);
+      });
+      if (editingEdit) {
+        setEditingEdit((prev) => ({ ...prev, video: url }));
+      } else {
+        setNewEdit((prev) => ({ ...prev, video: url }));
+      }
+    } catch (err) {
+      console.error("Video upload failed:", err);
+    } finally {
+      setUploadingEditVideo(false);
+    }
+  };
+
   const handleWorldEditPhotoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -213,9 +272,9 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     try {
       const url = await uploadToCloudinary(file);
       if (editingEdit) {
-        setEditingEdit((prev) => ({ ...prev, image: url }));
+        setEditingEdit((prev) => ({ ...prev, defaultImage: url, image: url }));
       } else {
-        setNewEdit((prev) => ({ ...prev, image: url }));
+        setNewEdit((prev) => ({ ...prev, defaultImage: url, image: url }));
       }
     } catch (err) {
       console.error("Photo upload failed:", err);
@@ -224,29 +283,59 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     }
   };
 
+  const handleWorldEditHoverPhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHoverImage(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      if (editingEdit) {
+        setEditingEdit((prev) => ({ ...prev, hoverImage: url }));
+      } else {
+        setNewEdit((prev) => ({ ...prev, hoverImage: url }));
+      }
+    } catch (err) {
+      console.error("Hover photo upload failed:", err);
+    } finally {
+      setUploadingHoverImage(false);
+    }
+  };
+
   const handleSaveWorldEdit = async (e) => {
     e.preventDefault();
     const data = editingEdit || newEdit;
-    if (!data.country || !data.image) return;
+    if (!data.country) return;
 
     try {
+      const payload = {
+        country: data.country.toUpperCase(),
+        collection: data.collection || "",
+        video: data.video || "",
+        videoUrl: data.video || "",
+        defaultImage: data.defaultImage || data.image || "",
+        hoverImage: data.hoverImage || data.defaultImage || data.image || "",
+        image: data.defaultImage || data.image || "",
+        link: data.link || `/shop?country=${encodeURIComponent(data.country)}`,
+        badge: data.badge || "ORGANIC",
+        order: Number(data.order) || 1,
+        updatedAt: new Date().toISOString()
+      };
+
       if (editingEdit) {
-        await updateDoc(doc(db, "world_edits_carousel", editingEdit.id), {
-          country: data.country.toUpperCase(),
-          collection: data.collection,
-          image: data.image,
-          link: data.link || `/world-edit/${data.country.toLowerCase().replace(/ /g, "-")}`,
-        });
+        await updateDoc(doc(db, "world_edits_carousel", editingEdit.id), payload);
         setEditingEdit(null);
       } else {
-        await addDoc(collection(db, "world_edits_carousel"), {
-          country: data.country.toUpperCase(),
-          collection: data.collection,
-          image: data.image,
-          link: data.link || `/world-edit/${data.country.toLowerCase().replace(/ /g, "-")}`,
-          createdAt: new Date().toISOString()
+        await addDoc(collection(db, "world_edits_carousel"), payload);
+        setNewEdit({
+          country: "",
+          collection: "",
+          video: "",
+          defaultImage: "",
+          hoverImage: "",
+          link: "",
+          badge: "ORGANIC",
+          order: worldEdits.length + 1
         });
-        setNewEdit({ country: "", collection: "", image: "", link: "" });
       }
     } catch (err) {
       console.error(err);
@@ -254,10 +343,125 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
   };
 
   const handleDeleteWorldEdit = async (id) => {
-    if (window.confirm("Delete this country from carousel?")) {
+    if (window.confirm("Delete this video card from Homepage World Edit carousel?")) {
       await deleteDoc(doc(db, "world_edits_carousel", id));
     }
   };
+
+  const handleSeedHomepageVideos = async () => {
+    if (!window.confirm("This will upload all 5 default homepage videos & current data into database so you can manage them. Continue?")) return;
+    setSeedingHomepage(true);
+    try {
+      for (const item of DEFAULT_HOMEPAGE_WORLD_EDIT_VIDEOS) {
+        const itemRef = doc(db, "world_edits_carousel", item.id);
+        await setDoc(itemRef, {
+          country: item.country,
+          collection: item.collection,
+          badge: item.badge,
+          video: item.video,
+          videoUrl: item.video,
+          defaultImage: item.defaultImage,
+          hoverImage: item.hoverImage,
+          image: item.defaultImage,
+          link: item.link,
+          order: item.order
+        }, { merge: true });
+      }
+    } catch (err) {
+      console.error("Error seeding homepage videos:", err);
+    } finally {
+      setSeedingHomepage(false);
+    }
+  };
+
+  // ─── Header World Edit Dropdown actions ─────────────────────────────────────
+  const handleHeaderBgUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHeaderBg(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      if (editingHeaderDoc) {
+        setEditingHeaderDoc((prev) => ({ ...prev, bgImage: url }));
+      } else {
+        setNewHeaderDoc((prev) => ({ ...prev, bgImage: url }));
+      }
+    } catch (err) {
+      console.error("Header bg upload failed:", err);
+    } finally {
+      setUploadingHeaderBg(false);
+    }
+  };
+
+  const handleSaveHeaderOption = async (e) => {
+    e.preventDefault();
+    const data = editingHeaderDoc || newHeaderDoc;
+    if (!data.country) return;
+
+    try {
+      const payload = {
+        country: data.country,
+        flag: data.flag || "",
+        subtitle: data.subtitle || "",
+        collection: data.collection || "",
+        cta: data.cta || `DISCOVER ${data.country.toUpperCase()}`,
+        href: data.href || `/shop?country=${encodeURIComponent(data.country)}`,
+        bgImage: data.bgImage || "",
+        order: Number(data.order) || 1,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (editingHeaderDoc) {
+        await updateDoc(doc(db, "header_world_edits", editingHeaderDoc.id), payload);
+        setEditingHeaderDoc(null);
+      } else {
+        await addDoc(collection(db, "header_world_edits"), payload);
+        setNewHeaderDoc({
+          country: "",
+          flag: "",
+          subtitle: "",
+          collection: "",
+          cta: "",
+          href: "",
+          bgImage: "",
+          order: headerEdits.length + 1
+        });
+      }
+    } catch (err) {
+      console.error("Error saving header option:", err);
+    }
+  };
+
+  const handleDeleteHeaderOption = async (id) => {
+    if (window.confirm("Delete this option from Header World Edit dropdown?")) {
+      await deleteDoc(doc(db, "header_world_edits", id));
+    }
+  };
+
+  const handleSeedHeaderOptions = async () => {
+    if (!window.confirm("This will upload all 5 default header dropdown items & current images to database so you can manage them. Continue?")) return;
+    setSeedingHeader(true);
+    try {
+      for (const item of DEFAULT_HEADER_WORLD_EDITS) {
+        const itemRef = doc(db, "header_world_edits", item.id);
+        await setDoc(itemRef, {
+          country: item.country,
+          flag: item.flag,
+          subtitle: item.subtitle,
+          collection: item.collection,
+          cta: item.cta,
+          href: item.href,
+          bgImage: item.bgImage,
+          order: item.order
+        }, { merge: true });
+      }
+    } catch (err) {
+      console.error("Error seeding header options:", err);
+    } finally {
+      setSeedingHeader(false);
+    }
+  };
+
 
   // ─── Mega Menus config ─────────────────────────────────────────────────────
   const handleMegaMenuPhotoUpload = async (e) => {
@@ -329,7 +533,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         {[
           { id: "hero", label: "Hero Banner (Video/Texts)" },
           { id: "announcements", label: "Announcement Tickers" },
-          { id: "world_edits", label: "World Edits Carousel" },
+          { id: "world_edits", label: "Homepage World Edit Videos" },
+          { id: "header_world_edit", label: "Header World Edit Dropdown" },
           { id: "mega_menus", label: "Header Mega Menus" },
         ].map((tab) => (
           <button
@@ -616,135 +821,479 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         </div>
       )}
 
-      {/* ─── World Edits Carousel Editor ─── */}
+      {/* ─── Homepage World Edit Videos Editor ─── */}
       {activeSubTab === "world_edits" && (
-        <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          {/* Add / Edit Form */}
-          <div className={cardStyle}>
-            <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"} mb-4`}>
-              {editingEdit ? "Edit Carousel Card" : "Add Carousel Card"}
-            </h3>
-            <form onSubmit={handleSaveWorldEdit} className="space-y-4">
-              <div>
-                <label className={labelStyle}>Country Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={editingEdit ? editingEdit.country : newEdit.country}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (editingEdit) setEditingEdit({ ...editingEdit, country: value });
-                    else setNewEdit({ ...newEdit, country: value });
-                  }}
-                  className={inp}
-                  placeholder="e.g. ITALY"
-                />
-              </div>
-
-              <div>
-                <label className={labelStyle}>Collection / Sub-header Label</label>
-                <input
-                  type="text"
-                  value={editingEdit ? editingEdit.collection : newEdit.collection}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (editingEdit) setEditingEdit({ ...editingEdit, collection: value });
-                    else setNewEdit({ ...newEdit, collection: value });
-                  }}
-                  className={inp}
-                  placeholder="e.g. MARBLE CHIC COLLECTION"
-                />
-              </div>
-
-              <div>
-                <label className={labelStyle}>Image URL *</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    required
-                    value={editingEdit ? editingEdit.image : newEdit.image}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (editingEdit) setEditingEdit({ ...editingEdit, image: value });
-                      else setNewEdit({ ...newEdit, image: value });
-                    }}
-                    className={inp}
-                    placeholder="Enter image link"
-                  />
-                  <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
-                    <ImagePlus size={16} />
-                    <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditPhotoUpload} />
-                  </label>
-                </div>
-                {uploadingEditImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
-              </div>
-
-              <div>
-                <label className={labelStyle}>Redirect Link</label>
-                <input
-                  type="text"
-                  value={editingEdit ? editingEdit.link : newEdit.link}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (editingEdit) setEditingEdit({ ...editingEdit, link: value });
-                    else setNewEdit({ ...newEdit, link: value });
-                  }}
-                  className={inp}
-                  placeholder="e.g. /world-edit/italy"
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className="flex-1 py-3 bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold rounded-xl shadow-md transition-all"
-                >
-                  {editingEdit ? "Update Slide" : "Add Slide"}
-                </button>
-                {editingEdit && (
-                  <button
-                    type="button"
-                    onClick={() => setEditingEdit(null)}
-                    className="px-4 py-3 border border-slate-200 rounded-xl text-base font-bold"
-                  >
-                    Cancel
-                  </button>
-                )}
-              </div>
-            </form>
+        <div className="space-y-6">
+          <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${cardStyle}`}>
+            <div>
+              <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                Homepage World Edit Videos & Data
+              </h3>
+              <p className="text-base text-slate-400">
+                Manage interactive video cards displayed on the homepage World Edits section
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleSeedHomepageVideos}
+              disabled={seedingHomepage}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-base font-bold transition-all shadow-sm shrink-0"
+            >
+              {seedingHomepage ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+              Upload / Seed Current 5 Homepage Videos to Database
+            </button>
           </div>
 
-          {/* Carousel Cards List */}
-          <div className="space-y-4">
-            <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Active Carousel Cards</h3>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-              {worldEdits.map((item) => (
-                <div key={item.id} className={`flex gap-3 p-3 border rounded-2xl items-center ${isDarkMode ? "bg-slate-855 border-slate-700" : "bg-white border-slate-100"}`}>
-                  <img src={item.image} alt="" className="w-14 h-14 rounded-xl object-cover bg-slate-150 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-base font-bold uppercase truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
-                    <p className="text-[16px] text-slate-400 truncate">{item.collection || "No sub-title"}</p>
+          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+            {/* Form */}
+            <div className={cardStyle}>
+              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"} mb-4`}>
+                {editingEdit ? "Edit Homepage Video Card" : "Add New Homepage Video Card"}
+              </h3>
+              <form onSubmit={handleSaveWorldEdit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelStyle}>Country Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingEdit ? editingEdit.country : newEdit.country}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingEdit) setEditingEdit({ ...editingEdit, country: val });
+                        else setNewEdit({ ...newEdit, country: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. PARIS"
+                    />
                   </div>
-                  <div className="flex gap-1">
-                    <button
-                      onClick={() => setEditingEdit(item)}
-                      className={`p-1.5 rounded-lg ${isDarkMode ? "bg-slate-750 text-white hover:bg-slate-700" : "bg-slate-100 text-slate-650 hover:bg-slate-200"}`}
-                    >
-                      <Edit3 size={12} />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteWorldEdit(item.id)}
-                      className="p-1.5 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-lg text-rose-600 transition-colors"
-                    >
-                      <Trash2 size={12} />
-                    </button>
+                  <div>
+                    <label className={labelStyle}>Collection / Sub-header Label</label>
+                    <input
+                      type="text"
+                      value={editingEdit ? editingEdit.collection : newEdit.collection}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingEdit) setEditingEdit({ ...editingEdit, collection: val });
+                        else setNewEdit({ ...newEdit, collection: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. THE MAISON PARIS"
+                    />
                   </div>
                 </div>
-              ))}
+
+                <div>
+                  <label className={labelStyle}>Video File / Video URL *</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={editingEdit ? (editingEdit.video || editingEdit.videoUrl || "") : newEdit.video}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingEdit) setEditingEdit({ ...editingEdit, video: val, videoUrl: val });
+                        else setNewEdit({ ...newEdit, video: val });
+                      }}
+                      className={inp}
+                      placeholder="Enter direct video URL or upload file"
+                    />
+                    <label className={`flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
+                      <Video size={16} />
+                      <span className="text-xs font-bold">Upload Video</span>
+                      <input type="file" accept="video/*" className="hidden" onChange={handleWorldEditVideoUpload} />
+                    </label>
+                  </div>
+                  {uploadingEditVideo && (
+                    <div className="mt-2 space-y-1">
+                      <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div className="bg-[#941232] h-2 rounded-full transition-all duration-300" style={{ width: `${editVideoProgress}%` }} />
+                      </div>
+                      <p className="text-[16px] text-amber-600 font-semibold animate-pulse">Uploading Video: {editVideoProgress}%</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelStyle}>Default Cover Image URL / Upload</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={editingEdit ? (editingEdit.defaultImage || editingEdit.image || "") : newEdit.defaultImage}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (editingEdit) setEditingEdit({ ...editingEdit, defaultImage: val, image: val });
+                          else setNewEdit({ ...newEdit, defaultImage: val, image: val });
+                        }}
+                        className={inp}
+                        placeholder="Image URL"
+                      />
+                      <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
+                        <ImagePlus size={16} />
+                        <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditPhotoUpload} />
+                      </label>
+                    </div>
+                    {uploadingEditImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading Cover Image...</p>}
+                  </div>
+
+                  <div>
+                    <label className={labelStyle}>Hover Image URL / Upload</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={editingEdit ? (editingEdit.hoverImage || "") : newEdit.hoverImage}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          if (editingEdit) setEditingEdit({ ...editingEdit, hoverImage: val });
+                          else setNewEdit({ ...newEdit, hoverImage: val });
+                        }}
+                        className={inp}
+                        placeholder="Hover Image URL"
+                      />
+                      <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
+                        <ImagePlus size={16} />
+                        <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditHoverPhotoUpload} />
+                      </label>
+                    </div>
+                    {uploadingHoverImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading Hover Image...</p>}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="col-span-2">
+                    <label className={labelStyle}>Redirect Link</label>
+                    <input
+                      type="text"
+                      value={editingEdit ? editingEdit.link : newEdit.link}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingEdit) setEditingEdit({ ...editingEdit, link: val });
+                        else setNewEdit({ ...newEdit, link: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. /shop?country=Paris"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Sort Order</label>
+                    <input
+                      type="number"
+                      value={editingEdit ? (editingEdit.order || 1) : newEdit.order}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingEdit) setEditingEdit({ ...editingEdit, order: val });
+                        else setNewEdit({ ...newEdit, order: val });
+                      }}
+                      className={inp}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold rounded-xl shadow-md transition-all"
+                  >
+                    {editingEdit ? "Update Homepage Card" : "Add Homepage Card"}
+                  </button>
+                  {editingEdit && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingEdit(null)}
+                      className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl text-base font-bold"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+
+            {/* List */}
+            <div className="space-y-4">
+              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                Active Homepage Video Cards ({worldEdits.length})
+              </h3>
+              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                {worldEdits.map((item) => {
+                  const videoSrc = item.video || item.videoUrl;
+                  const imgSrc = item.defaultImage || item.image || item.hoverImage;
+                  return (
+                    <div key={item.id} className={`flex gap-3 p-3.5 border rounded-2xl items-center ${isDarkMode ? "bg-slate-855 border-slate-700" : "bg-white border-slate-100"}`}>
+                      <div className="w-16 h-20 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 relative">
+                        {videoSrc ? (
+                          <video src={videoSrc} className="w-full h-full object-cover" muted loop autoPlay playsInline />
+                        ) : imgSrc ? (
+                          <img src={imgSrc} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-500"><Video size={18} /></div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className={`text-base font-bold uppercase truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
+                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">Order: {item.order || 1}</span>
+                        </div>
+                        <p className="text-[14px] text-slate-400 truncate">{item.collection || "No collection label"}</p>
+                        <p className="text-[12px] text-slate-400 truncate font-mono mt-0.5">{item.link}</p>
+                      </div>
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() => setEditingEdit(item)}
+                          className={`p-2 rounded-xl ${isDarkMode ? "bg-slate-750 text-white hover:bg-slate-700" : "bg-slate-100 text-slate-650 hover:bg-slate-200"}`}
+                          title="Edit"
+                        >
+                          <Edit3 size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteWorldEdit(item.id)}
+                          className="p-2 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-xl text-rose-600 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* ─── Header World Edit Dropdown Editor ─── */}
+      {activeSubTab === "header_world_edit" && (
+        <div className="space-y-6">
+          <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${cardStyle}`}>
+            <div>
+              <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                Header "World Edit" Dropdown Menu & Images
+              </h3>
+              <p className="text-base text-slate-400">
+                Manage the destination columns, background images, titles, and CTA links shown when hovering "World Edit" in the site header
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleSeedHeaderOptions}
+              disabled={seedingHeader}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-base font-bold transition-all shadow-sm shrink-0"
+            >
+              {seedingHeader ? <Loader2 size={16} className="animate-spin" /> : <Globe size={16} />}
+              Upload / Seed Current 5 Header Items & Data to Database
+            </button>
+          </div>
+
+          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+            {/* Form */}
+            <div className={cardStyle}>
+              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"} mb-4`}>
+                {editingHeaderDoc ? "Edit Header Dropdown Option" : "Add New Header Dropdown Option"}
+              </h3>
+              <form onSubmit={handleSaveHeaderOption} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelStyle}>Country Name *</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingHeaderDoc ? editingHeaderDoc.country : newHeaderDoc.country}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, country: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, country: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. Paris"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Flag Emoji / Icon</label>
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? editingHeaderDoc.flag : newHeaderDoc.flag}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, flag: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, flag: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. 🇫🇷 or 🇮🇳"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className={labelStyle}>Subtitle Label</label>
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? editingHeaderDoc.subtitle : newHeaderDoc.subtitle}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, subtitle: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, subtitle: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. Inspired by Paris"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Collection Header Label</label>
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? editingHeaderDoc.collection : newHeaderDoc.collection}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, collection: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, collection: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. THE MAISON PARIS"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelStyle}>Cover Background Image URL / File *</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? (editingHeaderDoc.bgImage || editingHeaderDoc.image || "") : newHeaderDoc.bgImage}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, bgImage: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, bgImage: val });
+                      }}
+                      className={inp}
+                      placeholder="Image URL link"
+                    />
+                    <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
+                      <ImagePlus size={16} />
+                      <input type="file" accept="image/*" className="hidden" onChange={handleHeaderBgUpload} />
+                    </label>
+                  </div>
+                  {uploadingHeaderBg && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading Cover Image...</p>}
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <label className={labelStyle}>CTA Button Text</label>
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? editingHeaderDoc.cta : newHeaderDoc.cta}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, cta: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, cta: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. DISCOVER PARIS"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Redirect Link (Href)</label>
+                    <input
+                      type="text"
+                      value={editingHeaderDoc ? (editingHeaderDoc.href || editingHeaderDoc.link || "") : newHeaderDoc.href}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, href: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, href: val });
+                      }}
+                      className={inp}
+                      placeholder="e.g. /shop?country=Paris"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelStyle}>Sort Order</label>
+                    <input
+                      type="number"
+                      value={editingHeaderDoc ? (editingHeaderDoc.order || 1) : newHeaderDoc.order}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, order: val });
+                        else setNewHeaderDoc({ ...newHeaderDoc, order: val });
+                      }}
+                      className={inp}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold rounded-xl shadow-md transition-all"
+                  >
+                    {editingHeaderDoc ? "Update Dropdown Option" : "Add Dropdown Option"}
+                  </button>
+                  {editingHeaderDoc && (
+                    <button
+                      type="button"
+                      onClick={() => setEditingHeaderDoc(null)}
+                      className="px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl text-base font-bold"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              </form>
+            </div>
+
+            {/* List */}
+            <div className="space-y-4">
+              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                Active Header Dropdown Items ({headerEdits.length})
+              </h3>
+              <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
+                {headerEdits.map((item) => {
+                  const bgImg = item.bgImage || item.image;
+                  return (
+                    <div key={item.id} className={`flex gap-3 p-3.5 border rounded-2xl items-center ${isDarkMode ? "bg-slate-855 border-slate-700" : "bg-white border-slate-100"}`}>
+                      <div className="w-16 h-20 rounded-xl overflow-hidden bg-slate-900 flex-shrink-0 relative">
+                        {bgImg ? (
+                          <img src={bgImg} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-slate-500"><ImageIcon size={18} /></div>
+                        )}
+                        {item.flag && (
+                          <span className="absolute top-1 left-1 text-sm bg-black/60 rounded-md px-1">{item.flag}</span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className={`text-base font-bold truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
+                          <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">Order: {item.order || 1}</span>
+                        </div>
+                        <p className="text-[14px] text-slate-400 truncate">{item.subtitle || item.collection || "No subtitle"}</p>
+                        <p className="text-[12px] text-slate-400 truncate font-mono mt-0.5">{item.href || item.link}</p>
+                      </div>
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() => setEditingHeaderDoc(item)}
+                          className={`p-2 rounded-xl ${isDarkMode ? "bg-slate-750 text-white hover:bg-slate-700" : "bg-slate-100 text-slate-650 hover:bg-slate-200"}`}
+                          title="Edit"
+                        >
+                          <Edit3 size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteHeaderOption(item.id)}
+                          className="p-2 bg-rose-50 hover:bg-rose-500 hover:text-white rounded-xl text-rose-600 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* ─── Mega Menus Editor Tab ─── */}
       {activeSubTab === "mega_menus" && (

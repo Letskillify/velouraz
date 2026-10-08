@@ -62,9 +62,19 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // OTP Sessions collection: protected from public reads
-    match /otpSessions/{sessionId} {
-      allow read, write: if false; // Only accessible by Cloud Functions server-side
+    // Site settings & world edits collections: public read, admin write
+    match /site_settings/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /world_edits_carousel/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /header_world_edits/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }
+

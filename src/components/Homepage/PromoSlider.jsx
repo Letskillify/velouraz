@@ -11,7 +11,7 @@ import { getOptimizedImageUrl, getOptimizedVideoUrl, handleImageError } from '..
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const staticCollections = [
+export const DEFAULT_HOMEPAGE_WORLD_EDIT_VIDEOS = [
   {
     id: 'paris',
     country: 'PARIS',
@@ -20,7 +20,8 @@ const staticCollections = [
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795174/paris44_tisl79.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672216/paris_vsqtxa.png',
-    link: '/shop?country=Paris'
+    link: '/shop?country=Paris',
+    order: 1
   },
   {
     id: 'thailand',
@@ -30,7 +31,8 @@ const staticCollections = [
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795261/80622904_1788526626895108_iruogb.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672219/thiland_yz8axz.png',
-    link: '/shop?country=Thailand'
+    link: '/shop?country=Thailand',
+    order: 2
   },
   {
     id: 'india',
@@ -40,7 +42,8 @@ const staticCollections = [
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884537/507503123_1788884097045152_tpzo3m.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/india_yqlodw.png',
-    link: '/world-edit/india'
+    link: '/world-edit/india',
+    order: 3
   },
   {
     id: 'japan',
@@ -50,7 +53,8 @@ const staticCollections = [
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788795166/51181631_1788526616621934_a6gfv6.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672222/japan_mzkd7z.png',
-    link: '/shop?country=Japan'
+    link: '/shop?country=Japan',
+    order: 4
   },
   {
     id: 'south-korea',
@@ -60,9 +64,13 @@ const staticCollections = [
     video: 'https://res.cloudinary.com/dcjn4y284/video/upload/v1788884546/634109263_1788884070021943_pf5oas.mp4',
     defaultImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
     hoverImage: 'https://res.cloudinary.com/dcjn4y284/image/upload/v1787672225/south_korea_km1orl.png',
-    link: '/shop?country=South%20Korea'
+    link: '/shop?country=South%20Korea',
+    order: 5
   }
 ];
+
+const staticCollections = DEFAULT_HOMEPAGE_WORLD_EDIT_VIDEOS;
+
 
 const CRIMSON = '#2e0e43';
 const LIGHT_BG = '#FFFFFF';
@@ -167,8 +175,8 @@ const CardItem = ({ item }) => {
 };
 
 const PromoSlider = () => {
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const [prevEl, setPrevEl] = useState(null);
+  const [nextEl, setNextEl] = useState(null);
   const [collections, setCollections] = useState(staticCollections);
   const [isDesktop, setIsDesktop] = useState(false);
 
@@ -185,23 +193,26 @@ const PromoSlider = () => {
         const fetched = snap.docs.map((d, index) => {
           const data = d.data();
           const countryName = data.country || '';
-          const fallbackVideo = staticCollections[index] ? staticCollections[index].video : null;
+          const fallback = staticCollections[index] || {};
           return {
             id: d.id,
-            badge: 'ORGANIC',
+            badge: data.badge || 'ORGANIC',
+            order: typeof data.order === 'number' ? data.order : index + 1,
             ...data,
-            video: data.video || data.videoUrl || fallbackVideo,
-            defaultImage: data.defaultImage || data.image || 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
-            hoverImage: data.hoverImage || data.image || 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
-            link: `/shop?country=${encodeURIComponent(countryName)}`
+            video: data.video || data.videoUrl || fallback.video,
+            defaultImage: data.defaultImage || data.image || fallback.defaultImage || 'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&q=80&w=800',
+            hoverImage: data.hoverImage || data.image || fallback.hoverImage || 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=800',
+            link: data.link || `/shop?country=${encodeURIComponent(countryName)}`
           };
         });
+        fetched.sort((a, b) => (a.order || 0) - (b.order || 0));
         setCollections(fetched);
       } else {
         setCollections(staticCollections);
       }
     });
   }, []);
+
 
   return (
     <section className="w-full relative py-6 md:py-8 overflow-hidden" style={{ backgroundColor: LIGHT_BG }}>
@@ -221,55 +232,76 @@ const PromoSlider = () => {
           </div>
         </div>
 
-        {/* Custom Navigation buttons */}
+        {/* Custom Navigation Header Buttons */}
         <div className="flex items-center gap-2">
           <button
-            ref={prevRef}
+            onClick={() => prevEl && prevEl.click()}
             aria-label="Previous slide"
-            className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-900 hover:text-black transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+            className="w-11 h-11 rounded-full bg-[#2e0e43] border border-[#C8A97A] text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#2e0e43] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center shadow-md cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+            title="Previous Slide"
           >
-            <ChevronLeft size={18} strokeWidth={1.5} />
+            <ChevronLeft size={20} strokeWidth={2} />
           </button>
           <button
-            ref={nextRef}
+            onClick={() => nextEl && nextEl.click()}
             aria-label="Next slide"
-            className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-900 hover:text-black transition-all duration-300 disabled:opacity-30 disabled:pointer-events-none"
+            className="w-11 h-11 rounded-full bg-[#2e0e43] border border-[#C8A97A] text-[#F0D5A8] hover:bg-[#C8A97A] hover:text-[#2e0e43] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center shadow-md cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+            title="Next Slide"
           >
-            <ChevronRight size={18} strokeWidth={1.5} />
+            <ChevronRight size={20} strokeWidth={2} />
           </button>
         </div>
       </div>
 
-      {/* Grid on Desktop (5 columns) & Swiper Slider on Mobile/Tablet */}
-      {isDesktop ? (
+      {/* If <= 5 items on Desktop, render grid. If > 5 items or Mobile/Tablet, render Swiper Slider */}
+      {isDesktop && collections.length <= 5 ? (
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-[1650px]">
-          <div className="mx-auto grid grid-cols-5 gap-3 sm:gap-4 md:gap-5">
+          <div
+            className="mx-auto grid gap-3 sm:gap-4 md:gap-5"
+            style={{ gridTemplateColumns: `repeat(${collections.length}, minmax(0, 1fr))` }}
+          >
             {collections.map((item) => (
               <CardItem key={item.id} item={item} />
             ))}
           </div>
         </div>
       ) : (
-        <div className="mx-auto px-4 sm:px-6 lg:px-10">
+        <div className="relative mx-auto px-4 sm:px-6 lg:px-10 max-w-[1650px] group">
+          {/* Prominent Floating Overlay Navigation Controls */}
+          <button
+            ref={(node) => setPrevEl(node)}
+            aria-label="Previous slide"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#2e0e43]/90 text-[#F0D5A8] backdrop-blur-md border-2 border-[#C8A97A] shadow-[0_8px_25px_rgba(0,0,0,0.5)] hover:bg-[#C8A97A] hover:text-[#2e0e43] hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:pointer-events-none"
+            title="Previous Slide"
+          >
+            <ChevronLeft size={24} strokeWidth={2.5} />
+          </button>
+
+          <button
+            ref={(node) => setNextEl(node)}
+            aria-label="Next slide"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#2e0e43]/90 text-[#F0D5A8] backdrop-blur-md border-2 border-[#C8A97A] shadow-[0_8px_25px_rgba(0,0,0,0.5)] hover:bg-[#C8A97A] hover:text-[#2e0e43] hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-20 disabled:pointer-events-none"
+            title="Next Slide"
+          >
+            <ChevronRight size={24} strokeWidth={2.5} />
+          </button>
+
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={16}
             slidesPerView={1.15}
             autoplay={{ delay: 4500, disableOnInteraction: false }}
             navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            onBeforeInit={(swiper) => {
-              swiper.params.navigation.prevEl = prevRef.current;
-              swiper.params.navigation.nextEl = nextRef.current;
+              prevEl,
+              nextEl,
             }}
             breakpoints={{
               320: { slidesPerView: 1.2, spaceBetween: 12 },
               480: { slidesPerView: 1.8, spaceBetween: 16 },
               640: { slidesPerView: 2.5, spaceBetween: 16 },
               768: { slidesPerView: 3.5, spaceBetween: 20 },
-              1024: { slidesPerView: 5, spaceBetween: 24 },
+              1024: { slidesPerView: 4.2, spaceBetween: 20 },
+              1280: { slidesPerView: 5, spaceBetween: 24 },
             }}
             className="w-full"
           >
