@@ -72,6 +72,7 @@ import CouponManager from "./components/CouponManager";
 import ReviewsManager from "./components/ReviewsManager";
 import GalleryManager from "./components/GalleryManager";
 import NewsManager from "./components/NewsManager";
+import StockNotificationsManager from "./components/StockNotificationsManager";
 import { listenToProducts, listenToTrashedProducts, trashProduct, restoreProduct, permanentlyDeleteProduct, removeProduct, sortNewestProducts } from "../../services/productService";
 
 // ─── Sidebar Items (Brands → Countries) ─────────────────────────────────────
@@ -80,6 +81,7 @@ const sidebarItems = [
   { name: "Products", icon: Package, desc: "Catalog" },
   { name: "Product Images", icon: Images, desc: "Manage product photos & gallery" },
   { name: "Orders", icon: ShoppingBag, desc: "Transactions" },
+  { name: "Stock Notifications", icon: Bell, desc: "Back-in-stock alert requests" },
   { name: "Categories", icon: List, desc: "Structure" },
   { name: "Blogs", icon: FileText, desc: "Journal & News" },
   { name: "Users", icon: Users, desc: "Accounts" },
@@ -401,6 +403,9 @@ const Admin = () => {
       case "News & Reels":
       case "NewsReelsManager":
         return <NewsManager isDarkMode={isDarkMode} />;
+      case "Stock Notifications":
+      case "StockNotifications":
+        return <StockNotificationsManager isDarkMode={isDarkMode} />;
       case "Profile":
         return <AdminProfile adminUser={adminUser} onUpdate={handleProfileUpdate} isDarkMode={isDarkMode} />;
       case "AddProduct":
@@ -486,6 +491,7 @@ const Admin = () => {
 
         {/* Catalog entries: Product Image Manager, Categories, Sub Categories, Collections, Countries, Attributes, Media */}
         {[
+          ["Stock Notifications", Bell, "Stock Notifications"],
           ["Coupon Manager", TicketPercent, "Coupon Manager"],
           ["Tags Manager", Tags, "Tags Manager"],
           ["Product Images", Images, "Product Images"],

@@ -18,12 +18,14 @@ import {
   Gem,
   CheckCircle2,
   Filter,
-  Check
+  Check,
+  Bell
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "../hooks/useStore";
 import Breadcrumb from "./Breadcrumb";
 import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
+import NotifyMeModal from "./NotifyMeModal";
 
 const Wishlist = () => {
   const { user } = useAuth();
@@ -34,6 +36,16 @@ const Wishlist = () => {
   const [filter, setFilter] = useState("all"); // 'all' | 'inStock'
   const [movingItems, setMovingItems] = useState({});
   const [movingAll, setMovingAll] = useState(false);
+  const [notifyProduct, setNotifyProduct] = useState(null);
+
+  const isItemOutOfStock = (item) => {
+    if (item.inStock === false) return true;
+    if (item.isOutOfStock === true) return true;
+    if (item.stock !== undefined && item.stock !== null) {
+      return Number(item.stock) <= 0;
+    }
+    return false;
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -43,8 +55,28 @@ const Wishlist = () => {
       }
       try {
         const snap = await getDocs(collection(db, "users", user.uid, "wishlist"));
-        const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        setItems(list);
+        const rawList = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+        // Fetch live product stock from Firestore
+        const productSnap = await getDocs(collection(db, "products"));
+        const productMap = {};
+        productSnap.docs.forEach((d) => { productMap[d.id] = d.data(); });
+
+        const updatedList = rawList.map((item) => {
+          const live = productMap[item.id];
+          if (live) {
+            return {
+              ...item,
+              stock: live.stock !== undefined ? live.stock : item.stock,
+              inStock: live.inStock !== undefined ? live.inStock : item.inStock,
+              isOutOfStock: live.isOutOfStock !== undefined ? live.isOutOfStock : item.isOutOfStock,
+              price: live.price !== undefined ? live.price : item.price,
+            };
+          }
+          return item;
+        });
+
+        setItems(updatedList);
       } catch (error) {
         console.error("Error loading wishlist:", error);
       } finally {
@@ -66,8 +98,8 @@ const Wishlist = () => {
 
   const moveToCart = async (item) => {
     if (!user) return;
-    if (item.stock !== undefined && Number(item.stock) <= 0) {
-      alert("This piece is currently out of stock.");
+    if (isItemOutOfStock(item)) {
+      setNotifyProduct(item);
       return;
     }
     setMovingItems(prev => ({ ...prev, [item.id]: true }));
@@ -87,14 +119,14 @@ const Wishlist = () => {
     if (!user || items.length === 0) return;
     setMovingAll(true);
     try {
-      const inStockItems = items.filter(item => item.stock === undefined || Number(item.stock) > 0);
+      const inStockItems = items.filter(item => !isItemOutOfStock(item));
       for (const item of inStockItems) {
         const success = await addToCart(item);
         if (success) {
           await deleteDoc(doc(db, "users", user.uid, "wishlist", item.id));
         }
       }
-      setItems(prev => prev.filter(i => i.stock !== undefined && Number(i.stock) <= 0));
+      setItems(prev => prev.filter(i => isItemOutOfStock(i)));
     } catch (err) {
       console.error("Error moving all to cart:", err);
     } finally {
@@ -119,7 +151,7 @@ const Wishlist = () => {
     );
   }
 
-  const inStockItems = items.filter(i => i.stock === undefined || Number(i.stock) > 0);
+  const inStockItems = items.filter(i => !isItemOutOfStock(i));
   const displayedItems = filter === "inStock" ? inStockItems : items;
 
   return (
@@ -264,7 +296,7 @@ const Wishlist = () => {
           <AnimatePresence mode="popLayout">
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
               {displayedItems.map((item, idx) => {
-                const isOutOfStock = item.stock !== undefined && Number(item.stock) <= 0;
+                const isOutOfStock = isItemOutOfStock(item);
                 return (
                   <motion.div
                     layout
@@ -335,7 +367,7 @@ const Wishlist = () => {
 
                           <span className={`text-[14px] sm:text-[14px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider ${isOutOfStock ? "bg-rose-50 text-rose-700 border border-rose-200" : "bg-emerald-50 text-emerald-700 border border-emerald-200"
                             }`}>
-                            {isOutOfStock ? "Sold" : "In Stock"}
+                            {isOutOfStock ? "Out of Stock" : "In Stock"}
                           </span>
                         </div>
 
@@ -344,21 +376,28 @@ const Wishlist = () => {
 
                     {/* Card Bottom CTA Button */}
                     <div className="pt-3 mt-1">
-                      <button
-                        onClick={() => moveToCart(item)}
-                        disabled={isOutOfStock || movingItems[item.id]}
-                        className={`w-full py-2.5 sm:py-3 px-3 rounded-xl text-[14px] sm:text-xs font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-1.5 transition-all duration-300 shadow-2xs ${isOutOfStock
-                          ? "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
-                          : "bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99] hover:shadow-md cursor-pointer"
-                          }`}
-                      >
-                        {movingItems[item.id] ? (
-                          <Loader2 size={13} className="animate-spin shrink-0" />
-                        ) : (
-                          <ShoppingBag size={13} className="shrink-0 text-[#C8A46A]" />
-                        )}
-                        <span>{movingItems[item.id] ? "Moving..." : "Move to Bag"}</span>
-                      </button>
+                      {isOutOfStock ? (
+                        <button
+                          onClick={() => setNotifyProduct(item)}
+                          className="w-full py-2.5 sm:py-3 px-3 rounded-xl text-[14px] sm:text-xs font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-1.5 transition-all duration-300 shadow-2xs bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99] hover:shadow-md cursor-pointer border border-[#C8A46A]/40"
+                        >
+                          <Bell size={13} className="shrink-0 text-[#C8A46A] animate-pulse" />
+                          <span>Notify Me</span>
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => moveToCart(item)}
+                          disabled={movingItems[item.id]}
+                          className="w-full py-2.5 sm:py-3 px-3 rounded-xl text-[14px] sm:text-xs font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-1.5 transition-all duration-300 shadow-2xs bg-[#2e0e43] text-white hover:bg-[#1A0829] active:scale-[0.99] hover:shadow-md cursor-pointer font-sans"
+                        >
+                          {movingItems[item.id] ? (
+                            <Loader2 size={13} className="animate-spin shrink-0" />
+                          ) : (
+                            <ShoppingBag size={13} className="shrink-0 text-[#C8A46A]" />
+                          )}
+                          <span>{movingItems[item.id] ? "Moving..." : "Move to Bag"}</span>
+                        </button>
+                      )}
                     </div>
 
                   </motion.div>
@@ -367,6 +406,13 @@ const Wishlist = () => {
             </div>
           </AnimatePresence>
         )}
+
+        {/* Back in stock notification modal for wishlist items */}
+        <NotifyMeModal
+          isOpen={!!notifyProduct}
+          onClose={() => setNotifyProduct(null)}
+          product={notifyProduct}
+        />
 
       </div>
     </div>

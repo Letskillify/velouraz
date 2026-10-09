@@ -9,9 +9,10 @@ import {
   Star, Shield, Truck, RotateCcw, Heart, ShoppingBag,
   Share2, Gem, Sparkles, Loader2, ChevronRight,
   Eye, Award, Gift, RefreshCw, ZoomIn, Check,
-  ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass
+  ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass, Bell
 } from 'lucide-react';
 import AddToCartModal from "../components/AddToCartModal";
+import NotifyMeModal from "../components/NotifyMeModal";
 import { getOptimizedImageUrl, handleImageError } from "../config/cloudinary";
 import useSEO from "../hooks/useSEO";
 
@@ -30,6 +31,7 @@ const ProductDetail = () => {
   const [zoomStyle, setZoomStyle] = useState({ transform: "scale(1)" });
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [isAddToCartModalOpen, setIsAddToCartModalOpen] = useState(false);
+  const [isNotifyModalOpen, setIsNotifyModalOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [sameCountryProducts, setSameCountryProducts] = useState([]);
   const [relatedLoading, setRelatedLoading] = useState(true);
@@ -276,7 +278,7 @@ const ProductDetail = () => {
     );
   }
 
-  const isOutOfStock = product.stock !== undefined && Number(product.stock) <= 0;
+  const isOutOfStock = product.inStock === false || product.isOutOfStock === true || (product.stock !== undefined && Number(product.stock) <= 0);
 
   return (
     <div className="min-h-screen bg-[#FBF9F5] font-sans text-[#14111E] selection:bg-[#14111E] selection:text-[#FBF9F5]">
@@ -497,6 +499,53 @@ const ProductDetail = () => {
                 )}
               </div>
             </div>
+
+            {/* Out of Stock & Notify Me Section */}
+            {isOutOfStock ? (
+              <div className="p-5 bg-rose-50/70 border border-rose-200/80 rounded-2xl space-y-4 shadow-2xs">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-3 h-3 rounded-full bg-rose-600 animate-pulse" />
+                  <span className="text-xs font-sans font-bold uppercase tracking-[0.2em] text-rose-800">
+                    Currently Out of Stock
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-rose-900/80 font-serif italic leading-relaxed">
+                  This bespoke creation is currently sold out. Click below to receive priority email or WhatsApp notification when it is restocked.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsNotifyModalOpen(true)}
+                  className="w-full py-4 px-6 rounded-xl bg-[#2e0e43] text-white text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#14061F] active:scale-[0.99] transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 cursor-pointer font-sans"
+                >
+                  <Bell size={18} className="text-[#C8A46A] animate-pulse" />
+                  <span>Notify Me When Available</span>
+                </button>
+              </div>
+            ) : (
+              /* Quantity Selector */
+              <div className="flex items-center gap-4 py-2">
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">Quantity:</span>
+                <div className="flex items-center border border-[#E5D7C5] rounded-xl bg-white overflow-hidden shadow-2xs">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
+                    className="px-3.5 py-2 text-[#14111E] hover:bg-[#F6F2EC] font-bold text-sm transition-colors cursor-pointer"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-2 text-sm font-bold font-sans text-[#14111E] min-w-[36px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(prev => Math.min(Number(product.stock || 99), prev + 1))}
+                    className="px-3.5 py-2 text-[#14111E] hover:bg-[#F6F2EC] font-bold text-sm transition-colors cursor-pointer"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Delivery Estimator & Product Information */}
             <div className="pt-2 space-y-6">
@@ -862,38 +911,52 @@ const ProductDetail = () => {
 
           {/* Right: Add to Bag & Buy Now Action Buttons */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 flex-1 sm:flex-initial">
-            <button
-              onClick={handleAddToCart}
-              disabled={isOutOfStock || cartLoading}
-              className={`flex-1 sm:flex-initial sm:min-w-[140px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer ${isOutOfStock
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : isInCart(product.id)
-                  ? 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
-                  : 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
-                }`}
-            >
-              {cartLoading ? (
-                <Loader2 size={15} className="animate-spin shrink-0" />
-              ) : (
-                <ShoppingBag size={15} className="shrink-0 text-[#C8A46A]" />
-              )}
-              <span className="truncate">{isOutOfStock ? 'Out of Stock' : isInCart(product.id) ? 'Added' : 'Add to Bag'}</span>
-            </button>
+            {isOutOfStock ? (
+              <button
+                type="button"
+                onClick={() => setIsNotifyModalOpen(true)}
+                className="flex-1 sm:flex-initial sm:min-w-[220px] min-h-[44px] sm:min-h-[48px] py-2.5 px-4 sm:px-6 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer bg-[#2e0e43] text-white hover:bg-[#1A0829] border border-[#C8A46A]/40"
+              >
+                <Bell size={15} className="shrink-0 text-[#C8A46A]" />
+                <span className="truncate">Notify Me When Restocked</span>
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={handleAddToCart}
+                  disabled={cartLoading}
+                  className={`flex-1 sm:flex-initial sm:min-w-[140px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-2 shadow-md font-sans transition-all duration-300 cursor-pointer ${isInCart(product.id)
+                    ? 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
+                    : 'bg-[#14111E] text-[#FBF9F5] hover:bg-[#251D33] active:scale-[0.98] border border-[#C8A46A]/30'
+                    }`}
+                >
+                  {cartLoading ? (
+                    <Loader2 size={15} className="animate-spin shrink-0" />
+                  ) : (
+                    <ShoppingBag size={15} className="shrink-0 text-[#C8A46A]" />
+                  )}
+                  <span className="truncate">{isInCart(product.id) ? 'Added' : 'Add to Bag'}</span>
+                </button>
 
-            <button
-              onClick={handleBuyNow}
-              disabled={isOutOfStock}
-              className={`flex-1 sm:flex-initial sm:min-w-[120px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 cursor-pointer ${isOutOfStock
-                ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
-                : 'border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5] active:scale-[0.98] font-bold'
-                }`}
-            >
-              <span className="truncate">Buy Now</span>
-            </button>
+                <button
+                  onClick={handleBuyNow}
+                  className="flex-1 sm:flex-initial sm:min-w-[120px] min-h-[44px] sm:min-h-[48px] py-2.5 px-3.5 sm:px-5 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-[0.14em] flex items-center justify-center gap-1.5 shadow-sm font-sans transition-all duration-300 cursor-pointer border-2 border-[#14111E] bg-white text-[#14111E] hover:bg-[#14111E] hover:text-[#FBF9F5] active:scale-[0.98] font-bold"
+                >
+                  <span className="truncate">Buy Now</span>
+                </button>
+              </>
+            )}
           </div>
 
         </div>
       </div>
+
+      {/* Back In Stock Notification Request Modal */}
+      <NotifyMeModal
+        isOpen={isNotifyModalOpen}
+        onClose={() => setIsNotifyModalOpen(false)}
+        product={product}
+      />
 
       {/* Lightbox Modal */}
       <AnimatePresence>

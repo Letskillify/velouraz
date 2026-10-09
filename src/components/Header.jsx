@@ -121,11 +121,13 @@ const LuxuryHeader = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
-    getDoc(doc(db, "site_settings", "announcements")).then((snap) => {
+    const unsubAnn = onSnapshot(doc(db, "site_settings", "announcements"), (snap) => {
       if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
         setAnnouncements(snap.data().items);
+      } else {
+        setAnnouncements(["✦ Complimentary Shipping Across India ✦"]);
       }
-    });
+    }, (err) => console.warn("Error fetching announcements:", err));
 
     getDocs(collection(db, "countries"))
       .then((snap) => {

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { db } from '../Firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
-const items = [
+export const DEFAULT_MARQUEE_ITEMS = [
   '✦ Ethically Sourced',
   '✦ Artisanal Craftsmanship',
   '✦ Anti-Tarnish Formula',
@@ -15,13 +17,27 @@ const items = [
 const SERIF = "'Cormorant Garamond', Georgia, serif";
 
 /**
- * High-visibility luxury brand marquee ticker
+ * High-visibility luxury brand marquee ticker (Bottom Hero Section Scroll Texts)
  */
 const Marquee = () => {
-  const doubled = [...items, ...items, ...items]; // triple loop for flawless continuous scroll
+  const [marqueeItems, setMarqueeItems] = useState(DEFAULT_MARQUEE_ITEMS);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "site_settings", "hero_marquee"), (snap) => {
+      if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
+        setMarqueeItems(snap.data().items);
+      } else {
+        setMarqueeItems(DEFAULT_MARQUEE_ITEMS);
+      }
+    }, (err) => console.warn("Error fetching hero marquee:", err));
+    return () => unsub();
+  }, []);
+
+  const itemsToRender = marqueeItems.length > 0 ? marqueeItems : DEFAULT_MARQUEE_ITEMS;
+  const doubled = [...itemsToRender, ...itemsToRender, ...itemsToRender]; // triple loop for continuous scroll
 
   return (
-    <div className="w-full relative overflow-hidden bg-gradient-to-r from-[#170624] via-[#2A0E40] to-[#170624] border-y border-[#C8A97A]/30 py-3.5 shadow-md z-10">
+    <div className="w-full relative overflow-hidden bg-gradient-to-r from-[#170624] via-[#2A0E40] to-[#170624] border-y border-[#C8A97A]/30 py-3.5 shadow-md z-10 font-sans">
       
       {/* Side Fade Overlays for cinematic scroll transition */}
       <div className="absolute top-0 left-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#170624] to-transparent z-10 pointer-events-none" />
@@ -49,4 +65,3 @@ const Marquee = () => {
 };
 
 export default Marquee;
-

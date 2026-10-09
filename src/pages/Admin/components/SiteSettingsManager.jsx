@@ -4,7 +4,7 @@ import { db } from "../../../components/Firebase";
 import { doc, getDoc, setDoc, collection, onSnapshot, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Save, Plus, Trash2, Edit3, ImagePlus, Loader2, Play, Video, Type, Link2, Bell, AlertCircle, Check, Image as ImageIcon, RefreshCw, Upload, Globe
+  Save, Plus, Trash2, Edit3, ImagePlus, Loader2, Play, Video, Type, Link2, Bell, AlertCircle, Check, Image as ImageIcon, RefreshCw, Upload, Globe, ChevronUp, ChevronDown, Sparkles
 } from "lucide-react";
 import { uploadToCloudinary, uploadToCloudinaryWithProgress } from "../../../config/cloudinary";
 import { DEFAULT_HEADER_WORLD_EDITS } from "../../../components/Header";
@@ -40,11 +40,17 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
   const [uploadingHeroVideo, setUploadingHeroVideo] = useState(false);
   const [heroVideoProgress, setHeroVideoProgress] = useState(0);
 
-  // ─── Announcements Carousel State ──────────────────────────────────────────
+  // ─── Announcements Carousel State (Top Header Texts) ─────────────────────
   const [announcements, setAnnouncements] = useState([]);
   const [newAnnouncement, setNewAnnouncement] = useState("");
   const [savingAnnouncements, setSavingAnnouncements] = useState(false);
   const [savedAnnouncements, setSavedAnnouncements] = useState(false);
+
+  // ─── Bottom Hero Scroll Texts State (Hero Marquee) ───────────────────────
+  const [heroMarquee, setHeroMarquee] = useState([]);
+  const [newMarqueeText, setNewMarqueeText] = useState("");
+  const [savingMarquee, setSavingMarquee] = useState(false);
+  const [savedMarquee, setSavedMarquee] = useState(false);
 
   // ─── Homepage World Edit Videos State ──────────────────────────────────────
   const [worldEdits, setWorldEdits] = useState([]);
@@ -135,15 +141,35 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
       if (snap.exists()) setHeroData(snap.data());
     });
 
-    // Read Announcements
+    // Read Top Header Announcements
     const announcementsRef = doc(db, "site_settings", "announcements");
     getDoc(announcementsRef).then((snap) => {
-      if (snap.exists() && snap.data().items) {
+      if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
         setAnnouncements(snap.data().items);
       } else {
         setAnnouncements([
-          " Use Code VEL5 for 5% OFF on your first order",
-          "Artisanal Craftsmanship | 100% Handcrafted Designs",
+          "✦ Complimentary Shipping Across India ✦",
+          "✦ Use Code VELOURAZ5 for 5% OFF on Your First Order ✦",
+          "✦ Artisanal Craftsmanship | 100% Handcrafted Designs ✦"
+        ]);
+      }
+    });
+
+    // Read Bottom Hero Section Scroll Texts (Hero Marquee)
+    const marqueeRef = doc(db, "site_settings", "hero_marquee");
+    getDoc(marqueeRef).then((snap) => {
+      if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
+        setHeroMarquee(snap.data().items);
+      } else {
+        setHeroMarquee([
+          '✦ Ethically Sourced',
+          '✦ Artisanal Craftsmanship',
+          '✦ Anti-Tarnish Formula',
+          '✦ Global Heritage Designs',
+          '✦ Skin Friendly Alloys',
+          '✦ 4.9 ★ Patron Rated',
+          '✦ Premium Gift Packaging',
+          '✦ Easy & Seamless Returns',
         ]);
       }
     });
@@ -218,11 +244,31 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     }
   };
 
-  // ─── Announcements actions ──────────────────────────────────────────────────
+  // ─── Announcements actions (Top Header Texts) ────────────────────────────
   const handleAddAnnouncement = () => {
     if (!newAnnouncement.trim()) return;
     setAnnouncements((prev) => [...prev, newAnnouncement.trim()]);
     setNewAnnouncement("");
+  };
+
+  const handleUpdateAnnouncement = (index, val) => {
+    setAnnouncements((prev) => {
+      const next = [...prev];
+      next[index] = val;
+      return next;
+    });
+  };
+
+  const handleMoveAnnouncement = (index, direction) => {
+    setAnnouncements((prev) => {
+      const target = index + direction;
+      if (target < 0 || target >= prev.length) return prev;
+      const next = [...prev];
+      const temp = next[index];
+      next[index] = next[target];
+      next[target] = temp;
+      return next;
+    });
   };
 
   const handleRemoveAnnouncement = (index) => {
@@ -237,9 +283,54 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
       setSavedAnnouncements(true);
       setTimeout(() => setSavedAnnouncements(false), 3000);
     } catch (e) {
-      console.error(e);
+      console.error("Save announcements failed:", e);
     } finally {
       setSavingAnnouncements(false);
+    }
+  };
+
+  // ─── Hero Marquee Scroll Texts actions (Bottom Hero Section) ──────────────
+  const handleAddMarquee = () => {
+    if (!newMarqueeText.trim()) return;
+    setHeroMarquee((prev) => [...prev, newMarqueeText.trim()]);
+    setNewMarqueeText("");
+  };
+
+  const handleUpdateMarquee = (index, val) => {
+    setHeroMarquee((prev) => {
+      const next = [...prev];
+      next[index] = val;
+      return next;
+    });
+  };
+
+  const handleMoveMarquee = (index, direction) => {
+    setHeroMarquee((prev) => {
+      const target = index + direction;
+      if (target < 0 || target >= prev.length) return prev;
+      const next = [...prev];
+      const temp = next[index];
+      next[index] = next[target];
+      next[target] = temp;
+      return next;
+    });
+  };
+
+  const handleRemoveMarquee = (index) => {
+    setHeroMarquee((prev) => prev.filter((_, idx) => idx !== index));
+  };
+
+  const handleSaveMarquee = async () => {
+    setSavingMarquee(true);
+    setSavedMarquee(false);
+    try {
+      await setDoc(doc(db, "site_settings", "hero_marquee"), { items: heroMarquee });
+      setSavedMarquee(true);
+      setTimeout(() => setSavedMarquee(false), 3000);
+    } catch (e) {
+      console.error("Save hero marquee failed:", e);
+    } finally {
+      setSavingMarquee(false);
     }
   };
 
@@ -531,11 +622,11 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
       {/* Sub Tabs */}
       <div className={`flex gap-2 border-b pb-3 flex-wrap ${isDarkMode ? "border-slate-800" : "border-slate-100"}`}>
         {[
-          { id: "hero", label: "Hero Banner (Video/Texts)" },
-          { id: "announcements", label: "Announcement Tickers" },
+          { id: "hero", label: "Hero Video & Banner" },
+          { id: "announcements", label: "Top Header Texts" },
+          { id: "hero_marquee", label: "Bottom Hero Scroll Texts" },
           { id: "world_edits", label: "Homepage World Edit Videos" },
           { id: "header_world_edit", label: "Header World Edit Dropdown" },
-          { id: "mega_menus", label: "Header Mega Menus" },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -763,59 +854,219 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         </div>
       )}
 
-      {/* ─── Announcements Editor ─── */}
+      {/* ─── Top Header Announcement Texts Editor ─── */}
       {activeSubTab === "announcements" && (
         <div className={cardStyle}>
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>Announcement Carousels</h3>
-              <p className="text-base text-slate-400">Multiple announcement texts rotating in the website header bar</p>
+              <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"} flex items-center gap-2`}>
+                <Type size={18} className="text-[#941232]" />
+                Top Header Announcement Texts
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Manage revolving promotional ticker lines shown in the top crimson header bar.
+              </p>
             </div>
             <button
               onClick={handleSaveAnnouncements}
               disabled={savingAnnouncements}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-base font-bold transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md disabled:opacity-50 cursor-pointer"
             >
-              {savingAnnouncements ? <Loader2 size={13} className="animate-spin" /> : savedAnnouncements ? <Check size={13} /> : <Save size={13} />}
-              {savingAnnouncements ? "Saving..." : savedAnnouncements ? "Saved!" : "Save Announcements"}
+              {savingAnnouncements ? <Loader2 size={14} className="animate-spin" /> : savedAnnouncements ? <Check size={14} /> : <Save size={14} />}
+              {savingAnnouncements ? "Saving..." : savedAnnouncements ? "Saved!" : "Save Header Texts"}
             </button>
           </div>
 
-          <div className="space-y-4">
+          {/* Live Preview Box */}
+          <div className="mb-6 p-3 bg-[#2e0e43] rounded-2xl text-center border border-[#C8A97A]/30 shadow-inner overflow-hidden">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[#C8A97A] block mb-1">
+              ✦ Live Top Header Preview ✦
+            </span>
+            <div className="text-xs sm:text-sm font-sans font-medium uppercase tracking-[0.16em] text-white/90 truncate py-1">
+              {announcements.length > 0 ? announcements[0] : "✦ Complimentary Shipping Across India ✦"}
+            </div>
+          </div>
+
+          <div className="space-y-5">
+            {/* Add Input */}
             <div className="flex gap-2">
               <input
                 type="text"
                 value={newAnnouncement}
                 onChange={(e) => setNewAnnouncement(e.target.value)}
                 className={inp}
-                placeholder="Enter ticker announcement line (e.g. Free shipping on orders over ₹999)"
+                placeholder="Add new header text line (e.g. ✦ Complimentary Shipping Across India ✦)"
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddAnnouncement(); } }}
               />
               <button
                 type="button"
                 onClick={handleAddAnnouncement}
-                className={`px-4 py-2.5 rounded-xl text-base font-bold text-white ${isDarkMode ? "bg-slate-800 hover:bg-slate-700" : "bg-slate-900 hover:bg-slate-850"}`}
+                className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-[#941232] hover:bg-[#b01540] transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-sm"
               >
-                Add
+                <Plus size={14} /> Add Line
               </button>
             </div>
 
-            <div className={`border rounded-xl divide-y overflow-hidden ${isDarkMode ? "border-slate-800 divide-slate-800" : "border-slate-100 divide-slate-100"}`}>
-              {announcements.map((text, index) => (
-                <div key={index} className={`flex justify-between items-center p-3.5 text-base ${isDarkMode ? "bg-slate-900/40" : "bg-slate-50/50"}`}>
-                  <span className={`font-semibold ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>{text}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveAnnouncement(index)}
-                    className="p-1 rounded bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors"
-                  >
-                    <Trash2 size={12} />
-                  </button>
-                </div>
+            {/* List */}
+            <div className="space-y-2.5">
+              <h4 className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
+                Active Header Lines ({announcements.length})
+              </h4>
+              <div className={`border rounded-2xl divide-y overflow-hidden ${isDarkMode ? "border-slate-800 divide-slate-800" : "border-slate-100 divide-slate-100"}`}>
+                {announcements.map((text, index) => (
+                  <div key={index} className={`flex items-center gap-3 p-3 text-sm ${isDarkMode ? "bg-slate-900/60" : "bg-slate-50/60"}`}>
+                    <span className="text-xs font-mono font-bold text-slate-400 w-5 shrink-0">#{index + 1}</span>
+                    <input
+                      type="text"
+                      value={text}
+                      onChange={(e) => handleUpdateAnnouncement(index, e.target.value)}
+                      className={`flex-1 min-w-0 bg-transparent outline-none font-semibold text-xs sm:text-sm ${isDarkMode ? "text-white" : "text-slate-800"}`}
+                    />
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleMoveAnnouncement(index, -1)}
+                        disabled={index === 0}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-20 transition-all cursor-pointer"
+                        title="Move Up"
+                      >
+                        <ChevronUp size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleMoveAnnouncement(index, 1)}
+                        disabled={index === announcements.length - 1}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-20 transition-all cursor-pointer"
+                        title="Move Down"
+                      >
+                        <ChevronDown size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAnnouncement(index)}
+                        className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors cursor-pointer"
+                        title="Delete Line"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {announcements.length === 0 && (
+                  <div className="p-8 text-center text-xs text-slate-400 italic">No header text lines configured. Click Add above.</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Bottom Hero Scroll Texts Editor (Hero Marquee) ─── */}
+      {activeSubTab === "hero_marquee" && (
+        <div className={cardStyle}>
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h3 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"} flex items-center gap-2`}>
+                <Sparkles size={18} className="text-[#941232]" />
+                Bottom Hero Section Scroll Texts
+              </h3>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Manage the continuous scrolling ticker lines displayed right at the bottom of the Hero section.
+              </p>
+            </div>
+            <button
+              onClick={handleSaveMarquee}
+              disabled={savingMarquee}
+              className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#941232] hover:bg-[#b01540] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md disabled:opacity-50 cursor-pointer"
+            >
+              {savingMarquee ? <Loader2 size={14} className="animate-spin" /> : savedMarquee ? <Check size={14} /> : <Save size={14} />}
+              {savingMarquee ? "Saving..." : savedMarquee ? "Saved!" : "Save Scroll Tickers"}
+            </button>
+          </div>
+
+          {/* Live Marquee Preview Banner */}
+          <div className="mb-6 p-3.5 bg-gradient-to-r from-[#170624] via-[#2A0E40] to-[#170624] border border-[#C8A97A]/40 rounded-2xl overflow-hidden shadow-md">
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[#C8A97A] block text-center mb-2">
+              ✦ Live Bottom Hero Marquee Scroll Preview ✦
+            </span>
+            <div className="flex gap-8 overflow-x-auto no-scrollbar py-1 text-xs tracking-[0.2em] uppercase font-semibold text-[#F5E6CE]">
+              {heroMarquee.map((item, idx) => (
+                <span key={idx} className="shrink-0 whitespace-nowrap">
+                  {item}
+                </span>
               ))}
-              {announcements.length === 0 && (
-                <div className="p-8 text-center text-base text-slate-400">No announcement lines configured.</div>
-              )}
+            </div>
+          </div>
+
+          <div className="space-y-5">
+            {/* Add Input */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={newMarqueeText}
+                onChange={(e) => setNewMarqueeText(e.target.value)}
+                className={inp}
+                placeholder="Add new scrolling ticker line (e.g. ✦ 100% Certified Anti-Tarnish Lustre)"
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddMarquee(); } }}
+              />
+              <button
+                type="button"
+                onClick={handleAddMarquee}
+                className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white bg-[#941232] hover:bg-[#b01540] transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-sm"
+              >
+                <Plus size={14} /> Add Scroll Line
+              </button>
+            </div>
+
+            {/* List */}
+            <div className="space-y-2.5">
+              <h4 className={`text-xs font-bold uppercase tracking-wider ${isDarkMode ? "text-slate-400" : "text-slate-600"}`}>
+                Active Scrolling Ticker Lines ({heroMarquee.length})
+              </h4>
+              <div className={`border rounded-2xl divide-y overflow-hidden ${isDarkMode ? "border-slate-800 divide-slate-800" : "border-slate-100 divide-slate-100"}`}>
+                {heroMarquee.map((text, index) => (
+                  <div key={index} className={`flex items-center gap-3 p-3 text-sm ${isDarkMode ? "bg-slate-900/60" : "bg-slate-50/60"}`}>
+                    <span className="text-xs font-mono font-bold text-slate-400 w-5 shrink-0">#{index + 1}</span>
+                    <input
+                      type="text"
+                      value={text}
+                      onChange={(e) => handleUpdateMarquee(index, e.target.value)}
+                      className={`flex-1 min-w-0 bg-transparent outline-none font-semibold text-xs sm:text-sm ${isDarkMode ? "text-white" : "text-slate-800"}`}
+                    />
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleMoveMarquee(index, -1)}
+                        disabled={index === 0}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-20 transition-all cursor-pointer"
+                        title="Move Up"
+                      >
+                        <ChevronUp size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleMoveMarquee(index, 1)}
+                        disabled={index === heroMarquee.length - 1}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white disabled:opacity-20 transition-all cursor-pointer"
+                        title="Move Down"
+                      >
+                        <ChevronDown size={14} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveMarquee(index)}
+                        className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white transition-colors cursor-pointer"
+                        title="Delete Line"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {heroMarquee.length === 0 && (
+                  <div className="p-8 text-center text-xs text-slate-400 italic">No scrolling ticker lines configured. Click Add above.</div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -833,15 +1084,6 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 Manage interactive video cards displayed on the homepage World Edits section
               </p>
             </div>
-            <button
-              type="button"
-              onClick={handleSeedHomepageVideos}
-              disabled={seedingHomepage}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-base font-bold transition-all shadow-sm shrink-0"
-            >
-              {seedingHomepage ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-              Upload / Seed Current 5 Homepage Videos to Database
-            </button>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -913,51 +1155,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelStyle}>Default Cover Image URL / Upload</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={editingEdit ? (editingEdit.defaultImage || editingEdit.image || "") : newEdit.defaultImage}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (editingEdit) setEditingEdit({ ...editingEdit, defaultImage: val, image: val });
-                          else setNewEdit({ ...newEdit, defaultImage: val, image: val });
-                        }}
-                        className={inp}
-                        placeholder="Image URL"
-                      />
-                      <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
-                        <ImagePlus size={16} />
-                        <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditPhotoUpload} />
-                      </label>
-                    </div>
-                    {uploadingEditImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading Cover Image...</p>}
-                  </div>
 
-                  <div>
-                    <label className={labelStyle}>Hover Image URL / Upload</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={editingEdit ? (editingEdit.hoverImage || "") : newEdit.hoverImage}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (editingEdit) setEditingEdit({ ...editingEdit, hoverImage: val });
-                          else setNewEdit({ ...newEdit, hoverImage: val });
-                        }}
-                        className={inp}
-                        placeholder="Hover Image URL"
-                      />
-                      <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer shrink-0 ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
-                        <ImagePlus size={16} />
-                        <input type="file" accept="image/*" className="hidden" onChange={handleWorldEditHoverPhotoUpload} />
-                      </label>
-                    </div>
-                    {uploadingHoverImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading Hover Image...</p>}
-                  </div>
-                </div>
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="col-span-2">
@@ -1011,8 +1209,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
 
             {/* List */}
             <div className="space-y-4">
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
-                Active Homepage Video Cards ({worldEdits.length})
+              <h3 className={`text-md font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+                Active Homepage Video Cards (({worldEdits.length}))
               </h3>
               <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
                 {worldEdits.map((item) => {
@@ -1074,15 +1272,6 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 Manage the destination columns, background images, titles, and CTA links shown when hovering "World Edit" in the site header
               </p>
             </div>
-            <button
-              type="button"
-              onClick={handleSeedHeaderOptions}
-              disabled={seedingHeader}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-base font-bold transition-all shadow-sm shrink-0"
-            >
-              {seedingHeader ? <Loader2 size={16} className="animate-spin" /> : <Globe size={16} />}
-              Upload / Seed Current 5 Header Items & Data to Database
-            </button>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -1092,36 +1281,20 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 {editingHeaderDoc ? "Edit Header Dropdown Option" : "Add New Header Dropdown Option"}
               </h3>
               <form onSubmit={handleSaveHeaderOption} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelStyle}>Country Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={editingHeaderDoc ? editingHeaderDoc.country : newHeaderDoc.country}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, country: val });
-                        else setNewHeaderDoc({ ...newHeaderDoc, country: val });
-                      }}
-                      className={inp}
-                      placeholder="e.g. Paris"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelStyle}>Flag Emoji / Icon</label>
-                    <input
-                      type="text"
-                      value={editingHeaderDoc ? editingHeaderDoc.flag : newHeaderDoc.flag}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, flag: val });
-                        else setNewHeaderDoc({ ...newHeaderDoc, flag: val });
-                      }}
-                      className={inp}
-                      placeholder="e.g. 🇫🇷 or 🇮🇳"
-                    />
-                  </div>
+                <div>
+                  <label className={labelStyle}>Country Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingHeaderDoc ? editingHeaderDoc.country : newHeaderDoc.country}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, country: val });
+                      else setNewHeaderDoc({ ...newHeaderDoc, country: val });
+                    }}
+                    className={inp}
+                    placeholder="e.g. Paris"
+                  />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -1243,7 +1416,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
 
             {/* List */}
             <div className="space-y-4">
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
+              <h3 className={`text-md font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
                 Active Header Dropdown Items ({headerEdits.length})
               </h3>
               <div className="space-y-3 max-h-[600px] overflow-y-auto pr-1">
@@ -1288,195 +1461,6 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                     </div>
                   );
                 })}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-
-      {/* ─── Mega Menus Editor Tab ─── */}
-      {activeSubTab === "mega_menus" && (
-        <div className="space-y-6">
-          {/* Menu Selector */}
-          <div className="flex gap-2">
-            {[
-              { key: "collections", label: "Collections Menu" },
-              { key: "world_edit", label: "World Edit Menu" },
-              { key: "the_edit", label: "The Edit Menu" }
-            ].map((menu) => (
-              <button
-                key={menu.key}
-                onClick={() => setSelectedMegaMenuKey(menu.key)}
-                className={`px-4 py-2.5 text-base font-bold rounded-xl transition-all ${
-                  selectedMegaMenuKey === menu.key
-                    ? "bg-[#941232] text-white shadow-sm"
-                    : `${isDarkMode ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-slate-50 text-slate-500 hover:bg-slate-100"}`
-                }`}
-              >
-                {menu.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            {/* Promo Card & Details Form */}
-            <div className={cardStyle}>
-              <div className="flex justify-between items-center mb-6">
-                <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
-                  Promo Card & Global Setup
-                </h3>
-                <button
-                  onClick={handleSaveMegaMenus}
-                  disabled={savingMegaMenus}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#941232] text-white text-base font-bold transition-all"
-                >
-                  {savingMegaMenus ? <Loader2 size={13} className="animate-spin" /> : savedMegaMenus ? <Check size={13} /> : <Save size={13} />}
-                  Save Menu Data
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className={labelStyle}>Promo Card Banner Image URL</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={megaMenus[selectedMegaMenuKey]?.image || ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setMegaMenus((prev) => ({
-                          ...prev,
-                          [selectedMegaMenuKey]: { ...prev[selectedMegaMenuKey], image: val }
-                        }));
-                      }}
-                      className={inp}
-                      placeholder="Enter promo image URL link"
-                    />
-                    <label className={`flex items-center justify-center p-2.5 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300" : "bg-slate-50 text-slate-600"}`}>
-                      <ImageIcon size={16} />
-                      <input type="file" accept="image/*" className="hidden" onChange={handleMegaMenuPhotoUpload} />
-                    </label>
-                  </div>
-                  {uploadingMegaMenuImage && <p className="text-[16px] text-amber-600 font-semibold animate-pulse mt-1">Uploading...</p>}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelStyle}>Promo Tagline (Gold Text)</label>
-                    <input
-                      type="text"
-                      value={megaMenus[selectedMegaMenuKey]?.tagline || ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setMegaMenus((prev) => ({
-                          ...prev,
-                          [selectedMegaMenuKey]: { ...prev[selectedMegaMenuKey], tagline: val }
-                        }));
-                      }}
-                      className={inp}
-                      placeholder="e.g. TIMELESS BEAUTY"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelStyle}>Promo Headline (White Bold Text)</label>
-                    <input
-                      type="text"
-                      value={megaMenus[selectedMegaMenuKey]?.heading || ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setMegaMenus((prev) => ({
-                          ...prev,
-                          [selectedMegaMenuKey]: { ...prev[selectedMegaMenuKey], heading: val }
-                        }));
-                      }}
-                      className={inp}
-                      placeholder="e.g. Crafted to Be Cherished"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Add New Section Inside Menu */}
-              <div className="border-t border-slate-100 dark:border-slate-800 mt-6 pt-5">
-                <h4 className={`text-base font-bold mb-4 ${isDarkMode ? "text-white" : "text-slate-700"}`}>
-                  Add New Dropdown Column / Section
-                </h4>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div>
-                    <label className={labelStyle}>Column Title</label>
-                    <input
-                      type="text"
-                      value={newSection.title}
-                      onChange={(e) => setNewSection({ ...newSection, title: e.target.value })}
-                      className={inp}
-                      placeholder="e.g. JEWELLERY SETS"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelStyle}>Bullet Emoji/Icon</label>
-                    <input
-                      type="text"
-                      value={newSection.icon}
-                      onChange={(e) => setNewSection({ ...newSection, icon: e.target.value })}
-                      className={inp}
-                      placeholder="e.g. 𝓥 or ⛩"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelStyle}>Sub-items (comma separated)</label>
-                    <input
-                      type="text"
-                      value={newSection.items}
-                      onChange={(e) => setNewSection({ ...newSection, items: e.target.value })}
-                      className={inp}
-                      placeholder="Studs, Jhumka, Hoops"
-                    />
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleAddSection}
-                  className="mt-4 px-4 py-2.5 bg-slate-900 text-white text-base font-bold rounded-xl flex items-center gap-1.5"
-                >
-                  <Plus size={14} /> Add Dropdown Column
-                </button>
-              </div>
-            </div>
-
-            {/* List Active Columns */}
-            <div className="space-y-4">
-              <h3 className={`text-sm font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
-                Active Columns / Sections
-              </h3>
-              <div className="space-y-3">
-                {megaMenus[selectedMegaMenuKey]?.sections.map((section, index) => (
-                  <div
-                    key={index}
-                    className={`p-4 border rounded-2xl flex justify-between items-start ${
-                      isDarkMode ? "bg-slate-850 border-slate-700" : "bg-white border-slate-100"
-                    }`}
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-[#941232]">{section.icon}</span>
-                        <h4 className={`text-base font-bold ${isDarkMode ? "text-white" : "text-slate-800"}`}>
-                          {section.title}
-                        </h4>
-                      </div>
-                      <p className="text-[16px] text-slate-400">
-                        {section.items}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSection(index)}
-                      className="p-1.5 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white transition-colors"
-                    >
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
