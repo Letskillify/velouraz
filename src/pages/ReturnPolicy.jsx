@@ -25,8 +25,8 @@ import useSEO from '../hooks/useSEO';
 
 const ReturnPolicy = () => {
   useSEO({
-    title: 'Return and Refund Policy - Velouraz',
-    description: 'At Velouraz, we want you to love your jewellery. If you receive a damaged, defective or incorrect item, our team is here to help. Read our full return and refund policy.',
+    title: 'Return and Refund Policy - velouraz',
+    description: 'At velouraz, we want you to love your jewellery. If you receive a damaged, defective or incorrect item, our team is here to help. Read our full return and refund policy.',
     keywords: 'velouraz return policy, jewellery refund india, velouraz exchange policy, damaged jewellery return',
     canonical: '/return-policy',
   });
@@ -49,7 +49,7 @@ const ReturnPolicy = () => {
       {/* Premium Breadcrumb */}
       <Breadcrumb
         title="Return & Refund Policy"
-        subtitle="At VelourAZ, we want you to love your jewellery. Detailed guidelines for returns, exchanges, and refunds."
+        subtitle="At velouraz, we want you to love your jewellery. Detailed guidelines for returns, exchanges, and refunds."
         bgImage="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=1600"
         links={breadcrumbLinks}
       />
@@ -60,11 +60,29 @@ const ReturnPolicy = () => {
           {/* Intro Notice Banner */}
           <div className="p-8 bg-white/70 rounded-3xl border border-[#D8CBBE]/40 shadow-sm space-y-3">
             <p className="text-[#7B6D63] text-base sm:text-lg leading-relaxed font-light">
-              At VelourAZ, we want you to love your jewellery. If you receive a product that is damaged, defective or incorrect, please contact us and we will be happy to assist you in accordance with this policy and applicable law.
+              At velouraz, we want you to love your jewellery. If you receive a product that is damaged, defective or incorrect, please contact us and we will be happy to assist you in accordance with this policy and applicable law.
             </p>
           </div>
 
           <div className="space-y-16 text-[#7B6D63] leading-relaxed tracking-wide text-base sm:text-lg font-light">
+
+            {/* Unboxing Notice */}
+            <section className="space-y-4 bg-[#FFF2E6] border border-[#FFD9B3] p-6 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#FFD9B3]/20 rounded-bl-full pointer-events-none" />
+              <div className="flex items-center gap-3 text-[#E65C00]">
+                <AlertTriangle size={24} className="animate-pulse" />
+                <h3 className="text-[#2A2623] text-xl font-serif font-bold">Unboxing Video Required for Returns</h3>
+              </div>
+              <p className="font-medium text-[#4A423C]">
+                For a smooth and hassle-free return process, customers are required to record a <strong>continuous unboxing video</strong> while opening the package.
+              </p>
+              <div className="p-4 bg-[#FFEBDA] rounded-xl border border-[#FFD9B3]/50">
+                <p className="text-sm font-semibold uppercase tracking-wider text-[#E65C00] mb-1">Please Note:</p>
+                <p className="text-[#5A4F46]">
+                  Returns or claims may not be accepted without a valid unboxing video as proof of the package condition at the time of delivery.
+                </p>
+              </div>
+            </section>
 
             {/* 1. Eligibility for Returns */}
             <section className="space-y-6 group">
@@ -117,7 +135,7 @@ const ReturnPolicy = () => {
                 <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">2. Return Request Period</h2>
               </div>
               <div className="space-y-4">
-                <p>Please contact VelourAZ within [48 hours / 3 days] of delivery if you receive a damaged, defective or incorrect product.</p>
+                <p>Please contact velouraz within [48 hours / 3 days] of delivery if you receive a damaged, defective or incorrect product.</p>
                 <p className="font-medium text-[#2A2623]">To raise a return request, contact:</p>
                 <div className="bg-white/60 p-4 rounded-xl border border-[#D8CBBE]/30 space-y-1 text-sm sm:text-base">
                   <p><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
@@ -154,7 +172,7 @@ const ReturnPolicy = () => {
               <div className="space-y-4">
                 <p>If your package appears damaged at the time of delivery, please photograph the package before opening it.</p>
                 <p>If the jewellery is damaged inside the package, please contact us as soon as possible and provide photographs/videos showing the condition of the package and product.</p>
-                <p>Once the claim is reviewed and approved, VelourAZ may offer a replacement, exchange or refund, depending on product availability and the circumstances of the case.</p>
+                <p>Once the claim is reviewed and approved, velouraz may offer a replacement, exchange or refund, depending on product availability and the circumstances of the case.</p>
               </div>
             </section>
 
@@ -168,7 +186,7 @@ const ReturnPolicy = () => {
               </div>
               <div className="space-y-4">
                 <p>If you receive a product that is different from what you ordered, please contact us within the return-request period.</p>
-                <p className="font-medium text-[#2A2623]">After verification, VelourAZ will arrange an appropriate resolution, which may include:</p>
+                <p className="font-medium text-[#2A2623]">After verification, velouraz will arrange an appropriate resolution, which may include:</p>
                 <ul className="space-y-3 pt-1">
                   {[
                     "Replacement with the correct product;",
@@ -226,7 +244,7 @@ const ReturnPolicy = () => {
                 <p>Sterling silver may naturally tarnish or oxidise over time.</p>
                 <p>Gold-plated or PVD-finished jewellery may experience gradual wear depending on usage, friction, chemicals, moisture and individual care.</p>
                 <p>Such normal changes caused by use are generally not considered manufacturing defects.</p>
-                <p>Customers should follow the jewellery-care instructions provided by VelourAZ.</p>
+                <p>Customers should follow the jewellery-care instructions provided by velouraz.</p>
               </div>
             </section>
 
@@ -240,7 +258,7 @@ const ReturnPolicy = () => {
               </div>
               <div className="space-y-4">
                 <p>All returned products may be inspected before a refund, replacement or exchange is approved.</p>
-                <p>VelourAZ reserves the right to reject a return where the product does not meet the applicable return conditions, subject to applicable law.</p>
+                <p>velouraz reserves the right to reject a return where the product does not meet the applicable return conditions, subject to applicable law.</p>
               </div>
             </section>
 
@@ -255,7 +273,7 @@ const ReturnPolicy = () => {
               <div className="space-y-4">
                 <p>Once a return is approved, the refund will be processed through the original payment method wherever reasonably possible.</p>
                 <p>The processing time may depend on the payment gateway, bank or financial institution.</p>
-                <p>VelourAZ will communicate the applicable refund status to the customer.</p>
+                <p>velouraz will communicate the applicable refund status to the customer.</p>
               </div>
             </section>
 
@@ -273,7 +291,7 @@ const ReturnPolicy = () => {
                   {[
                     "Damaged during delivery;",
                     "Defective; or",
-                    "Incorrectly supplied by VelourAZ,"
+                    "Incorrectly supplied by velouraz,"
                   ].map((item, i) => (
                     <li key={i} className="flex gap-3 items-start bg-white/50 p-3.5 rounded-xl border border-[#D8CBBE]/20 hover:border-[#2e0e43]/30 transition-all">
                       <span className="text-[#2e0e43] font-bold mt-0.5">•</span>
@@ -281,67 +299,12 @@ const ReturnPolicy = () => {
                     </li>
                   ))}
                 </ul>
-                <p>VelourAZ will determine the appropriate return-shipping arrangement in accordance with applicable law and the circumstances of the case.</p>
+                <p>velouraz will determine the appropriate return-shipping arrangement in accordance with applicable law and the circumstances of the case.</p>
                 <p>For other permitted returns, shipping charges may be non-refundable where legally permissible.</p>
               </div>
             </section>
 
-            {/* 12. Sale and Promotional Products */}
-            <section className="space-y-6 group">
-              <div className="flex items-center gap-4 text-[#2e0e43]">
-                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
-                  <Tag size={22} />
-                </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">12. Sale and Promotional Products</h2>
-              </div>
-              <div className="space-y-4">
-                <p>Products purchased during sales, promotional campaigns or special offers cannot be returned.</p>
-              </div>
-            </section>
 
-            {/* 13. Lost or Damaged Returns */}
-            <section className="space-y-6 group">
-              <div className="flex items-center gap-4 text-[#2e0e43]">
-                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
-                  <PackageX size={22} />
-                </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">13. Lost or Damaged Returns</h2>
-              </div>
-              <div className="space-y-4">
-                <p>Customers are responsible for ensuring that approved return shipments are securely packaged.</p>
-                <p>Where VelourAZ provides a return pickup, the customer should hand over the correct product in its original condition and packaging.</p>
-                <p>If a customer independently ships an approved return, they should retain the shipping receipt and tracking information.</p>
-              </div>
-            </section>
-
-            {/* 14. Fraudulent or Abusive Return Requests */}
-            <section className="space-y-6 group">
-              <div className="flex items-center gap-4 text-[#2e0e43]">
-                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
-                  <Lock size={22} />
-                </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">14. Fraudulent or Abusive Return Requests</h2>
-              </div>
-              <div className="space-y-4">
-                <p>VelourAZ reserves the right to investigate suspected fraudulent or abusive return activity.</p>
-                <p>This may include repeated claims involving damaged products, returning products other than those purchased, tampering with products, or other misuse of the return process.</p>
-                <p>Any action taken will be subject to applicable law.</p>
-              </div>
-            </section>
-
-            {/* 15. Consumer Rights */}
-            <section className="space-y-6 group">
-              <div className="flex items-center gap-4 text-[#2e0e43]">
-                <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
-                  <Scale size={22} />
-                </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">15. Consumer Rights</h2>
-              </div>
-              <div className="space-y-4">
-                <p>Nothing in this Refund & Return Policy is intended to exclude or restrict any rights or remedies available to consumers under applicable Indian law.</p>
-                <p>Where applicable law provides a consumer with a mandatory right to return, refund, replacement or other remedy, those rights will continue to apply.</p>
-              </div>
-            </section>
 
             {/* 16. Contact Us */}
             <section className="space-y-8 group pt-4">
@@ -349,14 +312,14 @@ const ReturnPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Mail size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">16. Contact Us</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">11. Contact Us</h2>
               </div>
               <p>
                 For return, exchange or refund assistance, please contact:
               </p>
 
               <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4 max-w-xl">
-                <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Velouraz</h3>
+                <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">velouraz</h3>
                 <div className="space-y-3 text-sm sm:text-base">
                   <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
                   <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone/WhatsApp:</strong> +91 83494 40045</p>
@@ -369,7 +332,7 @@ const ReturnPolicy = () => {
           </div>
 
           <div className="mt-24 pt-12 border-t border-[#D8CBBE]/30 text-center">
-            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 VELOURAZ. </p>
+            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 velouraz. Artisans of Luxury.</p>
           </div>
         </motion.div>
       </div>

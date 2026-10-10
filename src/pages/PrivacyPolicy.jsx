@@ -6,8 +6,8 @@ import useSEO from '../hooks/useSEO';
 
 const PrivacyPolicy = () => {
   useSEO({
-    title: 'Privacy Policy - How Velouraz Protects Your Data',
-    description: 'Read the Velouraz Privacy Policy to understand how we collect, use and protect your personal information when you shop for jewellery on our website.',
+    title: 'Privacy Policy - How velouraz Protects Your Data',
+    description: 'Read the velouraz Privacy Policy to understand how we collect, use and protect your personal information when you shop for jewellery on our website.',
     keywords: 'velouraz privacy policy, data protection velouraz, jewellery brand privacy india',
     canonical: '/privacy-policy',
   });
@@ -58,7 +58,7 @@ const PrivacyPolicy = () => {
                 <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">A. Information you provide to us</h2>
               </div>
               <p>
-                When you create an account, place an order, contact us or otherwise interact with VelourAZ, we may collect:
+                When you create an account, place an order, contact us or otherwise interact with velouraz, we may collect:
               </p>
               <ul className="grid sm:grid-cols-2 gap-3 pt-2">
                 {[
@@ -138,7 +138,7 @@ const PrivacyPolicy = () => {
                   "Offers and promotions",
                   "Events",
                   "Brand updates",
-                  "Other VelourAZ-related communications"
+                  "Other velouraz-related communications"
                 ].map((item, i) => (
                   <li key={i} className="flex gap-3 items-start bg-white/50 p-3.5 rounded-xl border border-[#D8CBBE]/20 hover:border-[#2e0e43]/30 transition-all">
                     <span className="text-[#2e0e43] font-bold mt-0.5">•</span>
@@ -159,7 +159,7 @@ const PrivacyPolicy = () => {
               <div className="space-y-4">
                 <p>Payments made through our website may be processed by third-party payment service providers.</p>
                 <p>Depending on the payment method selected, your payment information may be processed directly by the relevant payment provider.</p>
-                <p>VelourAZ does not intentionally store complete debit-card or credit-card numbers, CVV numbers or banking passwords on its own systems unless specifically required and lawfully permitted.</p>
+                <p>velouraz does not intentionally store complete debit-card or credit-card numbers, CVV numbers or banking passwords on its own systems unless specifically required and lawfully permitted.</p>
                 <p>Payment information is handled according to the applicable policies and security practices of the payment service provider.</p>
               </div>
             </section>
@@ -265,7 +265,7 @@ const PrivacyPolicy = () => {
               <div className="grid md:grid-cols-2 gap-6 pt-2">
                 {/* Official Contact Box */}
                 <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4">
-                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Velouraz</h3>
+                  <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">velouraz</h3>
                   <div className="space-y-3 text-sm sm:text-base">
                     <p className="flex items-center gap-3"><Globe size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Website:</strong> velouraz.in</p>
                     <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
@@ -278,7 +278,7 @@ const PrivacyPolicy = () => {
                 <div className="bg-white rounded-3xl p-8 border border-[#D8CBBE]/30 shadow-sm space-y-4">
                   <h3 className="text-[#2A2623] font-serif font-bold text-xl border-b border-[#D8CBBE]/20 pb-3">Privacy / Data Grievance Contact</h3>
                   <div className="space-y-3 text-sm sm:text-base">
-                    <p className="flex items-center gap-3"><UserCheck size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Name:</strong> Grievance Officer, Velouraz</p>
+                    <p className="flex items-center gap-3"><UserCheck size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Name:</strong> Grievance Officer, velouraz</p>
                     <p className="flex items-center gap-3"><Mail size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Email:</strong> contact@velouraz.in</p>
                     <p className="flex items-center gap-3"><Phone size={16} className="text-[#2e0e43] shrink-0" /><strong className="text-[#2A2623]">Phone:</strong> +91 83494 40045</p>
                   </div>
@@ -293,7 +293,7 @@ const PrivacyPolicy = () => {
           </div>
 
           <div className="mt-24 pt-12 border-t border-[#D8CBBE]/30 text-center">
-            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 VELOURAZ</p>
+            <p className="text-sm sm:text-base tracking-[0.4em] uppercase text-[#7B6D63]/40 font-bold">© 2026 velouraz. Artisans of Luxury.</p>
           </div>
         </motion.div>
       </div>

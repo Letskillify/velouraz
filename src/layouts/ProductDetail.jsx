@@ -356,7 +356,12 @@ const ProductDetail = () => {
 
                     {/* Floating Luxury Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none z-10">
-                      {discountPercent > 0 && (
+                      {isOutOfStock && (
+                        <span className="bg-[#14111E] text-white px-3.5 py-1.5 rounded-full text-[14px] uppercase font-bold tracking-[0.22em] shadow-md border border-[#C8A46A]/30 font-sans flex items-center gap-1.5">
+                          SOLD OUT
+                        </span>
+                      )}
+                      {discountPercent > 0 && !isOutOfStock && (
                         <span className="bg-[#14111E] text-[#FBF9F5] px-3.5 py-1.5 rounded-full text-[14px] uppercase font-bold tracking-[0.22em] shadow-md border border-[#C8A46A]/30 font-sans flex items-center gap-1.5">
                           <Sparkles size={11} className="text-[#C8A46A]" /> {discountPercent}% Privilege Savings
                         </span>

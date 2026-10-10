@@ -489,8 +489,9 @@ const Admin = () => {
           </div>
         )}
 
-        {/* Catalog entries: Product Image Manager, Categories, Sub Categories, Collections, Countries, Attributes, Media */}
+        {/* Catalog entries: Orders, Coupon Manager, Tags Manager, Categories, etc */}
         {[
+          ["Orders", ShoppingBag, "Orders"],
           ["Stock Notifications", Bell, "Stock Notifications"],
           ["Coupon Manager", TicketPercent, "Coupon Manager"],
           ["Tags Manager", Tags, "Tags Manager"],
