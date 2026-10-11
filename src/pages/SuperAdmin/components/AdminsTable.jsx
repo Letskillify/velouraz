@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { db } from "../../../components/Firebase";
-import { deleteDoc, doc, addDoc, collection } from "firebase/firestore";
+import { app, db } from "../../../components/Firebase";
+import { initializeApp, getApps } from "firebase/app";
+import { getAuth, createUserWithEmailAndPassword, signOut as secondarySignOut } from "firebase/auth";
+import { deleteDoc, doc, addDoc, setDoc, collection } from "firebase/firestore";
 import { ShieldCheck, UserPlus, Trash2, Crown, Camera } from "lucide-react";
 import { uploadToCloudinary } from "../../../config/cloudinary";
 import { sendAdminCredentialsEmail } from "../../../services/emailService";
@@ -42,16 +44,36 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
       const cleanName = displayName.trim() || cleanAdminId;
       const cleanPassword = password.trim();
 
-      // Save to admins collection (Only Admin creation permitted)
-      await addDoc(collection(db, "admins"), {
+      // 1. Pre-create Firebase Auth user using secondary app instance so SuperAdmin is NOT logged out
+      let newUid = null;
+      try {
+        const secondaryApp = getApps().find((a) => a.name === "SecondaryAdminCreator") ||
+          initializeApp(app.options, "SecondaryAdminCreator");
+        const secondaryAuth = getAuth(secondaryApp);
+        const cred = await createUserWithEmailAndPassword(secondaryAuth, cleanEmail, cleanPassword);
+        newUid = cred.user.uid;
+        await secondarySignOut(secondaryAuth);
+      } catch (authErr) {
+        console.warn("Could not pre-create Firebase Auth user (may already exist):", authErr?.message);
+      }
+
+      // 2. Save to admins collection (keyed by newUid if created, otherwise auto doc)
+      const adminDocPayload = {
         adminId: cleanAdminId,
         displayName: cleanName,
         email: cleanEmail,
         password: cleanPassword,
         role: "Admin",
         photoURL: photoURL || "",
+        uid: newUid || "",
         createdAt: new Date().toISOString()
-      });
+      };
+
+      if (newUid) {
+        await setDoc(doc(db, "admins", newUid), adminDocPayload);
+      } else {
+        await addDoc(collection(db, "admins"), adminDocPayload);
+      }
 
       // Dispatch Nodemailer email silently via serverless API (/api/send-admin-credentials)
       let apiResult = null;
@@ -116,9 +138,8 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
       )}
 
       <div
-        className={`rounded-3xl border shadow-sm overflow-hidden ${
-          isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"
-        }`}
+        className={`rounded-3xl border shadow-sm overflow-hidden ${isDarkMode ? "bg-[#1e2230] border-slate-700/60" : "bg-white border-slate-100"
+          }`}
       >
         <div className="px-6 py-6 sm:px-8 border-b border-slate-100/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -151,9 +172,8 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
           <table className="w-full text-left border-collapse">
             <thead>
               <tr
-                className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${
-                  isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"
-                }`}
+                className={`text-[16px] font-bold uppercase tracking-wider border-b border-slate-100/10 ${isDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-50 text-slate-400"
+                  }`}
               >
                 <th className="px-8 py-5">Account Name / ID</th>
                 <th className="px-6 py-5">Email Address</th>
@@ -168,10 +188,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                 const isSuper = acc.accountType === "superadmin" || acc.role === "superadmin";
                 const createdDate = acc.createdAt
                   ? new Date(acc.createdAt).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric"
-                    })
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric"
+                  })
                   : "Active";
 
                 return (
@@ -189,11 +209,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                           />
                         ) : (
                           <div
-                            className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-base ${
-                              isSuper
+                            className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-base ${isSuper
                                 ? "bg-gradient-to-tr from-[#811331] to-[#b32049] text-white"
                                 : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-white"
-                            }`}
+                              }`}
                           >
                             {(acc.displayName || acc.adminId || acc.email || "A").charAt(0).toUpperCase()}
                           </div>
@@ -276,14 +295,12 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
           />
 
           <div
-            className={`relative z-10 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col ${
-              isDarkMode ? "bg-[#1a1d26] text-white" : "bg-white text-slate-900"
-            }`}
+            className={`relative z-10 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col ${isDarkMode ? "bg-[#1a1d26] text-white" : "bg-white text-slate-900"
+              }`}
           >
             <div
-              className={`px-6 py-5 border-b flex items-center justify-between ${
-                isDarkMode ? "border-slate-700" : "border-slate-100"
-              }`}
+              className={`px-6 py-5 border-b flex items-center justify-between ${isDarkMode ? "border-slate-700" : "border-slate-100"
+                }`}
             >
               <div>
                 <h3 className="text-base font-bold flex items-center gap-2">
@@ -319,11 +336,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                     value={adminId}
                     onChange={(e) => setAdminId(e.target.value)}
                     placeholder="e.g. admin_alex"
-                    className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${
-                      isDarkMode
+                    className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode
                         ? "bg-slate-800 border-slate-700 text-white"
                         : "bg-slate-50 border-slate-200 text-slate-900"
-                    }`}
+                      }`}
                   />
                 </div>
 
@@ -336,11 +352,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="e.g. Alex Morgan"
-                    className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${
-                      isDarkMode
+                    className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode
                         ? "bg-slate-800 border-slate-700 text-white"
                         : "bg-slate-50 border-slate-200 text-slate-900"
-                    }`}
+                      }`}
                   />
                 </div>
               </div>
@@ -355,11 +370,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin.alex@velouraz.com"
-                  className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${
-                    isDarkMode
+                  className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode
                       ? "bg-slate-800 border-slate-700 text-white"
                       : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -373,11 +387,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Set login password"
-                  className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border font-mono ${
-                    isDarkMode
+                  className={`w-full px-4 py-2.5 rounded-xl text-base outline-none border font-mono ${isDarkMode
                       ? "bg-slate-800 border-slate-700 text-white"
                       : "bg-slate-50 border-slate-200 text-slate-900"
-                  }`}
+                    }`}
                 />
               </div>
 
@@ -391,11 +404,10 @@ const AdminsTable = ({ adminsList = [], superAdminsList = [], onRefresh, isDarkM
                     value={photoURL}
                     onChange={(e) => setPhotoURL(e.target.value)}
                     placeholder="https://..."
-                    className={`flex-1 px-4 py-2.5 rounded-xl text-base outline-none border ${
-                      isDarkMode
+                    className={`flex-1 px-4 py-2.5 rounded-xl text-base outline-none border ${isDarkMode
                         ? "bg-slate-800 border-slate-700 text-white"
                         : "bg-slate-50 border-slate-200 text-slate-900"
-                    }`}
+                      }`}
                   />
                   <label className="flex items-center justify-center px-3.5 py-2.5 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 cursor-pointer bg-slate-50 hover:bg-slate-100 dark:bg-slate-800">
                     <Camera size={16} />

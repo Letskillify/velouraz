@@ -145,7 +145,7 @@ const Login = () => {
           </p>
 
           <div className="flex items-center gap-8">
-            {['Handcrafted', 'Certified', 'Worldwide'].map((tag, i) => (
+            {['Handcrafted', 'Artisanal', 'Worldwide'].map((tag, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full" style={{ background: GOLD }} />
                 <span className="text-[16px] tracking-[0.25em] uppercase font-bold text-white/40">{tag}</span>
@@ -249,8 +249,8 @@ const Login = () => {
               type="button"
               onClick={() => { setAuthMode("otp"); setError(""); }}
               className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${authMode === "otp"
-                  ? "bg-white text-[#2e0e43] shadow-xs"
-                  : "text-[#7B6D63] hover:text-[#2e0e43]"
+                ? "bg-white text-[#2e0e43] shadow-xs"
+                : "text-[#7B6D63] hover:text-[#2e0e43]"
                 }`}
             >
               Email OTP
@@ -259,8 +259,8 @@ const Login = () => {
               type="button"
               onClick={() => { setAuthMode("password"); setError(""); }}
               className={`flex-1 py-2 rounded-lg font-semibold tracking-wider uppercase transition-all ${authMode === "password"
-                  ? "bg-white text-[#2e0e43] shadow-xs"
-                  : "text-[#7B6D63] hover:text-[#2e0e43]"
+                ? "bg-white text-[#2e0e43] shadow-xs"
+                : "text-[#7B6D63] hover:text-[#2e0e43]"
                 }`}
             >
               Password

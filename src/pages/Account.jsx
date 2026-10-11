@@ -365,7 +365,7 @@ const Account = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFAF5] font-sans text-[#2A2623] pt-44 sm:pt-52 lg:pt-56 pb-20">
-      
+
       {/* Top User-Friendly Back Button & Navigation Bar */}
       <div className="max-w-[1340px] mx-auto px-4 sm:px-8 mb-6 flex flex-wrap items-center justify-between gap-4">
         <button
@@ -401,7 +401,7 @@ const Account = () => {
       <div className="max-w-[1340px] mx-auto px-4 sm:px-8 mb-8">
         <div className="bg-[#0E0B09] rounded-3xl p-6 sm:p-10 text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-xl border border-[#C8A97A]/20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#2e0e43]/20 rounded-full blur-3xl pointer-events-none" />
-          
+
           <div className="flex items-center gap-5 z-10">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#2e0e43] border-2 border-[#C8A97A] flex items-center justify-center text-white text-2xl font-serif font-bold shadow-lg">
               {userData?.displayName ? userData.displayName.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
@@ -438,7 +438,7 @@ const Account = () => {
       {/* Main Dashboard Layout */}
       <div className="max-w-[1340px] mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+
           {/* Sidebar Navigation */}
           <aside className="lg:col-span-3">
             <div className="bg-white rounded-2xl border border-[#D8CBBE]/40 p-4 shadow-sm space-y-1 sticky top-28">
@@ -453,11 +453,10 @@ const Account = () => {
                   <button
                     key={link.id}
                     onClick={() => setActiveTab(link.id)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
-                      active
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${active
                         ? "bg-[#2e0e43] text-white shadow-sm"
                         : "text-[#2A2623]/80 hover:bg-[#FDFAF5] hover:text-[#2e0e43]"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon size={16} className={active ? "text-white" : "text-[#2e0e43]"} />
@@ -496,7 +495,7 @@ const Account = () => {
             )}
 
             <AnimatePresence mode="wait">
-              
+
               {/* TAB 1: DASHBOARD OVERVIEW */}
               {activeTab === "dashboard" && (
                 <motion.div
@@ -532,7 +531,7 @@ const Account = () => {
                         <span className="text-[16px] uppercase font-bold tracking-widest text-[#7B6D63]">Status</span>
                       </div>
                       <p className="text-2xl font-serif font-bold text-[#2e0e43]">Privé Gold</p>
-                      <p className="text-[16px] text-[#7B6D63]">Complimentary Insured Shipping</p>
+                      <p className="text-[16px] text-[#7B6D63]">Insured Express Shipping</p>
                     </div>
                   </div>
 
@@ -731,9 +730,8 @@ const Account = () => {
                                   { label: "Delivered", desc: "Parcel Handover", done: false },
                                 ].map((step, idx) => (
                                   <div key={idx} className="flex md:flex-col items-center gap-3 relative z-10">
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-base font-bold ${
-                                      step.done ? "bg-[#2e0e43] text-white" : "bg-gray-200 text-gray-400"
-                                    }`}>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-base font-bold ${step.done ? "bg-[#2e0e43] text-white" : "bg-gray-200 text-gray-400"
+                                      }`}>
                                       {step.done ? <CheckCircle2 size={16} /> : idx + 1}
                                     </div>
                                     <div className="text-left md:text-center">
@@ -783,9 +781,8 @@ const Account = () => {
                       {addresses.map((addr, idx) => (
                         <div
                           key={idx}
-                          className={`p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${
-                            addr.isDefault ? "border-[#2e0e43] bg-[#2e0e43]/5 shadow-sm" : "border-[#D8CBBE]/50 bg-[#FDFAF5]"
-                          }`}
+                          className={`p-5 rounded-2xl border transition-all flex flex-col justify-between space-y-4 ${addr.isDefault ? "border-[#2e0e43] bg-[#2e0e43]/5 shadow-sm" : "border-[#D8CBBE]/50 bg-[#FDFAF5]"
+                            }`}
                         >
                           <div className="space-y-2">
                             <div className="flex justify-between items-center">
@@ -1220,8 +1217,8 @@ const Account = () => {
                     {editingAddrIndex !== null ? "Edit Delivery Address" : "Add Delivery Address"}
                   </h3>
                 </div>
-                <button 
-                  onClick={() => setShowAddressModal(false)} 
+                <button
+                  onClick={() => setShowAddressModal(false)}
                   className="p-1.5 rounded-full hover:bg-gray-100 text-gray-400 hover:text-black transition-colors"
                 >
                   <X size={18} />
@@ -1229,7 +1226,7 @@ const Account = () => {
               </div>
 
               <form onSubmit={handleSaveAddress} className="space-y-3.5">
-                
+
                 {/* Row 1: Type Selection + Default Checkbox */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
                   <div className="flex items-center gap-1.5">
@@ -1238,11 +1235,10 @@ const Account = () => {
                         key={t}
                         type="button"
                         onClick={() => setAddrForm({ ...addrForm, type: t })}
-                        className={`px-3 py-1.5 rounded-lg border text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-1 ${
-                          addrForm.type === t 
-                            ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs" 
+                        className={`px-3 py-1.5 rounded-lg border text-sm font-bold uppercase tracking-wider transition-all flex items-center gap-1 ${addrForm.type === t
+                            ? "bg-[#2e0e43] text-white border-[#2e0e43] shadow-xs"
                             : "border-[#D8CBBE] text-[#7B6D63] bg-[#FDFAF5] hover:border-[#2e0e43]"
-                        }`}
+                          }`}
                       >
                         {t === "Home" && <Home size={12} />}
                         {t === "Work" && <Building2 size={12} />}

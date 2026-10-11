@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Globe, Gem, Package, RotateCcw, ShieldCheck } from 'lucide-react';
+import { Globe, Gem, Package, RotateCcw, ShieldCheck, Truck } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -14,8 +14,8 @@ const SERIF = "'Cormorant Garamond', Georgia, serif";
 const usps = [
   { icon: <Globe size={16} strokeWidth={1.2} />, title: 'Inspired by Cultures', desc: 'Curated from across the world' },
   { icon: <Gem size={16} strokeWidth={1.2} />, title: 'Premium Quality', desc: 'Crafted to last, made to shine' },
-  { icon: <Package size={16} strokeWidth={1.2} />, title: 'Secure Packaging', desc: 'Perfectly packed with care' },
-  { icon: <RotateCcw size={16} strokeWidth={1.2} />, title: 'Easy Returns', desc: 'Hassle-free 30 day returns' },
+  { icon: <Package size={16} strokeWidth={1.2} />, title: 'Premium Packaging', desc: 'Signature Velouraz box' },
+  { icon: <Truck size={16} strokeWidth={1.2} />, title: '4–5 Days Delivery', desc: 'Fast insured transit' },
   { icon: <ShieldCheck size={16} strokeWidth={1.2} />, title: 'Secure Payments', desc: 'Shop with confidence' },
 ];
 

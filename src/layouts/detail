@@ -379,7 +379,7 @@ const ProductDetail = () => {
                   { icon: Shield, label: "Secure\nCheckout" },
                   { icon: Truck, label: "Free\nDelivery" },
                   { icon: RotateCcw, label: "Easy\nReturns" },
-                  { icon: Gem, label: "Certified\nQuality" }
+                  { icon: Gem, label: "Premium\nPackaging" }
                 ].map((item, i) => (
                   <div key={i} className="flex flex-col items-center gap-2 text-center py-3">
                     <div className="w-10 h-10 rounded-full bg-[#F4EEE8] flex items-center justify-center">

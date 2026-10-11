@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight, Mail, CheckCircle2, Sparkles } from 'lucide-react';
+import { Instagram, ShieldCheck, Truck, RefreshCw, Gem, Lock, ArrowUpRight, Mail, CheckCircle2, Sparkles, Package } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -57,19 +57,19 @@ const Footer = () => {
 
   const valueProps = [
     {
-      icon: <Gem className="w-5 h-5 text-[#B89355]" />,
-      title: "100% Certified Authentic",
-      subtitle: "Curated High Jewellery"
+      icon: <Package className="w-5 h-5 text-[#B89355]" />,
+      title: "Premium Packaging",
+      subtitle: "Signature Box & Care Kit"
     },
     {
       icon: <Truck className="w-5 h-5 text-[#B89355]" />,
-      title: "Insured Global Shipping",
-      subtitle: "Complimentary Express Delivery"
+      title: "Insured Express Shipping",
+      subtitle: "Safe & Fast Doorstep Delivery"
     },
     {
       icon: <RefreshCw className="w-5 h-5 text-[#B89355]" />,
-      title: "30-Day Atelier Guarantee",
-      subtitle: "Seamless Exchanges & Returns"
+      title: "4–5 Days Delivery",
+      subtitle: "Swift & Secure Courier"
     },
     {
       icon: <ShieldCheck className="w-5 h-5 text-[#B89355]" />,

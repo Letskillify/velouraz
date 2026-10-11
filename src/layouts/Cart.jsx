@@ -18,7 +18,8 @@ import {
   Lock,
   RefreshCw,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Package
 } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
 import { useStore } from "../hooks/useStore";
@@ -296,14 +297,14 @@ const Cart = () => {
               <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E8DFD5] shadow-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
 
-                  {/* Secure Checkout */}
+                  {/* Premium Packaging */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
-                      <ShieldCheck size={18} />
+                      <Package size={18} />
                     </div>
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">100% Certified</h4>
-                      <p className="text-[14px] text-[#7B6D63] font-serif">Hallmarked & Authenticated</p>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Premium Packaging</h4>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Velvet Gift Boxed</p>
                     </div>
                   </div>
 
@@ -314,18 +315,18 @@ const Cart = () => {
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Insured Shipping</h4>
-                      <p className="text-[14px] text-[#7B6D63] font-serif">Complimentary door delivery</p>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Safe doorstep delivery</p>
                     </div>
                   </div>
 
-                  {/* Easy Returns */}
+                  {/* Express Delivery */}
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-[#FAF6F0] border border-[#C8A46A]/30 flex items-center justify-center text-[#C8A46A] shrink-0 shadow-inner">
                       <RefreshCw size={18} />
                     </div>
                     <div>
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">7–10 Day Returns</h4>
-                      <p className="text-[14px] text-[#7B6D63] font-serif">Hassle-free return policy</p>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">4–5 Days Delivery</h4>
+                      <p className="text-[14px] text-[#7B6D63] font-serif">Fast insured doorstep transit</p>
                     </div>
                   </div>
 
@@ -339,8 +340,8 @@ const Cart = () => {
                     <Tag size={16} />
                   </div>
                   <div>
-                    <h4 className="text-xs sm:text-sm font-medium text-[#2e0e43] font-serif">Love it or return it</h4>
-                    <p className="text-[14px] text-[#7B6D63] font-serif hidden sm:block">Easy 7–10 day returns. Full refund upon quality inspection.</p>
+                    <h4 className="text-xs sm:text-sm font-medium text-[#2e0e43] font-serif">Express Insured Delivery</h4>
+                    <p className="text-[14px] text-[#7B6D63] font-serif hidden sm:block">Fast 4–5 days delivery across India. Full transit protection.</p>
                   </div>
                 </div>
 
@@ -394,7 +395,7 @@ const Cart = () => {
                     )}
 
                     {/* Delivery Charges */}
-                    
+
 
                     {/* GST Included */}
                     <div className="flex justify-between items-center text-[#7B6D63]">
@@ -434,7 +435,7 @@ const Cart = () => {
                       >
                         <span className="flex items-center gap-2">
                           <Gift size={14} className="text-[#C8A46A]" />
-                          {savedGiftNote ? 'Edit Complimentary Gift Note' : 'Add Complimentary Gift Note'}
+                          {savedGiftNote ? 'Edit Personalized Gift Note' : 'Add Personalized Gift Note'}
                         </span>
                         <ChevronRight size={14} />
                       </button>
@@ -442,7 +443,7 @@ const Cart = () => {
                       <div className="space-y-2.5 bg-[#FAF6F0] p-3.5 rounded-xl border border-[#C8A46A]/30">
                         <p className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] flex items-center gap-1.5">
                           <Gift size={14} className="text-[#C8A46A]" />
-                          Complimentary Gift Message
+                          Personalized Gift Message
                         </p>
                         <textarea
                           rows={2.5}

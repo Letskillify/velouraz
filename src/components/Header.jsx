@@ -111,7 +111,7 @@ const LuxuryHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [announcements, setAnnouncements] = useState([
-    "✦ Complimentary Shipping Across India ✦"
+    "✦ Express Shipping Across India ✦"
   ]);
   const [annIndex, setAnnIndex] = useState(0);
   const [dbCountries, setDbCountries] = useState([]);
@@ -125,7 +125,7 @@ const LuxuryHeader = () => {
       if (snap.exists() && snap.data().items && snap.data().items.length > 0) {
         setAnnouncements(snap.data().items);
       } else {
-        setAnnouncements(["✦ Complimentary Shipping Across India ✦"]);
+        setAnnouncements(["✦ Express Shipping Across India ✦"]);
       }
     }, (err) => console.warn("Error fetching announcements:", err));
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { db } from "../../../components/Firebase";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, setDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Camera, User, Phone, Mail, Shield, Save, Check,
@@ -112,9 +112,9 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
     setSaved(false);
 
     try {
-      const firestoreId = adminUser?.firestoreId;
+      const firestoreId = adminUser?.firestoreId || adminUser?.uid;
       if (firestoreId) {
-        await updateDoc(doc(db, "admins", firestoreId), {
+        await setDoc(doc(db, "admins", firestoreId), {
           displayName: profileData.displayName.trim(),
           phone: profileData.phone.trim(),
           email: profileData.email.trim(),
@@ -124,7 +124,7 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
           bio: profileData.bio.trim(),
           photoURL: profileData.photoURL,
           updatedAt: new Date().toISOString(),
-        });
+        }, { merge: true });
       }
       const updated = { ...adminUser, ...profileData };
       localStorage.setItem("velouraz_admin", JSON.stringify(updated));
@@ -243,8 +243,8 @@ const AdminProfile = ({ adminUser, onUpdate, isDarkMode = false }) => {
               onClick={handleSave}
               disabled={saving || uploading}
               className={`self-end sm:self-auto flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-sm font-bold transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed ${saved
-                  ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
-                  : "bg-[#811331] text-white shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d]"
+                ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
+                : "bg-[#811331] text-white shadow-lg shadow-[#811331]/20 hover:bg-[#9d1a3d]"
                 }`}
             >
               {saving

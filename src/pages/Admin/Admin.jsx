@@ -1,6 +1,6 @@
 // Admin.jsx
 import React, { useState, useEffect, useMemo } from "react";
-import { db } from "../../components/Firebase";
+import { auth, db } from "../../components/Firebase";
 import {
   addDoc,
   collection,
@@ -11,8 +11,12 @@ import {
   onSnapshot,
   deleteDoc,
   doc,
+  getDoc,
+  setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -148,11 +152,61 @@ const Admin = () => {
   useEffect(() => {
     const storedAdmin = localStorage.getItem("velouraz_admin");
     if (storedAdmin) {
-      setAdminUser(JSON.parse(storedAdmin));
+      try {
+        setAdminUser(JSON.parse(storedAdmin));
+      } catch (e) {
+        localStorage.removeItem("velouraz_admin");
+      }
     }
     const darkPref = localStorage.getItem("velouraz_admin_dark");
     if (darkPref === "true") setIsDarkMode(true);
-    setLoadingAuth(false);
+
+    const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+      if (fbUser) {
+        try {
+          const adminRef = doc(db, "admins", fbUser.uid);
+          const adminSnap = await getDoc(adminRef);
+          if (adminSnap.exists()) {
+            const data = { ...adminSnap.data(), uid: fbUser.uid, firestoreId: fbUser.uid };
+            setAdminUser(data);
+            localStorage.setItem("velouraz_admin", JSON.stringify(data));
+          } else {
+            // Check superadmins
+            const superRef = doc(db, "superadmins", fbUser.uid);
+            const superSnap = await getDoc(superRef);
+            if (superSnap.exists()) {
+              const data = { ...superSnap.data(), uid: fbUser.uid, firestoreId: fbUser.uid, role: "SuperAdmin" };
+              setAdminUser(data);
+              localStorage.setItem("velouraz_admin", JSON.stringify(data));
+            } else {
+              // Check admins by email
+              const q = query(collection(db, "admins"), where("email", "==", fbUser.email?.toLowerCase()));
+              const qSnap = await getDocs(q);
+              if (!qSnap.empty) {
+                const data = { ...qSnap.docs[0].data(), uid: fbUser.uid, firestoreId: fbUser.uid };
+                await setDoc(adminRef, data, { merge: true });
+                setAdminUser(data);
+                localStorage.setItem("velouraz_admin", JSON.stringify(data));
+              } else {
+                // If not an admin user, clear admin session
+                const currentStored = localStorage.getItem("velouraz_admin");
+                if (!currentStored) {
+                  setAdminUser(null);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error verifying admin auth state:", err);
+        }
+      } else {
+        const currentStored = localStorage.getItem("velouraz_admin");
+        if (!currentStored) {
+          setAdminUser(null);
+        }
+      }
+      setLoadingAuth(false);
+    });
 
     // Auto-populate countries list if empty/incomplete
     const countryList = [
@@ -173,12 +227,14 @@ const Admin = () => {
                 image: "",
                 link: `/world-edit/${c.toLowerCase().replace(/ /g, "-")}`,
                 createdAt: serverTimestamp()
-              });
+              }).catch(() => { });
             }
           });
         }
-      });
+      }).catch(() => { });
     }
+
+    return () => unsubscribe();
   }, []);
 
   // ─── Dark mode body class ───────────────────────────────────────────────────
@@ -202,7 +258,12 @@ const Admin = () => {
     localStorage.setItem("velouraz_admin", JSON.stringify(updatedUser));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.warn("Sign out notice:", err);
+    }
     setAdminUser(null);
     localStorage.removeItem("velouraz_admin");
   };

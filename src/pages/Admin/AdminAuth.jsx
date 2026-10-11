@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import { db } from "../../components/Firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from "../../components/Firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { Gem, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -16,22 +29,212 @@ const AdminAuth = ({ onAuthSuccess }) => {
     setError('');
     setLoading(true);
 
-    try {
-      const q = query(
-        collection(db, "admins"),
-        where("adminId", "==", adminId),
-        where("password", "==", password)
-      );
-      const snap = await getDocs(q);
+    const cleanInput = adminId.trim();
+    const cleanPassword = password.trim();
 
-      if (!snap.empty) {
-        const adminData = { firestoreId: snap.docs[0].id, ...snap.docs[0].data() };
-        onAuthSuccess(adminData);
+    if (!cleanInput || !cleanPassword) {
+      setError("Please enter your Admin ID or Email and Password.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      let targetEmail = "";
+      let adminRecord = null;
+
+      // 1. Resolve email address from either email format or adminId lookup
+      if (cleanInput.includes("@")) {
+        targetEmail = cleanInput.toLowerCase();
       } else {
-        setError("Invalid Admin ID or Password. Please try again.");
+        // Look up by adminId in admins collection
+        const qAdmin = query(
+          collection(db, "admins"),
+          where("adminId", "==", cleanInput)
+        );
+        const adminSnap = await getDocs(qAdmin);
+        if (!adminSnap.empty) {
+          adminRecord = { id: adminSnap.docs[0].id, ...adminSnap.docs[0].data() };
+          targetEmail = adminRecord.email?.trim().toLowerCase();
+        } else {
+          // Check if adminId exists in superadmins
+          const qSuper = query(
+            collection(db, "superadmins"),
+            where("adminId", "==", cleanInput)
+          );
+          const superSnap = await getDocs(qSuper);
+          if (!superSnap.empty) {
+            targetEmail = superSnap.docs[0].data().email?.trim().toLowerCase();
+          }
+        }
+
+        if (!targetEmail) {
+          setError("No administrator account found with this Admin ID. Please check and try again.");
+          setLoading(false);
+          return;
+        }
       }
+
+      // 2. Authenticate with Firebase Authentication
+      let authenticatedUser = null;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, targetEmail, cleanPassword);
+        authenticatedUser = userCredential.user;
+      } catch (authErr) {
+        console.warn("Firebase Auth sign in notice:", authErr.code, authErr.message);
+
+        // Fallback for accounts created in Firestore before Firebase Auth registration
+        const qLookup = query(
+          collection(db, "admins"),
+          where("email", "==", targetEmail)
+        );
+        const lookupSnap = await getDocs(qLookup);
+        let matchedAdmin = null;
+
+        lookupSnap.forEach((d) => {
+          const data = d.data();
+          if (
+            data.password === cleanPassword ||
+            (adminRecord && adminRecord.password === cleanPassword)
+          ) {
+            matchedAdmin = { id: d.id, ...data };
+          }
+        });
+
+        if (matchedAdmin) {
+          // Create Firebase Auth user dynamically so they receive a real request.auth token
+          try {
+            const newCred = await createUserWithEmailAndPassword(auth, targetEmail, cleanPassword);
+            authenticatedUser = newCred.user;
+          } catch (createErr) {
+            if (createErr.code === "auth/email-already-in-use") {
+              setError("Incorrect password for this administrator account.");
+              setLoading(false);
+              return;
+            }
+            throw createErr;
+          }
+        } else {
+          // Check if user is in superadmins
+          const qSuperLookup = query(
+            collection(db, "superadmins"),
+            where("email", "==", targetEmail)
+          );
+          const superLookupSnap = await getDocs(qSuperLookup);
+          let matchedSuper = null;
+          superLookupSnap.forEach((d) => {
+            const data = d.data();
+            if (data.password === cleanPassword) {
+              matchedSuper = { id: d.id, ...data };
+            }
+          });
+
+          if (matchedSuper) {
+            try {
+              const newCred = await createUserWithEmailAndPassword(auth, targetEmail, cleanPassword);
+              authenticatedUser = newCred.user;
+            } catch (createErr) {
+              if (createErr.code === "auth/email-already-in-use") {
+                setError("Incorrect password for this administrator account.");
+                setLoading(false);
+                return;
+              }
+              throw createErr;
+            }
+          } else {
+            setError("Invalid credentials. Please verify your Admin ID/Email and password.");
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
+      if (!authenticatedUser) {
+        setError("Unable to authenticate. Please check your credentials.");
+        setLoading(false);
+        return;
+      }
+
+      const uid = authenticatedUser.uid;
+
+      // 3. Verify Admin document and ensure doc exists at /admins/{uid}
+      // This satisfies exists(/databases/$(database)/documents/admins/$(request.auth.uid)) in firebase.rules
+      const adminDocRef = doc(db, "admins", uid);
+      const adminDocSnap = await getDoc(adminDocRef);
+
+      let finalAdminData = null;
+
+      if (adminDocSnap.exists()) {
+        finalAdminData = {
+          ...adminDocSnap.data(),
+          uid,
+          firestoreId: uid,
+          email: targetEmail,
+          role: adminDocSnap.data().role || "Admin",
+        };
+      } else {
+        // If doc at /admins/{uid} doesn't exist yet, query admins collection by email or adminId
+        const qEmail = query(collection(db, "admins"), where("email", "==", targetEmail));
+        const emailSnap = await getDocs(qEmail);
+
+        if (!emailSnap.empty) {
+          const existingData = emailSnap.docs[0].data();
+          finalAdminData = {
+            ...existingData,
+            uid,
+            firestoreId: uid,
+            email: targetEmail,
+            role: existingData.role || "Admin",
+          };
+
+          // Link / save to /admins/{uid} so security rules isAdminUser() check succeeds!
+          await setDoc(adminDocRef, finalAdminData, { merge: true });
+        } else {
+          // Check if this user is a SuperAdmin logging in via Admin portal
+          const superDoc = await getDoc(doc(db, "superadmins", uid));
+          if (superDoc.exists()) {
+            finalAdminData = {
+              ...superDoc.data(),
+              uid,
+              firestoreId: uid,
+              email: targetEmail,
+              role: "SuperAdmin",
+            };
+          } else {
+            const qSuperEmail = query(collection(db, "superadmins"), where("email", "==", targetEmail));
+            const superEmailSnap = await getDocs(qSuperEmail);
+            if (!superEmailSnap.empty) {
+              finalAdminData = {
+                ...superEmailSnap.docs[0].data(),
+                uid,
+                firestoreId: uid,
+                email: targetEmail,
+                role: "SuperAdmin",
+              };
+            } else {
+              // User exists in Firebase Auth but is NOT authorized in admins or superadmins
+              await signOut(auth);
+              setError("Access denied. Your account is not authorized as an Administrator.");
+              setLoading(false);
+              return;
+            }
+          }
+        }
+      }
+
+      // 4. Successful login
+      localStorage.setItem("velouraz_admin", JSON.stringify(finalAdminData));
+      onAuthSuccess(finalAdminData);
+
     } catch (err) {
-      setError("An error occurred during authentication. Please try again.");
+      console.error("Admin authentication error:", err);
+      const msg = err.message
+        ?.replace("Firebase: ", "")
+        ?.replace("Error (auth/", "")
+        ?.replace(").", "")
+        ?.replace("invalid-credential", "Invalid credentials")
+        ?.replace("user-not-found", "User not found")
+        ?.replace("wrong-password", "Incorrect password");
+      setError(msg || "An error occurred during authentication. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -47,7 +250,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
         <div className="absolute top-[20%] left-[10%] w-[200px] h-[200px] rounded-full bg-white/[0.02] blur-[60px]" />
 
         {/* Grid pattern overlay */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: 'linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px)',
@@ -116,10 +319,10 @@ const AdminAuth = ({ onAuthSuccess }) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Admin ID */}
+            {/* Admin ID or Email */}
             <div className="space-y-2">
               <label className="block text-[16px] font-bold text-white/40 uppercase tracking-[0.12em]">
-                Admin ID
+                Admin ID or Email
               </label>
               <input
                 type="text"
@@ -127,7 +330,7 @@ const AdminAuth = ({ onAuthSuccess }) => {
                 value={adminId}
                 onChange={(e) => setAdminId(e.target.value)}
                 className="w-full px-4 py-3.5 bg-white/5 border border-white/8 rounded-xl text-white text-sm placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-[#811331]/60 focus:border-transparent transition-all"
-                placeholder="e.g. admin_01"
+                placeholder="e.g. admin_01 or admin@velouraz.com"
               />
             </div>
 

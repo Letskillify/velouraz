@@ -9,7 +9,7 @@ import {
   Star, Shield, Truck, RotateCcw, Heart, ShoppingBag,
   Share2, Gem, Sparkles, Loader2, ChevronRight,
   Eye, Award, Gift, RefreshCw, ZoomIn, Check,
-  ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass, Bell
+  ArrowRight, Lock, X, CheckCircle2, ChevronDown, Compass, Bell, Package
 } from 'lucide-react';
 import AddToCartModal from "../components/AddToCartModal";
 import NotifyMeModal from "../components/NotifyMeModal";
@@ -392,18 +392,18 @@ const ProductDetail = () => {
               {/* Concierge Micro Guarantees Strip */}
               <div className="hidden sm:grid sm:grid-cols-3 gap-4 pt-2">
                 <div className="bg-white border border-[#E5D7C5] rounded-2xl p-4 flex items-center gap-3.5 shadow-xs hover:border-[#C8A46A] transition-colors">
-                  <Award className="text-[#C8A46A] shrink-0" size={22} />
+                  <Package className="text-[#C8A46A] shrink-0" size={22} />
                   <div>
-                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">100% Certified</h5>
-                    <p className="text-xs text-[#786C60] font-serif italic">Authenticity Guaranteed</p>
+                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">Premium Packaging</h5>
+                    <p className="text-xs text-[#786C60] font-serif italic">Velvet Gift Boxed</p>
                   </div>
                 </div>
 
                 <div className="bg-white border border-[#E5D7C5] rounded-2xl p-4 flex items-center gap-3.5 shadow-xs hover:border-[#C8A46A] transition-colors">
                   <Truck className="text-[#C8A46A] shrink-0" size={22} />
                   <div>
-                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">Insured Express</h5>
-                    <p className="text-xs text-[#786C60] font-serif italic">Doorstep Delivery</p>
+                    <h5 className="text-[14px] font-bold uppercase tracking-[0.18em] text-[#14111E] font-sans">4–5 Days Delivery</h5>
+                    <p className="text-xs text-[#786C60] font-serif italic">Insured Doorstep Transit</p>
                   </div>
                 </div>
 

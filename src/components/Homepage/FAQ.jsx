@@ -13,7 +13,7 @@ const FAQ_DATA = [
     },
     {
         question: "Is Velouraz jewellery made of real silver and precious materials?",
-        answer: "Yes, we uphold 'The Velouraz Standard'. Our premium selections include 925 Sterling Silver certified pieces containing 92.5% pure silver. We also utilize high-quality anti-tarnish alloys, 18K/22K gold plating, and hand-selected precious stones designed for enduring beauty and everyday wear."
+        answer: "Yes, we uphold 'The Velouraz Standard'. Our premium selections include fine 925 Sterling Silver pieces containing 92.5% pure silver. We also utilize high-quality anti-tarnish alloys, 18K/22K gold plating, and hand-selected precious stones designed for enduring beauty and everyday wear."
     },
     {
         question: "What types of jewellery can I buy from the Velouraz online shop?",

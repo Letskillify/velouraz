@@ -32,6 +32,7 @@ const CatalogManager = ({ type }) => {
   // Custom columns for Countries and Categories (Image and Link)
   const [image, setImage] = useState("");
   const [link, setLink] = useState("");
+  const [comingSoon, setComingSoon] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const hasExtraFields = type === "Countries" || type === "Categories";
@@ -58,6 +59,7 @@ const CatalogManager = ({ type }) => {
     setStatus("Active");
     setImage("");
     setLink("");
+    setComingSoon(false);
     setError("");
   };
 
@@ -109,6 +111,10 @@ const CatalogManager = ({ type }) => {
         data.link = link.trim();
       }
 
+      if (type === "Countries") {
+        data.comingSoon = Boolean(comingSoon);
+      }
+
       if (editing) {
         await updateDoc(doc(db, collectionName, editing.id), data);
       } else {
@@ -131,6 +137,9 @@ const CatalogManager = ({ type }) => {
     if (hasExtraFields) {
       setImage(item.image || "");
       setLink(item.link || "");
+    }
+    if (type === "Countries") {
+      setComingSoon(Boolean(item.comingSoon));
     }
     setError("");
     editor.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -404,7 +413,16 @@ const CatalogManager = ({ type }) => {
                         )}
                       </td>
                     )}
-                    <td className="px-6 py-4 font-semibold">{item.name}</td>
+                    <td className="px-6 py-4 font-semibold">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span>{item.name}</span>
+                        {type === "Countries" && item.comingSoon && (
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
+                            ✦ Coming Soon
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-5 py-4 text-slate-500">{item.description || " "}</td>
                     {hasExtraFields && <td className="px-5 py-4 text-slate-500 font-mono truncate max-w-[150px]">{item.link || " "}</td>}
                     <td className="px-5 py-4">
@@ -509,6 +527,21 @@ const CatalogManager = ({ type }) => {
               <option>Draft</option>
             </select>
           </label>
+
+          {type === "Countries" && (
+            <div className="col-span-full flex items-center gap-3 p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/60">
+              <input
+                type="checkbox"
+                id="catalogComingSoon"
+                checked={comingSoon}
+                onChange={(e) => setComingSoon(e.target.checked)}
+                className="w-4 h-4 rounded border-slate-300 accent-[#941232] cursor-pointer"
+              />
+              <label htmlFor="catalogComingSoon" className="text-xs font-semibold text-slate-700 cursor-pointer select-none">
+                Display as <span className="text-[#941232] font-bold">Coming Soon</span> in Storefront (Shows luxury arriving soon preview when products are not uploaded yet)
+              </label>
+            </div>
+          )}
           <div className="flex items-end gap-2 col-span-full justify-end">
             <button disabled={saving || uploading} className="rounded-lg bg-[#941232] px-6 py-2.5 text-base font-semibold text-white">{saving ? "Saving..." : editing ? "Update" : "Add"}</button>
             {editing && <button type="button" onClick={reset} className="rounded-lg border border-slate-200 p-2.5"><X size={15} /></button>}

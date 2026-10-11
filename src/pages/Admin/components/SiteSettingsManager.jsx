@@ -22,7 +22,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
   const inp = isDarkMode
     ? "w-full rounded-xl border border-slate-700 bg-slate-900 px-3.5 py-2.5 text-base text-white outline-none focus:border-[#941232]"
     : "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-base text-slate-800 outline-none focus:border-[#941232]";
-  
+
   // ─── Hero Banner State ──────────────────────────────────────────────────────
   const [heroData, setHeroData] = useState({
     videoURL: "/img/video1.mp4",
@@ -63,7 +63,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     hoverImage: "",
     link: "",
     badge: "ORGANIC",
-    order: 1
+    order: 1,
+    comingSoon: false
   });
   const [uploadingEditVideo, setUploadingEditVideo] = useState(false);
   const [editVideoProgress, setEditVideoProgress] = useState(0);
@@ -82,7 +83,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
     cta: "",
     href: "",
     bgImage: "",
-    order: 1
+    order: 1,
+    comingSoon: false
   });
   const [uploadingHeaderBg, setUploadingHeaderBg] = useState(false);
   const [seedingHeader, setSeedingHeader] = useState(false);
@@ -148,9 +150,9 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         setAnnouncements(snap.data().items);
       } else {
         setAnnouncements([
-          "✦ Complimentary Shipping Across India ✦",
+          "✦ Express Shipping Across India ✦",
           "✦ Use Code VELOURAZ5 for 5% OFF on Your First Order ✦",
-          "✦ Artisanal Craftsmanship | 100% Handcrafted Designs ✦"
+          "✦ Artisanal Craftsmanship | Handcrafted Designs ✦"
         ]);
       }
     });
@@ -409,6 +411,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         link: data.link || `/shop?country=${encodeURIComponent(data.country)}`,
         badge: data.badge || "ORGANIC",
         order: Number(data.order) || 1,
+        comingSoon: Boolean(data.comingSoon),
         updatedAt: new Date().toISOString()
       };
 
@@ -425,7 +428,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           hoverImage: "",
           link: "",
           badge: "ORGANIC",
-          order: worldEdits.length + 1
+          order: worldEdits.length + 1,
+          comingSoon: false
         });
       }
     } catch (err) {
@@ -499,6 +503,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
         href: data.href || `/shop?country=${encodeURIComponent(data.country)}`,
         bgImage: data.bgImage || "",
         order: Number(data.order) || 1,
+        comingSoon: Boolean(data.comingSoon),
         updatedAt: new Date().toISOString()
       };
 
@@ -515,7 +520,8 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           cta: "",
           href: "",
           bgImage: "",
-          order: headerEdits.length + 1
+          order: headerEdits.length + 1,
+          comingSoon: false
         });
       }
     } catch (err) {
@@ -631,11 +637,10 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
           <button
             key={tab.id}
             onClick={() => setActiveSubTab(tab.id)}
-            className={`px-4 py-2 rounded-xl text-base font-bold transition-all ${
-              activeSubTab === tab.id
-                ? "bg-[#941232] text-white animate-pulse"
-                : `${isDarkMode ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-slate-50 text-slate-500 hover:bg-slate-100"}`
-            }`}
+            className={`px-4 py-2 rounded-xl text-base font-bold transition-all ${activeSubTab === tab.id
+              ? "bg-[#941232] text-white animate-pulse"
+              : `${isDarkMode ? "bg-slate-800 text-slate-400 hover:bg-slate-700" : "bg-slate-50 text-slate-500 hover:bg-slate-100"}`
+              }`}
           >
             {tab.label}
           </button>
@@ -708,9 +713,9 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                       <span className="font-mono text-sm">{heroVideoProgress}%</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
-                      <div 
-                        className="bg-gradient-to-r from-amber-500 to-amber-600 h-full transition-all duration-300 rounded-full" 
-                        style={{ width: `${heroVideoProgress}%` }} 
+                      <div
+                        className="bg-gradient-to-r from-amber-500 to-amber-600 h-full transition-all duration-300 rounded-full"
+                        style={{ width: `${heroVideoProgress}%` }}
                       />
                     </div>
                   </div>
@@ -730,10 +735,10 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                   />
                   <label className={`flex items-center justify-center px-3 py-2 rounded-xl border border-dashed border-slate-350 cursor-pointer ${isDarkMode ? "bg-slate-900 text-slate-300 hover:bg-slate-800" : "bg-slate-50 text-slate-600 hover:bg-slate-100"}`} title="Upload poster image">
                     <ImageIcon size={16} />
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      className="hidden" 
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
                       onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
@@ -743,7 +748,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                         } catch (err) {
                           console.error("Poster upload failed:", err);
                         }
-                      }} 
+                      }}
                     />
                   </label>
                 </div>
@@ -883,7 +888,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
               ✦ Live Top Header Preview ✦
             </span>
             <div className="text-xs sm:text-sm font-sans font-medium uppercase tracking-[0.16em] text-white/90 truncate py-1">
-              {announcements.length > 0 ? announcements[0] : "✦ Complimentary Shipping Across India ✦"}
+              {announcements.length > 0 ? announcements[0] : "✦ Express Shipping Across India ✦"}
             </div>
           </div>
 
@@ -895,7 +900,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 value={newAnnouncement}
                 onChange={(e) => setNewAnnouncement(e.target.value)}
                 className={inp}
-                placeholder="Add new header text line (e.g. ✦ Complimentary Shipping Across India ✦)"
+                placeholder="Add new header text line (e.g. ✦ Express Shipping Across India ✦)"
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddAnnouncement(); } }}
               />
               <button
@@ -1006,7 +1011,7 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                 value={newMarqueeText}
                 onChange={(e) => setNewMarqueeText(e.target.value)}
                 className={inp}
-                placeholder="Add new scrolling ticker line (e.g. ✦ 100% Certified Anti-Tarnish Lustre)"
+                placeholder="Add new scrolling ticker line (e.g. ✦ Anti-Tarnish Lustre)"
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddMarquee(); } }}
               />
               <button
@@ -1187,6 +1192,23 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                   </div>
                 </div>
 
+                <div className="flex items-center gap-3 p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/60 dark:bg-amber-950/20 dark:border-amber-800/40">
+                  <input
+                    type="checkbox"
+                    id="worldEditComingSoon"
+                    checked={editingEdit ? Boolean(editingEdit.comingSoon) : Boolean(newEdit.comingSoon)}
+                    onChange={(e) => {
+                      const val = e.target.checked;
+                      if (editingEdit) setEditingEdit({ ...editingEdit, comingSoon: val });
+                      else setNewEdit({ ...newEdit, comingSoon: val });
+                    }}
+                    className="w-4 h-4 rounded border-slate-300 accent-[#941232] cursor-pointer"
+                  />
+                  <label htmlFor="worldEditComingSoon" className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                    Display as <span className="text-[#941232] dark:text-amber-400 font-bold">Coming Soon</span> in Storefront (Shows luxury arriving soon preview when products are not uploaded yet)
+                  </label>
+                </div>
+
                 <div className="flex gap-2 pt-2">
                   <button
                     type="submit"
@@ -1228,9 +1250,14 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <p className={`text-base font-bold uppercase truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
                           <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">Order: {item.order || 1}</span>
+                          {item.comingSoon && (
+                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-300/40">
+                              ✦ Coming Soon
+                            </span>
+                          )}
                         </div>
                         <p className="text-[14px] text-slate-400 truncate">{item.collection || "No collection label"}</p>
                         <p className="text-[12px] text-slate-400 truncate font-mono mt-0.5">{item.link}</p>
@@ -1394,6 +1421,23 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                   </div>
                 </div>
 
+                <div className="flex items-center gap-3 p-3.5 rounded-xl border border-amber-200/80 bg-amber-50/60 dark:bg-amber-950/20 dark:border-amber-800/40">
+                  <input
+                    type="checkbox"
+                    id="headerEditComingSoon"
+                    checked={editingHeaderDoc ? Boolean(editingHeaderDoc.comingSoon) : Boolean(newHeaderDoc.comingSoon)}
+                    onChange={(e) => {
+                      const val = e.target.checked;
+                      if (editingHeaderDoc) setEditingHeaderDoc({ ...editingHeaderDoc, comingSoon: val });
+                      else setNewHeaderDoc({ ...newHeaderDoc, comingSoon: val });
+                    }}
+                    className="w-4 h-4 rounded border-slate-300 accent-[#941232] cursor-pointer"
+                  />
+                  <label htmlFor="headerEditComingSoon" className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+                    Display as <span className="text-[#941232] dark:text-amber-400 font-bold">Coming Soon</span> in Storefront (Shows luxury arriving soon preview when products are not uploaded yet)
+                  </label>
+                </div>
+
                 <div className="flex gap-2 pt-2">
                   <button
                     type="submit"
@@ -1435,9 +1479,14 @@ const SiteSettingsManager = ({ isDarkMode = false }) => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <p className={`text-base font-bold truncate ${isDarkMode ? "text-white" : "text-slate-800"}`}>{item.country}</p>
                           <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-600 dark:text-amber-400">Order: {item.order || 1}</span>
+                          {item.comingSoon && (
+                            <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-300/40">
+                              ✦ Coming Soon
+                            </span>
+                          )}
                         </div>
                         <p className="text-[14px] text-slate-400 truncate">{item.subtitle || item.collection || "No subtitle"}</p>
                         <p className="text-[12px] text-slate-400 truncate font-mono mt-0.5">{item.href || item.link}</p>

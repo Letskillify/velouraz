@@ -20,6 +20,7 @@ import {
   AlertCircle,
   Loader2,
   PackageCheck,
+  Package,
   Gem,
   Gift,
   ChevronRight,
@@ -1133,9 +1134,9 @@ const Checkout = () => {
               </div>
 
               <div className="bg-white p-4 rounded-2xl border border-[#D8CBBE]/40 text-center space-y-1 shadow-2xs">
-                <Gem size={20} className="mx-auto text-[#2e0e43]" />
-                <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Hallmarked Gold</h5>
-                <p className="text-[14px] text-[#7B6D63] font-serif">Certified high jewellery</p>
+                <Package size={20} className="mx-auto text-[#2e0e43]" />
+                <h5 className="text-xs font-semibold uppercase tracking-wider text-[#2A2623] font-sans">Premium Packaging</h5>
+                <p className="text-[14px] text-[#7B6D63] font-serif">Signature Velouraz box</p>
               </div>
             </div>
 

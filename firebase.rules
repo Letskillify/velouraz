@@ -98,11 +98,11 @@ service cloud.firestore {
     }
 
     // ─── 5. ADMINS ──────────────────────────────────────────────────────────────
-    // Only superadmin can create/manage admins.
-    // Admins collection must be readable so AdminAuth.jsx can authenticate.
+    // SuperAdmin can manage any admin. Authenticated admins can create or update their own document.
     match /admins/{adminId} {
       allow read: if true; // AdminAuth.jsx queries this collection for login
-      allow write: if isSuperAdmin();
+      allow create, update: if isSuperAdmin() || (request.auth != null && request.auth.uid == adminId);
+      allow delete: if isSuperAdmin();
     }
 
     // ─── 6. SUPERADMINS ─────────────────────────────────────────────────────────

@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { db } from "../components/Firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { 
-  CheckCircle2, 
-  PackageCheck, 
-  Truck, 
-  Mail, 
-  MapPin, 
-  ArrowRight, 
-  ShoppingBag, 
-  ShieldCheck, 
-  Sparkles, 
-  UserCheck, 
-  Clock 
+import {
+  CheckCircle2,
+  PackageCheck,
+  Truck,
+  Mail,
+  MapPin,
+  ArrowRight,
+  ShoppingBag,
+  ShieldCheck,
+  Sparkles,
+  UserCheck,
+  Clock
 } from "lucide-react";
 import Breadcrumb from "../components/Breadcrumb";
 import { motion } from "framer-motion";
@@ -119,7 +119,7 @@ const OrderSuccess = () => {
           {/* Header Banner */}
           <div className="bg-white rounded-3xl p-8 border border-[#E8DFD5] shadow-sm text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#2e0e43] via-[#C8A46A] to-[#2e0e43]" />
-            
+
             <div className="w-20 h-20 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto mb-5 shadow-inner">
               <CheckCircle2 size={40} />
             </div>
@@ -159,14 +159,14 @@ const OrderSuccess = () => {
 
           {/* Details 2-Column Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
+
             {/* Delivery & Shipping Info */}
             <div className="bg-white rounded-3xl p-6 border border-[#E8DFD5] shadow-sm space-y-4">
               <h3 className="text-xs font-semibold text-[#2e0e43] uppercase tracking-[0.2em] font-sans flex items-center gap-2 border-b border-[#F5EFE8] pb-3">
                 <Truck size={16} className="text-[#C8A46A]" />
                 Delivery Information
               </h3>
-              
+
               <div className="space-y-2 text-xs font-serif text-[#7B6D63]">
                 <p className="font-sans font-medium text-[#2e0e43] text-sm">{customerName}</p>
                 <p>{shippingAddress?.flat} {shippingAddress?.address}</p>
@@ -197,7 +197,7 @@ const OrderSuccess = () => {
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span className="font-normal text-[#2A2623]">
-                    {shippingFee === 0 ? "Complimentary" : `₹${shippingFee}`}
+                    {shippingFee === 0 ? "Free" : `₹${shippingFee}`}
                   </span>
                 </div>
 

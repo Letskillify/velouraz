@@ -44,7 +44,7 @@ const IndiaEdit = () => {
           </h1>
 
           <p className="text-sm sm:text-base text-[#6B5E52] font-serif font-light leading-relaxed">
-            Select a collection below to discover hallmarked 925 sterling silver statement creations or imperial court Jadau, uncut Polki diamonds, and royal Kundan chokers in our boutique.
+            Select a collection below to discover fine 925 sterling silver statement creations or imperial court Jadau, uncut Polki diamonds, and royal Kundan chokers in our boutique.
           </p>
         </div>
 
