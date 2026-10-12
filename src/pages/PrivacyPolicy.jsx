@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <UserCheck size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">A. Information you provide to us</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">1. Information you provide to us</h2>
               </div>
               <p>
                 When you create an account, place an order, contact us or otherwise interact with velouraz, we may collect:
@@ -154,7 +154,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <CreditCard size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">5. Payment Information</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">4. Payment Information</h2>
               </div>
               <div className="space-y-4">
                 <p>Payments made through our website may be processed by third-party payment service providers.</p>
@@ -170,7 +170,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Truck size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">7. Shipping and Delivery Partners</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">5. Shipping and Delivery Partners</h2>
               </div>
               <div className="space-y-4">
                 <p>To deliver your order, we may provide necessary information such as your name, phone number and delivery address to our logistics, courier or shipping partners.</p>
@@ -184,7 +184,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Lock size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">9. Data Security</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">6. Data Security</h2>
               </div>
               <div className="space-y-4">
                 <p>We take reasonable technical and organisational measures to protect personal information against unauthorised access, misuse, alteration, disclosure or destruction.</p>
@@ -199,7 +199,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Clock size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">10. Data Retention</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">7. Data Retention</h2>
               </div>
               <div className="space-y-4">
                 <p>We retain personal information only for as long as reasonably necessary for the purposes described in this Privacy Policy, including fulfilling orders, providing services, maintaining business and financial records, resolving disputes, preventing fraud and complying with legal or regulatory obligations.</p>
@@ -213,7 +213,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Globe size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">13. International Data Processing</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">8. International Data Processing</h2>
               </div>
               <div className="space-y-4">
                 <p>Some of our service providers may process or store information outside India.</p>
@@ -227,7 +227,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <AlertTriangle size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">14. Fraud and Security</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">9. Fraud and Security</h2>
               </div>
               <div className="space-y-4">
                 <p>We may use personal information to detect and prevent fraudulent transactions, unauthorised activity, abuse of our website and other security threats.</p>
@@ -241,7 +241,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <RefreshCw size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">15. Changes to This Privacy Policy</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">10. Changes to This Privacy Policy</h2>
               </div>
               <div className="space-y-4">
                 <p>We may update this Privacy Policy from time to time to reflect changes in our business, technology, services or applicable laws.</p>
@@ -256,7 +256,7 @@ const PrivacyPolicy = () => {
                 <div className="w-12 h-12 rounded-2xl bg-[#2e0e43]/5 flex items-center justify-center shadow-sm group-hover:bg-[#2e0e43] group-hover:text-white transition-all duration-500 shrink-0">
                   <Mail size={22} />
                 </div>
-                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">16. Contact Us</h2>
+                <h2 className="text-[#2A2623] text-xl sm:text-2xl font-serif font-bold tracking-tight">11. Contact Us</h2>
               </div>
               <p>
                 If you have questions, concerns or requests relating to this Privacy Policy or your personal information, please contact us:

@@ -762,6 +762,11 @@ const WorldEditDropdownCard = ({ item, onClose }) => {
       <div className="relative z-10 space-y-2">
         <div className="flex items-center gap-2">
           <span className="text-xl filter drop-shadow-md">{flag}</span>
+          {item.comingSoon && (
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase bg-[#C8A97A] text-[#14061F] shadow-sm">
+              ✦ Coming Soon
+            </span>
+          )}
         </div>
 
         <div>
@@ -788,7 +793,7 @@ const WorldEditDropdownCard = ({ item, onClose }) => {
       </div>
 
       <div className="relative z-10 pt-4 flex items-center justify-between text-[14px] font-bold tracking-[0.22em] uppercase text-white group-hover:text-[#F0D5A8] transition-colors drop-shadow-md">
-        <span>{item.cta || `DISCOVER ${item.country.toUpperCase()}`}</span>
+        <span>{item.comingSoon ? 'PREVIEW COLLECTION' : (item.cta || `DISCOVER ${item.country.toUpperCase()}`)}</span>
         <ArrowRight size={14} className="text-[#C8A97A] group-hover:translate-x-2 transition-transform duration-300" />
       </div>
     </Link>
