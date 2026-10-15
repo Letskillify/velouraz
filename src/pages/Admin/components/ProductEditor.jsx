@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, Calendar, Camera, Check, ChevronRight, Cloud,
   Computer, Crown, Hash, ImagePlus, Loader2, Package,
-  Plus, Save, Tag, Trash2, X, AlertCircle,
+  Plus, Save, Tag, Trash2, X, AlertCircle, Sparkles, Star,
 } from "lucide-react";
-import { createProduct, updateProduct } from "../../../services/productService";
+import { createProduct, updateProduct, isProductNewArrival, isProductBestseller } from "../../../services/productService";
 import { uploadToCloudinary, cloudinaryConfig } from "../../../config/cloudinary";
 import CloudinaryImageLibrary from "./CloudinaryImageLibrary";
 import { db } from "../../../components/Firebase";
@@ -254,6 +254,8 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
   });
   const [media, setMedia] = useState([]);
   const [tags, setTags] = useState([]);
+  const [isNewArrival, setIsNewArrival] = useState(false);
+  const [isBestseller, setIsBestseller] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savingDraft, setSavingDraft] = useState(false);
   const [notice, setNotice] = useState("");
@@ -291,13 +293,62 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
         source: "cloudinary",
       }))
     );
-    setTags(
-      product?.tags
-        ? (Array.isArray(product.tags) ? product.tags : product.tags.split(",").map((t) => t.trim()).filter(Boolean))
-        : []
-    );
+    const parsedTags = product?.tags
+      ? (Array.isArray(product.tags) ? product.tags : product.tags.split(",").map((t) => t.trim()).filter(Boolean))
+      : [];
+    setTags(parsedTags);
+    setIsNewArrival(isProductNewArrival(product));
+    setIsBestseller(isProductBestseller(product));
     setScheduleEnabled(!!product?.scheduledAt);
   }, [product, reset]);
+
+  const handleToggleNewArrival = (checked) => {
+    setIsNewArrival(checked);
+    if (checked) {
+      if (!tags.some((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s === "new arrivals" || s === "new arrival";
+      })) {
+        setTags((prev) => [...prev, "New Arrivals"]);
+      }
+    } else {
+      setTags((prev) => prev.filter((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s !== "new arrivals" && s !== "new arrival" && s !== "new";
+      }));
+    }
+  };
+
+  const handleToggleBestseller = (checked) => {
+    setIsBestseller(checked);
+    if (checked) {
+      if (!tags.some((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s === "bestsellers" || s === "bestseller";
+      })) {
+        setTags((prev) => [...prev, "Bestsellers"]);
+      }
+    } else {
+      setTags((prev) => prev.filter((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s !== "bestsellers" && s !== "bestseller" && s !== "best sellers" && s !== "best seller";
+      }));
+    }
+  };
+
+  const handleTagsChange = (newTags) => {
+    setTags(newTags);
+    const hasNew = newTags.some((t) => {
+      const s = String(t).toLowerCase().trim();
+      return s === "new arrivals" || s === "new arrival";
+    });
+    const hasBest = newTags.some((t) => {
+      const s = String(t).toLowerCase().trim();
+      return s === "bestsellers" || s === "bestseller" || s === "best sellers" || s === "best seller";
+    });
+    setIsNewArrival(hasNew);
+    setIsBestseller(hasBest);
+  };
 
   const submit = async (values, intent = "Published") => {
     setNotice("");
@@ -316,11 +367,52 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
       );
       const images = results.filter((r) => r.status === "fulfilled").map((r) => r.value);
 
+      // Clean and sync tags with boolean states
+      let cleanTags = [...tags];
+      if (isNewArrival) {
+        if (!cleanTags.some((t) => {
+          const s = String(t).toLowerCase().trim();
+          return s === "new arrivals" || s === "new arrival";
+        })) {
+          cleanTags.push("New Arrivals");
+        }
+      } else {
+        cleanTags = cleanTags.filter((t) => {
+          const s = String(t).toLowerCase().trim();
+          return s !== "new arrivals" && s !== "new arrival" && s !== "new";
+        });
+      }
+
+      if (isBestseller) {
+        if (!cleanTags.some((t) => {
+          const s = String(t).toLowerCase().trim();
+          return s === "bestsellers" || s === "bestseller";
+        })) {
+          cleanTags.push("Bestsellers");
+        }
+      } else {
+        cleanTags = cleanTags.filter((t) => {
+          const s = String(t).toLowerCase().trim();
+          return s !== "bestsellers" && s !== "bestseller" && s !== "best sellers" && s !== "best seller";
+        });
+      }
+
       const payload = {
         ...values,
         name: values.name.trim(),
         description: values.description?.trim() || "",
-        tags,
+        tags: cleanTags,
+        isNewArrival: Boolean(isNewArrival),
+        newArrival: Boolean(isNewArrival),
+        isBestseller: Boolean(isBestseller),
+        bestseller: Boolean(isBestseller),
+        featuredProduct: Boolean(values.featuredProduct),
+        // If bestseller/new arrival disabled and badge matched, clear badge
+        badge: (!isBestseller && (values.badge === "BESTSELLER" || product?.badge === "BESTSELLER"))
+          ? ""
+          : (!isNewArrival && (values.badge === "NEW" || product?.badge === "NEW"))
+            ? ""
+            : (values.badge || ""),
         sku: values.sku || "",
         brand: values.brand || "",
         collectionName: values.collectionName || "",
@@ -550,10 +642,10 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
                   <Controller
                     name="_tags"
                     control={control}
-                    render={() => <TagInput value={tags} onChange={setTags} />}
+                    render={() => <TagInput value={tags} onChange={handleTagsChange} />}
                   />
-                  <p className="mt-1.5 text-[16px] text-slate-400">
-                    Use: <span className="font-medium text-slate-500">New Arrivals, Best Sellers, Trending</span> etc. Press Enter or comma to add.
+                  <p className="mt-1.5 text-xs text-slate-400">
+                    Use: <span className="font-medium text-slate-500">New Arrivals, Best Sellers, Trending</span> etc. You can also use the easy 1-click toggles on the right sidebar.
                   </p>
                 </div>
               </div>
@@ -608,6 +700,97 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
           {/* ─── RIGHT COLUMN ─── */}
           <div className="space-y-4">
 
+            {/* Badges & Homepage Placement */}
+            <div className={`${card} p-4 space-y-3`}>
+              <div className="border-b border-slate-100 pb-2.5">
+                <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                  <Sparkles size={15} className="text-[#941232]" />
+                  Collections & Badges
+                </h3>
+                <p className="text-xs text-slate-400 mt-0.5">Control where this product is targeted & displayed</p>
+              </div>
+
+              {/* New Arrival Toggle */}
+              <label className={`flex cursor-pointer items-start justify-between gap-3 rounded-xl border p-3 transition-all ${
+                isNewArrival
+                  ? "border-purple-300 bg-purple-50/70 shadow-xs"
+                  : "border-slate-100 bg-slate-50/80 hover:border-slate-200"
+              }`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-purple-950 uppercase tracking-wide">✨ New Arrival</span>
+                    {isNewArrival && (
+                      <span className="rounded-full bg-purple-200/80 px-2 py-0.5 text-[10px] font-bold text-purple-800">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                    Shows in "New Arrivals" shop filter & tag. Uncheck to remove completely.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={isNewArrival}
+                  onChange={(e) => handleToggleNewArrival(e.target.checked)}
+                  className="accent-[#941232] h-4 w-4 rounded mt-0.5 cursor-pointer shrink-0"
+                />
+              </label>
+
+              {/* Best Seller Toggle */}
+              <label className={`flex cursor-pointer items-start justify-between gap-3 rounded-xl border p-3 transition-all ${
+                isBestseller
+                  ? "border-amber-300 bg-amber-50/70 shadow-xs"
+                  : "border-slate-100 bg-slate-50/80 hover:border-slate-200"
+              }`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-amber-950 uppercase tracking-wide">⭐ Best Seller</span>
+                    {isBestseller && (
+                      <span className="rounded-full bg-amber-200/80 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                    Shows in Homepage "Best Sellers" slider & filter. Uncheck to remove completely.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={isBestseller}
+                  onChange={(e) => handleToggleBestseller(e.target.checked)}
+                  className="accent-[#941232] h-4 w-4 rounded mt-0.5 cursor-pointer shrink-0"
+                />
+              </label>
+
+              {/* Featured toggle */}
+              <label className={`flex cursor-pointer items-start justify-between gap-3 rounded-xl border p-3 transition-all ${
+                watch("featuredProduct")
+                  ? "border-rose-300 bg-rose-50/70 shadow-xs"
+                  : "border-slate-100 bg-slate-50/80 hover:border-slate-200"
+              }`}>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-rose-950 uppercase tracking-wide">🔥 Featured Product</span>
+                    {watch("featuredProduct") && (
+                      <span className="rounded-full bg-rose-200/80 px-2 py-0.5 text-[10px] font-bold text-rose-800">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                    Featured in curated highlights across the storefront.
+                  </p>
+                </div>
+                <input
+                  type="checkbox"
+                  {...register("featuredProduct")}
+                  className="accent-[#941232] h-4 w-4 rounded mt-0.5 cursor-pointer shrink-0"
+                />
+              </label>
+            </div>
+
             {/* Publish / Status */}
             <div className={`${card} p-4`}>
               <h3 className="text-sm font-bold text-slate-800 mb-3">Publish</h3>
@@ -635,22 +818,13 @@ const ProductEditor = ({ product, onCancel, onSuccess }) => {
               </div>
 
               {/* Visibility */}
-              <div className="mb-3">
+              <div>
                 <label className={label}>Visibility</label>
                 <select {...register("visibility")} className={inp}>
                   <option value="Public">Public</option>
                   <option value="Private">Private</option>
                 </select>
               </div>
-
-              {/* Featured toggle */}
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 hover:border-[#941232]/20 transition-all">
-                <input type="checkbox" {...register("featuredProduct")} className="accent-[#941232] h-4 w-4 rounded" />
-                <div>
-                  <p className="text-base font-bold text-slate-700">Featured Product</p>
-                  <p className="text-[16px] text-slate-400">Shown on homepage</p>
-                </div>
-              </label>
             </div>
 
             {/* Schedule */}

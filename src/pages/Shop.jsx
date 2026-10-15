@@ -14,6 +14,7 @@ import QuickView from '../components/QuickView';
 import Breadcrumb from '../components/Breadcrumb';
 import AddToCartModal from '../components/AddToCartModal';
 import { listenToTags } from '../services/tagsService';
+import { isProductNewArrival, isProductBestseller } from '../services/productService';
 import { getOptimizedImageUrl, handleImageError } from '../config/cloudinary';
 import useSEO from '../hooks/useSEO';
 
@@ -33,12 +34,13 @@ const fallbackProducts = [
 ];
 
 // Helper to normalize country names for robust matching (e.g. Thailand, South Korea, Paris, etc.)
-const normalizeCountryKey = (name) => {
+export const normalizeCountryKey = (name) => {
   if (!name) return '';
   const clean = name.toLowerCase().trim();
   if (clean === 'thiland' || clean === 'thailand' || clean === 'thai') return 'thailand';
   return clean.replace(/[^a-z0-9]/g, '');
 };
+const cKey = normalizeCountryKey;
 
 const getDynamicCountrySubtitle = (countryName) => {
   if (!countryName) return '';
@@ -518,7 +520,7 @@ const Shop = () => {
       setSelectedTags(tagQuery.split(',').filter(Boolean));
     } else if (filterQuery === 'new' || filterQuery === 'new-arrivals') {
       setSelectedTags(['New Arrivals']);
-    } else if (filterQuery === 'bestsellers') {
+    } else if (filterQuery === 'bestsellers' || filterQuery === 'best-sellers') {
       setSelectedTags(['Bestsellers']);
     } else {
       setSelectedTags([]);
@@ -692,25 +694,14 @@ const Shop = () => {
     const matchesTags = selectedTags.length === 0 || selectedTags.some(t => {
       const tagStr = t.toLowerCase().trim();
 
-      // Special logic for "New Arrivals": products uploaded within the last 30 days OR explicitly tagged
+      // Special logic for "New Arrivals" (Strict: honors admin toggles and tags, no automatic 30-day override)
       if (tagStr === 'new arrivals' || tagStr === 'new arrival') {
-        const thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
-        const now = Date.now();
-        let prodTime = 0;
+        return isProductNewArrival(p);
+      }
 
-        if (p.createdAt?.toMillis) {
-          prodTime = p.createdAt.toMillis();
-        } else if (p.createdAt?.seconds) {
-          prodTime = p.createdAt.seconds * 1000;
-        } else if (p.createdAt) {
-          prodTime = new Date(p.createdAt).getTime();
-        } else {
-          prodTime = now; // Fallback to current time if no date string
-        }
-
-        const isUploadedInLast30Days = (now - prodTime) <= thirtyDaysInMillis && prodTime <= now;
-        const hasExplicitTag = Array.isArray(p.tags) && p.tags.some(pt => String(pt).toLowerCase() === tagStr);
-        return isUploadedInLast30Days || hasExplicitTag;
+      // Special logic for "Bestsellers" (Strict: honors admin toggles and tags)
+      if (tagStr === 'bestsellers' || tagStr === 'bestseller' || tagStr === 'best sellers' || tagStr === 'best seller') {
+        return isProductBestseller(p);
       }
 
       return Array.isArray(p.tags) && p.tags.some(pt => String(pt).toLowerCase() === tagStr);

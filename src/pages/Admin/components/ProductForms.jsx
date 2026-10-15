@@ -37,7 +37,7 @@ export const ProductForm = ({ onSuccess }) => {
   const [showLibrary, setShowLibrary] = useState(false);
   const [selectedCloudinaryImages, setSelectedCloudinaryImages] = useState([]);
   const [allTags, setAllTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState(["Bestsellers"]);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const categories = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
 
@@ -85,7 +85,7 @@ export const ProductForm = ({ onSuccess }) => {
       await addDoc(collection(db, "products"), docData);
       reset();
       setSelectedCloudinaryImages([]);
-      setSelectedTags(["Bestsellers"]);
+      setSelectedTags([]);
       if (onSuccess) {
         onSuccess();
       }
@@ -335,7 +335,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
   const [showLibrary, setShowLibrary] = useState(false);
   const [selectedCloudinaryImages, setSelectedCloudinaryImages] = useState(product?.images || []);
   const [allTags, setAllTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState(product?.tags || ["Bestsellers"]);
+  const [selectedTags, setSelectedTags] = useState(product?.tags || []);
 
   const categories = ["Necklace", "Earrings", "Rings", "Bracelet", "Bangles", "Bridal Wear", "Anklets"];
 
@@ -355,7 +355,7 @@ export const EditProductForm = ({ product, onSuccess }) => {
         stock: product.stock || 0,
         material: product.material || "",
       });
-      setSelectedTags(product.tags || ["Bestsellers"]);
+      setSelectedTags(product.tags || []);
     }
   }, [product, reset]);
 

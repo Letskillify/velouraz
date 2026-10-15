@@ -8,21 +8,11 @@ import { db } from '../Firebase';
 import { useStore } from '../../hooks/useStore';
 import AddToCartModal from '../AddToCartModal';
 import { getOptimizedImageUrl, handleImageError } from '../../config/cloudinary';
+import { isProductBestseller } from '../../services/productService';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
-
-const isBestsellerProduct = (p) => {
-  if (!p) return false;
-  if (p.badge && String(p.badge).toLowerCase().includes('bestseller')) return true;
-  if (p.isBestseller || p.bestseller) return true;
-  if (Array.isArray(p.tags) && p.tags.some(t => {
-    const tagStr = String(t).toLowerCase().trim();
-    return tagStr === 'bestsellers' || tagStr === 'bestseller';
-  })) return true;
-  return false;
-};
 
 /* ── Skeleton Card ── */
 const SkeletonCard = () => (
@@ -65,7 +55,7 @@ const BestSellers = () => {
         const snap = await getDocs(q);
         if (!snap.empty) {
           const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          const filtered = list.filter(isBestsellerProduct);
+          const filtered = list.filter(isProductBestseller);
           setProducts(filtered);
         } else {
           setProducts([]);

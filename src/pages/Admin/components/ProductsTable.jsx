@@ -19,10 +19,18 @@ import {
   Trash,
   ArchiveRestore,
   ShieldAlert,
+  Sparkles,
+  Star,
 } from "lucide-react";
 import { statusBadgeClasses } from "./AdminUtils";
 import CSVUpload from "./CSVUpload";
-import { quickUpdateStock, parseSortableDate } from "../../../services/productService";
+import {
+  quickUpdateStock,
+  parseSortableDate,
+  isProductNewArrival,
+  isProductBestseller,
+  toggleProductCollection,
+} from "../../../services/productService";
 import { getThumbnailUrl, handleImageError } from "../../../config/cloudinary";
 
 // ─── Confirm Dialog ──────────────────────────────────────────────────────────
@@ -163,7 +171,9 @@ const ProductsTable = ({
   const [search, setSearch] = useState(searchParams.get("search") || searchParams.get("q") || "");
   const [category, setCategory] = useState(searchParams.get("category") || "All Categories");
   const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "All Countries");
+  const [collectionFilter, setCollectionFilter] = useState(searchParams.get("collection") || "all");
   const [sortBy, setSortBy] = useState("newest");
+  const [collectionLoading, setCollectionLoading] = useState({});
 
   // View mode: "active" or "trash"
   const [internalViewMode, setInternalViewMode] = useState("active");
@@ -178,9 +188,11 @@ const ProductsTable = ({
     setSearch("");
     setCategory("All Categories");
     setSelectedCountry("All Countries");
+    setCollectionFilter("all");
     updateParam("search", "");
     updateParam("category", "All Categories");
     updateParam("country", "All Countries");
+    updateParam("collection", "all");
   };
 
   // Pagination & Selection States
@@ -193,18 +205,37 @@ const ProductsTable = ({
 
   const currentList = viewMode === "trash" ? trashedProducts : products;
 
+  const newArrivalsCount = useMemo(() => currentList.filter(isProductNewArrival).length, [currentList]);
+  const bestsellersCount = useMemo(() => currentList.filter(isProductBestseller).length, [currentList]);
+  const featuredCount = useMemo(() => currentList.filter((p) => Boolean(p.featuredProduct || p.featured)).length, [currentList]);
+
+  const handleToggleCollection = async (product, type) => {
+    const key = `${product.id}-${type}`;
+    setCollectionLoading((prev) => ({ ...prev, [key]: true }));
+    try {
+      await toggleProductCollection(product.id, type, product);
+    } catch (err) {
+      console.error("Error toggling collection status:", err);
+      alert("Failed to update status. Please try again.");
+    } finally {
+      setCollectionLoading((prev) => ({ ...prev, [key]: false }));
+    }
+  };
+
   useEffect(() => {
     const sQuery = searchParams.get("search") || searchParams.get("q") || "";
     const cQuery = searchParams.get("category") || "All Categories";
     const coQuery = searchParams.get("country") || "All Countries";
+    const colQuery = searchParams.get("collection") || "all";
     setSearch(sQuery);
     setCategory(cQuery);
     setSelectedCountry(coQuery);
+    setCollectionFilter(colQuery);
   }, [searchParams]);
 
   const updateParam = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
-    if (!value || value === "All Categories" || value === "All Countries") {
+    if (!value || value === "All Categories" || value === "All Countries" || value === "all") {
       newParams.delete(key);
     } else {
       newParams.set(key, value);
@@ -225,7 +256,14 @@ const ProductsTable = ({
       const matchesCountry =
         selectedCountry === "All Countries" ||
         (product.country && product.country.toLowerCase() === selectedCountry.toLowerCase());
-      return matchesSearch && matchesCategory && matchesCountry;
+      const matchesCollection = (() => {
+        if (collectionFilter === "all") return true;
+        if (collectionFilter === "new_arrivals") return isProductNewArrival(product);
+        if (collectionFilter === "best_sellers") return isProductBestseller(product);
+        if (collectionFilter === "featured") return Boolean(product.featuredProduct || product.featured);
+        return true;
+      })();
+      return matchesSearch && matchesCategory && matchesCountry && matchesCollection;
     });
 
     return [...list].sort((a, b) => {
@@ -247,7 +285,7 @@ const ProductsTable = ({
       // Default: "newest" (Upload Date: New → Old)
       return parseSortableDate(b) - parseSortableDate(a);
     });
-  }, [currentList, search, category, selectedCountry, sortBy]);
+  }, [currentList, search, category, selectedCountry, collectionFilter, sortBy]);
 
   // Derived Pagination
   const totalPages = Math.ceil(filteredProducts.length / pageSize);
@@ -537,8 +575,75 @@ const ProductsTable = ({
           </div>
         )}
 
+        {/* Quick Filter Pills (All / New Arrivals / Best Sellers) */}
+        {viewMode === "active" && (
+          <div className="mx-5 mt-4 sm:mx-8 flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1 shrink-0">
+              <Sparkles size={13} className="text-[#811331]" /> Filter By:
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setCollectionFilter("all");
+                updateParam("collection", "all");
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                collectionFilter === "all"
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+              }`}
+            >
+              All Products ({currentList.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCollectionFilter("new_arrivals");
+                updateParam("collection", "new_arrivals");
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer ${
+                collectionFilter === "new_arrivals"
+                  ? "bg-purple-700 text-white shadow-xs"
+                  : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
+              }`}
+            >
+              <span>✨</span> New Arrivals ({newArrivalsCount})
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setCollectionFilter("best_sellers");
+                updateParam("collection", "best_sellers");
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer ${
+                collectionFilter === "best_sellers"
+                  ? "bg-amber-600 text-white shadow-xs"
+                  : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200"
+              }`}
+            >
+              <span>⭐</span> Best Sellers ({bestsellersCount})
+            </button>
+            {featuredCount > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setCollectionFilter("featured");
+                  updateParam("collection", "featured");
+                }}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer ${
+                  collectionFilter === "featured"
+                    ? "bg-rose-700 text-white shadow-xs"
+                    : "bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200"
+                }`}
+              >
+                <span>🔥</span> Featured ({featuredCount})
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Filter Toolbar */}
-        <div className="mx-5 mb-4 mt-4 flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 sm:mx-8 sm:flex-row sm:items-center flex-wrap">
+        <div className="mx-5 mb-4 mt-3 flex flex-col gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 sm:mx-8 sm:flex-row sm:items-center flex-wrap">
           <label className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-400 min-w-[200px]">
             <Search size={15} />
             <input
@@ -582,6 +687,25 @@ const ProductsTable = ({
               <option key={c} value={c}>🌍 {c}</option>
             ))}
           </select>
+          {/* Collection / Badge Filter Select */}
+          <select
+            value={collectionFilter}
+            onChange={(event) => {
+              const val = event.target.value;
+              setCollectionFilter(val);
+              updateParam("collection", val);
+            }}
+            className={`rounded-lg border px-3 py-2 text-base font-medium outline-none cursor-pointer transition-all ${
+              collectionFilter !== "all"
+                ? "border-[#811331] bg-[#811331]/5 text-[#811331] font-bold"
+                : "border-slate-200 bg-white text-slate-600"
+            }`}
+          >
+            <option value="all">All Badges & Collections</option>
+            <option value="new_arrivals">✨ New Arrivals ({newArrivalsCount})</option>
+            <option value="best_sellers">⭐ Best Sellers ({bestsellersCount})</option>
+            <option value="featured">🔥 Featured ({featuredCount})</option>
+          </select>
           {/* Sort By Select */}
           <div className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-base font-medium text-slate-600">
             <SlidersHorizontal size={14} className="text-slate-400 flex-shrink-0" />
@@ -599,18 +723,20 @@ const ProductsTable = ({
               <option value="price_desc">Sort: Price (High → Low)</option>
             </select>
           </div>
-          {(search || category !== "All Categories" || selectedCountry !== "All Countries" || sortBy !== "newest") && (
+          {(search || category !== "All Categories" || selectedCountry !== "All Countries" || collectionFilter !== "all" || sortBy !== "newest") && (
             <button
               onClick={() => {
                 setSearch("");
                 setCategory("All Categories");
                 setSelectedCountry("All Countries");
+                setCollectionFilter("all");
                 setSortBy("newest");
                 updateParam("search", "");
                 updateParam("category", "All Categories");
                 updateParam("country", "All Countries");
+                updateParam("collection", "all");
               }}
-              className="px-3 py-2 rounded-lg bg-slate-200/70 hover:bg-slate-200 text-base font-bold text-[#811331] transition-all"
+              className="px-3 py-2 rounded-lg bg-slate-200/70 hover:bg-slate-200 text-base font-bold text-[#811331] transition-all cursor-pointer"
             >
               Reset Filters
             </button>
@@ -683,8 +809,51 @@ const ProductsTable = ({
                           })()}
                         </div>
                         <div>
-                          <p className="text-[16px] font-bold text-slate-900 line-clamp-1 max-w-[185px]">{row.name}</p>
-                          <p className="text-[16px] text-slate-400 font-mono mt-0.5">{row.id.substring(0, 10)}…</p>
+                          <p className="text-[16px] font-bold text-slate-900 line-clamp-1 max-w-[200px]">{row.name}</p>
+                          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                            <span className="text-[13px] text-slate-400 font-mono">{row.id.substring(0, 8)}…</span>
+                            {viewMode === "active" && (
+                              <div className="flex items-center gap-1">
+                                <button
+                                  type="button"
+                                  disabled={collectionLoading[`${row.id}-new_arrival`]}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleToggleCollection(row, "new_arrival");
+                                  }}
+                                  title={isProductNewArrival(row) ? "Click to remove from New Arrivals" : "Click to mark as New Arrival"}
+                                  className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                                    isProductNewArrival(row)
+                                      ? "bg-purple-100 text-purple-800 border border-purple-200 hover:bg-purple-200"
+                                      : "bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200/70 border border-slate-200/50"
+                                  }`}
+                                >
+                                  ✨ New {isProductNewArrival(row) ? "✓" : "+"}
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={collectionLoading[`${row.id}-bestseller`]}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleToggleCollection(row, "bestseller");
+                                  }}
+                                  title={isProductBestseller(row) ? "Click to remove from Best Sellers" : "Click to mark as Best Seller"}
+                                  className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                                    isProductBestseller(row)
+                                      ? "bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200"
+                                      : "bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200/70 border border-slate-200/50"
+                                  }`}
+                                >
+                                  ⭐ Best {isProductBestseller(row) ? "✓" : "+"}
+                                </button>
+                                {row.featuredProduct && (
+                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200" title="Featured Product">
+                                    🔥
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -815,6 +984,45 @@ const ProductsTable = ({
                       <span className="w-1 h-1 rounded-full bg-slate-300" />
                       <span className="text-sm font-bold text-[#811331]">₹{Number(row.price || 0).toLocaleString()}</span>
                     </div>
+                    {viewMode === "active" && (
+                      <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                        <button
+                          type="button"
+                          disabled={collectionLoading[`${row.id}-new_arrival`]}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleCollection(row, "new_arrival");
+                          }}
+                          className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold transition-all ${
+                            isProductNewArrival(row)
+                              ? "bg-purple-100 text-purple-800 border border-purple-200"
+                              : "bg-slate-100 text-slate-400 border border-slate-200/50"
+                          }`}
+                        >
+                          ✨ New {isProductNewArrival(row) ? "✓" : "+"}
+                        </button>
+                        <button
+                          type="button"
+                          disabled={collectionLoading[`${row.id}-bestseller`]}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleToggleCollection(row, "bestseller");
+                          }}
+                          className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md text-[11px] font-bold transition-all ${
+                            isProductBestseller(row)
+                              ? "bg-amber-100 text-amber-800 border border-amber-200"
+                              : "bg-slate-100 text-slate-400 border border-slate-200/50"
+                          }`}
+                        >
+                          ⭐ Best {isProductBestseller(row) ? "✓" : "+"}
+                        </button>
+                        {row.featuredProduct && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                            🔥
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {viewMode === "active" && (
                       <div className="mt-2 flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-400 uppercase">Stock:</span>

@@ -109,3 +109,93 @@ export const permanentlyDeleteProduct = (id) => deleteDoc(doc(db, "products", id
 // Legacy alias kept for backward compat (now soft-deletes)
 export const removeProduct = (id) => trashProduct(id);
 
+/**
+ * Check if a product is a New Arrival.
+ * Strict check: must be explicitly flagged or tagged, and not explicitly disabled.
+ */
+export const isProductNewArrival = (p) => {
+  if (!p) return false;
+  if (p.isNewArrival === false) return false;
+  if (p.isNewArrival === true || p.newArrival === true) return true;
+  if (p.badge && String(p.badge).toLowerCase().includes("new")) return true;
+  if (Array.isArray(p.tags) && p.tags.some((t) => {
+    const s = String(t).toLowerCase().trim();
+    return s === "new arrivals" || s === "new arrival" || s === "new";
+  })) return true;
+  return false;
+};
+
+/**
+ * Check if a product is a Best Seller.
+ * Strict check: must be explicitly flagged or tagged, and not explicitly disabled.
+ */
+export const isProductBestseller = (p) => {
+  if (!p) return false;
+  if (p.isBestseller === false) return false;
+  if (p.isBestseller === true || p.bestseller === true) return true;
+  if (p.badge && String(p.badge).toLowerCase().includes("bestseller")) return true;
+  if (Array.isArray(p.tags) && p.tags.some((t) => {
+    const s = String(t).toLowerCase().trim();
+    return s === "bestsellers" || s === "bestseller" || s === "best seller" || s === "best sellers";
+  })) return true;
+  return false;
+};
+
+/**
+ * Quickly toggle New Arrival or Best Seller status for a product.
+ * Synchronizes booleans, tags array, and badge fields.
+ */
+export const toggleProductCollection = async (id, type, product) => {
+  if (!id) return;
+  const existingTags = Array.isArray(product?.tags) ? [...product.tags] : [];
+  const updates = { updatedAt: serverTimestamp() };
+
+  if (type === "new_arrival") {
+    const currentlyActive = isProductNewArrival(product);
+    const nextVal = !currentlyActive;
+    updates.isNewArrival = nextVal;
+    updates.newArrival = nextVal;
+
+    if (nextVal) {
+      if (!existingTags.some((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s === "new arrivals" || s === "new arrival";
+      })) {
+        updates.tags = [...existingTags, "New Arrivals"];
+      }
+    } else {
+      updates.tags = existingTags.filter((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s !== "new arrivals" && s !== "new arrival" && s !== "new";
+      });
+      if (product?.badge && String(product.badge).toLowerCase().includes("new")) {
+        updates.badge = "";
+      }
+    }
+  } else if (type === "bestseller") {
+    const currentlyActive = isProductBestseller(product);
+    const nextVal = !currentlyActive;
+    updates.isBestseller = nextVal;
+    updates.bestseller = nextVal;
+
+    if (nextVal) {
+      if (!existingTags.some((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s === "bestsellers" || s === "bestseller";
+      })) {
+        updates.tags = [...existingTags, "Bestsellers"];
+      }
+    } else {
+      updates.tags = existingTags.filter((t) => {
+        const s = String(t).toLowerCase().trim();
+        return s !== "bestsellers" && s !== "bestseller" && s !== "best sellers" && s !== "best seller";
+      });
+      if (product?.badge && String(product.badge).toLowerCase().includes("bestseller")) {
+        updates.badge = "";
+      }
+    }
+  }
+
+  return updateDoc(doc(db, "products", id), updates);
+};
+
